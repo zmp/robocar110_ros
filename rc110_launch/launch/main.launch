@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="hokuyo_node" type="hokuyo_node" name="lidar_2d" respawn="true">
+    </node>
+
+    <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive" respawn="true">
+    </node>
+
+    <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
+        <rosparam file="$(find rc110_launch)/config/behavior.yaml" subst_value="true"/>
+    </node>
+</launch>
