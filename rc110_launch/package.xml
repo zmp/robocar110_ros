@@ -10,6 +10,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roslaunch</build_depend>
+  <depend>cv_camera</depend>
   <depend>hokuyo_node</depend>
   <depend>rc110_drive_control</depend>
   <depend>rc110_behavior</depend>
