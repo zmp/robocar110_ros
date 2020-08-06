@@ -6,8 +6,11 @@
 * robocar110
 
 ```
-catkin_make  # creating ROS workspace
+# create ROS workspace
+mkdir -p ~/rc_ws/src && cd ~/rc_ws/
+catkin_make
 cd src
+
 # clone repo
 ```
 

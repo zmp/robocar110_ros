@@ -4,3 +4,5 @@ project(rc110_launch)
 find_package(catkin REQUIRED roslaunch)
 
 catkin_package()
+
+install(DIRECTORY config launch rviz DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
