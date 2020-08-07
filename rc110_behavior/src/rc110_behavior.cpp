@@ -31,7 +31,9 @@ Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePri
 
 void Rc110Behavior::update()
 {
-    behaviorTree.tickRoot();
+    if (behaviorTree.tickRoot() == BT::NodeStatus::FAILURE) {
+        ROS_INFO_THROTTLE(10, "Behavior tree failed");
+    }
 }
 
 void Rc110Behavior::onLaser(const sensor_msgs::LaserScan& scan)
