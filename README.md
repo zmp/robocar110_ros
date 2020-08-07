@@ -8,7 +8,7 @@
 ```
 # create ROS workspace
 mkdir -p ~/rc_ws/src && cd ~/rc_ws/
-catkin_make
+catkin build
 cd src
 
 # clone repo

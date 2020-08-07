@@ -15,7 +15,7 @@
 namespace zmp
 {
 /**
- * This node basing on obstacle position sets variable named "result" to either of the values: none | near | left | right
+ * This node basing on obstacle position sets the value of the output port "switch" to either: none | near | left | right
  */
 class GetObstacle : public BT::DecoratorNode
 {
