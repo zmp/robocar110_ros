@@ -10,20 +10,23 @@
 #include "drive_action.hpp"
 
 #include <ackermann_msgs/AckermannDrive.h>
+#include <boost/math/constants/constants.hpp>
 
 namespace zmp
 {
 BT::NodeStatus DriveAction::tick()
 {
-    auto speed = getInput<std::string>("speed");
-    auto steering = getInput<std::string>("steering");
+	using namespace boost::math::float_constants;
+
+    auto speed = getInput<double>("speed");
+    auto steering = getInput<double>("steering");
     if (!speed || !steering) {
         return BT::NodeStatus::FAILURE;
     }
 
 	ackermann_msgs::AckermannDrive drive;
-    drive.speed = std::stof(speed.value());
-    drive.steering_angle = std::stof(steering.value());
+    drive.speed = speed.value();
+    drive.steering_angle = static_cast<float>(steering.value()) * degree;
 
     drivePublisher.publish(drive);
     return BT::NodeStatus::SUCCESS;
