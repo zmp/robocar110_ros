@@ -18,9 +18,9 @@ namespace zmp
 {
 BT::NodeStatus GetObstacle::tick()
 {
-    static Eigen::AlignedBox2f nearBox = {Eigen::Vector2f(0, -0.2f), Eigen::Vector2f(0.3f, 0.2f)};
-    static Eigen::AlignedBox2f farLeftBox = {Eigen::Vector2f(0.3f, 0), Eigen::Vector2f(0.6f, 0.3f)};
-    static Eigen::AlignedBox2f farRightBox = {Eigen::Vector2f(0.3f, -0.3f), Eigen::Vector2f(0.6f, 0)};
+    static Eigen::AlignedBox2f nearBox = {Eigen::Vector2f(0, -0.2f), Eigen::Vector2f(0.2f, 0.2f)};
+    static Eigen::AlignedBox2f farLeftBox = {Eigen::Vector2f(0.2f, 0), Eigen::Vector2f(1.0f, 0.3f)};
+    static Eigen::AlignedBox2f farRightBox = {Eigen::Vector2f(0.2f, -0.3f), Eigen::Vector2f(1.0f, 0)};
 
     if (cloud.data.empty()) {
         return BT::NodeStatus::FAILURE;
@@ -33,7 +33,7 @@ BT::NodeStatus GetObstacle::tick()
     using Iter = sensor_msgs::PointCloud2ConstIterator<float>;
     for (Iter it = {cloud, "x"}; it != it.end(); ++it) {
         float x = it[0], y = it[1];
-        Eigen::Vector2f point = {x, y};
+        Eigen::Vector2f point = {x, -y};  // flip along x axis (temporary solution)
 
         if (nearBox.contains(point)) {
             result = "near";
