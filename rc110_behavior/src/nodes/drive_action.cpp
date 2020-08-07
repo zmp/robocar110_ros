@@ -16,7 +16,7 @@ namespace zmp
 {
 BT::NodeStatus DriveAction::tick()
 {
-	using namespace boost::math::float_constants;
+    using namespace boost::math::float_constants;
 
     auto speed = getInput<double>("speed");
     auto steering = getInput<double>("steering");
@@ -24,7 +24,7 @@ BT::NodeStatus DriveAction::tick()
         return BT::NodeStatus::FAILURE;
     }
 
-	ackermann_msgs::AckermannDrive drive;
+    ackermann_msgs::AckermannDrive drive;
     drive.speed = speed.value();
     drive.steering_angle = static_cast<float>(steering.value()) * degree;
 

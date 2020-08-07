@@ -44,7 +44,7 @@ Rc110DriveControl::~Rc110DriveControl()
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 {
-	using namespace boost::math::float_constants;
+    using namespace boost::math::float_constants;
 
     control.SetDriveSpeed(message.speed);
     control.SetSteerAngle(message.steering_angle * radian);

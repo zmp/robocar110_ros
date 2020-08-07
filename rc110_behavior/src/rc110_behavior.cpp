@@ -12,8 +12,8 @@
 #include <ackermann_msgs/AckermannDrive.h>
 #include <laser_geometry/laser_geometry.h>
 
-#include "nodes/get_obstacle.hpp"
 #include "nodes/drive_action.hpp"
+#include "nodes/get_obstacle.hpp"
 
 namespace zmp
 {

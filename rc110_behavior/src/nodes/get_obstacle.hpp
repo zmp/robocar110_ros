@@ -24,7 +24,8 @@ public:
 
 public:
     GetObstacle(const std::string& name, const BT::NodeConfiguration& config, const sensor_msgs::PointCloud2& cloud) :
-            DecoratorNode(name, config), cloud(cloud)
+            DecoratorNode(name, config),
+            cloud(cloud)
     {
     }
 

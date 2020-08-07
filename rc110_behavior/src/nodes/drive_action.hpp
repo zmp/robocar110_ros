@@ -24,7 +24,8 @@ public:
 
 public:
     DriveAction(const std::string& name, const BT::NodeConfiguration& config, ros::Publisher& drivePublisher) :
-            SyncActionNode(name, config), drivePublisher(drivePublisher)
+            SyncActionNode(name, config),
+            drivePublisher(drivePublisher)
     {
     }
 
