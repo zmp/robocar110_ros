@@ -2,7 +2,7 @@
 <root main_tree_to_execute="BehaviorTree">
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
-        <Decorator ID="GetObstacle" switch="result">
+        <Decorator ID="GetObstacle" switch="{result}">
             <Switch4 case_1="none" case_2="near" case_3="left" case_4="right" variable="{result}">
                 <Action ID="DriveAction" speed="300" steering="0"/>
                 <Action ID="DriveAction" speed="0" steering="0"/>
@@ -20,7 +20,7 @@
             <input_port default="0" name="steering"/>
         </Action>
         <Decorator ID="GetObstacle">
-            <output_port default="result" name="switch"/>
+            <output_port default="{result}" name="switch"/>
         </Decorator>
     </TreeNodesModel>
     <!-- ////////// -->
