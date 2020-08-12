@@ -111,12 +111,13 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         ROS_ERROR("Failed to get motor power info.");
         return;
     }
+    float motorTemperature = (thermo.fet1 + thermo.fet2) / 2;
 
     auto time = ros::Time::now();
     publishDriveStatus(time, speed, angle);
     publishImu(time, wheelAndImuData);
     publishTemperature(time, servoTemperature, servoTemperaturePublisher);
-    publishTemperature(time, thermo.motor, motorTemperaturePublisher);
+    publishTemperature(time, motorTemperature, motorTemperaturePublisher);
     publishBattery(time, power);
 }
 
