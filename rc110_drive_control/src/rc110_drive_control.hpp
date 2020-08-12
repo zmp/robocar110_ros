@@ -32,7 +32,13 @@ private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
-    void getAndPublishDriveStatus();
+    /**
+     * @brief Publish speed and steering.
+     *
+     * @param speed in m/s
+     * @param angle in rad/s
+     */
+    void publishDriveStatus(float speed, float angle);
 
 private:
     zrc::RcControl control;

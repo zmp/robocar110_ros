@@ -12,6 +12,20 @@
 #include <geometry_msgs/TwistStamped.h>
 #include <boost/math/constants/constants.hpp>
 
+namespace
+{
+constexpr float DEG_TO_RAD = M_PI / 180.0;
+constexpr float MM_TO_M = 1 / 1e3;
+
+float calculate4WheelSpeed(float frontLeftWheelSpeed,
+                           float frontRightWheelSpeed,
+                           float rearLeftWheelSpeed,
+                           float rearRightWheelSpeed)
+{
+    return (frontLeftWheelSpeed + frontRightWheelSpeed + rearLeftWheelSpeed + rearRightWheelSpeed) / 4;
+}
+}  // namespace
+
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
@@ -53,22 +67,27 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
-    getAndPublishDriveStatus();
-}
-
-void Rc110DriveControl::getAndPublishDriveStatus()
-{
-    int speed = 0;
-    if (!control.GetPresentSpeed(&speed)) {
-        ROS_WARN("Failed to get current speed");
+    zrc::SENSOR_VALUE wheelAndImuData;
+    if (!control.GetSensorInfoReq(&wheelAndImuData)) {
+        ROS_WARN("Failed to get sensor info.");
         return;
     }
+    float speed = ::calculate4WheelSpeed(wheelAndImuData.enc_1,
+                                         wheelAndImuData.enc_2,
+                                         wheelAndImuData.enc_3,
+                                         wheelAndImuData.enc_4);
+
     float angle = 0;
     if (!control.GetPresentAngle(&angle)) {
-        ROS_WARN("Failed to get current angle");
+        ROS_WARN("Failed to get current angle.");
         return;
     }
 
+    publishDriveStatus(speed * MM_TO_M, angle * DEG_TO_RAD);
+}
+
+void Rc110DriveControl::publishDriveStatus(float speed, float angle)
+{
     geometry_msgs::TwistStamped twist;
     twist.header.stamp = ros::Time::now();
 
