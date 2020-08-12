@@ -77,7 +77,7 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
-    // driving information
+    // get sensors info
     zrc::SENSOR_VALUE wheelAndImuData;
     if (!control.GetSensorInfoReq(&wheelAndImuData)) {
         ROS_ERROR("Failed to get sensor info.");
@@ -86,36 +86,36 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     float speed = ::calculate4WheelSpeed(wheelAndImuData.enc_1,
                                          wheelAndImuData.enc_2,
                                          wheelAndImuData.enc_3,
-                                         wheelAndImuData.enc_4);
-    float angle = 0;
-    if (!control.GetPresentAngle(&angle)) {
-        ROS_ERROR("Failed to get current angle.");
-        return;
-    }
+                                         wheelAndImuData.enc_4) *
+                  MM_TO_M;
 
-    // thermals
-    int servoTemperature = 0;
-    if (!control.GetPresentTemp(&servoTemperature)) {
-        ROS_ERROR("Failed to get servo temperature.");
+    // get servo motor info
+    zrc::DRIVE_VALUE drive;
+    if (!control.GetServoInfoReq(1, zrc::PRESENT_POSITION_L, zrc::PRESENT_VOLTS_H - zrc::PRESENT_POSITION_L, &drive)) {
+        ROS_ERROR("Failed to get servo info angle.");
         return;
     }
+    float angle = drive.present_position * DEG_TO_RAD;
+    float servoTemperature = static_cast<float>(drive.present_temperature);
+
+    // motor thermo
     zrc::THERMO_VALUE thermo;
     if (!control.GetThermoInfoReq(&thermo)) {
-        ROS_ERROR("Failed to get thermo info.");
+        ROS_ERROR("Failed to get motor thermo info.");
         return;
     }
 
-    // power
+    // motor power
     zrc::POWER_VALUE power;
     if (!control.GetPowerInfoReq(&power)) {
-        ROS_ERROR("Failed to get power info.");
+        ROS_ERROR("Failed to get motor power info.");
         return;
     }
 
     auto time = ros::Time::now();
-    publishDriveStatus(time, speed * MM_TO_M, angle * DEG_TO_RAD);
+    publishDriveStatus(time, speed, angle);
     publishImu(time, wheelAndImuData);
-    publishTemperature(time, static_cast<float>(servoTemperature), servoTemperaturePublisher);
+    publishTemperature(time, servoTemperature, servoTemperaturePublisher);
     publishTemperature(time, thermo.motor, motorTemperaturePublisher);
     publishBattery(time, power);
 }
