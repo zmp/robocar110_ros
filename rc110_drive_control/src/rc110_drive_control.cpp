@@ -16,6 +16,7 @@ namespace
 {
 constexpr float DEG_TO_RAD = M_PI / 180.0;
 constexpr float MM_TO_M = 1 / 1e3;
+constexpr float G_TO_MS2 = 9.80665;
 
 float calculate4WheelSpeed(float frontLeftWheelSpeed,
                            float frontRightWheelSpeed,
@@ -42,7 +43,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.SetSteerAngle(0);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
-    driveStatusPublisher = handle.advertise<geometry_msgs::Twist>("drive_status", 10);
+    driveStatusPublisher = handle.advertise<geometry_msgs::TwistStamped>("drive_status", 10);
+    imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
 
     statusUpdateTimer =
             handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
@@ -83,17 +85,36 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         return;
     }
 
-    publishDriveStatus(speed * MM_TO_M, angle * DEG_TO_RAD);
+    auto time = ros::Time::now();
+    publishDriveStatus(time, speed * MM_TO_M, angle * DEG_TO_RAD);
+    publishImu(time, wheelAndImuData);
 }
 
-void Rc110DriveControl::publishDriveStatus(float speed, float angle)
+void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
 {
     geometry_msgs::TwistStamped twist;
-    twist.header.stamp = ros::Time::now();
+    twist.header.stamp = time;
 
     twist.twist.linear.x = speed;
     twist.twist.angular.z = angle;
     driveStatusPublisher.publish(twist);
+}
+
+void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALUE& wheelAndImuData)
+{
+    sensor_msgs::Imu imu;
+    imu.header.stamp = time;
+    imu.orientation_covariance[0] = -1;  // data not available
+
+    imu.angular_velocity.x = 0;
+    imu.angular_velocity.y = 0;
+    imu.angular_velocity.z = wheelAndImuData.gyro * DEG_TO_RAD;
+
+    imu.linear_acceleration.x = wheelAndImuData.acc_x * G_TO_MS2;
+    imu.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
+    imu.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
+
+    driveStatusPublisher.publish(imu);
 }
 
 }  // namespace zmp

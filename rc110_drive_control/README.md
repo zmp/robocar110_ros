@@ -12,6 +12,9 @@
 ```
 /drive_status [geometry_msgs::TwistStamped]
     actual speed and angle
+
+/imu [sensor_msgs::Imu]
+    imu data
 ```
 
 ## Parameters
