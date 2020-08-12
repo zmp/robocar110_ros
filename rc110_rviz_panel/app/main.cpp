@@ -7,6 +7,9 @@ using namespace zmp;
 
 const char* APP_NAME = "rc110_panel_app";
 
+/**
+ * A small application to test sensors widget without rviz.
+ */
 int main(int argc, char* argv[])
 {
     ros::init(argc, argv, APP_NAME);

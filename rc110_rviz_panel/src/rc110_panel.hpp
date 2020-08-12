@@ -10,12 +10,12 @@
 #pragma once
 
 #ifndef Q_MOC_RUN
+#include <ackermann_msgs/AckermannDriveStamped.h>
 #include <ros/ros.h>
 #include <rviz/panel.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
-#include <ackermann_msgs/AckermannDriveStamped.h>
 #endif
 
 namespace Ui
@@ -26,6 +26,9 @@ class QTreeWidgetItem;
 
 namespace zmp
 {
+/**
+ * Widget with RC 1/10 sensors that can be displayed in rviz.
+ */
 class Rc110Panel : public rviz::Panel
 {
     Q_OBJECT
