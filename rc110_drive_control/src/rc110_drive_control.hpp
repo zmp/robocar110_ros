@@ -11,6 +11,7 @@
 
 #include <ackermann_msgs/AckermannDrive.h>
 #include <ros/ros.h>
+#include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
 
@@ -60,6 +61,14 @@ private:
      */
     void publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher);
 
+    /**
+     * @brief Publish motor battery state.
+     *
+     * @param time
+     * @param powerInfo
+     */
+    void publishBattery(const ros::Time& time, const zrc::POWER_VALUE& powerInfo);
+
 private:
     zrc::RcControl control;
     Parameters parameters;
@@ -68,6 +77,7 @@ private:
     ros::Publisher imuPublisher;
     ros::Publisher servoTemperaturePublisher;
     ros::Publisher motorTemperaturePublisher;
+    ros::Publisher motorBatteryPublisher;
     ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp

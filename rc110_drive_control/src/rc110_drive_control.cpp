@@ -14,9 +14,10 @@
 
 namespace
 {
-constexpr float DEG_TO_RAD = M_PI / 180.0;
-constexpr float MM_TO_M = 1 / 1e3;
-constexpr float G_TO_MS2 = 9.80665;
+constexpr float DEG_TO_RAD = M_PI / 180.0;  // degree to radians conversion factor
+constexpr float MM_TO_M = 1 / 1e3;          // millimeter to meter conversion factor
+constexpr float G_TO_MS2 = 9.80665;         // G to m/s2 conversion factor
+constexpr float MA_TO_A = 1 / 1e3;          // milliampere to ampere conversion factor
 
 float calculate4WheelSpeed(float frontLeftWheelSpeed,
                            float frontRightWheelSpeed,
@@ -47,6 +48,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
     motorTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("motor_temperature", 10);
+    motorBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
 
     statusUpdateTimer =
             handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
@@ -99,11 +101,19 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         return;
     }
 
+    // power
+    zrc::POWER_VALUE power;
+    if (!control.GetPowerInfoReq(&power)) {
+        ROS_WARN("Failed to get power info.");
+        return;
+    }
+
     auto time = ros::Time::now();
     publishDriveStatus(time, speed * MM_TO_M, angle * DEG_TO_RAD);
     publishImu(time, wheelAndImuData);
     publishTemperature(time, static_cast<float>(servoTemperature), servoTemperaturePublisher);
     publishTemperature(time, thermo.motor, motorTemperaturePublisher);
+    publishBattery(time, power);
 }
 
 void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
@@ -142,6 +152,18 @@ void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperat
     msg.temperature = temperature;
 
     publisher.publish(msg);
+}
+
+void Rc110DriveControl::publishBattery(const ros::Time& time, const zrc::POWER_VALUE& powerInfo)
+{
+    sensor_msgs::BatteryState msg;
+    msg.header.stamp = time;
+
+    msg.voltage = powerInfo.battery_level;
+    msg.current = powerInfo.motor_current * MA_TO_A;
+    msg.present = true;
+
+    motorBatteryPublisher.publish(msg);
 }
 
 }  // namespace zmp

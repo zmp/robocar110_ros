@@ -21,6 +21,9 @@
 
 /motor_temperature [sensor_msgs::Temperature]
     wheel motor temperature
+
+/motor_battery [sensor_msgs::BatteryState]
+    motor battery state
 ```
 
 ## Parameters
