@@ -36,7 +36,7 @@ private:
     zrc::RcControl control;
     Parameters parameters;
     ros::Subscriber driveSubscriber;
-    ros::Publisher twistPublisher;
+    ros::Publisher driveStatusPublisher;
     ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp

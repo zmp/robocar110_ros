@@ -10,7 +10,7 @@
 ## Published Topic
 
 ```
-/twist [geometry_msgs::Twist]
+/drive_status [geometry_msgs::TwistStamped]
     actual speed and angle
 ```
 

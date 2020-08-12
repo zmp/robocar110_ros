@@ -9,7 +9,7 @@
  */
 #include "rc110_drive_control.hpp"
 
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/TwistStamped.h>
 #include <boost/math/constants/constants.hpp>
 
 namespace zmp
@@ -28,7 +28,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.SetSteerAngle(0);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
-    twistPublisher = handle.advertise<geometry_msgs::Twist>("twist", 10);
+    driveStatusPublisher = handle.advertise<geometry_msgs::Twist>("drive_status", 10);
 
     statusUpdateTimer =
             handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
@@ -62,9 +62,11 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         return;
     }
 
-    geometry_msgs::Twist twist;
-    twist.linear.x = speed;
-    twist.angular.z = angle;
-    twistPublisher.publish(twist);
+    geometry_msgs::TwistStamped twist;
+    twist.header.stamp = ros::Time::now();
+
+    twist.twist.linear.x = speed;
+    twist.twist.angular.z = angle;
+    driveStatusPublisher.publish(twist);
 }
 }  // namespace zmp
