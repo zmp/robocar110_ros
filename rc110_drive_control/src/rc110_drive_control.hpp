@@ -32,6 +32,8 @@ private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
+    void getAndPublishDriveStatus();
+
 private:
     zrc::RcControl control;
     Parameters parameters;

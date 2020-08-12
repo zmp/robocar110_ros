@@ -53,12 +53,19 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
+    getAndPublishDriveStatus();
+}
+
+void Rc110DriveControl::getAndPublishDriveStatus()
+{
     int speed = 0;
     if (!control.GetPresentSpeed(&speed)) {
+        ROS_WARN("Failed to get current speed");
         return;
     }
     float angle = 0;
     if (!control.GetPresentAngle(&angle)) {
+        ROS_WARN("Failed to get current angle");
         return;
     }
 
@@ -69,4 +76,5 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     twist.twist.angular.z = angle;
     driveStatusPublisher.publish(twist);
 }
+
 }  // namespace zmp
