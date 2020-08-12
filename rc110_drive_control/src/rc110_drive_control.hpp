@@ -11,9 +11,6 @@
 
 #include <ackermann_msgs/AckermannDrive.h>
 #include <ros/ros.h>
-#include <sensor_msgs/BatteryState.h>
-#include <sensor_msgs/Imu.h>
-#include <sensor_msgs/Temperature.h>
 
 #include "RcControl.h"
 

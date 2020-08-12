@@ -9,7 +9,11 @@
  */
 #include "rc110_drive_control.hpp"
 
-#include <geometry_msgs/TwistStamped.h>
+#include <ackermann_msgs/AckermannDriveStamped.h>
+#include <sensor_msgs/BatteryState.h>
+#include <sensor_msgs/Imu.h>
+#include <sensor_msgs/Temperature.h>
+
 #include <boost/math/constants/constants.hpp>
 
 namespace
@@ -44,7 +48,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.SetSteerAngle(0);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
-    driveStatusPublisher = handle.advertise<geometry_msgs::TwistStamped>("drive_status", 10);
+    driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
     motorTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("motor_temperature", 10);
@@ -118,11 +122,11 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 
 void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
 {
-    geometry_msgs::TwistStamped msg;
+    ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = time;
 
-    msg.twist.linear.x = speed;
-    msg.twist.angular.z = angle;
+    msg.drive.speed = speed;
+    msg.drive.steering_angle = angle;
 
     driveStatusPublisher.publish(msg);
 }

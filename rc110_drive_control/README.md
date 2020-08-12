@@ -10,7 +10,7 @@
 ## Published Topic
 
 ```
-/drive_status [geometry_msgs::TwistStamped]
+/drive_status [ackermann_msgs::AckermannDriveStamped]
     actual speed and angle
 
 /imu [sensor_msgs::Imu]
