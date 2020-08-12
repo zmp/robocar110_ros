@@ -145,7 +145,7 @@ void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALU
     msg.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
     msg.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
 
-    driveStatusPublisher.publish(msg);
+    imuPublisher.publish(msg);
 }
 
 void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher)
