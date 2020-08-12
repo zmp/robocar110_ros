@@ -76,7 +76,7 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     // driving information
     zrc::SENSOR_VALUE wheelAndImuData;
     if (!control.GetSensorInfoReq(&wheelAndImuData)) {
-        ROS_WARN("Failed to get sensor info.");
+        ROS_ERROR("Failed to get sensor info.");
         return;
     }
     float speed = ::calculate4WheelSpeed(wheelAndImuData.enc_1,
@@ -85,26 +85,26 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
                                          wheelAndImuData.enc_4);
     float angle = 0;
     if (!control.GetPresentAngle(&angle)) {
-        ROS_WARN("Failed to get current angle.");
+        ROS_ERROR("Failed to get current angle.");
         return;
     }
 
     // thermals
     int servoTemperature = 0;
     if (!control.GetPresentTemp(&servoTemperature)) {
-        ROS_WARN("Failed to get servo temperature.");
+        ROS_ERROR("Failed to get servo temperature.");
         return;
     }
     zrc::THERMO_VALUE thermo;
     if (!control.GetThermoInfoReq(&thermo)) {
-        ROS_WARN("Failed to get thermo info.");
+        ROS_ERROR("Failed to get thermo info.");
         return;
     }
 
     // power
     zrc::POWER_VALUE power;
     if (!control.GetPowerInfoReq(&power)) {
-        ROS_WARN("Failed to get power info.");
+        ROS_ERROR("Failed to get power info.");
         return;
     }
 
