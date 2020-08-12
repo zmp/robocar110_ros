@@ -118,29 +118,30 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 
 void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
 {
-    geometry_msgs::TwistStamped twist;
-    twist.header.stamp = time;
+    geometry_msgs::TwistStamped msg;
+    msg.header.stamp = time;
 
-    twist.twist.linear.x = speed;
-    twist.twist.angular.z = angle;
-    driveStatusPublisher.publish(twist);
+    msg.twist.linear.x = speed;
+    msg.twist.angular.z = angle;
+
+    driveStatusPublisher.publish(msg);
 }
 
 void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALUE& wheelAndImuData)
 {
-    sensor_msgs::Imu imu;
-    imu.header.stamp = time;
-    imu.orientation_covariance[0] = -1;  // data not available
+    sensor_msgs::Imu msg;
+    msg.header.stamp = time;
+    msg.orientation_covariance[0] = -1;  // data not available
 
-    imu.angular_velocity.x = 0;
-    imu.angular_velocity.y = 0;
-    imu.angular_velocity.z = wheelAndImuData.gyro * DEG_TO_RAD;
+    msg.angular_velocity.x = 0;
+    msg.angular_velocity.y = 0;
+    msg.angular_velocity.z = wheelAndImuData.gyro * DEG_TO_RAD;
 
-    imu.linear_acceleration.x = wheelAndImuData.acc_x * G_TO_MS2;
-    imu.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
-    imu.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
+    msg.linear_acceleration.x = wheelAndImuData.acc_x * G_TO_MS2;
+    msg.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
+    msg.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
 
-    driveStatusPublisher.publish(imu);
+    driveStatusPublisher.publish(msg);
 }
 
 void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher)
