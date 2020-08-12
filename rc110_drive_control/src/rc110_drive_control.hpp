@@ -12,6 +12,7 @@
 #include <ackermann_msgs/AckermannDrive.h>
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/Temperature.h>
 
 #include "RcControl.h"
 
@@ -50,12 +51,23 @@ private:
      */
     void publishImu(const ros::Time& time, const zrc::SENSOR_VALUE& wheelAndImuData);
 
+    /**
+     * @brief Publish temperature.
+     *
+     * @param time
+     * @param temperature in degrees celsius
+     * @param publisher
+     */
+    void publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher);
+
 private:
     zrc::RcControl control;
     Parameters parameters;
     ros::Subscriber driveSubscriber;
     ros::Publisher driveStatusPublisher;
     ros::Publisher imuPublisher;
+    ros::Publisher servoTemperaturePublisher;
+    ros::Publisher motorTemperaturePublisher;
     ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp

@@ -45,6 +45,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
     driveStatusPublisher = handle.advertise<geometry_msgs::TwistStamped>("drive_status", 10);
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
+    servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
+    motorTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("motor_temperature", 10);
 
     statusUpdateTimer =
             handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
@@ -69,6 +71,7 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
+    // driving information
     zrc::SENSOR_VALUE wheelAndImuData;
     if (!control.GetSensorInfoReq(&wheelAndImuData)) {
         ROS_WARN("Failed to get sensor info.");
@@ -78,16 +81,29 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
                                          wheelAndImuData.enc_2,
                                          wheelAndImuData.enc_3,
                                          wheelAndImuData.enc_4);
-
     float angle = 0;
     if (!control.GetPresentAngle(&angle)) {
         ROS_WARN("Failed to get current angle.");
         return;
     }
 
+    // thermals
+    int servoTemperature = 0;
+    if (!control.GetPresentTemp(&servoTemperature)) {
+        ROS_WARN("Failed to get servo temperature.");
+        return;
+    }
+    zrc::THERMO_VALUE thermo;
+    if (!control.GetThermoInfoReq(&thermo)) {
+        ROS_WARN("Failed to get thermo info.");
+        return;
+    }
+
     auto time = ros::Time::now();
     publishDriveStatus(time, speed * MM_TO_M, angle * DEG_TO_RAD);
     publishImu(time, wheelAndImuData);
+    publishTemperature(time, static_cast<float>(servoTemperature), servoTemperaturePublisher);
+    publishTemperature(time, thermo.motor, motorTemperaturePublisher);
 }
 
 void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
@@ -115,6 +131,17 @@ void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALU
     imu.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
 
     driveStatusPublisher.publish(imu);
+}
+
+void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher)
+{
+    sensor_msgs::Temperature msg;
+    msg.header.stamp = time;
+
+    msg.variance = 0;
+    msg.temperature = temperature;
+
+    publisher.publish(msg);
 }
 
 }  // namespace zmp

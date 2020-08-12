@@ -15,6 +15,12 @@
 
 /imu [sensor_msgs::Imu]
     imu data
+
+/servo_temperature [sensor_msgs::Temperature]
+    steering servo temperature
+
+/motor_temperature [sensor_msgs::Temperature]
+    wheel motor temperature
 ```
 
 ## Parameters
