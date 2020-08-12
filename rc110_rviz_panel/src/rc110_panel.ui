@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PanelWidget</class>
+ <widget class="QWidget" name="PanelWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>269</width>
+    <height>366</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>4</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="headerVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="headerDefaultSectionSize">
+      <number>150</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">sensor</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string notr="true">value</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
