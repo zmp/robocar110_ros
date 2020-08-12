@@ -13,7 +13,9 @@
 #include <ros/ros.h>
 #include <rviz/panel.h>
 #include <sensor_msgs/BatteryState.h>
+#include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+#include <ackermann_msgs/AckermannDriveStamped.h>
 #endif
 
 namespace Ui
@@ -28,8 +30,8 @@ class Rc110Panel : public rviz::Panel
 {
     Q_OBJECT
 
-    enum TREE_ITEM_GROUP { BATTERY, TEMPERATURE, GYROSCOPE };
-    static constexpr const char* TREE_ITEM_GROUP_NAME[] = {"Battery", "Temperature", "Gyroscope"};
+    enum TREE_ITEM_GROUP { DRIVE, BATTERY, TEMPERATURE, IMU };
+    static constexpr const char* TREE_ITEM_GROUP_NAME[] = {"Drive", "Battery", "Temperature", "IMU"};
 
 public:
     explicit Rc110Panel(QWidget* parent = nullptr);
@@ -37,8 +39,11 @@ public:
 
 private:
     QTreeWidgetItem* getTreeItem(TREE_ITEM_GROUP group, const char* name) const;
-    void onBatteryState(const sensor_msgs::BatteryState& batteryState);
+    void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
+    void onMotorBattery(const sensor_msgs::BatteryState& batteryState);
     void onMotorTemperature(const sensor_msgs::Temperature& temperature);
+    void onServoTemperature(const sensor_msgs::Temperature& temperature);
+    void onImu(const sensor_msgs::Imu& imu);
 
 private:
     std::unique_ptr<Ui::PanelWidget> ui;
