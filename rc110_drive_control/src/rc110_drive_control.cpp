@@ -30,7 +30,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
     twistPublisher = handle.advertise<geometry_msgs::Twist>("twist", 10);
 
-    twistTimer = handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onTwistTimer(event); });
+    statusUpdateTimer =
+            handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
 
     ROS_INFO("RC 1/10 drive control started");
 }
@@ -50,7 +51,7 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
     control.SetSteerAngle(message.steering_angle * radian);
 }
 
-void Rc110DriveControl::onTwistTimer(const ros::TimerEvent&)
+void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
     int speed = 0;
     if (!control.GetPresentSpeed(&speed)) {

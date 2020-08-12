@@ -30,13 +30,13 @@ public:
 
 private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
-    void onTwistTimer(const ros::TimerEvent&);
+    void onStatusUpdateTimer(const ros::TimerEvent&);
 
 private:
     zrc::RcControl control;
     Parameters parameters;
     ros::Subscriber driveSubscriber;
     ros::Publisher twistPublisher;
-    ros::Timer twistTimer;
+    ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp
