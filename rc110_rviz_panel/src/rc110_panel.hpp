@@ -44,7 +44,7 @@ private:
     QTreeWidgetItem* getTreeItem(TREE_ITEM_GROUP group, const char* name) const;
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onMotorBattery(const sensor_msgs::BatteryState& batteryState);
-    void onMotorTemperature(const sensor_msgs::Temperature& temperature);
+    void onBaseboardTemperature(const sensor_msgs::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::Temperature& temperature);
     void onImu(const sensor_msgs::Imu& imu);
 

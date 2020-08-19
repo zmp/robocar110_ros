@@ -28,7 +28,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
-    subscribers.push_back(handle.subscribe("motor_temperature", 1, &Rc110Panel::onMotorTemperature, this));
+    subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu", 1, &Rc110Panel::onImu, this));
 }
@@ -70,9 +70,9 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
     getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
 }
 
-void Rc110Panel::onMotorTemperature(const sensor_msgs::Temperature& temperature)
+void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)
 {
-    getTreeItem(TEMPERATURE, "motor")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature));
+    getTreeItem(TEMPERATURE, "baseboard")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature));
 }
 
 void Rc110Panel::onServoTemperature(const sensor_msgs::Temperature& temperature)
