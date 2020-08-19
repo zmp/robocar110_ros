@@ -51,7 +51,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
-    motorTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("motor_temperature", 10);
+    baseboardTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
     motorBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
 
     statusUpdateTimer =
@@ -111,13 +111,13 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         ROS_ERROR("Failed to get motor power info.");
         return;
     }
-    float motorTemperature = (thermo.fet1 + thermo.fet2) / 2;
+    float baseboardTemperature = std::max(thermo.fet1, thermo.fet2);
 
     auto time = ros::Time::now();
     publishDriveStatus(time, speed, angle);
     publishImu(time, wheelAndImuData);
     publishTemperature(time, servoTemperature, servoTemperaturePublisher);
-    publishTemperature(time, motorTemperature, motorTemperaturePublisher);
+    publishTemperature(time, baseboardTemperature, baseboardTemperaturePublisher);
     publishBattery(time, power);
 }
 

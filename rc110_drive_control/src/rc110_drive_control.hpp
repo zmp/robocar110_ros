@@ -73,7 +73,7 @@ private:
     ros::Publisher driveStatusPublisher;
     ros::Publisher imuPublisher;
     ros::Publisher servoTemperaturePublisher;
-    ros::Publisher motorTemperaturePublisher;
+    ros::Publisher baseboardTemperaturePublisher;
     ros::Publisher motorBatteryPublisher;
     ros::Timer statusUpdateTimer;
 };
