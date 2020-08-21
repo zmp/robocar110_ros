@@ -36,39 +36,12 @@ private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
-    /**
-     * @brief Publish speed and steering.
-     *
-     * @param time
-     * @param speed in m/s
-     * @param angle in rad/s
-     */
-    void publishDriveStatus(const ros::Time& time, float speed, float angle);
-
-    /**
-     * @brief Publish IMU data.
-     *
-     * @param time
-     * @param wheelAndImuData from robocar sensors
-     */
-    void publishImu(const ros::Time& time, const zrc::SENSOR_VALUE& wheelAndImuData);
-
-    /**
-     * @brief Publish temperature.
-     *
-     * @param time
-     * @param temperature in degrees celsius
-     * @param publisher
-     */
-    void publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher);
-
-    /**
-     * @brief Publish motor battery state.
-     *
-     * @param time
-     * @param powerInfo
-     */
-    void publishBattery(const ros::Time& time, const zrc::POWER_VALUE& powerInfo);
+    void getAndPublishDriveStatus();
+    void getAndPublishImu();
+    void getAndPublishServoTemperature();
+    void getAndPublishBaseboardTemperature();
+    void publishTemperature(float temperature, ros::Publisher& publisher);
+    void getAndPublishBattery();
 
 private:
     zrc::RcControl control;

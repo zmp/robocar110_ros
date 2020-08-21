@@ -76,54 +76,31 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
-    // get sensors info
-    zrc::SENSOR_VALUE wheelAndImuData;
-    if (!control.GetSensorInfoReq(&wheelAndImuData)) {
+    getAndPublishDriveStatus();
+    getAndPublishImu();
+    getAndPublishServoTemperature();
+    getAndPublishBaseboardTemperature();
+    getAndPublishBattery();
+}
+
+void Rc110DriveControl::getAndPublishDriveStatus()
+{
+    zrc::SENSOR_VALUE sensor;
+    if (!control.GetSensorInfoReq(&sensor)) {
         ROS_ERROR("Failed to get sensor info.");
         return;
     }
-    float speed = ::calculate4WheelSpeed(wheelAndImuData.enc_1,
-                                         wheelAndImuData.enc_2,
-                                         wheelAndImuData.enc_3,
-                                         wheelAndImuData.enc_4) *
-                  MM_TO_M;
+    float speed = ::calculate4WheelSpeed(sensor.enc_1, sensor.enc_2, sensor.enc_3, sensor.enc_4) * MM_TO_M;
 
-    // get servo motor info
     zrc::DRIVE_VALUE drive;
     if (!control.GetServoInfoReq(1, zrc::PRESENT_POSITION_L, zrc::PRESENT_VOLTS_H - zrc::PRESENT_POSITION_L, &drive)) {
         ROS_ERROR("Failed to get servo info angle.");
         return;
     }
     float angle = drive.present_position * constants::degree;
-    float servoTemperature = static_cast<float>(drive.present_temperature);
 
-    // motor thermo
-    zrc::THERMO_VALUE thermo;
-    if (!control.GetThermoInfoReq(&thermo)) {
-        ROS_ERROR("Failed to get motor thermo info.");
-        return;
-    }
-
-    // motor power
-    zrc::POWER_VALUE power;
-    if (!control.GetPowerInfoReq(&power)) {
-        ROS_ERROR("Failed to get motor power info.");
-        return;
-    }
-    float baseboardTemperature = std::max(thermo.fet1, thermo.fet2);
-
-    auto time = ros::Time::now();
-    publishDriveStatus(time, speed, angle);
-    publishImu(time, wheelAndImuData);
-    publishTemperature(time, servoTemperature, servoTemperaturePublisher);
-    publishTemperature(time, baseboardTemperature, baseboardTemperaturePublisher);
-    publishBattery(time, power);
-}
-
-void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, float angle)
-{
     ackermann_msgs::AckermannDriveStamped msg;
-    msg.header.stamp = time;
+    msg.header.stamp = ros::Time::now();
     msg.header.frame_id = "rc110_base";
 
     msg.drive.speed = speed;
@@ -132,28 +109,56 @@ void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, f
     driveStatusPublisher.publish(msg);
 }
 
-void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALUE& wheelAndImuData)
+void Rc110DriveControl::getAndPublishImu()
 {
+    zrc::SENSOR_VALUE sensor;
+    if (!control.GetSensorInfoReq(&sensor)) {
+        ROS_ERROR("Failed to get sensor info.");
+        return;
+    }
+
     sensor_msgs::Imu msg;
-    msg.header.stamp = time;
+    msg.header.stamp = ros::Time::now();
     msg.header.frame_id = "rc110_imu";
     msg.orientation_covariance[0] = -1;  // data not available
 
     msg.angular_velocity.x = 0;
     msg.angular_velocity.y = 0;
-    msg.angular_velocity.z = wheelAndImuData.gyro * constants::degree;
+    msg.angular_velocity.z = sensor.gyro * constants::degree;
 
-    msg.linear_acceleration.x = wheelAndImuData.acc_x * G_TO_MS2;
-    msg.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
-    msg.linear_acceleration.z = wheelAndImuData.acc_z * G_TO_MS2;
+    msg.linear_acceleration.x = sensor.acc_x * G_TO_MS2;
+    msg.linear_acceleration.y = sensor.acc_y * G_TO_MS2;
+    msg.linear_acceleration.z = sensor.acc_z * G_TO_MS2;
 
     imuPublisher.publish(msg);
 }
 
-void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperature, ros::Publisher& publisher)
+void Rc110DriveControl::getAndPublishServoTemperature()
+{
+    zrc::DRIVE_VALUE drive;
+    if (!control.GetServoInfoReq(1, zrc::PRESENT_POSITION_L, zrc::PRESENT_VOLTS_H - zrc::PRESENT_POSITION_L, &drive)) {
+        ROS_ERROR("Failed to get servo info angle.");
+        return;
+    }
+    float servoTemperature = static_cast<float>(drive.present_temperature);
+    publishTemperature(servoTemperature, servoTemperaturePublisher);
+}
+
+void Rc110DriveControl::getAndPublishBaseboardTemperature()
+{
+    zrc::THERMO_VALUE thermo;
+    if (!control.GetThermoInfoReq(&thermo)) {
+        ROS_ERROR("Failed to get thermo info.");
+        return;
+    }
+    float baseboardTemperature = std::max(thermo.fet1, thermo.fet2);
+    publishTemperature(baseboardTemperature, baseboardTemperaturePublisher);
+}
+
+void Rc110DriveControl::publishTemperature(float temperature, ros::Publisher& publisher)
 {
     sensor_msgs::Temperature msg;
-    msg.header.stamp = time;
+    msg.header.stamp = ros::Time::now();
 
     msg.variance = 0;
     msg.temperature = temperature;
@@ -161,13 +166,19 @@ void Rc110DriveControl::publishTemperature(const ros::Time& time, float temperat
     publisher.publish(msg);
 }
 
-void Rc110DriveControl::publishBattery(const ros::Time& time, const zrc::POWER_VALUE& powerInfo)
+void Rc110DriveControl::getAndPublishBattery()
 {
-    sensor_msgs::BatteryState msg;
-    msg.header.stamp = time;
+    zrc::POWER_VALUE power;
+    if (!control.GetPowerInfoReq(&power)) {
+        ROS_ERROR("Failed to get motor power info.");
+        return;
+    }
 
-    msg.voltage = powerInfo.battery_level;
-    msg.current = powerInfo.motor_current * MA_TO_A;
+    sensor_msgs::BatteryState msg;
+    msg.header.stamp = ros::Time::now();
+
+    msg.voltage = power.battery_level;
+    msg.current = power.motor_current * MA_TO_A;
     msg.present = true;
 
     motorBatteryPublisher.publish(msg);
