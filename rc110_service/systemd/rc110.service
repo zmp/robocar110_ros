@@ -1,0 +1,11 @@
+[Unit]
+Description=Robocar 1/10
+After=rc110-ros.service
+BindsTo=rc110-ros.service
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/systemd/user/rc110.sh
+
+[Install]
+WantedBy=default.target

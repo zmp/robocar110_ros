@@ -1,0 +1,9 @@
+[Unit]
+Description=ROS Core
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/systemd/user/rc110-ros.sh
+
+[Install]
+WantedBy=default.target
