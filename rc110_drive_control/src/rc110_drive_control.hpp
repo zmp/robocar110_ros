@@ -16,6 +16,10 @@
 
 namespace zmp
 {
+/**
+ * Node for interfacing with vehicle baseboard to control speed & steering,
+ * and to get various vehicle status & sensor data for publishing.
+ */
 class Rc110DriveControl
 {
 public:
@@ -30,13 +34,24 @@ public:
 
 private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
-    void onTwistTimer(const ros::TimerEvent&);
+    void onStatusUpdateTimer(const ros::TimerEvent&);
+
+    void getAndPublishDriveStatus();
+    void getAndPublishImu();
+    void getAndPublishServoTemperature();
+    void getAndPublishBaseboardTemperature();
+    void publishTemperature(float temperature, ros::Publisher& publisher);
+    void getAndPublishBattery();
 
 private:
     zrc::RcControl control;
     Parameters parameters;
     ros::Subscriber driveSubscriber;
-    ros::Publisher twistPublisher;
-    ros::Timer twistTimer;
+    ros::Publisher driveStatusPublisher;
+    ros::Publisher imuPublisher;
+    ros::Publisher servoTemperaturePublisher;
+    ros::Publisher baseboardTemperaturePublisher;
+    ros::Publisher motorBatteryPublisher;
+    ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp

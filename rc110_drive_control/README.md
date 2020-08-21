@@ -10,8 +10,20 @@
 ## Published Topic
 
 ```
-/twist [geometry_msgs::Twist]
-    actual speed and angle
+/drive_status [ackermann_msgs::AckermannDriveStamped]
+    actual speed and angle published with frame_id rc110_base
+
+/imu [sensor_msgs::Imu]
+    imu data published with frame_id rc110_imu
+
+/servo_temperature [sensor_msgs::Temperature]
+    steering servo temperature
+
+/baseboard_temperature [sensor_msgs::Temperature]
+    baseboard temperature
+
+/motor_battery [sensor_msgs::BatteryState]
+    motor battery state
 ```
 
 ## Parameters
