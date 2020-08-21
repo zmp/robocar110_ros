@@ -16,6 +16,10 @@
 
 namespace zmp
 {
+/**
+ * Node for interfacing with vehicle baseboard to control speed & steering,
+ * and to get various vehicle status & sensor data for publishing.
+ */
 class Rc110DriveControl
 {
 public:
