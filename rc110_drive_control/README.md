@@ -11,10 +11,10 @@
 
 ```
 /drive_status [ackermann_msgs::AckermannDriveStamped]
-    actual speed and angle
+    actual speed and angle published with frame_id rc110_base
 
 /imu [sensor_msgs::Imu]
-    imu data
+    imu data published with frame_id rc110_imu
 
 /servo_temperature [sensor_msgs::Temperature]
     steering servo temperature

@@ -124,6 +124,7 @@ void Rc110DriveControl::publishDriveStatus(const ros::Time& time, float speed, f
 {
     ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = time;
+    msg.header.frame_id = "rc110_base";
 
     msg.drive.speed = speed;
     msg.drive.steering_angle = angle;
@@ -135,6 +136,7 @@ void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALU
 {
     sensor_msgs::Imu msg;
     msg.header.stamp = time;
+    msg.header.frame_id = "rc110_imu";
     msg.orientation_covariance[0] = -1;  // data not available
 
     msg.angular_velocity.x = 0;
