@@ -20,8 +20,8 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     ui->setupUi(this);
 
     QList<QTreeWidgetItem*> items;
-    for (int i = 0; i < std::size(TREE_ITEM_GROUP_NAME); ++i) {
-        items.push_back(new QTreeWidgetItem({TREE_ITEM_GROUP_NAME[i]}));
+    for (int i = 0; i < std::size(TREE_ITEM_GROUP_NAMES); ++i) {
+        items.push_back(new QTreeWidgetItem({TREE_ITEM_GROUP_NAMES[i]}));
         treeItems.insert((TREE_ITEM_GROUP)i, items[i]);
     }
     ui->treeWidget->insertTopLevelItems(0, items);
