@@ -16,12 +16,13 @@
 
 #include <boost/math/constants/constants.hpp>
 
+namespace constants = boost::math::float_constants;
+
 namespace
 {
-constexpr float DEG_TO_RAD = M_PI / 180.0;  // degree to radians conversion factor
-constexpr float MM_TO_M = 1 / 1e3;          // millimeter to meter conversion factor
-constexpr float G_TO_MS2 = 9.80665;         // G to m/s2 conversion factor
-constexpr float MA_TO_A = 1 / 1e3;          // milliampere to ampere conversion factor
+constexpr float MM_TO_M = 1 / 1e3;   // millimeter to meter conversion factor
+constexpr float G_TO_MS2 = 9.80665;  // G to m/s2 conversion factor
+constexpr float MA_TO_A = 1 / 1e3;   // milliampere to ampere conversion factor
 
 float calculate4WheelSpeed(float frontLeftWheelSpeed,
                            float frontRightWheelSpeed,
@@ -69,10 +70,8 @@ Rc110DriveControl::~Rc110DriveControl()
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 {
-    using namespace boost::math::float_constants;
-
     control.SetDriveSpeed(message.speed);
-    control.SetSteerAngle(message.steering_angle * radian);
+    control.SetSteerAngle(message.steering_angle * constants::radian);
 }
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
@@ -95,7 +94,7 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
         ROS_ERROR("Failed to get servo info angle.");
         return;
     }
-    float angle = drive.present_position * DEG_TO_RAD;
+    float angle = drive.present_position * constants::degree;
     float servoTemperature = static_cast<float>(drive.present_temperature);
 
     // motor thermo
@@ -140,7 +139,7 @@ void Rc110DriveControl::publishImu(const ros::Time& time, const zrc::SENSOR_VALU
 
     msg.angular_velocity.x = 0;
     msg.angular_velocity.y = 0;
-    msg.angular_velocity.z = wheelAndImuData.gyro * DEG_TO_RAD;
+    msg.angular_velocity.z = wheelAndImuData.gyro * constants::degree;
 
     msg.linear_acceleration.x = wheelAndImuData.acc_x * G_TO_MS2;
     msg.linear_acceleration.y = wheelAndImuData.acc_y * G_TO_MS2;
