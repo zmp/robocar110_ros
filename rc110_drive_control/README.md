@@ -19,8 +19,8 @@
 /servo_temperature [sensor_msgs::Temperature]
     steering servo temperature
 
-/motor_temperature [sensor_msgs::Temperature]
-    wheel motor temperature
+/baseboard_temperature [sensor_msgs::Temperature]
+    baseboard temperature
 
 /motor_battery [sensor_msgs::BatteryState]
     motor battery state
