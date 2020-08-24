@@ -34,4 +34,7 @@ rs232_device (string, default: /dev/ttyUSB1)
 
 rs485_device (string, default: /dev/ttyUSB0)
     steering device name
+
+steering_offset (double, default: 0.0)
+    steering angle calibration error in degrees 
 ```

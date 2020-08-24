@@ -1,10 +1,13 @@
 <launch>
+    <arg name="config_dir" default="$(find rc110_launch)/config" />
+
     <include file="$(find rc110_launch)/launch/sensors.launch"/>
 
     <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive_control" respawn="true">
+        <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
     </node>
 
     <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
-        <rosparam file="$(find rc110_launch)/config/behavior.yaml" subst_value="true"/>
+        <rosparam file="$(arg config_dir)/behavior.yaml" subst_value="true"/>
     </node>
 </launch>

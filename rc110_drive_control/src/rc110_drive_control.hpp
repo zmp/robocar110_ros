@@ -26,6 +26,7 @@ public:
     struct Parameters {
         std::string rs232_device;
         std::string rs485_device;
+        float steeringOffset;
     };
 
 public:
