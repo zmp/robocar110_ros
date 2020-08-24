@@ -1,7 +1,7 @@
 [Unit]
-Description=Robocar 1/10
-After=rc110-ros.service
-BindsTo=rc110-ros.service
+Description=Robocar 1/10 ROS nodes
+After=rc110-roscore.service
+BindsTo=rc110-roscore.service
 
 [Service]
 Type=simple
