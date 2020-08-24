@@ -5,6 +5,7 @@ BindsTo=rc110-ros.service
 
 [Service]
 Type=simple
+EnvironmentFile=/etc/zmp/ros.env
 ExecStart=/usr/lib/systemd/user/rc110.sh
 
 [Install]

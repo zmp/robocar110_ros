@@ -3,6 +3,7 @@ Description=ROS Core
 
 [Service]
 Type=simple
+EnvironmentFile=/etc/zmp/ros.env
 ExecStart=/usr/lib/systemd/user/rc110-ros.sh
 
 [Install]
