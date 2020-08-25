@@ -18,5 +18,7 @@ endforeach()
 
 install(DIRECTORY ${PROJECT_BINARY_DIR}/systemd/ DESTINATION /usr/lib/systemd/user USE_SOURCE_PERMISSIONS)
 
+# package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_SOURCE_DIR}/deb/postinst;")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS rc110_launch)
 include(../cmake/rc110_cpack.cmake)

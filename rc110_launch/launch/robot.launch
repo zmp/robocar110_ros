@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find rc110_launch)/launch/all.launch">
+        <arg name="config_dir" value="/etc/zmp/rc110_config" />
+    </include>
+</launch>

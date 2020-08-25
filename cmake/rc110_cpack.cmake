@@ -1,3 +1,15 @@
+function(to_deb_name result name)
+    string(REGEX REPLACE "_" "-" name ${name})
+    string(TOLOWER "${name}" name)
+    set(${result} ${name} PARENT_SCOPE)
+endfunction()
+
+if(CPACK_PACKAGE_NAME)
+    to_deb_name(CPACK_PACKAGE_NAME ${CPACK_PACKAGE_NAME})
+else()
+    to_deb_name(CPACK_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+endif()
+
 set(CPACK_GENERATOR DEB CACHE STRING "")
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT CACHE STRING "")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ZMP Inc. <info@zmp.co.jp>" CACHE STRING "")
