@@ -6,12 +6,13 @@ if [[ "$config_prefix" =~ "RC110_CONFIG_PATH" ]]; then
     config_prefix=$(realpath "$(dirname "${0}")"/..)
 fi
 
-mkdir -p /etc/zmp/rc110_config
+etc_zmp_rc110_config=/etc/zmp/rc110_config
+mkdir -p $etc_zmp_rc110_config
 
 # default config
 for config_file in "$config_prefix"/config/*.yaml
 do
-    etc_config_file=/etc/zmp/rc110_config/$(basename "$config_file")
+    etc_config_file=$etc_zmp_rc110_config/$(basename "$config_file")
     if [ ! -f "$etc_config_file" ]; then
         cp "$config_file" "$etc_config_file"
     fi

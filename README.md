@@ -30,9 +30,9 @@ make package
 
 ## Robot config
 
-Configuration is done during packages installation.
+Configuration is installed during packages installation.
 
-If you want to configure robot without installing packages, run:
+If you want to install robot config without installing packages, run:
 ```
 make config
 ```
