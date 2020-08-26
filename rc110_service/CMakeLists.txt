@@ -16,6 +16,7 @@ foreach(file ${systemd_files})
     configure_file(${file} ${PROJECT_BINARY_DIR}/${file} @ONLY)
 endforeach()
 
+install(DIRECTORY bin/ DESTINATION /usr/bin USE_SOURCE_PERMISSIONS)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/systemd/ DESTINATION /usr/lib/systemd/user USE_SOURCE_PERMISSIONS)
 
 # package

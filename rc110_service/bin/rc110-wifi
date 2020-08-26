@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+if [ "$EUID" != 0 ]; then
+    echo "Please run as root"
+    exit
+fi
+
+interface_file=/etc/network/interfaces.d/rc110
+
+# Clean
+if [ "$1" == "clean" ]; then
+    rm $interface_file
+    exit
+fi
+
+# Get credentials
+if [ "$1" == "init" ]; then
+    credentials='# wpa-essid ssid\n    # wpa-psk password'
+else
+    read -p "Wifi SSID: " ssid
+    read -p "Password:  " password
+
+    credentials="wpa-essid $ssid"'\n'"    wpa-psk $password"
+fi
+
+# Add network interface old school (Network Manager cannot set ip for disconnected interface)
+echo -e "
+# You can run rc110-wifi to setup credentials.
+
+auto wlan0
+iface wlan0 inet static
+    address 192.168.110.5/24
+    $credentials
+"\
+> $interface_file
