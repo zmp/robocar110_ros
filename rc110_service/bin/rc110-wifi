@@ -13,6 +13,12 @@ if [ "$1" == "clean" ]; then
     exit
 fi
 
+# Prevent file overwrite
+if [ -f $interface_file ]; then
+    echo -e "$interface_file already exists.\nTo remove it run: rc110-wifi clean"
+    exit
+fi
+
 # Get credentials
 if [ "$1" == "init" ]; then
     credentials='# wpa-essid ssid\n    # wpa-psk password'
