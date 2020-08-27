@@ -39,3 +39,6 @@ iface wlan0 inet static
     $credentials
 "\
 > $interface_file
+
+# Restart network
+systemctl restart networking
