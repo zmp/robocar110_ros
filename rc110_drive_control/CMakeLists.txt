@@ -20,7 +20,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
-        rc-control
+        rc-base
 )
 
 install(TARGETS ${PROJECT_NAME}

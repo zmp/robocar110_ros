@@ -12,7 +12,7 @@
 #include <ackermann_msgs/AckermannDrive.h>
 #include <ros/ros.h>
 
-#include "RcControl.h"
+#include <zmp/RcControl.hpp>
 
 namespace zmp
 {
@@ -45,7 +45,7 @@ private:
     void getAndPublishBattery();
 
 private:
-    zrc::RcControl control;
+    RcControl control;
     Parameters parameters;
     ros::Subscriber driveSubscriber;
     ros::Publisher driveStatusPublisher;

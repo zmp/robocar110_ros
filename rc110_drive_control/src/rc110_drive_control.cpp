@@ -87,15 +87,15 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 
 void Rc110DriveControl::getAndPublishDriveStatus()
 {
-    zrc::SENSOR_VALUE sensor;
+    SENSOR_VALUE sensor;
     if (!control.GetSensorInfoReq(&sensor)) {
         ROS_ERROR("Failed to get sensor info.");
         return;
     }
     float speed = ::calculate4WheelSpeed(sensor.enc_1, sensor.enc_2, sensor.enc_3, sensor.enc_4) * MM_TO_M;
 
-    zrc::DRIVE_VALUE drive;
-    if (!control.GetServoInfoReq(1, zrc::PRESENT_POSITION_L, zrc::PRESENT_VOLTS_H - zrc::PRESENT_POSITION_L, &drive)) {
+    DRIVE_VALUE drive;
+    if (!control.GetServoInfoReq(1, PRESENT_POSITION_L, PRESENT_VOLTS_H - PRESENT_POSITION_L, &drive)) {
         ROS_ERROR("Failed to get servo info angle.");
         return;
     }
@@ -113,7 +113,7 @@ void Rc110DriveControl::getAndPublishDriveStatus()
 
 void Rc110DriveControl::getAndPublishImu()
 {
-    zrc::SENSOR_VALUE sensor;
+    SENSOR_VALUE sensor;
     if (!control.GetSensorInfoReq(&sensor)) {
         ROS_ERROR("Failed to get sensor info.");
         return;
@@ -137,8 +137,8 @@ void Rc110DriveControl::getAndPublishImu()
 
 void Rc110DriveControl::getAndPublishServoTemperature()
 {
-    zrc::DRIVE_VALUE drive;
-    if (!control.GetServoInfoReq(1, zrc::PRESENT_POSITION_L, zrc::PRESENT_VOLTS_H - zrc::PRESENT_POSITION_L, &drive)) {
+    DRIVE_VALUE drive;
+    if (!control.GetServoInfoReq(1, PRESENT_POSITION_L, PRESENT_VOLTS_H - PRESENT_POSITION_L, &drive)) {
         ROS_ERROR("Failed to get servo info angle.");
         return;
     }
@@ -148,7 +148,7 @@ void Rc110DriveControl::getAndPublishServoTemperature()
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
 {
-    zrc::THERMO_VALUE thermo;
+    THERMO_VALUE thermo;
     if (!control.GetThermoInfoReq(&thermo)) {
         ROS_ERROR("Failed to get thermo info.");
         return;
@@ -170,7 +170,7 @@ void Rc110DriveControl::publishTemperature(float temperature, ros::Publisher& pu
 
 void Rc110DriveControl::getAndPublishBattery()
 {
-    zrc::POWER_VALUE power;
+    POWER_VALUE power;
     if (!control.GetPowerInfoReq(&power)) {
         ROS_ERROR("Failed to get motor power info.");
         return;
