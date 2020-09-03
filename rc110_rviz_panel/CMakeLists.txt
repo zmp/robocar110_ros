@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_rviz_panel)
+project(rc110_rviz_panel VERSION 1.0.0)
 
-find_package(catkin REQUIRED
+set(catkin_exec_depends
         rviz
+        ackermann_msgs
+        sensor_msgs
 )
+find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
 
@@ -37,3 +40,6 @@ install(FILES plugin_description.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINAT
 
 add_executable(${PROJECT_NAME}_app app/main.cpp)
 target_link_libraries(${PROJECT_NAME}_app ${PROJECT_NAME})
+
+# package
+include(../cmake/rc110_cpack.cmake)

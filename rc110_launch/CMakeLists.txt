@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_launch VERSION 1.0.0)
 
-find_package(catkin REQUIRED roslaunch)
+set(catkin_exec_depends roslaunch)
+find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
 

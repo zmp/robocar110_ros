@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_drive_control)
+project(rc110_drive_control VERSION 1.0.0)
 
-find_package(robocar110 REQUIRED)
+find_package(robocar110 REQUIRED base)
 
-find_package(catkin REQUIRED
+set(catkin_exec_depends
         roscpp
         ackermann_msgs
         geometry_msgs
 )
+find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
 
@@ -28,3 +29,6 @@ install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+# package
+include(../cmake/rc110_cpack.cmake)

@@ -2,31 +2,42 @@
 
 ## Dependencies
 
-* ROS
+* ROS melodic
 * robocar110
 
+## Prepare source
+Create ROS workspace
 ```
-# create ROS workspace
-mkdir -p ~/ros/src && cd ~/ros/
+source /opt/ros/melodic/setup.bash
+mkdir -p ~/ros/src && cd ~/ros
 catkin build
-cd src
-
-# clone repo
+```
+Clone repo
+```
+cd src/
+git clone <url> 
 ```
 
 ## Build
 
 ```
-source /opt/ros/<dist>/setup.bash
-catkin_make
+make
 ```
+* It will build all with catkin build.
 
 ## Package
 
 ```
-cd ~/ros/build/<package_dir>
 make package
 ```
+* It will create deb files in build directory.
+
+## Install
+
+```
+make install
+```
+* It will install those files with apt.
 
 ## Robot configuration
 #### ROS
