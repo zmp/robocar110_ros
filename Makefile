@@ -1,5 +1,6 @@
 .DEFAULT_GOAL := all
 .ONESHELL:
+.SHELLFLAGS := -ec
 SHELL := /bin/bash
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
