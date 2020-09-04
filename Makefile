@@ -38,7 +38,7 @@ package:
 
 install: package
 	cd $$(catkin locate --build)
-	sudo apt install ./*.deb
+	sudo apt install --reinstall ./*.deb
 
 clean:
 	cd $$(catkin locate)
