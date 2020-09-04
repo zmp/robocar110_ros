@@ -31,4 +31,5 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 # package
+set(CPACK_DEBIAN_PACKAGE_DEPENDS rc-system)
 include(../cmake/rc110_cpack.cmake)
