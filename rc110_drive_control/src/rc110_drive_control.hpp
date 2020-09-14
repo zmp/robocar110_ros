@@ -24,9 +24,6 @@ class Rc110DriveControl
 {
 public:
     struct Parameters {
-        std::string rs232_device;
-        std::string rs485_device;
-        float steeringOffset;
     };
 
 public:
@@ -45,8 +42,8 @@ private:
     void getAndPublishBattery();
 
 private:
-    RcControl control;
     Parameters parameters;
+    RcControl control;
     ros::Subscriber driveSubscriber;
     ros::Publisher driveStatusPublisher;
     ros::Publisher imuPublisher;

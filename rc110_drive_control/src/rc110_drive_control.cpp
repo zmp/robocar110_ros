@@ -36,9 +36,7 @@ float calculate4WheelSpeed(float frontLeftWheelSpeed,
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.rs232_device = handlePrivate.param<std::string>("rs232_device", "/dev/ttyUSB1"),
-                    .rs485_device = handlePrivate.param<std::string>("rs485_device", "/dev/ttyUSB0"),
-                    .steeringOffset = handlePrivate.param<float>("steering_offset", 0.0)})
+        parameters({})
 {
     control.init();
     control.Start();
@@ -48,7 +46,6 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.SetMotorEnableReq(1);
     control.SetDriveSpeed(0);
     control.SetSteerAngle(0);
-    control.SetSteerAngleOffset(parameters.steeringOffset);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
