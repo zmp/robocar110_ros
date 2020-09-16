@@ -38,11 +38,10 @@ namespace zmp
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
         parameters({})
 {
-    control.init();
     control.Start();
 
     control.SetReportFlagReq(0b1111);  // report: sensor, obstacle, power, ?
-    control.SetServoEnable(1);
+    control.EnableServo();
     control.SetMotorEnableReq(1);
     control.SetDriveSpeed(0);
     control.SetSteerAngle(0);
@@ -64,7 +63,6 @@ Rc110DriveControl::~Rc110DriveControl()
 {
     // to fix: endless loop
     //    control.Stop();
-    //    control.Close();
 }
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
@@ -84,19 +82,11 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 
 void Rc110DriveControl::getAndPublishDriveStatus()
 {
-    SENSOR_VALUE sensor;
-    if (!control.GetSensorInfoReq(&sensor)) {
-        ROS_ERROR("Failed to get sensor info.");
-        return;
-    }
+    SENSOR_VALUE sensor = control.GetSensorInfo();
     float speed = ::calculate4WheelSpeed(sensor.enc_1, sensor.enc_2, sensor.enc_3, sensor.enc_4) * MM_TO_M;
 
-    DRIVE_VALUE drive;
-    if (!control.GetServoInfoReq(1, PRESENT_POSITION_L, PRESENT_VOLTS_H - PRESENT_POSITION_L, &drive)) {
-        ROS_ERROR("Failed to get servo info angle.");
-        return;
-    }
-    float angle = drive.present_position * constants::degree;
+    float angleRad = control.GetPresentAngle();
+    float angle = angleRad * constants::degree;
 
     ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = ros::Time::now();
@@ -110,11 +100,7 @@ void Rc110DriveControl::getAndPublishDriveStatus()
 
 void Rc110DriveControl::getAndPublishImu()
 {
-    SENSOR_VALUE sensor;
-    if (!control.GetSensorInfoReq(&sensor)) {
-        ROS_ERROR("Failed to get sensor info.");
-        return;
-    }
+    SENSOR_VALUE sensor = control.GetSensorInfo();
 
     sensor_msgs::Imu msg;
     msg.header.stamp = ros::Time::now();
@@ -134,22 +120,13 @@ void Rc110DriveControl::getAndPublishImu()
 
 void Rc110DriveControl::getAndPublishServoTemperature()
 {
-    DRIVE_VALUE drive;
-    if (!control.GetServoInfoReq(1, PRESENT_POSITION_L, PRESENT_VOLTS_H - PRESENT_POSITION_L, &drive)) {
-        ROS_ERROR("Failed to get servo info angle.");
-        return;
-    }
-    float servoTemperature = static_cast<float>(drive.present_temperature);
+    auto servoTemperature = static_cast<float>(control.GetServoTemperature());
     publishTemperature(servoTemperature, servoTemperaturePublisher);
 }
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
 {
-    THERMO_VALUE thermo;
-    if (!control.GetThermoInfoReq(&thermo)) {
-        ROS_ERROR("Failed to get thermo info.");
-        return;
-    }
+    THERMO_VALUE thermo = control.GetThermoInfo();
     float baseboardTemperature = std::max(thermo.fet1, thermo.fet2);
     publishTemperature(baseboardTemperature, baseboardTemperaturePublisher);
 }
@@ -167,11 +144,7 @@ void Rc110DriveControl::publishTemperature(float temperature, ros::Publisher& pu
 
 void Rc110DriveControl::getAndPublishBattery()
 {
-    POWER_VALUE power;
-    if (!control.GetPowerInfoReq(&power)) {
-        ROS_ERROR("Failed to get motor power info.");
-        return;
-    }
+    POWER_VALUE power = control.GetPowerInfo();
 
     sensor_msgs::BatteryState msg;
     msg.header.stamp = ros::Time::now();
