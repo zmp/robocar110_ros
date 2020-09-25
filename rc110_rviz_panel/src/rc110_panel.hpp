@@ -11,6 +11,7 @@
 
 #ifndef Q_MOC_RUN
 #include <ackermann_msgs/AckermannDriveStamped.h>
+#include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 #include <rviz/panel.h>
 #include <sensor_msgs/BatteryState.h>
@@ -43,6 +44,7 @@ public:
 private:
     QTreeWidgetItem* getTreeItem(TREE_ITEM_GROUP group, const char* name) const;
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
+    void onOdometry(const nav_msgs::Odometry& odometry);
     void onMotorBattery(const sensor_msgs::BatteryState& batteryState);
     void onBaseboardTemperature(const sensor_msgs::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::Temperature& temperature);

@@ -34,7 +34,8 @@ private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
-    void getAndPublishDriveStatus();
+    void publishDriveStatus(const DriveStatus& drive);
+    void publishOdometry(const DriveStatus& drive);
     void getAndPublishImu();
     void getAndPublishServoTemperature();
     void getAndPublishBaseboardTemperature();
@@ -50,6 +51,7 @@ private:
     ros::Publisher servoTemperaturePublisher;
     ros::Publisher baseboardTemperaturePublisher;
     ros::Publisher motorBatteryPublisher;
+    ros::Publisher odometryPublisher;
     ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp
