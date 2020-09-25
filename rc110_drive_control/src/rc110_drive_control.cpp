@@ -40,10 +40,10 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
 {
     control.Start();
 
-    control.SetReportFlagReq(0b1111);  // report: sensor, obstacle, power, ?
+    control.RequestReportFlags(0b1111);  // report: sensor, obstacle, power, ?
     control.EnableServo();
-    control.SetMotorEnableReq(1);
-    control.SetDriveSpeed(0);
+    control.EnableMotor(1);
+    control.RequestDriveSpeed(0);
     control.SetSteerAngle(0);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
@@ -67,7 +67,7 @@ Rc110DriveControl::~Rc110DriveControl()
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 {
-    control.SetDriveSpeed(message.speed);
+    control.RequestDriveSpeed(message.speed);
     control.SetSteerAngle(message.steering_angle * constants::radian);
 }
 
