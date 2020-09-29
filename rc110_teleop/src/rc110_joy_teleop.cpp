@@ -11,6 +11,7 @@ zmp::Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh)
 
 {
     pnh.param<std::string>("frame_id", m_param.frameId, m_param.frameId);
+    pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
 
     m_joySub = pnh.subscribe<sensor_msgs::Joy>("input_joy", 10, &zmp::Rc110JoyTeleop::joyCallback, this);
     m_drivePub = pnh.advertise<ackermann_msgs::AckermannDriveStamped>("output_cmd", 1);

@@ -9,9 +9,10 @@
  */
 #pragma once
 
-#include <ackermann_msgs/AckermannDrive.h>
+#include <ackermann_msgs/AckermannDriveStamped.h>
 #include <ros/ros.h>
 
+#include <string>
 #include <zmp/RcControl.hpp>
 
 namespace zmp
@@ -24,6 +25,7 @@ class Rc110DriveControl
 {
 public:
     struct Parameters {
+        std::string frameId;
     };
 
 public:
@@ -31,7 +33,7 @@ public:
     ~Rc110DriveControl();
 
 private:
-    void onDrive(const ackermann_msgs::AckermannDrive& message);
+    void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
     void getAndPublishDriveStatus();

@@ -9,7 +9,8 @@
  */
 #include "drive_action.hpp"
 
-#include <ackermann_msgs/AckermannDrive.h>
+#include <ackermann_msgs/AckermannDriveStamped.h>
+
 #include <boost/math/constants/constants.hpp>
 
 namespace zmp
@@ -24,11 +25,11 @@ BT::NodeStatus DriveAction::tick()
         return BT::NodeStatus::FAILURE;
     }
 
-    ackermann_msgs::AckermannDrive drive;
-    drive.speed = speed.value();
-    drive.steering_angle = static_cast<float>(steering.value()) * degree;
+    ackermann_msgs::AckermannDriveStamped cmdMsg;
+    cmdMsg.drive.speed = speed.value();
+    cmdMsg.drive.steering_angle = static_cast<float>(steering.value()) * degree;
 
-    drivePublisher.publish(drive);
+    drivePublisher.publish(cmdMsg);
     return BT::NodeStatus::SUCCESS;
 }
 }  // namespace zmp

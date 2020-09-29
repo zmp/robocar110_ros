@@ -24,6 +24,7 @@ class Rc110Behavior
 {
     struct Parameters {
         std::string treeFile;
+        std::string frameId;
     };
 
 public:

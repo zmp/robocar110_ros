@@ -5,9 +5,13 @@
 
   <node pkg="rc110_teleop" type="rc110_joy_teleop" name="rc110_joy_teleop" output="screen">
     <remap from="~input_joy" to="$(arg joy_msg)"/>
+    <rosparam>
+      max_speed: 500
+    </rosparam>
+    <remap from="~output_cmd" to="/drive" />
   </node>
 
   <include file="$(find rc110_launch)/launch/all.launch">
-    <remap from="/drive" to="/rc110_joy_teleop/output_cmd" />
+    <arg name="config_dir" value="$(find rc110_launch)/config" />
   </include>
 </launch>

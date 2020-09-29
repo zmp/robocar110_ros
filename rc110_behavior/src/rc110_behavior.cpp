@@ -9,7 +9,7 @@
  */
 #include "rc110_behavior.hpp"
 
-#include <ackermann_msgs/AckermannDrive.h>
+#include <ackermann_msgs/AckermannDriveStamped.h>
 #include <laser_geometry/laser_geometry.h>
 
 #include "nodes/drive_action.hpp"
@@ -18,10 +18,11 @@
 namespace zmp
 {
 Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "behavior.xml")})
+        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "behavior.xml"),
+                    .frameId = handlePrivate.param<std::string>("frame_id", "rc110_base")})
 {
     laserSubscriber = handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this);
-    drivePublisher = handle.advertise<ackermann_msgs::AckermannDrive>("drive", 1);
+    drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive", 1);
 
     registerNodeBuilder<GetObstacle>(std::cref(cloud));
     registerNodeBuilder<DriveAction>(std::ref(drivePublisher));

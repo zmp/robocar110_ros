@@ -36,7 +36,7 @@ float calculate4WheelSpeed(float frontLeftWheelSpeed,
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({})
+        parameters({.frameId = handlePrivate.param<std::string>("frame_id", "rc110_base")})
 {
     control.init();
     control.Start();
@@ -67,10 +67,10 @@ Rc110DriveControl::~Rc110DriveControl()
     //    control.Close();
 }
 
-void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
+void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
 {
-    control.SetDriveSpeed(message.speed);
-    control.SetSteerAngle(message.steering_angle * constants::radian);
+    control.SetDriveSpeed(message->drive.speed);
+    control.SetSteerAngle(message->drive.steering_angle * constants::radian);
 }
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
@@ -100,7 +100,7 @@ void Rc110DriveControl::getAndPublishDriveStatus()
 
     ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = "rc110_base";
+    msg.header.frame_id = parameters.frameId;
 
     msg.drive.speed = speed;
     msg.drive.steering_angle = angle;
