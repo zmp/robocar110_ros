@@ -1,5 +1,6 @@
 <launch>
     <arg name="config_dir"/>
+    <arg name="use_defined_behavior" default="false"/>
 
     <include file="$(find rc110_launch)/launch/sensors.launch"/>
 
@@ -7,7 +8,9 @@
         <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
     </node>
 
-    <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
+    <group if="$(arg use_defined_behavior)">
+      <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
         <rosparam file="$(arg config_dir)/behavior.yaml" subst_value="true"/>
-    </node>
+      </node>
+    </group>
 </launch>
