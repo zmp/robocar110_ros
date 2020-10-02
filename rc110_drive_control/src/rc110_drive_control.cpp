@@ -22,10 +22,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.Start();
 
     control.ChangeReportFlags(0b1111);  // report: sensor, obstacle, power, ?
-    control.EnableServo();
-    control.EnableMotor(1);
+    control.EnableMotor();
     control.ChangeDriveSpeed(0);
-    //control.SetSteerAngle(0);
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
