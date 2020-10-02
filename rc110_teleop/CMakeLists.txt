@@ -20,7 +20,9 @@ include_directories(
 )
 
 add_executable(rc110_joy_teleop
+  src/rc110_joy_teleop_node.cpp
   src/rc110_joy_teleop.cpp
+  src/teleop_component.cpp
 )
 add_dependencies(rc110_joy_teleop
   ${${PROJECT_NAME}_EXPORTED_TARGETS}

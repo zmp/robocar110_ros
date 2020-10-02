@@ -2,13 +2,12 @@
   <node pkg="joy" type="joy_node" name="joy_node"/>
 
   <arg name="joy_msg" default="/joy"/>
+  <arg name="drive_msg" default="/drive"/>
 
   <node pkg="rc110_teleop" type="rc110_joy_teleop" name="rc110_joy_teleop" output="screen">
     <remap from="~input_joy" to="$(arg joy_msg)"/>
-    <rosparam>
-      max_speed: 500
-    </rosparam>
-    <remap from="~output_cmd" to="/drive" />
+    <remap from="~output_cmd" to="$(arg drive_msg)"/>
+    <rosparam file="$(find rc110_launch)/config/joy_teleop.yaml" subst_value="true"/>
   </node>
 
   <include file="$(find rc110_launch)/launch/all.launch">

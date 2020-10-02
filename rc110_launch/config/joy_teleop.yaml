@@ -1,0 +1,5 @@
+base_dead_man_button: 4
+base_steering_axis: 0
+base_speed_axis: 3
+max_speed: 500 # TODO: fix this part when rc110 library can use [m/s] unit
+min_speed: -500

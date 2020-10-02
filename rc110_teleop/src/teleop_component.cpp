@@ -1,0 +1,120 @@
+/**
+ * @file    teleop_component.cpp
+ *
+ * @author  btran
+ *
+ */
+
+#include "teleop_component.hpp"
+
+namespace zmp
+{
+// ----------------------------------------------------------------------------//
+// TeleopComponent
+// ----------------------------------------------------------------------------//
+
+TeleopComponent::TeleopComponent(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
+        m_active(false),
+        m_desired(ackermann_msgs::AckermannDriveStamped()),
+        m_last(ackermann_msgs::AckermannDriveStamped()),
+        m_drivePub(pnh.advertise<ackermann_msgs::AckermannDriveStamped>("output_cmd", 1))
+{
+}
+
+TeleopComponent::~TeleopComponent() {}
+
+double TeleopComponent::integrateSpeed(const double desired, const double present, const double maxRate, const double dt)
+{
+    return desired > present ? std::min(desired, present + maxRate * dt) : std::max(desired, present - maxRate * dt);
+}
+
+bool TeleopComponent::start()
+{
+    m_active = true;
+    return m_active;
+}
+
+bool TeleopComponent::stop()
+{
+    // publish stop message
+    if (m_active) {
+        m_desired = ackermann_msgs::AckermannDriveStamped();
+        m_last = ackermann_msgs::AckermannDriveStamped();
+        m_drivePub.publish(m_last);
+    }
+
+    m_active = false;
+    return m_active;
+}
+
+// ----------------------------------------------------------------------------//
+// Base Teleop
+// ----------------------------------------------------------------------------//
+
+BaseTeleop::BaseTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) : TeleopComponent(nh, pnh)
+{
+    this->initParam(nh, pnh);
+}
+
+BaseTeleop::~BaseTeleop() {}
+
+void BaseTeleop::initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh)
+{
+    pnh.param<int>("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
+    pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
+    pnh.param<int>("base_speed_axis", m_param.speedAxis, m_param.speedAxis);
+
+    double minSteeringAngleDeg;
+    if (pnh.getParam("min_steering_angle_deg", minSteeringAngleDeg)) {
+        m_param.minSteeringAngleRad = angles::from_degrees(minSteeringAngleDeg);
+    }
+
+    double maxSteeringAngleDeg;
+    if (pnh.getParam("max_steering_angle_deg", maxSteeringAngleDeg)) {
+        m_param.maxSteeringAngleRad = angles::from_degrees(maxSteeringAngleDeg);
+    }
+
+    pnh.param<double>("min_speed", m_param.minSpeed, m_param.minSpeed);
+    pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
+    pnh.param<double>("max_acceleration", m_param.maxAcceleration, m_param.maxAcceleration);
+    pnh.param<std::string>("frame_id", m_param.frameId, m_param.frameId);
+}
+
+bool BaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
+{
+    if (!joyMsg->buttons[m_param.deadManButton]) {
+        this->stop();
+        return false;
+    }
+
+    this->start();
+
+    m_desired.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] > 0.0
+                                             ? joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad
+                                             : joyMsg->axes[m_param.steeringAxis] *
+                                                       -m_param.minSteeringAngleRad;  // joy axis value is already minus
+
+    m_desired.drive.speed =
+            joyMsg->axes[m_param.speedAxis] > 0.0
+                    ? joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed
+                    : joyMsg->axes[m_param.speedAxis] * -m_param.minSpeed;  // joy axis value is already minus
+
+    return true;
+}
+
+void BaseTeleop::publish(const ros::Duration& dt)
+{
+    if (m_active) {
+        m_last.drive.steering_angle = this->integrateSpeed(m_desired.drive.steering_angle,
+                                                           m_last.drive.steering_angle,
+                                                           m_param.maxSteeringAngleVelRad,
+                                                           dt.toSec());
+        m_last.drive.speed =
+                this->integrateSpeed(m_desired.drive.speed, m_last.drive.speed, m_param.maxSpeed, dt.toSec());
+        m_last.header.stamp = ros::Time::now();
+        m_last.header.frame_id = m_param.frameId;
+
+        m_drivePub.publish(m_last);
+    }
+}
+}  // namespace zmp

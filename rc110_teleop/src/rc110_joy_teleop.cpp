@@ -5,50 +5,53 @@
 
 #include "rc110_joy_teleop.hpp"
 
-#include <ackermann_msgs/AckermannDriveStamped.h>
-
-zmp::Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh)
-
+namespace zmp
 {
-    pnh.param<std::string>("frame_id", m_param.frameId, m_param.frameId);
-    pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
+const std::vector<std::string> Rc110JoyTeleop::COMPONENT_NAMES = {"base"};
 
-    m_joySub = pnh.subscribe<sensor_msgs::Joy>("input_joy", 10, &zmp::Rc110JoyTeleop::joyCallback, this);
-    m_drivePub = pnh.advertise<ackermann_msgs::AckermannDriveStamped>("output_cmd", 1);
-}
-
-zmp::Rc110JoyTeleop::~Rc110JoyTeleop() {}
-
-void zmp::Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
+Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
+        m_joySub(pnh.subscribe<sensor_msgs::Joy>("input_joy", 1, &zmp::Rc110JoyTeleop::joyCallback, this)),
+        m_lastUpdateTime(ros::Time::now())
 {
-    ackermann_msgs::AckermannDriveStamped cmdMsg;
-    cmdMsg.header.stamp = ros::Time::now();
-    cmdMsg.header.frame_id = m_param.frameId;
-    cmdMsg.drive.acceleration = 1;
-    cmdMsg.drive.jerk = 1;
-    cmdMsg.drive.steering_angle_velocity = 1;
-    cmdMsg.drive.speed = joyMsg->axes[2] * m_param.maxSpeed;
-    cmdMsg.drive.steering_angle = joyMsg->axes[3] * m_param.maxSteeringAngle;
-    m_drivePub.publish(cmdMsg);
-}
-
-int main(int argc, char* argv[])
-{
-    ros::init(argc, argv, "rc110_joy_teleop");
-
-    ros::NodeHandle nh;
-    ros::NodeHandle pnh("~");
-
-    try {
-        zmp::Rc110JoyTeleop node(nh, pnh);
-
-        ros::spin();
-    } catch (std::exception& ex) {
-        ROS_ERROR_STREAM("Exception in main(): " << ex.what());
-        return EXIT_FAILURE;
-    } catch (...) {
-        ROS_ERROR_STREAM("Unknown exception in main()");
-        return EXIT_FAILURE;
+    TeleopComponentPtr c;
+    for (const std::string& componentName : COMPONENT_NAMES) {
+        if (componentName == "base") {
+            c.reset(new BaseTeleop(nh, pnh));
+        } else {
+            throw std::runtime_error("not supported component");
+        }
+        m_components.emplace(componentName, c);
     }
-    return EXIT_SUCCESS;
+
+    pnh.param<double>("max_interval_sec", m_param.maxIntervalSec, m_param.maxIntervalSec);
 }
+
+Rc110JoyTeleop::~Rc110JoyTeleop() {}
+
+void Rc110JoyTeleop::publish(const ros::Duration& dt)
+{
+    if (ros::Time::now() - m_lastUpdateTime > ros::Duration(m_param.maxIntervalSec)) {
+        for (auto& elem : m_components) {
+            elem.second->stop();
+        }
+    } else {
+        for (auto& elem : m_components) {
+            elem.second->publish(dt);
+        }
+    }
+}
+
+void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
+{
+    bool ok = true;
+    for (auto& elem : m_components) {
+        if (ok) {
+            ok &= !elem.second->update(joyMsg);
+        } else {
+            // supressed by a higher priority component
+            elem.second->stop();
+        }
+    }
+    m_lastUpdateTime = ros::Time::now();
+}
+}  // namespace zmp
