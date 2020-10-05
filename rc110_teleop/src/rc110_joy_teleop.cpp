@@ -13,14 +13,14 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
         m_joySub(pnh.subscribe<sensor_msgs::Joy>("input_joy", 1, &zmp::Rc110JoyTeleop::joyCallback, this)),
         m_lastUpdateTime(ros::Time::now())
 {
-    TeleopComponentPtr c;
+    TeleopComponentPtr teleopComponent;
     for (const std::string& componentName : COMPONENT_NAMES) {
         if (componentName == "base") {
-            c.reset(new BaseTeleop(nh, pnh));
+            teleopComponent.reset(new BaseTeleop(nh, pnh));
         } else {
             throw std::runtime_error("not supported component");
         }
-        m_components.emplace(componentName, c);
+        m_components.emplace(componentName, teleopComponent);
     }
 
     pnh.param<double>("max_interval_sec", m_param.maxIntervalSec, m_param.maxIntervalSec);
