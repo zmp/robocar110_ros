@@ -47,7 +47,7 @@ protected:
     ros::Publisher m_drivePub;
 };
 
-class BaseTeleop : public TeleopComponent
+class RobotBaseTeleop : public TeleopComponent
 {
 public:
     struct Param {
@@ -64,8 +64,8 @@ public:
     };
 
 public:
-    BaseTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
-    virtual ~BaseTeleop();
+    RobotBaseTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
+    virtual ~RobotBaseTeleop();
 
     bool update(const sensor_msgs::Joy::ConstPtr& joyMsg) final;
 

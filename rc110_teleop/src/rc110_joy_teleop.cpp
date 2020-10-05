@@ -16,7 +16,7 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
     TeleopComponentPtr teleopComponent;
     for (const std::string& componentName : COMPONENT_NAMES) {
         if (componentName == "base") {
-            teleopComponent.reset(new BaseTeleop(nh, pnh));
+            teleopComponent.reset(new RobotBaseTeleop(nh, pnh));
         } else {
             throw std::runtime_error("not supported component");
         }

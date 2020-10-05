@@ -48,17 +48,17 @@ bool TeleopComponent::stop()
 }
 
 // ----------------------------------------------------------------------------//
-// Base Teleop
+// Robot Base Teleop
 // ----------------------------------------------------------------------------//
 
-BaseTeleop::BaseTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) : TeleopComponent(nh, pnh)
+RobotBaseTeleop::RobotBaseTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) : TeleopComponent(nh, pnh)
 {
     this->initParam(nh, pnh);
 }
 
-BaseTeleop::~BaseTeleop() {}
+RobotBaseTeleop::~RobotBaseTeleop() {}
 
-void BaseTeleop::initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh)
+void RobotBaseTeleop::initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh)
 {
     pnh.param<int>("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
     pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
@@ -80,7 +80,7 @@ void BaseTeleop::initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh)
     pnh.param<std::string>("frame_id", m_param.frameId, m_param.frameId);
 }
 
-bool BaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
+bool RobotBaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
     if (!joyMsg->buttons[m_param.deadManButton]) {
         this->stop();
@@ -102,7 +102,7 @@ bool BaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
     return true;
 }
 
-void BaseTeleop::publish(const ros::Duration& dt)
+void RobotBaseTeleop::publish(const ros::Duration& dt)
 {
     if (m_active) {
         m_last.drive.steering_angle = this->integrateSpeed(m_desired.drive.steering_angle,
