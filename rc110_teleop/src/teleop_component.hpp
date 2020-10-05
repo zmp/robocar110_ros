@@ -71,7 +71,7 @@ public:
 
     void publish(const ros::Duration& dt) final;
 
-protected:
+private:
     void initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh);
 
 protected:
