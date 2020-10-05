@@ -37,11 +37,9 @@ bool TeleopComponent::start()
 bool TeleopComponent::stop()
 {
     // publish stop message
-    if (m_active) {
-        m_desired = ackermann_msgs::AckermannDriveStamped();
-        m_last = ackermann_msgs::AckermannDriveStamped();
-        m_drivePub.publish(m_last);
-    }
+    m_desired = ackermann_msgs::AckermannDriveStamped();
+    m_last = ackermann_msgs::AckermannDriveStamped();
+    m_drivePub.publish(m_last);
 
     m_active = false;
     return m_active;
