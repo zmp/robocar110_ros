@@ -20,8 +20,6 @@ namespace zmp
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) : parameters({})
 {
     control.Start();
-
-    control.ChangeReportFlags(0b1111);  // report: sensor, obstacle, power, ?
     control.EnableMotor();
     control.ChangeDriveSpeed(0);
 
