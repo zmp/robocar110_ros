@@ -106,7 +106,7 @@ void Rc110DriveControl::getAndPublishImu()
 
 void Rc110DriveControl::getAndPublishServoTemperature()
 {
-    auto servoTemperature = static_cast<float>(control.GetServoTemperature());
+    auto servoTemperature = float(control.GetServoProperties().temperature);
     publishTemperature(servoTemperature, servoTemperaturePublisher);
 }
 
