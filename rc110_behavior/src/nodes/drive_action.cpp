@@ -14,10 +14,10 @@
 
 namespace zmp
 {
+constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+
 BT::NodeStatus DriveAction::tick()
 {
-    using namespace boost::math::float_constants;
-
     auto speed = getInput<double>("speed");
     auto steering = getInput<double>("steering");
     if (!speed || !steering) {
@@ -26,7 +26,7 @@ BT::NodeStatus DriveAction::tick()
 
     ackermann_msgs::AckermannDrive drive;
     drive.speed = speed.value();
-    drive.steering_angle = static_cast<float>(steering.value()) * degree;
+    drive.steering_angle = static_cast<float>(steering.value()) * DEG_TO_RAD;
 
     drivePublisher.publish(drive);
     return BT::NodeStatus::SUCCESS;
