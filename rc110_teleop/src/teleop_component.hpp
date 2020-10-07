@@ -74,7 +74,7 @@ public:
 private:
     void initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh);
 
-protected:
+private:
     Param m_param;
 };
 }  // namespace zmp
