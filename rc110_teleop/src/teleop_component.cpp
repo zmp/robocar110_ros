@@ -62,20 +62,14 @@ void RobotBaseTeleop::initParam(ros::NodeHandle& nh, ros::NodeHandle& pnh)
     pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
     pnh.param<int>("base_speed_axis", m_param.speedAxis, m_param.speedAxis);
 
-    double minSteeringAngleDeg;
-    if (pnh.getParam("min_steering_angle_deg", minSteeringAngleDeg)) {
-        m_param.minSteeringAngleRad = angles::from_degrees(minSteeringAngleDeg);
-    }
-
     double maxSteeringAngleDeg;
     if (pnh.getParam("max_steering_angle_deg", maxSteeringAngleDeg)) {
         m_param.maxSteeringAngleRad = angles::from_degrees(maxSteeringAngleDeg);
     }
 
-    pnh.param<double>("min_speed", m_param.minSpeed, m_param.minSpeed);
     pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
     pnh.param<double>("max_acceleration", m_param.maxAcceleration, m_param.maxAcceleration);
-    pnh.param<std::string>("frame_id", m_param.frameId, m_param.frameId);
+    pnh.param<std::string>("base_frame_id", m_param.frameId, m_param.frameId);
 }
 
 bool RobotBaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
@@ -87,15 +81,9 @@ bool RobotBaseTeleop::update(const sensor_msgs::Joy::ConstPtr& joyMsg)
 
     this->start();
 
-    m_desired.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] > 0.0
-                                             ? joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad
-                                             : joyMsg->axes[m_param.steeringAxis] *
-                                                       -m_param.minSteeringAngleRad;  // joy axis value is already minus
+    m_desired.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
 
-    m_desired.drive.speed =
-            joyMsg->axes[m_param.speedAxis] > 0.0
-                    ? joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed
-                    : joyMsg->axes[m_param.speedAxis] * -m_param.minSpeed;  // joy axis value is already minus
+    m_desired.drive.speed = joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
 
     return true;
 }
