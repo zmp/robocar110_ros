@@ -54,10 +54,12 @@ public:
         int deadManButton = 4;
         int steeringAxis = 0;
         int speedAxis = 3;
-        double minSteeringAngleRad = angles::from_degrees(-30);
         double maxSteeringAngleRad = angles::from_degrees(30);
+
+        // steering angle of the car = 0.7 * steering angle of servo due to the hardware
+        // from the hardware document, the operation speed is 0.11 / 60 [sec/degree]
         double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
-        double minSpeed = -2.7;                                        // [m/s]
+
         double maxSpeed = 2.7;                                         // [m/s]
         double maxAcceleration = 1.0;                                  // [m/s2]
         std::string frameId = "rc110_base";
