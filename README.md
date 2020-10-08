@@ -37,7 +37,7 @@ make package
 ```
 make install
 ```
-* It will install those files with apt.
+* It will install those files with `sudo apt-get install`.
 
 ## Robot configuration
 #### ROS

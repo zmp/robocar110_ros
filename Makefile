@@ -16,11 +16,9 @@ ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
 endif
 
 all: source
-	cd $$(catkin locate)
 	catkin build ${cmake_flags}
 
 package:
-	cd $$(catkin locate)
 	catkin build ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
 
 	function check_make_target {
@@ -29,7 +27,7 @@ package:
 	}
 
 	cd $$(catkin locate --build)
-	rm *.deb
+	rm -f *.deb
 	for d in */
 	do
 		(  # make package in parallel
@@ -45,10 +43,10 @@ package:
 
 install: package
 	cd $$(catkin locate --build)
-	sudo apt install --reinstall ./*.deb
+	sudo apt-get install --reinstall ./*.deb
+	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 clean:
-	cd $$(catkin locate)
 	catkin clean -y
 
 config:

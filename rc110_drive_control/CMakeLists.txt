@@ -9,7 +9,6 @@ set(catkin_exec_depends
         geometry_msgs
 )
 find_package(catkin REQUIRED ${catkin_exec_depends})
-find_package(Boost REQUIRED system) #TODO: why it is not taken from find_dependency ?
 
 catkin_package()
 
