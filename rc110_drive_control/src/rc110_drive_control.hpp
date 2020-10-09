@@ -34,8 +34,8 @@ private:
     void onDrive(const ackermann_msgs::AckermannDrive& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
-    void publishDriveStatus(const DriveStatus& drive);
-    void publishOdometry(const DriveStatus& drive);
+    void publishDriveStatus(const DriveInfo& drive);
+    void publishOdometry(const DriveInfo& drive);
     void getAndPublishImu();
     void getAndPublishServoTemperature();
     void getAndPublishBaseboardTemperature();

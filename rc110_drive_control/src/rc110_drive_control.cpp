@@ -51,9 +51,9 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDrive& message)
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
-    auto driveStatus = control.GetVehicleDriveStatus();
-    publishDriveStatus(driveStatus);
-    publishOdometry(driveStatus);
+    auto driveInfo = control.GetDriveInfo();
+    publishDriveStatus(driveInfo);
+    publishOdometry(driveInfo);
 
     getAndPublishImu();
     getAndPublishServoTemperature();
@@ -61,7 +61,7 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     getAndPublishBattery();
 }
 
-void Rc110DriveControl::publishDriveStatus(const DriveStatus& drive)
+void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
 {
     ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = ros::Time::now();
@@ -74,7 +74,7 @@ void Rc110DriveControl::publishDriveStatus(const DriveStatus& drive)
     driveStatusPublisher.publish(msg);
 }
 
-void Rc110DriveControl::publishOdometry(const DriveStatus& drive)
+void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 {
     nav_msgs::Odometry message;
     message.header.stamp = ros::Time::now();
@@ -86,7 +86,7 @@ void Rc110DriveControl::publishOdometry(const DriveStatus& drive)
 
 void Rc110DriveControl::getAndPublishImu()
 {
-    SENSOR_VALUE sensor = control.GetSensorInfo();
+    SensorInfo sensor = control.GetSensorInfo();
 
     sensor_msgs::Imu msg;
     msg.header.stamp = ros::Time::now();
@@ -106,14 +106,14 @@ void Rc110DriveControl::getAndPublishImu()
 
 void Rc110DriveControl::getAndPublishServoTemperature()
 {
-    auto servoTemperature = float(control.GetServoProperties().temperature);
+    auto servoTemperature = float(control.GetServoInfo().temperature);
     publishTemperature(servoTemperature, servoTemperaturePublisher);
 }
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
 {
-    THERMO_VALUE thermo = control.GetThermoInfo();
-    float baseboardTemperature = std::max(thermo.fet1, thermo.fet2);
+    ThermoInfo thermo = control.GetThermoInfo();
+    float baseboardTemperature = std::max(thermo.board_1, thermo.board_2);
     publishTemperature(baseboardTemperature, baseboardTemperaturePublisher);
 }
 
@@ -130,13 +130,13 @@ void Rc110DriveControl::publishTemperature(float temperature, ros::Publisher& pu
 
 void Rc110DriveControl::getAndPublishBattery()
 {
-    POWER_VALUE power = control.GetPowerInfo();
+    PowerInfo power = control.GetPowerInfo();
 
     sensor_msgs::BatteryState msg;
     msg.header.stamp = ros::Time::now();
 
-    msg.voltage = power.battery_level;
-    msg.current = power.motor_current;
+    msg.voltage = power.motorVoltage;
+    msg.current = power.motorCurrent;
     msg.present = true;
 
     motorBatteryPublisher.publish(msg);
