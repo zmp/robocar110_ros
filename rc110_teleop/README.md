@@ -17,6 +17,6 @@
 - [Details of the Joystick](https://www.elecom.co.jp/products/JC-U4113SBK.html)
 ![Joystick Structure](./docs/images/joystick.jpg)
 
-- To control rc110 by joystick, first press button number 5 on the joystick; direct the axis (at the 9th position) left and right for steering angle; direct the axis (at the 10th position) left and right for speed.
+- To control rc110 by joystick, first press button number 5 on the joystick; direct the axis (at the 10th position) up and down for steering angle; direct the axis (at the 9th position) up and down for speed.
 
 **連射AUTOボタン and 連射CLEARボタン are not mapped by ROS drivers**

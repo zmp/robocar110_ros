@@ -5,44 +5,52 @@
 
 #pragma once
 
-#include <memory>
+#include <ackermann_msgs/AckermannDriveStamped.h>
+#include <angles/angles.h>
+#include <ros/ros.h>
+#include <sensor_msgs/Joy.h>
+
 #include <mutex>
 #include <string>
-#include <unordered_map>
 #include <vector>
-
-#include "teleop_component.hpp"
 
 namespace zmp
 {
 class Rc110JoyTeleop
 {
 public:
-    using TeleopComponentPtr = std::shared_ptr<TeleopComponent>;
-
     struct Param {
-        double maxIntervalSec = 0.25;
+        int deadManButton = 4;
+        int steeringAxis = 2;
+        int speedAxis = 1;
+        double maxSteeringAngleRad = angles::from_degrees(30);
+
+        // steering angle of the car = 0.7 * steering angle of servo due to the hardware
+        // from the hardware document, the operation speed is 0.11 / 60 [sec/degree]
+        double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
+
+        double maxSpeed = 2.7;  // [m/s]
+        std::string frameId = "rc110_base";
+        double rate = 30.0;  // Hz
     };
 
 public:
     Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
     ~Rc110JoyTeleop();
 
-    void publish(const ros::Duration& dt);
-
 private:
     void joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg);
+    void publish();
 
 private:
-    // currently rc110 only has base component
-    // in the far future if it ever has any more components; an arm for example;
-    // stack more components here
-    static const std::vector<std::string> COMPONENT_NAMES;
-    std::unordered_map<std::string, TeleopComponentPtr> m_components;
-
     Param m_param;
 
     ros::Subscriber m_joySub;
-    ros::Time m_lastUpdateTime;
+    ros::Publisher m_drivePub;
+    bool m_deadmanPressed;
+    bool m_stopMessagePublished;
+    ackermann_msgs::AckermannDriveStamped m_last;  // last command message
+    std::mutex m_publishMutex;
+    ros::Timer m_timer;
 };
 }  // namespace zmp

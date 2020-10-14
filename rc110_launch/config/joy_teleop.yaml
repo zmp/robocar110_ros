@@ -4,4 +4,4 @@ base_speed_axis: 1
 base_frame_id: rc110_base
 max_steering_angle_deg: 30
 max_speed: 500 # TODO: fix this part when rc110 library can use [m/s] unit
-max_acceleration: 1 # TODO: small value now until experiments to estimate acceleration rate is conducted
+rate: 30.0

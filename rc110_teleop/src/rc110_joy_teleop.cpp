@@ -7,51 +7,47 @@
 
 namespace zmp
 {
-const std::vector<std::string> Rc110JoyTeleop::COMPONENT_NAMES = {"base"};
-
 Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
-        m_joySub(pnh.subscribe<sensor_msgs::Joy>("input_joy", 1, &zmp::Rc110JoyTeleop::joyCallback, this)),
-        m_lastUpdateTime(ros::Time::now())
+        m_joySub(pnh.subscribe<sensor_msgs::Joy>("input_joy", 10, &zmp::Rc110JoyTeleop::joyCallback, this)),
+        m_drivePub(pnh.advertise<ackermann_msgs::AckermannDriveStamped>("output_cmd", 1)),
+        m_deadmanPressed(false),
+        m_stopMessagePublished(false)
 {
-    TeleopComponentPtr teleopComponent;
-    for (const std::string& componentName : COMPONENT_NAMES) {
-        if (componentName == "base") {
-            teleopComponent.reset(new RobotBaseTeleop(nh, pnh));
-        } else {
-            throw std::runtime_error("not supported component");
-        }
-        m_components.emplace(componentName, teleopComponent);
+    pnh.param<int>("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
+    pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
+    pnh.param<int>("base_speed_axis", m_param.speedAxis, m_param.speedAxis);
+
+    double maxSteeringAngleDeg;
+    if (pnh.getParam("max_steering_angle_deg", maxSteeringAngleDeg)) {
+        m_param.maxSteeringAngleRad = angles::from_degrees(maxSteeringAngleDeg);
     }
 
-    pnh.param<double>("max_interval_sec", m_param.maxIntervalSec, m_param.maxIntervalSec);
+    pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
+    pnh.param<std::string>("base_frame_id", m_param.frameId, m_param.frameId);
+    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), boost::bind(&Rc110JoyTeleop::publish, this));
 }
 
 Rc110JoyTeleop::~Rc110JoyTeleop() {}
 
-void Rc110JoyTeleop::publish(const ros::Duration& dt)
+void Rc110JoyTeleop::publish()
 {
-    if (ros::Time::now() - m_lastUpdateTime > ros::Duration(m_param.maxIntervalSec)) {
-        for (auto& elem : m_components) {
-            elem.second->stop();
-        }
-    } else {
-        for (auto& elem : m_components) {
-            elem.second->publish(dt);
-        }
+    std::lock_guard<std::mutex> lock(m_publishMutex);
+    if (m_deadmanPressed) {
+        m_drivePub.publish(m_last);
+        m_stopMessagePublished = false;
+    } else if (!m_deadmanPressed && !m_stopMessagePublished) {
+        m_drivePub.publish(ackermann_msgs::AckermannDriveStamped());
+        m_stopMessagePublished = true;
     }
 }
 
 void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
-    bool ok = true;
-    for (auto& elem : m_components) {
-        if (ok) {
-            ok &= !elem.second->update(joyMsg);
-        } else {
-            // supressed by a higher priority component
-            elem.second->stop();
-        }
-    }
-    m_lastUpdateTime = ros::Time::now();
+    m_last.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
+    m_last.drive.speed = joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
+    m_last.header.stamp = ros::Time::now();
+    m_last.header.frame_id = m_param.frameId;
+
+    m_deadmanPressed = joyMsg->buttons[m_param.deadManButton];
 }
 }  // namespace zmp
