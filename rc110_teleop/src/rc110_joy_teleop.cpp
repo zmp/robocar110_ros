@@ -40,7 +40,7 @@ void Rc110JoyTeleop::publish()
     if (m_deadmanPressed) {
         m_drivePub.publish(m_last);
         m_stopMessagePublished = false;
-    } else if (!m_deadmanPressed && !m_stopMessagePublished) {
+    } else if (!m_stopMessagePublished) {
         m_drivePub.publish(ackermann_msgs::AckermannDriveStamped());
         m_stopMessagePublished = true;
     }
