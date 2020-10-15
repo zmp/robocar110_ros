@@ -54,7 +54,7 @@ private:
     ros::Publisher m_drivePub;
     bool m_deadmanPressed;
     bool m_stopMessagePublished;
-    ackermann_msgs::AckermannDriveStamped m_last;  // last command message
+    ackermann_msgs::AckermannDriveStamped m_lastMessage;
     std::mutex m_publishMutex;
     ros::Timer m_timer;
 };

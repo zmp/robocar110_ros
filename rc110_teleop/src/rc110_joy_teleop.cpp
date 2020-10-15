@@ -38,7 +38,7 @@ void Rc110JoyTeleop::publish()
 {
     std::lock_guard<std::mutex> lock(m_publishMutex);
     if (m_deadmanPressed) {
-        m_drivePub.publish(m_last);
+        m_drivePub.publish(m_lastMessage);
         m_stopMessagePublished = false;
     } else if (!m_stopMessagePublished) {
         m_drivePub.publish(ackermann_msgs::AckermannDriveStamped());
@@ -48,10 +48,10 @@ void Rc110JoyTeleop::publish()
 
 void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
-    m_last.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
-    m_last.drive.speed = joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
-    m_last.header.stamp = ros::Time::now();
-    m_last.header.frame_id = m_param.frameId;
+    m_lastMessage.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
+    m_lastMessage.drive.speed = joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
+    m_lastMessage.header.stamp = ros::Time::now();
+    m_lastMessage.header.frame_id = m_param.frameId;
 
     m_deadmanPressed = joyMsg->buttons[m_param.deadManButton];
 }
