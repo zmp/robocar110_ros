@@ -1,6 +1,11 @@
-/**
- * @file    rc110_joy_teleop.hpp
+/*
+ * Copyright (C) 2020 ZMP Inc info@zmp.co.jp
+ * All Rights Reserved
  *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Written by btran
  */
 
 #pragma once
