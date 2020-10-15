@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_teleop VERSION 1.0.0)
 
-set(CMAKE_CXX_STANDARD 14)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
@@ -23,6 +22,7 @@ add_dependencies(rc110_joy_teleop
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
   ${catkin_EXPORTED_TARGETS}
 )
+target_compile_features(rc110_joy_teleop PUBLIC cxx_std_17)
 target_include_directories(rc110_joy_teleop
   SYSTEM PUBLIC
     ${catkin_INCLUDE_DIRS}
