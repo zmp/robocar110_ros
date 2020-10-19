@@ -25,10 +25,10 @@ int main(int argc, char** argv)
 
         ros::spin();
     } catch (std::exception& ex) {
-        ROS_ERROR_STREAM("Exception in main(): " << ex.what());
+        std::cerr << "Exception in main(): " << ex.what() << std::endl;
         return EXIT_FAILURE;
     } catch (...) {
-        ROS_ERROR_STREAM("Unknown exception in main()");
+        std::cerr << "Unknown exception in main()" << std::endl;
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

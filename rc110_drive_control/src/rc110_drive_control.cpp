@@ -40,8 +40,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
 
 Rc110DriveControl::~Rc110DriveControl()
 {
-    // to fix: endless loop
-    //    control.Stop();
+    control.Stop();
 }
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
