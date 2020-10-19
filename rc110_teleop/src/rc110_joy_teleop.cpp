@@ -22,6 +22,14 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
     pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
     pnh.param<int>("base_speed_axis", m_param.speedAxis, m_param.speedAxis);
 
+    int direction = m_param.steeringAxis < 0 ? -1 : 1;
+    m_param.steeringAxis *= direction;
+    axisDirection[m_param.steeringAxis] = direction;
+
+    direction = m_param.speedAxis < 0 ? -1 : 1;
+    m_param.speedAxis *= direction;
+    axisDirection[m_param.speedAxis] = direction;
+
     double maxSteeringAngleDeg;
     if (pnh.getParam("max_steering_angle_deg", maxSteeringAngleDeg)) {
         m_param.maxSteeringAngleRad = angles::from_degrees(maxSteeringAngleDeg);
@@ -48,8 +56,9 @@ void Rc110JoyTeleop::publish()
 
 void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
 {
-    m_lastMessage.drive.steering_angle = joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
-    m_lastMessage.drive.speed = joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
+    m_lastMessage.drive.steering_angle =
+            axisDirection[m_param.steeringAxis] * joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
+    m_lastMessage.drive.speed = axisDirection[m_param.speedAxis] * joyMsg->axes[m_param.speedAxis] * m_param.maxSpeed;
     m_lastMessage.header.stamp = ros::Time::now();
     m_lastMessage.header.frame_id = m_param.frameId;
 

@@ -1,5 +1,5 @@
 base_dead_man_button: 4
-base_steering_axis: 3
+base_steering_axis: -3
 base_speed_axis: 1
 base_frame_id: rc110_base
 max_steering_angle_deg: 30

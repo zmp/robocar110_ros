@@ -15,6 +15,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
 
+#include <map>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -26,7 +27,7 @@ class Rc110JoyTeleop
 public:
     struct Param {
         int deadManButton = 4;
-        int steeringAxis = 2;
+        int steeringAxis = -3;
         int speedAxis = 1;
         double maxSteeringAngleRad = angles::from_degrees(30);
 
@@ -57,5 +58,6 @@ private:
     ackermann_msgs::AckermannDriveStamped m_lastMessage;
     std::mutex m_publishMutex;
     ros::Timer m_timer;
+    std::map<int, int> axisDirection;  /// +1 or -1 for inverted axis
 };
 }  // namespace zmp
