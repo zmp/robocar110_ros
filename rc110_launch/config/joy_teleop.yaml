@@ -3,5 +3,5 @@ base_steering_axis: 3
 base_speed_axis: 1
 base_frame_id: rc110_base
 max_steering_angle_deg: 30
-max_speed: 500 # TODO: fix this part when rc110 library can use [m/s] unit
+max_speed: 2.8
 rate: 30.0
