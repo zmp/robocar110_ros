@@ -15,6 +15,11 @@
 
 namespace zmp
 {
+namespace
+{
+constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
+}
+
 Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 {
     ui->setupUi(this);
@@ -27,6 +32,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     ui->treeWidget->insertTopLevelItems(0, items);
 
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
+    subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
     subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
     subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
@@ -59,10 +65,15 @@ QTreeWidgetItem* Rc110Panel::getTreeItem(TREE_ITEM_GROUP group, const char* name
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
 {
-    using namespace boost::math::float_constants;
-
     getTreeItem(DRIVE, "speed")->setText(1, QString("%1 m/s").arg(driveStatus.drive.speed));
-    getTreeItem(DRIVE, "angle")->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * radian));
+    getTreeItem(DRIVE, "steering angle")->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * RAD_TO_DEG));
+    getTreeItem(DRIVE, "steering speed")
+            ->setText(1, QString("%1 °/s").arg(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG));
+}
+
+void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)
+{
+    getTreeItem(DRIVE, "angle speed")->setText(1, QString("%1 °/s").arg(odometry.twist.twist.angular.z * RAD_TO_DEG));
 }
 
 void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)

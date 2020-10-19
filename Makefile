@@ -3,7 +3,12 @@
 .SHELLFLAGS := -ec
 SHELL := /bin/bash
 
-cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
+# catkin sometimes fail to find number of cores
+build_cores := $(shell ps T | sed -n 's/.*$(MAKE_PID).*$(MAKE).* \(-j\|--jobs\) *\([0-9][0-9]*\).*/\2/p')
+ifeq ($(build_cores),)
+	build_cores := $(shell grep -c ^processor /proc/cpuinfo)
+endif
+cmake_flags := -j$(build_cores) -DCATKIN_ENABLE_TESTING=OFF
 
 source:
 ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
@@ -11,11 +16,9 @@ ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
 endif
 
 all: source
-	cd $$(catkin locate)
 	catkin build ${cmake_flags}
 
 package:
-	cd $$(catkin locate)
 	catkin build ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
 
 	function check_make_target {
@@ -24,6 +27,7 @@ package:
 	}
 
 	cd $$(catkin locate --build)
+	rm -f *.deb
 	for d in */
 	do
 		(  # make package in parallel
@@ -39,10 +43,10 @@ package:
 
 install: package
 	cd $$(catkin locate --build)
-	sudo apt install --reinstall ./*.deb
+	sudo apt-get install --reinstall ./*.deb
+	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 clean:
-	cd $$(catkin locate)
 	catkin clean -y
 
 config:
