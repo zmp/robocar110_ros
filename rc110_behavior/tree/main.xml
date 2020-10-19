@@ -2,7 +2,8 @@
 <root main_tree_to_execute="BehaviorTree">
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
-        <Decorator ID="GetObstacle" switch="{result}">
+        <SequenceStar>
+            <Condition ID="CheckObstacle" switch="{result}"/>
             <Switch4 case_1="none" case_2="near" case_3="left" case_4="right" variable="{result}">
                 <Action ID="DriveAction" speed="0.5" steering="0"/>
                 <Action ID="DriveAction" speed="0" steering="0"/>
@@ -10,18 +11,18 @@
                 <Action ID="DriveAction" speed="0.5" steering="-30"/>
                 <AlwaysFailure/>
             </Switch4>
-        </Decorator>
+        </SequenceStar>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
         <Action ID="BreakAction"/>
+        <Condition ID="CheckObstacle">
+            <output_port default="{result}" name="switch"/>
+        </Condition>
         <Action ID="DriveAction">
             <input_port default="0" name="speed"/>
             <input_port default="0" name="steering"/>
         </Action>
-        <Decorator ID="GetObstacle">
-            <output_port default="{result}" name="switch"/>
-        </Decorator>
     </TreeNodesModel>
     <!-- ////////// -->
 </root>

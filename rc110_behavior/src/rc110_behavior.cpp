@@ -12,8 +12,8 @@
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <laser_geometry/laser_geometry.h>
 
+#include "nodes/check_obstacle.hpp"
 #include "nodes/drive_action.hpp"
-#include "nodes/get_obstacle.hpp"
 
 namespace zmp
 {
@@ -24,7 +24,7 @@ Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePri
     laserSubscriber = handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this);
     drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive", 1);
 
-    registerNodeBuilder<GetObstacle>(std::cref(cloud));
+    registerNodeBuilder<CheckObstacle>(std::cref(cloud));
     registerNodeBuilder<DriveAction>(std::ref(drivePublisher));
 
     behaviorTree = behaviorTreeFactory.createTreeFromFile(parameters.treeFile);

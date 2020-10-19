@@ -7,7 +7,7 @@
  *
  * Written by Andrei Pak
  */
-#include "get_obstacle.hpp"
+#include "check_obstacle.hpp"
 
 #include <ros/ros.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
@@ -16,7 +16,7 @@
 
 namespace zmp
 {
-BT::NodeStatus GetObstacle::tick()
+BT::NodeStatus CheckObstacle::tick()
 {
     static Eigen::AlignedBox2f nearBox = {Eigen::Vector2f(0, -0.2f), Eigen::Vector2f(0.2f, 0.2f)};
     static Eigen::AlignedBox2f farLeftBox = {Eigen::Vector2f(0.2f, 0), Eigen::Vector2f(1.0f, 0.3f)};
@@ -52,6 +52,6 @@ BT::NodeStatus GetObstacle::tick()
     }
 
     setOutput("switch", result);
-    return child()->executeTick();
+    return BT::NodeStatus::SUCCESS;
 }
 }  // namespace zmp

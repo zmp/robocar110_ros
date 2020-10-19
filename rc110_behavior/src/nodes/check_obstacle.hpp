@@ -17,14 +17,14 @@ namespace zmp
 /**
  * This node basing on obstacle position sets the value of the output port "switch" to either: none | near | left | right
  */
-class GetObstacle : public BT::DecoratorNode
+class CheckObstacle : public BT::ConditionNode
 {
 public:
-    static constexpr char NAME[] = "GetObstacle";
+    static constexpr char NAME[] = "CheckObstacle";
 
 public:
-    GetObstacle(const std::string& name, const BT::NodeConfiguration& config, const sensor_msgs::PointCloud2& cloud) :
-            DecoratorNode(name, config),
+    CheckObstacle(const std::string& name, const BT::NodeConfiguration& config, const sensor_msgs::PointCloud2& cloud) :
+            ConditionNode(name, config),
             cloud(cloud)
     {
     }
