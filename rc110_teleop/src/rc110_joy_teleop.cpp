@@ -37,10 +37,8 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
 
     pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
     pnh.param<std::string>("base_frame_id", m_param.frameId, m_param.frameId);
-    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), std::bind(&Rc110JoyTeleop::publish, this));
+    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), [this](const ros::TimerEvent&) { publish(); });
 }
-
-Rc110JoyTeleop::~Rc110JoyTeleop() {}
 
 void Rc110JoyTeleop::publish()
 {

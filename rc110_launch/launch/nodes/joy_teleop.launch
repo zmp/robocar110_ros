@@ -9,8 +9,4 @@
     <remap from="~output_cmd" to="$(arg drive_msg)"/>
     <rosparam file="$(find rc110_launch)/config/joy_teleop.yaml" subst_value="true"/>
   </node>
-
-  <include file="$(find rc110_launch)/launch/all.launch">
-    <arg name="config_dir" value="$(find rc110_launch)/config" />
-  </include>
 </launch>

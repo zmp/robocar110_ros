@@ -35,14 +35,13 @@ public:
         // from the hardware document, the operation speed is 0.11 / 60 [sec/degree]
         double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
 
-        double maxSpeed = 2.7;  // [m/s]
+        double maxSpeed = 2.8;  // [m/s]
         std::string frameId = "rc110_base";
         double rate = 30.0;  // Hz
     };
 
 public:
     Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
-    ~Rc110JoyTeleop();
 
 private:
     void joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg);
