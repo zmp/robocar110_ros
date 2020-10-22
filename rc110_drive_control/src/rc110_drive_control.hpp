@@ -11,6 +11,7 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <ros/ros.h>
+#include <std_srvs/SetBool.h>
 
 #include <string>
 #include <zmp/RcControl.hpp>
@@ -35,25 +36,31 @@ public:
     ~Rc110DriveControl();
 
 private:
+    bool onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
+    void getAndPublishDriveInfo();
+    void getAndPublishServoInfo();
+    void getAndPublishImu();
+    void getAndPublishBaseboardTemperature();
+    void getAndPublishMotorBattery();
+
     void publishDriveStatus(const DriveInfo& drive);
     void publishOdometry(const DriveInfo& drive);
-    void getAndPublishImu();
-    void getAndPublishServoTemperature();
-    void getAndPublishBaseboardTemperature();
-    void publishTemperature(float temperature, ros::Publisher& publisher);
-    void getAndPublishBattery();
+    static void publishTemperature(ros::Publisher& publisher, float temperature);
+    static void publishBattery(ros::Publisher& publisher, float voltage, float current);
 
 private:
     Parameters parameters;
     RcControl control;
+    ros::ServiceServer enableBoardService;
     ros::Subscriber driveSubscriber;
     ros::Publisher driveStatusPublisher;
     ros::Publisher imuPublisher;
     ros::Publisher servoTemperaturePublisher;
     ros::Publisher baseboardTemperaturePublisher;
+    ros::Publisher servoBatteryPublisher;
     ros::Publisher motorBatteryPublisher;
     ros::Publisher odometryPublisher;
     ros::Timer statusUpdateTimer;

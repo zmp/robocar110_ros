@@ -24,6 +24,7 @@ namespace Ui
 class PanelWidget;
 }
 class QTreeWidgetItem;
+class QStatusBar;
 
 namespace zmp
 {
@@ -42,9 +43,12 @@ public:
     ~Rc110Panel() override;
 
 private:
+	void onEnableBoard(bool on);
+    void setBoardStatus(uint8_t request);
     QTreeWidgetItem* getTreeItem(TREE_ITEM_GROUP group, const char* name) const;
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::Odometry& odometry);
+    void onServoBattery(const sensor_msgs::BatteryState& batteryState);
     void onMotorBattery(const sensor_msgs::BatteryState& batteryState);
     void onBaseboardTemperature(const sensor_msgs::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::Temperature& temperature);
@@ -55,5 +59,6 @@ private:
     ros::NodeHandle handle;
     QVector<ros::Subscriber> subscribers;
     QHash<TREE_ITEM_GROUP, QTreeWidgetItem*> treeItems;
+    QStatusBar* statusBar;
 };
 }  // namespace zmp

@@ -3,12 +3,7 @@
 .SHELLFLAGS := -ec
 SHELL := /bin/bash
 
-# catkin sometimes fail to find number of cores
-build_cores := $(shell ps T | sed -n 's/.*$(MAKE_PID).*$(MAKE).* \(-j\|--jobs\) *\([0-9][0-9]*\).*/\2/p')
-ifeq ($(build_cores),)
-	build_cores := $(shell grep -c ^processor /proc/cpuinfo)
-endif
-cmake_flags := -j$(build_cores) -DCATKIN_ENABLE_TESTING=OFF
+cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
 source:
 ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))

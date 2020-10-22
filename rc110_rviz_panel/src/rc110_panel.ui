@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>269</width>
-    <height>366</height>
+    <width>291</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,6 +51,82 @@
       </property>
      </column>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="boardButton">
+       <property name="toolTip">
+        <string>Baseboard on/off</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: red;
+}
+QPushButton:checked {
+    color: green;
+}</string>
+       </property>
+       <property name="text">
+        <string>Board</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="motorsButton">
+       <property name="toolTip">
+        <string>Motor and servomotor on/off</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: red;
+}
+QPushButton:checked {
+    color: green;
+}</string>
+       </property>
+       <property name="text">
+        <string>Motors</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="adButton">
+       <property name="toolTip">
+        <string>Autonomous driving on/off</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: red;
+}
+QPushButton:checked {
+    color: green;
+}</string>
+       </property>
+       <property name="text">
+        <string>AD</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

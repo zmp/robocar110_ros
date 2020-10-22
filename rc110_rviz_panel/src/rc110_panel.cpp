@@ -9,12 +9,21 @@
  */
 #include "rc110_panel.hpp"
 
+#include <std_srvs/SetBool.h>
+
+#include <QStatusBar>
 #include <boost/math/constants/constants.hpp>
 
 #include "ui_rc110_panel.h"
 
 namespace zmp
 {
+enum EnableType : uint8_t {
+    ENABLE_OFF = 0,  // turn off
+    ENALBE_ON = 1,   // turn on
+    ENABLE_ASK = 2,  // do nothing, just ask current status
+};
+
 namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
@@ -31,12 +40,20 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     }
     ui->treeWidget->insertTopLevelItems(0, items);
 
+    statusBar = new QStatusBar(this);
+    layout()->addWidget(statusBar);
+
+    connect(ui->boardButton, &QPushButton::clicked, this, &Rc110Panel::onEnableBoard);
+
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
+    subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
     subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
     subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu", 1, &Rc110Panel::onImu, this));
+
+    setBoardStatus(ENABLE_ASK);
 }
 
 Rc110Panel::~Rc110Panel() = default;
@@ -63,6 +80,31 @@ QTreeWidgetItem* Rc110Panel::getTreeItem(TREE_ITEM_GROUP group, const char* name
     return item;
 }
 
+void Rc110Panel::onEnableBoard(bool on)
+{
+    setBoardStatus(on ? ENALBE_ON : ENABLE_OFF);
+}
+
+void Rc110Panel::setBoardStatus(uint8_t request)
+{
+    std_srvs::SetBool service;
+    service.request.data = request;
+
+    if (!ros::service::call("enable_board", service)) {
+        service.response.success = false;
+        service.response.message = "disabled";
+    }
+
+    ui->boardButton->setChecked(service.response.message == "enabled");
+    if (!service.response.success) {
+        auto action = request == ENABLE_OFF   ? "disable"
+                      : request == ENALBE_ON  ? "enable"
+                      : request == ENABLE_ASK ? "ask"
+                                              : "";
+        statusBar->showMessage(QString("Failed to %1 board").arg(action), 5000);
+    }
+}
+
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
 {
     getTreeItem(DRIVE, "speed")->setText(1, QString("%1 m/s").arg(driveStatus.drive.speed));
@@ -76,9 +118,16 @@ void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)
     getTreeItem(DRIVE, "angle speed")->setText(1, QString("%1 °/s").arg(odometry.twist.twist.angular.z * RAD_TO_DEG));
 }
 
+void Rc110Panel::onServoBattery(const sensor_msgs::BatteryState& batteryState)
+{
+    getTreeItem(BATTERY, "servo voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
+    getTreeItem(BATTERY, "servo current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000));
+}
+
 void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
 {
     getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
+    getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000));
 }
 
 void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)
@@ -96,8 +145,6 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
     getTreeItem(IMU, "x")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.x));
     getTreeItem(IMU, "y")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.y));
     getTreeItem(IMU, "z")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.z));
-    getTreeItem(IMU, "roll")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.x));
-    getTreeItem(IMU, "pitch")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.y));
     getTreeItem(IMU, "yaw")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.z));
 }
 
