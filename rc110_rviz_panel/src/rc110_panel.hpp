@@ -17,6 +17,7 @@
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+#include <std_msgs/Float32.h>
 
 #include <zmp/RcCommon.hpp>
 #endif
@@ -53,6 +54,11 @@ private:
     void onSetMotorState(QAbstractButton* button);
     void onSetServoState(QAbstractButton* button);
     void onEditingFinished();
+    void onMotorSpeed(const std_msgs::Float32& message);
+    void onSteeringAngle(const std_msgs::Float32& message);
+    void onGyroOffset(const std_msgs::Float32& message);
+    void onMotorCurrentOffset(const std_msgs::Float32& message);
+    void onSteeringOffset(const std_msgs::Float32& message);
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::Odometry& odometry);
     void onServoBattery(const sensor_msgs::BatteryState& batteryState);

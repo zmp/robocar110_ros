@@ -64,13 +64,7 @@ private:
     RcControl control;
     std::vector<ros::ServiceServer> services;
     std::vector<ros::Subscriber> subscribers;
-    ros::Publisher driveStatusPublisher;
-    ros::Publisher imuPublisher;
-    ros::Publisher servoTemperaturePublisher;
-    ros::Publisher baseboardTemperaturePublisher;
-    ros::Publisher servoBatteryPublisher;
-    ros::Publisher motorBatteryPublisher;
-    ros::Publisher odometryPublisher;
+    std::map<std::string, ros::Publisher> publishers;
     ros::Timer statusUpdateTimer;
 };
 }  // namespace zmp

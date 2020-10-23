@@ -37,16 +37,38 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     subscribers.push_back(handle.subscribe("motor_current_offset", 10, &Rc110DriveControl::onMotorCurrentOffset, this));
     subscribers.push_back(handle.subscribe("steering_offset", 10, &Rc110DriveControl::onSteeringAngleOffset, this));
 
-    driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
-    imuPublisher = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
-    servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
-    baseboardTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
-    servoBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("servo_battery", 10);
-    motorBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
-    odometryPublisher = handle.advertise<nav_msgs::Odometry>("odometry", 10);
+    publishers["motor_speed_status"] = handle.advertise<std_msgs::Float32>("motor_speed_status", 10, true);
+    publishers["steering_angle_status"] = handle.advertise<std_msgs::Float32>("steering_angle_status", 10, true);
+    publishers["gyro_offset_status"] = handle.advertise<std_msgs::Float32>("gyro_offset_status", 10, true);
+    publishers["motor_current_offset_status"] =
+            handle.advertise<std_msgs::Float32>("motor_current_offset_status", 10, true);
+    publishers["steering_offset_status"] = handle.advertise<std_msgs::Float32>("steering_offset_status", 10, true);
+
+    publishers["drive_status"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
+    publishers["imu"] = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
+    publishers["servo_temperature"] = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
+    publishers["baseboard_temperature"] = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
+    publishers["servo_battery"] = handle.advertise<sensor_msgs::BatteryState>("servo_battery", 10);
+    publishers["motor_battery"] = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
+    publishers["odometry"] = handle.advertise<nav_msgs::Odometry>("odometry", 10);
 
     statusUpdateTimer = handle.createTimer(ros::Duration(1 / parameters.rate),
                                            [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
+
+    // publish status
+    std_msgs::Float32 speedMessage, angleMessage, gyroOffsetMessage, motorCurrentOffsetMessage, steeringOffsetMessage;
+    auto driveInfo = control.GetDriveInfo();
+    speedMessage.data = driveInfo.speed;
+    angleMessage.data = driveInfo.steeringAngle;
+    gyroOffsetMessage.data = control.GetGyroOffset();
+    motorCurrentOffsetMessage.data = control.GetMotorCurrentOffset();
+    steeringOffsetMessage.data = control.GetSteeringAngleOffset();
+
+    publishers["motor_speed_status"].publish(speedMessage);
+    publishers["steering_angle_status"].publish(angleMessage);
+    publishers["gyro_offset_status"].publish(gyroOffsetMessage);
+    publishers["motor_current_offset_status"].publish(motorCurrentOffsetMessage);
+    publishers["steering_offset_status"].publish(steeringOffsetMessage);
 
     ROS_INFO("RC 1/10 drive control started");
 }
@@ -107,33 +129,48 @@ bool Rc110DriveControl::onServoState(std_srvs::SetBool::Request& request, std_sr
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
 {
-    control.ChangeDriveSpeed(message->drive.speed);
-    control.ChangeSteeringAngle(message->drive.steering_angle);
+    std_msgs::Float32 angleMessage, speedMessage;
+
+    if (control.ChangeSteeringAngle(message->drive.steering_angle)) {
+        angleMessage.data = message->drive.steering_angle;
+        publishers["steering_angle_status"].publish(angleMessage);
+    }
+    if (control.ChangeDriveSpeed(message->drive.speed)) {
+        speedMessage.data = message->drive.speed;
+        publishers["motor_speed_status"].publish(speedMessage);
+    }
 }
 
 void Rc110DriveControl::onMotorSpeed(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
 {
-    control.ChangeDriveSpeed(message->data);
+    if (control.ChangeDriveSpeed(message->data)) {
+        publishers["motor_speed_status"].publish(message);
+    }
 }
 
 void Rc110DriveControl::onSteeringAngle(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
 {
-    control.ChangeSteeringAngle(message->data);
+    if (control.ChangeSteeringAngle(message->data)) {
+        publishers["steering_angle_status"].publish(message);
+    }
 }
 
 void Rc110DriveControl::onGyroOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
 {
     control.SetGyroOffset(message->data);
+    publishers["gyro_offset_status"].publish(message);
 }
 
 void Rc110DriveControl::onMotorCurrentOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
 {
     control.SetMotorCurrentOffset(message->data);
+    publishers["motor_current_offset_status"].publish(message);
 }
 
 void Rc110DriveControl::onSteeringAngleOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
 {
     control.SetSteeringAngleOffset(message->data);
+    publishers["steering_offset_status"].publish(message);
 }
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
@@ -155,8 +192,8 @@ void Rc110DriveControl::getAndPublishDriveInfo()
 void Rc110DriveControl::getAndPublishServoInfo()
 {
     auto servoInfo = control.GetServoInfo();
-    publishTemperature(servoTemperaturePublisher, servoInfo.temperature);
-    publishBattery(servoBatteryPublisher, servoInfo.voltage, servoInfo.current);
+    publishTemperature(publishers["servo_temperature"], servoInfo.temperature);
+    publishBattery(publishers["servo_battery"], servoInfo.voltage, servoInfo.current);
 }
 
 void Rc110DriveControl::getAndPublishImu()
@@ -176,20 +213,20 @@ void Rc110DriveControl::getAndPublishImu()
     msg.linear_acceleration.y = sensor.acc_y;
     msg.linear_acceleration.z = sensor.acc_z;
 
-    imuPublisher.publish(msg);
+    publishers["imu"].publish(msg);
 }
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
 {
     ThermoInfo thermo = control.GetThermoInfo();
     float baseboardTemperature = std::max(thermo.board_1, thermo.board_2);
-    publishTemperature(baseboardTemperaturePublisher, baseboardTemperature);
+    publishTemperature(publishers["baseboard_temperature"], baseboardTemperature);
 }
 
 void Rc110DriveControl::getAndPublishMotorBattery()
 {
     PowerInfo power = control.GetPowerInfo();
-    publishBattery(motorBatteryPublisher, power.motorVoltage, power.motorCurrent);
+    publishBattery(publishers["motor_battery"], power.motorVoltage, power.motorCurrent);
 }
 
 void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
@@ -202,7 +239,7 @@ void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
     msg.drive.steering_angle = drive.steeringAngle;
     msg.drive.steering_angle_velocity = drive.steeringAngularSpeed;
 
-    driveStatusPublisher.publish(msg);
+    publishers["drive_status"].publish(msg);
 }
 
 void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
@@ -212,7 +249,7 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
     message.twist.twist.linear.x = drive.speed;
     message.twist.twist.angular.z = drive.angularSpeed;
 
-    odometryPublisher.publish(message);
+    publishers["odometry"].publish(message);
 }
 
 void Rc110DriveControl::publishTemperature(ros::Publisher& publisher, float temperature)

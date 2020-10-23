@@ -56,6 +56,11 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     connect(ui->motorCurrentOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
 
+    subscribers.push_back(handle.subscribe("motor_speed_status", 1, &Rc110Panel::onMotorSpeed, this));
+    subscribers.push_back(handle.subscribe("steering_angle_status", 1, &Rc110Panel::onSteeringAngle, this));
+    subscribers.push_back(handle.subscribe("gyro_offset_status", 1, &Rc110Panel::onGyroOffset, this));
+    subscribers.push_back(handle.subscribe("motor_current_offset_status", 1, &Rc110Panel::onMotorCurrentOffset, this));
+    subscribers.push_back(handle.subscribe("steering_offset_status", 1, &Rc110Panel::onSteeringOffset, this));
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
     subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
@@ -189,10 +194,37 @@ void Rc110Panel::onEditingFinished()
             message.data *= DEG_TO_RAD;
         }
         publishers[name.data()].publish(message);
-
-        auto topic = QString::fromStdString(publishers[name.data()].getTopic()).remove(0, 1);
-        statusBar->showMessage(QString("Value was updated: %1 = %2").arg(topic).arg(message.data), 5000);
     }
+}
+
+void Rc110Panel::onMotorSpeed(const std_msgs::Float32& message)
+{
+    ui->motorSpeedEdit->setText(QString::number(message.data));
+    statusBar->showMessage(QString("Motor speed was updated: %1").arg(message.data), 5000);
+}
+
+void Rc110Panel::onSteeringAngle(const std_msgs::Float32& message)
+{
+    ui->steeringEdit->setText(QString::number(message.data * RAD_TO_DEG));
+    statusBar->showMessage(QString("Steering angle was updated: %1").arg(message.data), 5000);
+}
+
+void Rc110Panel::onGyroOffset(const std_msgs::Float32& message)
+{
+    ui->gyroOffsetEdit->setText(QString::number(message.data));
+    statusBar->showMessage(QString("Gyro offset was updated: %1").arg(message.data), 5000);
+}
+
+void Rc110Panel::onMotorCurrentOffset(const std_msgs::Float32& message)
+{
+    ui->motorCurrentOffsetEdit->setText(QString::number(message.data));
+    statusBar->showMessage(QString("Motor current offset was updated: %1").arg(message.data), 5000);
+}
+
+void Rc110Panel::onSteeringOffset(const std_msgs::Float32& message)
+{
+    ui->steeringOffsetEdit->setText(QString::number(message.data));
+    statusBar->showMessage(QString("Steering angle offset was updated: %1").arg(message.data), 5000);
 }
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
