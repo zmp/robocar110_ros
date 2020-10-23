@@ -46,11 +46,13 @@ public:
     ~Rc110Panel() override;
 
 private:
+    QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
+
     void onEnableBoard(bool on);
     void changeBoardState(EnabledState request);
     void onSetMotorState(QAbstractButton* button);
     void onSetServoState(QAbstractButton* button);
-    QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
+    void onEditingFinished();
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::Odometry& odometry);
     void onServoBattery(const sensor_msgs::BatteryState& batteryState);
@@ -63,6 +65,7 @@ private:
     std::unique_ptr<Ui::PanelWidget> ui;
     ros::NodeHandle handle;
     QVector<ros::Subscriber> subscribers;
+    QMap<QString, ros::Publisher> publishers;
     QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
     QStatusBar* statusBar;
 };

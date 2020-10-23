@@ -31,6 +31,12 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
 
     subscribers.push_back(handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this));
+    subscribers.push_back(handle.subscribe("motor_speed", 10, &Rc110DriveControl::onMotorSpeed, this));
+    subscribers.push_back(handle.subscribe("steering_angle", 10, &Rc110DriveControl::onSteeringAngle, this));
+    subscribers.push_back(handle.subscribe("gyro_offset", 10, &Rc110DriveControl::onGyroOffset, this));
+    subscribers.push_back(handle.subscribe("motor_current_offset", 10, &Rc110DriveControl::onMotorCurrentOffset, this));
+    subscribers.push_back(handle.subscribe("steering_offset", 10, &Rc110DriveControl::onSteeringAngleOffset, this));
+
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
@@ -103,6 +109,31 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::Con
 {
     control.ChangeDriveSpeed(message->drive.speed);
     control.ChangeSteeringAngle(message->drive.steering_angle);
+}
+
+void Rc110DriveControl::onMotorSpeed(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+{
+    control.ChangeDriveSpeed(message->data);
+}
+
+void Rc110DriveControl::onSteeringAngle(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+{
+    control.ChangeSteeringAngle(message->data);
+}
+
+void Rc110DriveControl::onGyroOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+{
+    control.SetGyroOffset(message->data);
+}
+
+void Rc110DriveControl::onMotorCurrentOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+{
+    control.SetMotorCurrentOffset(message->data);
+}
+
+void Rc110DriveControl::onSteeringAngleOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+{
+    control.SetSteeringAngleOffset(message->data);
 }
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
@@ -206,4 +237,5 @@ void Rc110DriveControl::publishBattery(ros::Publisher& publisher, float voltage,
 
     publisher.publish(msg);
 }
+
 }  // namespace zmp

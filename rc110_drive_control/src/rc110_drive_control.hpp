@@ -11,6 +11,7 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <ros/ros.h>
+#include <std_msgs/Float32.h>
 #include <std_srvs/SetBool.h>
 
 #include <string>
@@ -40,6 +41,11 @@ private:
     bool onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     bool onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
+    void onGyroOffset(const std_msgs::Float32::ConstPtr& message);
+    void onMotorSpeed(const std_msgs::Float32::ConstPtr& message);
+    void onSteeringAngle(const std_msgs::Float32::ConstPtr& message);
+    void onMotorCurrentOffset(const std_msgs::Float32::ConstPtr& message);
+    void onSteeringAngleOffset(const std_msgs::Float32::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
     void getAndPublishDriveInfo();

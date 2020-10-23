@@ -14,6 +14,7 @@
 #include <QStatusBar>
 #include <boost/math/constants/constants.hpp>
 
+#include "../../../../../.cache/JetBrains/CLion2020.2/.remote/192.168.110.5_22/bca12789-98db-42a3-ae96-8c1d7ef28e1e/opt/ros/melodic/include/std_msgs/Float32.h"
 #include "ui_rc110_panel.h"
 
 namespace zmp
@@ -21,7 +22,8 @@ namespace zmp
 namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
-}
+constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+}  // namespace
 
 Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 {
@@ -48,6 +50,11 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
             QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
             this,
             &Rc110Panel::onSetServoState);
+    connect(ui->motorSpeedEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->steeringEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->gyroOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->motorCurrentOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
 
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
@@ -56,6 +63,12 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu", 1, &Rc110Panel::onImu, this));
+
+    publishers["motorSpeedEdit"] = handle.advertise<std_msgs::Float32>("motor_speed", 1);
+    publishers["steeringEdit"] = handle.advertise<std_msgs::Float32>("steering_angle", 1);
+    publishers["gyroOffsetEdit"] = handle.advertise<std_msgs::Float32>("gyro_offset", 1);
+    publishers["motorCurrentOffsetEdit"] = handle.advertise<std_msgs::Float32>("motor_current_offset", 1);
+    publishers["steeringOffsetEdit"] = handle.advertise<std_msgs::Float32>("steering_offset", 1);
 
     // ask initial states
     changeBoardState(EnabledState::ASK);
@@ -163,6 +176,23 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
                                    ? QString("Servomotor was set to %1").arg(service.response.message.data())
                                    : QString("Failed to set servo state"),
                            5000);
+}
+
+void Rc110Panel::onEditingFinished()
+{
+    if (auto edit = dynamic_cast<QLineEdit*>(sender())) {
+        std_msgs::Float32 message;
+        message.data = edit->text().toFloat();
+
+        auto name = edit->objectName().toStdString();
+        if (name == "steeringEdit") {
+            message.data *= DEG_TO_RAD;
+        }
+        publishers[name.data()].publish(message);
+
+        auto topic = QString::fromStdString(publishers[name.data()].getTopic()).remove(0, 1);
+        statusBar->showMessage(QString("Value was updated: %1 = %2").arg(topic).arg(message.data), 5000);
+    }
 }
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)

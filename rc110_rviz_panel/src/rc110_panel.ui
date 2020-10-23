@@ -140,14 +140,14 @@
         <widget class="QLineEdit" name="motorSpeedEdit"/>
        </item>
        <item row="5" column="0">
-        <widget class="QLabel" name="steeringAnglelabel">
+        <widget class="QLabel" name="steeringLabel">
          <property name="text">
           <string>Steering Angle [deg]</string>
          </property>
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="steeringAngleEdit"/>
+        <widget class="QLineEdit" name="steeringEdit"/>
        </item>
        <item row="7" column="0">
         <widget class="QLabel" name="gyroOffsetLabel">
@@ -169,7 +169,7 @@
        <item row="8" column="0">
         <widget class="QLabel" name="motorCurrentOffsetLabel">
          <property name="text">
-          <string>Motor Current Offset [mA]</string>
+          <string>Motor Current Offset [A]</string>
          </property>
         </widget>
        </item>
@@ -177,14 +177,14 @@
         <widget class="QLineEdit" name="motorCurrentOffsetEdit"/>
        </item>
        <item row="9" column="0">
-        <widget class="QLabel" name="steeringAngleOffsetLabel">
+        <widget class="QLabel" name="steeringOffsetLabel">
          <property name="text">
           <string>Steering Angle Offset [deg]</string>
          </property>
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QLineEdit" name="steeringAngleOffsetEdit"/>
+        <widget class="QLineEdit" name="steeringOffsetEdit"/>
        </item>
       </layout>
      </widget>
@@ -247,7 +247,7 @@ QPushButton:checked {
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="motorGroup"/>
   <buttongroup name="servoGroup"/>
+  <buttongroup name="motorGroup"/>
  </buttongroups>
 </ui>
