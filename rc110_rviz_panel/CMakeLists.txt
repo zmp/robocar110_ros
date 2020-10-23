@@ -26,6 +26,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
         Qt5::Widgets
+        rc-base
 )
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC nssv_CONFIG_SELECT_STRING_VIEW=1) # disable string view for behaviortree_cpp_v3

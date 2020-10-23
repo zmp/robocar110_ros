@@ -18,12 +18,6 @@
 
 namespace zmp
 {
-enum EnableType : uint8_t {
-    ENABLE_OFF = 0,  // turn off
-    ENALBE_ON = 1,   // turn on
-    ENABLE_ASK = 2,  // do nothing, just ask current status
-};
-
 namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
@@ -36,14 +30,24 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     QList<QTreeWidgetItem*> items;
     for (int i = 0; i < std::size(TREE_ITEM_GROUP_NAMES); ++i) {
         items.push_back(new QTreeWidgetItem({TREE_ITEM_GROUP_NAMES[i]}));
-        treeItems.insert((TREE_ITEM_GROUP)i, items[i]);
+        treeItems.insert((TreeItemGroup)i, items[i]);
     }
     ui->treeWidget->insertTopLevelItems(0, items);
 
     statusBar = new QStatusBar(this);
     layout()->addWidget(statusBar);
 
+    ui->splitter->setStretchFactor(0, 1);  // expand tree widget to maximum height
+
     connect(ui->boardButton, &QPushButton::clicked, this, &Rc110Panel::onEnableBoard);
+    connect(ui->motorGroup,
+            QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
+            this,
+            &Rc110Panel::onSetMotorState);
+    connect(ui->servoGroup,
+            QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
+            this,
+            &Rc110Panel::onSetServoState);
 
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
@@ -53,12 +57,16 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu", 1, &Rc110Panel::onImu, this));
 
-    setBoardStatus(ENABLE_ASK);
+    // ask initial states
+    changeBoardState(EnabledState::ASK);
+    onSetMotorState(nullptr);
+    onSetServoState(nullptr);
+    statusBar->showMessage("");
 }
 
 Rc110Panel::~Rc110Panel() = default;
 
-QTreeWidgetItem* Rc110Panel::getTreeItem(TREE_ITEM_GROUP group, const char* name) const
+QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) const
 {
     QTreeWidgetItem* item = nullptr;
     auto list = ui->treeWidget->findItems(name, Qt::MatchExactly | Qt::MatchRecursive);
@@ -82,13 +90,13 @@ QTreeWidgetItem* Rc110Panel::getTreeItem(TREE_ITEM_GROUP group, const char* name
 
 void Rc110Panel::onEnableBoard(bool on)
 {
-    setBoardStatus(on ? ENALBE_ON : ENABLE_OFF);
+    changeBoardState(on ? EnabledState::ON : EnabledState::OFF);
 }
 
-void Rc110Panel::setBoardStatus(uint8_t request)
+void Rc110Panel::changeBoardState(EnabledState request)
 {
     std_srvs::SetBool service;
-    service.request.data = request;
+    service.request.data = uint8_t(request);
 
     if (!ros::service::call("enable_board", service)) {
         service.response.success = false;
@@ -96,13 +104,65 @@ void Rc110Panel::setBoardStatus(uint8_t request)
     }
 
     ui->boardButton->setChecked(service.response.message == "enabled");
-    if (!service.response.success) {
-        auto action = request == ENABLE_OFF   ? "disable"
-                      : request == ENALBE_ON  ? "enable"
-                      : request == ENABLE_ASK ? "ask"
-                                              : "";
-        statusBar->showMessage(QString("Failed to %1 board").arg(action), 5000);
+    statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(service.response.message.data())
+                                                    : QString("Failed to set board state"),
+                           5000);
+}
+
+void Rc110Panel::onSetMotorState(QAbstractButton* button)
+{
+    MotorState state = (button == ui->motorOffRadio)       ? MotorState::OFF
+                       : (button == ui->motorOnRadio)      ? MotorState::ON
+                       : (button == ui->motorNeutralRadio) ? MotorState::NEUTRAL
+                                                           : MotorState::ASK;
+    std_srvs::SetBool service;
+    service.request.data = uint8_t(state);
+
+    if (!ros::service::call("motor_state", service)) {
+        service.response.success = false;
+        service.response.message = "off";
     }
+
+    if (service.response.message == "neutral") {
+        ui->motorNeutralRadio->setChecked(true);
+    } else if (service.response.message == "on") {
+        ui->motorOnRadio->setChecked(true);
+    } else {
+        ui->motorOffRadio->setChecked(true);
+    }
+
+    statusBar->showMessage(service.response.success
+                                   ? QString("Drive motor was set to %1").arg(service.response.message.data())
+                                   : QString("Failed to set motor state"),
+                           5000);
+}
+
+void Rc110Panel::onSetServoState(QAbstractButton* button)
+{
+    MotorState state = (button == ui->servoOffRadio)       ? MotorState::OFF
+                       : (button == ui->servoOnRadio)      ? MotorState::ON
+                       : (button == ui->servoNeutralRadio) ? MotorState::NEUTRAL
+                                                           : MotorState::ASK;
+    std_srvs::SetBool service;
+    service.request.data = uint8_t(state);
+
+    if (!ros::service::call("servo_state", service)) {
+        service.response.success = false;
+        service.response.message = "off";
+    }
+
+    if (service.response.message == "neutral") {
+        ui->servoNeutralRadio->setChecked(true);
+    } else if (service.response.message == "on") {
+        ui->servoOnRadio->setChecked(true);
+    } else {
+        ui->servoOffRadio->setChecked(true);
+    }
+
+    statusBar->showMessage(service.response.success
+                                   ? QString("Servomotor was set to %1").arg(service.response.message.data())
+                                   : QString("Failed to set servo state"),
+                           5000);
 }
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)

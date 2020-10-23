@@ -37,6 +37,8 @@ public:
 
 private:
     bool onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+    bool onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+    bool onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
@@ -54,8 +56,8 @@ private:
 private:
     Parameters parameters;
     RcControl control;
-    ros::ServiceServer enableBoardService;
-    ros::Subscriber driveSubscriber;
+    std::vector<ros::ServiceServer> services;
+    std::vector<ros::Subscriber> subscribers;
     ros::Publisher driveStatusPublisher;
     ros::Publisher imuPublisher;
     ros::Publisher servoTemperaturePublisher;

@@ -17,12 +17,6 @@
 
 namespace zmp
 {
-enum EnableType : uint8_t {
-    ENABLE_OFF = 0,  // turn off
-    ENALBE_ON = 1,   // turn on
-    ENABLE_ASK = 2,  // do nothing, just ask current status
-};
-
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
         parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "rc110_base"),
                     .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu"),
@@ -32,9 +26,11 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     control.EnableMotor();
     control.ChangeDriveSpeed(0);
 
-    enableBoardService = handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this);
+    services.push_back(handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this));
+    services.push_back(handle.advertiseService("motor_state", &Rc110DriveControl::onMotorState, this));
+    services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
 
-    driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
+    subscribers.push_back(handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this));
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     imuPublisher = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
@@ -56,7 +52,7 @@ Rc110DriveControl::~Rc110DriveControl()
 
 bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
 {
-    if (request.data == ENABLE_ASK) {
+    if (EnabledState(request.data) == EnabledState::ASK) {
         response.success = true;
         response.message = control.IsBaseboardEnabled() ? "enabled" : "disabled";
     } else {
@@ -66,6 +62,40 @@ bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_s
             response.message = "disabled";
         }
     }
+    return true;
+}
+
+bool Rc110DriveControl::onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+{
+    MotorState state;
+    if (MotorState(request.data) == MotorState::ASK) {
+        response.success = true;
+        state = control.GetMotorState();
+    } else {
+        state = MotorState(request.data);
+        response.success = control.EnableMotor(state);
+        if (!response.success) {
+            state = MotorState::OFF;
+        }
+    }
+    response.message = state == MotorState::NEUTRAL ? "neutral" : state == MotorState::ON ? "on" : "off";
+    return true;
+}
+
+bool Rc110DriveControl::onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+{
+    MotorState state;
+    if (MotorState(request.data) == MotorState::ASK) {
+        response.success = true;
+        state = control.GetServoState();
+    } else {
+        state = MotorState(request.data);
+        response.success = control.EnableServo(state);
+        if (!response.success) {
+            state = MotorState::OFF;
+        }
+    }
+    response.message = state == MotorState::NEUTRAL ? "neutral" : state == MotorState::ON ? "on" : "off";
     return true;
 }
 
@@ -176,5 +206,4 @@ void Rc110DriveControl::publishBattery(ros::Publisher& publisher, float voltage,
 
     publisher.publish(msg);
 }
-
 }  // namespace zmp

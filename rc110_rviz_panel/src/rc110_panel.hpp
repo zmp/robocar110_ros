@@ -17,14 +17,17 @@
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+
+#include <zmp/RcCommon.hpp>
 #endif
 
 namespace Ui
 {
 class PanelWidget;
 }
-class QTreeWidgetItem;
+class QAbstractButton;
 class QStatusBar;
+class QTreeWidgetItem;
 
 namespace zmp
 {
@@ -35,7 +38,7 @@ class Rc110Panel : public rviz::Panel
 {
     Q_OBJECT
 
-    enum TREE_ITEM_GROUP { DRIVE, BATTERY, TEMPERATURE, IMU };
+    enum TreeItemGroup { DRIVE, BATTERY, TEMPERATURE, IMU };
     static constexpr const char* TREE_ITEM_GROUP_NAMES[] = {"Drive", "Battery", "Temperature", "IMU"};
 
 public:
@@ -43,9 +46,11 @@ public:
     ~Rc110Panel() override;
 
 private:
-	void onEnableBoard(bool on);
-    void setBoardStatus(uint8_t request);
-    QTreeWidgetItem* getTreeItem(TREE_ITEM_GROUP group, const char* name) const;
+    void onEnableBoard(bool on);
+    void changeBoardState(EnabledState request);
+    void onSetMotorState(QAbstractButton* button);
+    void onSetServoState(QAbstractButton* button);
+    QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::Odometry& odometry);
     void onServoBattery(const sensor_msgs::BatteryState& batteryState);
@@ -58,7 +63,7 @@ private:
     std::unique_ptr<Ui::PanelWidget> ui;
     ros::NodeHandle handle;
     QVector<ros::Subscriber> subscribers;
-    QHash<TREE_ITEM_GROUP, QTreeWidgetItem*> treeItems;
+    QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
     QStatusBar* statusBar;
 };
 }  // namespace zmp
