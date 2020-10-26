@@ -1,6 +1,5 @@
 <launch>
     <arg name="config_dir"/>
-    <arg name="use_defined_behavior" default="false"/>
 
     <include file="$(find rc110_launch)/launch/nodes/sensors.launch"/>
     <include file="$(find rc110_launch)/launch/nodes/joy_teleop.launch"/>
@@ -9,9 +8,14 @@
         <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
     </node>
 
-    <group if="$(arg use_defined_behavior)">
-      <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
+    <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
         <rosparam file="$(arg config_dir)/behavior.yaml" subst_value="true"/>
-      </node>
-    </group>
+    </node>
+
+    <!-- Switching between joystick and AD.
+      By default drive_joy topic is mapped to drive.
+      To switch run: rosservice call mux_drive/select drive_ad
+      Or use joystick or rviz.
+    -->
+    <node pkg="topic_tools" type="mux" name="mux_drive" args="drive drive_joy drive_ad mux:=mux_drive"/>
 </launch>

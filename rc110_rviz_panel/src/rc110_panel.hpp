@@ -18,6 +18,7 @@
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/String.h>
 
 #include <zmp/RcCommon.hpp>
 #endif
@@ -51,11 +52,15 @@ private:
 
     void onEnableBoard(bool on);
     void changeBoardState(EnabledState request);
+    void onEnableAd(bool on);
     void onSetMotorState(QAbstractButton* button);
     void onSetServoState(QAbstractButton* button);
     void onEditingFinished();
+
+    void onAdModeChanged(const std_msgs::String& message);
     void onMotorSpeed(const std_msgs::Float32& message);
     void onSteeringAngle(const std_msgs::Float32& message);
+    void showDriveGoalStatus();
     void onGyroOffset(const std_msgs::Float32& message);
     void onMotorCurrentOffset(const std_msgs::Float32& message);
     void onSteeringOffset(const std_msgs::Float32& message);

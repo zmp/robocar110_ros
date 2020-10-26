@@ -10,11 +10,11 @@
 #include "rc110_panel.hpp"
 
 #include <std_srvs/SetBool.h>
+#include <topic_tools/MuxSelect.h>
 
 #include <QStatusBar>
 #include <boost/math/constants/constants.hpp>
 
-#include "../../../../../.cache/JetBrains/CLion2020.2/.remote/192.168.110.5_22/bca12789-98db-42a3-ae96-8c1d7ef28e1e/opt/ros/melodic/include/std_msgs/Float32.h"
 #include "ui_rc110_panel.h"
 
 namespace zmp
@@ -42,6 +42,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     ui->splitter->setStretchFactor(0, 1);  // expand tree widget to maximum height
 
     connect(ui->boardButton, &QPushButton::clicked, this, &Rc110Panel::onEnableBoard);
+    connect(ui->adButton, &QPushButton::clicked, this, &Rc110Panel::onEnableAd);
     connect(ui->motorGroup,
             QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
             this,
@@ -56,11 +57,13 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     connect(ui->motorCurrentOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
 
-    subscribers.push_back(handle.subscribe("motor_speed_status", 1, &Rc110Panel::onMotorSpeed, this));
-    subscribers.push_back(handle.subscribe("steering_angle_status", 1, &Rc110Panel::onSteeringAngle, this));
-    subscribers.push_back(handle.subscribe("gyro_offset_status", 1, &Rc110Panel::onGyroOffset, this));
-    subscribers.push_back(handle.subscribe("motor_current_offset_status", 1, &Rc110Panel::onMotorCurrentOffset, this));
-    subscribers.push_back(handle.subscribe("steering_offset_status", 1, &Rc110Panel::onSteeringOffset, this));
+    subscribers.push_back(handle.subscribe("mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
+
+    subscribers.push_back(handle.subscribe("motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
+    subscribers.push_back(handle.subscribe("steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
+    subscribers.push_back(handle.subscribe("gyro_offset_goal", 1, &Rc110Panel::onGyroOffset, this));
+    subscribers.push_back(handle.subscribe("motor_current_offset_goal", 1, &Rc110Panel::onMotorCurrentOffset, this));
+    subscribers.push_back(handle.subscribe("steering_offset_goal", 1, &Rc110Panel::onSteeringOffset, this));
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
     subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
@@ -125,6 +128,18 @@ void Rc110Panel::changeBoardState(EnabledState request)
     statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(service.response.message.data())
                                                     : QString("Failed to set board state"),
                            5000);
+}
+
+void Rc110Panel::onEnableAd(bool on)
+{
+    topic_tools::MuxSelect service;
+    service.request.topic = on ? "drive_ad" : "drive_joy";
+
+    if (ros::service::call("mux_drive/select", service)) {
+        statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", 5000);
+    } else {
+        statusBar->showMessage("Failed to switch AD mode", 5000);
+    }
 }
 
 void Rc110Panel::onSetMotorState(QAbstractButton* button)
@@ -197,16 +212,29 @@ void Rc110Panel::onEditingFinished()
     }
 }
 
+void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
+{
+    ui->adButton->setChecked(message.data == "drive_ad");
+}
+
 void Rc110Panel::onMotorSpeed(const std_msgs::Float32& message)
 {
     ui->motorSpeedEdit->setText(QString::number(message.data));
-    statusBar->showMessage(QString("Motor speed was updated: %1").arg(message.data), 5000);
+    showDriveGoalStatus();
 }
 
 void Rc110Panel::onSteeringAngle(const std_msgs::Float32& message)
 {
     ui->steeringEdit->setText(QString::number(message.data * RAD_TO_DEG));
-    statusBar->showMessage(QString("Steering angle was updated: %1").arg(message.data), 5000);
+    showDriveGoalStatus();
+}
+
+void Rc110Panel::showDriveGoalStatus()
+{
+    statusBar->showMessage(QString("Drive was updated. Speed: %1, Angle: %2")
+                                   .arg(ui->motorSpeedEdit->text())
+                                   .arg(ui->steeringEdit->text()),
+                           5000);
 }
 
 void Rc110Panel::onGyroOffset(const std_msgs::Float32& message)

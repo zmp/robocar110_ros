@@ -22,7 +22,7 @@ Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePri
                     .frameId = handlePrivate.param<std::string>("frame_id", "rc110_base")})
 {
     laserSubscriber = handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this);
-    drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive", 1);
+    drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1);
 
     registerNodeBuilder<CheckObstacle>(std::cref(cloud));
     registerNodeBuilder<DriveAction>(std::ref(drivePublisher));
