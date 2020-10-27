@@ -27,6 +27,7 @@ public:
     struct Parameters {
         std::string baseFrameId = "rc110_base";
         std::string imuFrameId = "rc110_imu";
+        double rate = 30.0;  // Hz
     };
 
 public:

@@ -19,7 +19,8 @@ namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
         parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "rc110_base"),
-                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu")})
+                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu"),
+                    .rate = handlePrivate.param<double>("rate", 30)})
 {
     control.Start();
     control.EnableMotor();
@@ -33,8 +34,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     motorBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
     odometryPublisher = handle.advertise<nav_msgs::Odometry>("odometry", 10);
 
-    statusUpdateTimer =
-            handle.createTimer(ros::Duration(0.1), [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
+    statusUpdateTimer = handle.createTimer(ros::Duration(1 / parameters.rate),
+                                           [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
 
     ROS_INFO("RC 1/10 drive control started");
 }
