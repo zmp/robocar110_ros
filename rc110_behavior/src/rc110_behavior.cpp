@@ -27,7 +27,11 @@ Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePri
     registerNodeBuilder<CheckObstacle>(std::cref(cloud));
     registerNodeBuilder<DriveAction>(std::ref(drivePublisher));
 
-    behaviorTree = behaviorTreeFactory.createTreeFromFile(parameters.treeFile);
+    try {
+        behaviorTree = behaviorTreeFactory.createTreeFromFile(parameters.treeFile);
+    } catch (std::runtime_error& e) {
+        throw std::runtime_error("Unable to find tree file in: " + parameters.treeFile);
+    }
 }
 
 void Rc110Behavior::update()

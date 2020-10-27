@@ -2,7 +2,10 @@
     <arg name="config_dir"/>
 
     <include file="$(find rc110_launch)/launch/nodes/sensors.launch"/>
-    <include file="$(find rc110_launch)/launch/nodes/joy_teleop.launch"/>
+
+    <include file="$(find rc110_launch)/launch/nodes/joy_teleop.launch">
+        <arg name="config_dir" value="$(arg config_dir)"/>
+    </include>
 
     <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive_control" respawn="true">
         <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
