@@ -25,7 +25,8 @@ class Rc110DriveControl
 {
 public:
     struct Parameters {
-        std::string frameId;
+        std::string baseFrameId = "rc110_base";
+        std::string imuFrameId = "rc110_imu";
     };
 
 public:

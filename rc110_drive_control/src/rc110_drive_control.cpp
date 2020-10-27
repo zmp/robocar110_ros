@@ -18,7 +18,8 @@
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.frameId = handlePrivate.param<std::string>("frame_id", "rc110_base")})
+        parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "rc110_base"),
+                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu")})
 {
     control.Start();
     control.EnableMotor();
@@ -26,7 +27,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
 
     driveSubscriber = handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this);
     driveStatusPublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
-    imuPublisher = handle.advertise<sensor_msgs::Imu>("imu", 10);
+    imuPublisher = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
     servoTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
     baseboardTemperaturePublisher = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
     motorBatteryPublisher = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
@@ -65,7 +66,7 @@ void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
 {
     ackermann_msgs::AckermannDriveStamped msg;
     msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = parameters.frameId;
+    msg.header.frame_id = parameters.baseFrameId;
 
     msg.drive.speed = drive.speed;
     msg.drive.steering_angle = drive.steeringAngle;
@@ -90,7 +91,7 @@ void Rc110DriveControl::getAndPublishImu()
 
     sensor_msgs::Imu msg;
     msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = "rc110_imu";
+    msg.header.frame_id = parameters.imuFrameId;
     msg.orientation_covariance[0] = -1;  // data not available
 
     msg.angular_velocity.x = 0;
@@ -106,7 +107,7 @@ void Rc110DriveControl::getAndPublishImu()
 
 void Rc110DriveControl::getAndPublishServoTemperature()
 {
-    auto servoTemperature = float(control.GetServoInfo().temperature);
+    auto servoTemperature = static_cast<float>(control.GetServoInfo().temperature);
     publishTemperature(servoTemperature, servoTemperaturePublisher);
 }
 
