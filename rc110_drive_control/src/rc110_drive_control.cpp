@@ -206,11 +206,11 @@ void Rc110DriveControl::getAndPublishImu()
 
     msg.angular_velocity.x = 0;
     msg.angular_velocity.y = 0;
-    msg.angular_velocity.z = sensor.gyro;
+    msg.angular_velocity.z = sensor.gyroYaw;
 
-    msg.linear_acceleration.x = sensor.acc_x;
-    msg.linear_acceleration.y = sensor.acc_y;
-    msg.linear_acceleration.z = sensor.acc_z;
+    msg.linear_acceleration.x = sensor.accelX;
+    msg.linear_acceleration.y = sensor.accelY;
+    msg.linear_acceleration.z = sensor.accelZ;
 
     publishers["imu"].publish(msg);
 }
