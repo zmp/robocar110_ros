@@ -13,6 +13,7 @@
   <depend>cv_camera</depend>
   <depend>hokuyo_node</depend>
   <depend>joy</depend>
+  <depend>imu_tools</depend>
   <depend>rc110_drive_control</depend>
   <depend>rc110_behavior</depend>
   <depend>rc110_teleop</depend>
