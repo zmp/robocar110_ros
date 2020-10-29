@@ -27,7 +27,9 @@ class Rc110JoyTeleop
 public:
     struct Param {
         int deadManButton = 4;
-        int steeringAxis = -3;
+        int gearUpButton = 6;
+        int gearDownButton = 7;
+        int steeringAxis = 3;
         int speedAxis = 1;
         double maxSteeringAngleRad = angles::from_degrees(30);
 
@@ -52,11 +54,13 @@ private:
 
     ros::Subscriber m_joySub;
     ros::Publisher m_drivePub;
-    bool m_deadmanPressed;
-    bool m_stopMessagePublished;
+    bool m_deadmanPressed = false;
+    bool m_gearUpPressed = false;
+    bool m_gearDownPressed = false;
+    bool m_stopMessagePublished = false;
     ackermann_msgs::AckermannDriveStamped m_lastMessage;
-    std::mutex m_publishMutex;
     ros::Timer m_timer;
-    std::map<int, int> axisDirection;  /// +1 or -1 for inverted axis
+    std::map<int, int> m_axisDirection;  /// +1 or -1 for inverted axis
+    int m_gear = 0;
 };
 }  // namespace zmp

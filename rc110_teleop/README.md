@@ -1,8 +1,6 @@
-# RoboCar 1/10 ROS nodes for teleoperation #
-***
+# RoboCar 1/10 ROS nodes for teleoperation
 
-## Dependencies ##
-***
+## Dependencies
 
 - ROS environment
 - joystick ROS drivers
@@ -11,12 +9,29 @@
     sudo apt-get install ros-${ROS_DISTRO}-joystick-drivers
 ```
 
-## References ##
-***
+## Controls
 
 - [Details of the Joystick](https://www.elecom.co.jp/products/JC-U4113SBK.html)
 ![Joystick Structure](./docs/images/joystick.jpg)
 
-- To control rc110 by joystick, first press and hold button number 5 on the joystick; direct the axis (at the 10th position) left and right for steering angle; direct the axis (at the 9th position) up and down for speed.
 
-**連射AUTOボタン and 連射CLEARボタン are not mapped by ROS drivers**
+- Button 5: press and hold it to drive
+- Button 7: increases gear (gear 1 on start)
+- Button 8: decreases gear
+- Axis 9:  up and down regulates speed
+- Axis 10: left and right changes steering angle
+
+#### Gears
+
+1. Up to 3 km/h
+2. Up to 6 km/h
+3. Maximum speed
+
+## Remapping
+
+To know buttons and axes indexes, use `rostopic echo /joy`
+
+Buttons mapping is set in `joy_teleop.yaml`.
+* To set axis inversion, set negative index.
+
+**NB:** AUTO and CLEAR are not mapped by ROS driver.
