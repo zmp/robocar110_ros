@@ -14,8 +14,15 @@ namespace zmp
 {
 namespace
 {
-constexpr double GEAR_1 = 0.83;  // 3 km/h
-constexpr double GEAR_2 = 1.67;  // 6 km/h
+constexpr double GEAR_1 = 0.83;    // 3 km/h
+constexpr double GEAR_2 = 1.67;    // 6 km/h
+constexpr float CURVE_POWER = 10;  // similar to x^2
+
+float correctSteeringAngle(float angle)  // angle = [-1.0 .. 1.0]
+{
+    float value = (std::exp(std::log(CURVE_POWER + 1) * std::abs(angle)) - 1) / CURVE_POWER;
+    return angle < 0 ? -value : value;
+}
 }  // namespace
 
 Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
@@ -71,9 +78,9 @@ void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
     m_gear = m_deadmanPressed ? std::max(1, m_gear) : 0;
 
     double speedFactor = (m_gear < 2) ? GEAR_1 : (m_gear < 3) ? GEAR_2 : m_param.maxSpeed;
+    float correctedAngle = correctSteeringAngle(joyMsg->axes[m_param.steeringAxis]) * float(m_param.maxSteeringAngleRad);
 
-    m_lastMessage.drive.steering_angle =
-            m_axisDirection[m_param.steeringAxis] * joyMsg->axes[m_param.steeringAxis] * m_param.maxSteeringAngleRad;
+    m_lastMessage.drive.steering_angle = m_axisDirection[m_param.steeringAxis] * correctedAngle;
     m_lastMessage.drive.speed = m_axisDirection[m_param.speedAxis] * joyMsg->axes[m_param.speedAxis] * speedFactor;
     m_lastMessage.header.stamp = ros::Time::now();
     m_lastMessage.header.frame_id = m_param.frameId;
