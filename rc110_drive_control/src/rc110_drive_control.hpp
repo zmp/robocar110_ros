@@ -48,6 +48,7 @@ private:
     void onSteeringAngleOffset(const std_msgs::Float32::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
+    void publishErrors();
     void getAndPublishDriveInfo();
     void getAndPublishServoInfo();
     void getAndPublishImu();
@@ -66,5 +67,7 @@ private:
     std::vector<ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;
     ros::Timer statusUpdateTimer;
+    std::atomic<BaseboardError> baseboardError = BaseboardError::NONE;
+    BaseboardError lastBaseboardError;
 };
 }  // namespace zmp

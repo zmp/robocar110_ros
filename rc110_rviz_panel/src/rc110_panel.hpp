@@ -17,6 +17,7 @@
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+#include <std_msgs/UInt8.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/String.h>
 
@@ -28,6 +29,7 @@ namespace Ui
 class PanelWidget;
 }
 class QAbstractButton;
+class QLabel;
 class QStatusBar;
 class QTreeWidgetItem;
 
@@ -58,6 +60,7 @@ private:
     void onEditingFinished();
 
     void onAdModeChanged(const std_msgs::String& message);
+    void onError(const std_msgs::UInt8& message);
     void onMotorSpeed(const std_msgs::Float32& message);
     void onSteeringAngle(const std_msgs::Float32& message);
     void showDriveGoalStatus();

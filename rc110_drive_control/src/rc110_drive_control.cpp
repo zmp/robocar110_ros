@@ -10,17 +10,20 @@
 #include "rc110_drive_control.hpp"
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
+#include <std_msgs/UInt8.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+#include <ros/callback_queue.h>
 
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
         parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "rc110_base"),
                     .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu"),
-                    .rate = handlePrivate.param<double>("rate", 30)})
+                    .rate = handlePrivate.param<double>("rate", 30)}),
+        control([this](BaseboardError error) { baseboardError = error; })
 {
     control.Start();
     control.EnableMotor();
@@ -36,6 +39,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     subscribers.push_back(handle.subscribe("gyro_offset", 10, &Rc110DriveControl::onGyroOffset, this));
     subscribers.push_back(handle.subscribe("motor_current_offset", 10, &Rc110DriveControl::onMotorCurrentOffset, this));
     subscribers.push_back(handle.subscribe("steering_offset", 10, &Rc110DriveControl::onSteeringAngleOffset, this));
+
+    publishers["baseboard_error"] = handle.advertise<std_msgs::UInt8>("baseboard_error", 10, true);
 
     publishers["motor_speed_goal"] = handle.advertise<std_msgs::Float32>("motor_speed_goal", 10, true);
     publishers["steering_angle_goal"] = handle.advertise<std_msgs::Float32>("steering_angle_goal", 10, true);
@@ -53,6 +58,9 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
 
     statusUpdateTimer = handle.createTimer(ros::Duration(1 / parameters.rate),
                                            [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
+
+    // publish no error
+    publishers["baseboard_error"].publish(std_msgs::UInt8());
 
     // publish status
     std_msgs::Float32 speedMessage, angleMessage, gyroOffsetMessage, motorCurrentOffsetMessage, steeringOffsetMessage;
@@ -174,11 +182,25 @@ void Rc110DriveControl::onSteeringAngleOffset(const std_msgs::Float32_<std::allo
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
+    publishErrors();
     getAndPublishDriveInfo();
     getAndPublishServoInfo();
     getAndPublishImu();
     getAndPublishBaseboardTemperature();
     getAndPublishMotorBattery();
+}
+
+void Rc110DriveControl::publishErrors()
+{
+    if (lastBaseboardError == baseboardError) {
+        return;
+    }
+    lastBaseboardError = baseboardError;
+
+    std_msgs::UInt8 message;
+    message.data = uint8_t(baseboardError.load());
+
+    publishers["baseboard_error"].publish(message);
 }
 
 void Rc110DriveControl::getAndPublishDriveInfo()

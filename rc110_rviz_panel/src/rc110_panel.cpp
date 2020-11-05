@@ -58,6 +58,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
 
     subscribers.push_back(handle.subscribe("mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
+    subscribers.push_back(handle.subscribe("baseboard_error", 1, &Rc110Panel::onError, this));
 
     subscribers.push_back(handle.subscribe("motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
     subscribers.push_back(handle.subscribe("steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
@@ -215,6 +216,27 @@ void Rc110Panel::onEditingFinished()
 void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
 {
     ui->adButton->setChecked(message.data == "drive_ad");
+}
+
+void Rc110Panel::onError(const std_msgs::UInt8& message)
+{
+    if (!message.data) {
+        ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
+        ui->errorLabel->setToolTip("Working");
+    } else {
+        ui->errorLabel->setPixmap(QPixmap(":/error.png"));
+        BaseboardError error {message.data};
+        QString tooltip = "Please, restart baseboard: %1";
+        if (error == BaseboardError::BOARD_HEAT) {
+            ui->errorLabel->setToolTip(tooltip.arg("board has too high temperature"));
+        } else if (error == BaseboardError::MOTOR_HEAT) {
+            ui->errorLabel->setToolTip(tooltip.arg("motor has too high temperature"));
+        } else if (error == BaseboardError::MOTOR_FAILURE) {
+            ui->errorLabel->setToolTip(tooltip.arg("encoder feedback and polarity of the motor"));
+        } else if (error == BaseboardError::LOW_VOLTAGE) {
+            ui->errorLabel->setToolTip(tooltip.arg("voltage dropped less than 6V for around 1s"));
+        }
+    }
 }
 
 void Rc110Panel::onMotorSpeed(const std_msgs::Float32& message)

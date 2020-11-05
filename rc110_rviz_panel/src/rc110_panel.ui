@@ -14,6 +14,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>4</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -192,6 +195,35 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonsLayout">
+     <property name="spacing">
+      <number>4</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="errorLabel">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../res/main.qrc">:/error.png</pixmap>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item>
       <widget class="QPushButton" name="boardButton">
        <property name="toolTip">
@@ -244,7 +276,9 @@ QPushButton:checked {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/main.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="servoGroup"/>
