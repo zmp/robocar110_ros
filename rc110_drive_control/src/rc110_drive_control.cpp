@@ -11,7 +11,7 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
-#include <rc110_msgs/Rc110Status.h>
+#include <rc110_msgs/Status.h>
 #include <ros/callback_queue.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
@@ -33,19 +33,16 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
 
     subscribers.push_back(handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this));
-    subscribers.push_back(handle.subscribe("gyro_offset", 10, &Rc110DriveControl::onGyroOffset, this));
-    subscribers.push_back(handle.subscribe("motor_current_offset", 10, &Rc110DriveControl::onMotorCurrentOffset, this));
-    subscribers.push_back(handle.subscribe("steering_offset", 10, &Rc110DriveControl::onSteeringAngleOffset, this));
+    subscribers.push_back(handle.subscribe("offsets", 10, &Rc110DriveControl::onOffsets, this));
 
     publishers["motor_speed_goal"] = handle.advertise<std_msgs::Float32>("motor_speed_goal", 10, true);
     publishers["steering_angle_goal"] = handle.advertise<std_msgs::Float32>("steering_angle_goal", 10, true);
-    publishers["gyro_offset_goal"] = handle.advertise<std_msgs::Float32>("gyro_offset_goal", 10, true);
-    publishers["motor_current_offset_goal"] = handle.advertise<std_msgs::Float32>("motor_current_offset_goal", 10, true);
-    publishers["steering_offset_goal"] = handle.advertise<std_msgs::Float32>("steering_offset_goal", 10, true);
 
     publishers["baseboard_error"] = handle.advertise<std_msgs::UInt8>("baseboard_error", 10, true);
-    publishers["robot_status"] = handle.advertise<rc110_msgs::Rc110Status>("robot_status", 10, true);
+    publishers["robot_status"] = handle.advertise<rc110_msgs::Status>("robot_status", 10, true);
     publishers["drive_status"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
+    publishers["offsets_status"] = handle.advertise<rc110_msgs::Offsets>("offsets_status", 10, true);
+
     publishers["imu"] = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
     publishers["servo_temperature"] = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
     publishers["baseboard_temperature"] = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
@@ -59,15 +56,12 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     // publish no error
     publishers["baseboard_error"].publish(std_msgs::UInt8());
 
-    // publish status
-    std_msgs::Float32 gyroOffsetMessage, motorCurrentOffsetMessage, steeringOffsetMessage;
-    gyroOffsetMessage.data = control.GetGyroOffset();
-    motorCurrentOffsetMessage.data = control.GetMotorCurrentOffset();
-    steeringOffsetMessage.data = control.GetSteeringAngleOffset();
-
-    publishers["gyro_offset_goal"].publish(gyroOffsetMessage);
-    publishers["motor_current_offset_goal"].publish(motorCurrentOffsetMessage);
-    publishers["steering_offset_goal"].publish(steeringOffsetMessage);
+    // publish offsets
+    rc110_msgs::Offsets offsetsMessage;
+    offsetsMessage.gyro = control.GetGyroOffset();
+    offsetsMessage.motor_current = control.GetMotorCurrentOffset();
+    offsetsMessage.steering = control.GetSteeringAngleOffset();
+    publishers["offsets_status"].publish(offsetsMessage);
 
     ROS_INFO("RC 1/10 drive control started");
 }
@@ -111,22 +105,10 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::Con
     }
 }
 
-void Rc110DriveControl::onGyroOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
+void Rc110DriveControl::onOffsets(const rc110_msgs::Offsets::ConstPtr& message)
 {
-    control.SetGyroOffset(message->data);
-    publishers["gyro_offset_goal"].publish(message);
-}
-
-void Rc110DriveControl::onMotorCurrentOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
-{
-    control.SetMotorCurrentOffset(message->data);
-    publishers["motor_current_offset_goal"].publish(message);
-}
-
-void Rc110DriveControl::onSteeringAngleOffset(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
-{
-    control.SetSteeringAngleOffset(message->data);
-    publishers["steering_offset_goal"].publish(message);
+    control.SetOffsets(message->gyro, message->motor_current, message->steering);
+    publishers["offsets_status"].publish(message);
 }
 
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
@@ -155,7 +137,7 @@ void Rc110DriveControl::publishErrors()
 
 void Rc110DriveControl::getAndPublishRobotStatus()
 {
-    rc110_msgs::Rc110Status message;
+    rc110_msgs::Status message;
     message.board_enabled = control.IsBaseboardEnabled();
     message.motor_state = uint8_t(control.GetMotorState());
     message.servo_state = uint8_t(control.GetServoState());

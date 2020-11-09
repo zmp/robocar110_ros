@@ -61,13 +61,12 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 
     subscribers.push_back(handle.subscribe("motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
     subscribers.push_back(handle.subscribe("steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
-    subscribers.push_back(handle.subscribe("gyro_offset_goal", 1, &Rc110Panel::onGyroOffset, this));
-    subscribers.push_back(handle.subscribe("motor_current_offset_goal", 1, &Rc110Panel::onMotorCurrentOffset, this));
-    subscribers.push_back(handle.subscribe("steering_offset_goal", 1, &Rc110Panel::onSteeringOffset, this));
 
     subscribers.push_back(handle.subscribe("baseboard_error", 1, &Rc110Panel::onError, this));
     subscribers.push_back(handle.subscribe("robot_status", 1, &Rc110Panel::onRobotStatus, this));
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
+    subscribers.push_back(handle.subscribe("offsets_status", 1, &Rc110Panel::onOffsets, this));
+
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
     subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
     subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
@@ -76,9 +75,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("imu/data_raw", 1, &Rc110Panel::onImu, this));
 
     publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1);
-    publishers["gyroOffsetEdit"] = handle.advertise<std_msgs::Float32>("gyro_offset", 1);
-    publishers["motorCurrentOffsetEdit"] = handle.advertise<std_msgs::Float32>("motor_current_offset", 1);
-    publishers["steeringOffsetEdit"] = handle.advertise<std_msgs::Float32>("steering_offset", 1);
+    publishers["offsets"] = handle.advertise<rc110_msgs::Offsets>("offsets", 1);
 
     statusBar->showMessage("");
 
@@ -182,9 +179,7 @@ void Rc110Panel::onEditingFinished()
             steeringAngle = value;
             publishDrive();
         } else {
-            std_msgs::Float32 message;
-            message.data = value;
-            publishers[name.data()].publish(message);
+            publishOffsets();
         }
     }
 }
@@ -195,8 +190,16 @@ void Rc110Panel::publishDrive()
     message.header.stamp = ros::Time::now();
     message.drive.speed = driveSpeed;
     message.drive.steering_angle = steeringAngle * DEG_TO_RAD;
-
     publishers["drive_manual"].publish(message);
+}
+
+void Rc110Panel::publishOffsets()
+{
+    rc110_msgs::Offsets message;
+    message.gyro = ui->gyroOffsetEdit->text().toFloat();
+    message.motor_current = ui->motorCurrentOffsetEdit->text().toFloat();
+    message.steering = ui->steeringOffsetEdit->text().toFloat();
+    publishers["offsets"].publish(message);
 }
 
 void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
@@ -224,24 +227,6 @@ void Rc110Panel::showDriveGoalStatus()
                            5000);
 }
 
-void Rc110Panel::onGyroOffset(const std_msgs::Float32& message)
-{
-    ui->gyroOffsetEdit->setText(QString::number(message.data));
-    statusBar->showMessage(QString("Gyro offset was updated: %1").arg(message.data), 5000);
-}
-
-void Rc110Panel::onMotorCurrentOffset(const std_msgs::Float32& message)
-{
-    ui->motorCurrentOffsetEdit->setText(QString::number(message.data));
-    statusBar->showMessage(QString("Motor current offset was updated: %1").arg(message.data), 5000);
-}
-
-void Rc110Panel::onSteeringOffset(const std_msgs::Float32& message)
-{
-    ui->steeringOffsetEdit->setText(QString::number(message.data));
-    statusBar->showMessage(QString("Steering angle offset was updated: %1").arg(message.data), 5000);
-}
-
 void Rc110Panel::onError(const std_msgs::UInt8& message)
 {
     BaseboardError error{message.data};
@@ -264,7 +249,7 @@ void Rc110Panel::onError(const std_msgs::UInt8& message)
     }
 }
 
-void Rc110Panel::onRobotStatus(const rc110_msgs::Rc110Status& message)
+void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
 {
     ui->boardButton->setChecked(message.board_enabled);
 
@@ -297,6 +282,17 @@ void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driv
     getTreeItem(DRIVE, "steering angle")->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * RAD_TO_DEG));
     getTreeItem(DRIVE, "steering speed")
             ->setText(1, QString("%1 °/s").arg(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG));
+}
+
+void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
+{
+    ui->gyroOffsetEdit->setText(QString::number(message.gyro));
+    ui->motorCurrentOffsetEdit->setText(QString::number(message.motor_current));
+    ui->steeringOffsetEdit->setText(QString::number(message.steering));
+
+    statusBar->showMessage(
+            QString("Offsets updated: %1, %2, %3").arg(message.gyro).arg(message.motor_current).arg(message.steering),
+            5000);
 }
 
 void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)

@@ -13,6 +13,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <std_srvs/SetBool.h>
+#include <rc110_msgs/Offsets.h>
 
 #include <string>
 #include <zmp/RcControl.hpp>
@@ -41,9 +42,7 @@ private:
     bool onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     bool onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
-    void onGyroOffset(const std_msgs::Float32::ConstPtr& message);
-    void onMotorCurrentOffset(const std_msgs::Float32::ConstPtr& message);
-    void onSteeringAngleOffset(const std_msgs::Float32::ConstPtr& message);
+    void onOffsets(const rc110_msgs::Offsets::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
     void publishErrors();

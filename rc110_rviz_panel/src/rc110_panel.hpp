@@ -12,7 +12,8 @@
 #ifndef Q_MOC_RUN
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
-#include <rc110_msgs/Rc110Status.h>
+#include <rc110_msgs/Status.h>
+#include <rc110_msgs/Offsets.h>
 #include <ros/ros.h>
 #include <rviz/panel.h>
 #include <sensor_msgs/BatteryState.h>
@@ -61,17 +62,16 @@ private:
     void onSetServoState(QAbstractButton* button);
     void onEditingFinished();
     void publishDrive();
+    void publishOffsets();
 
     void onAdModeChanged(const std_msgs::String& message);
     void onMotorSpeed(const std_msgs::Float32& message);
     void onSteeringAngle(const std_msgs::Float32& message);
     void showDriveGoalStatus();
-    void onGyroOffset(const std_msgs::Float32& message);
-    void onMotorCurrentOffset(const std_msgs::Float32& message);
-    void onSteeringOffset(const std_msgs::Float32& message);
 
     void onError(const std_msgs::UInt8& message);
-    void onRobotStatus(const rc110_msgs::Rc110Status& message);
+    void onRobotStatus(const rc110_msgs::Status& message);
+    void onOffsets(const rc110_msgs::Offsets& message);
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::Odometry& odometry);
     void onServoBattery(const sensor_msgs::BatteryState& batteryState);
