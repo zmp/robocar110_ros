@@ -10,12 +10,13 @@
 #include "rc110_drive_control.hpp"
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
-#include <std_msgs/UInt8.h>
 #include <nav_msgs/Odometry.h>
+#include <rc110_msgs/Rc110Status.h>
+#include <ros/callback_queue.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
-#include <ros/callback_queue.h>
+#include <std_msgs/UInt8.h>
 
 namespace zmp
 {
@@ -26,21 +27,15 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
         control([this](BaseboardError error) { baseboardError = error; })
 {
     control.Start();
-    control.EnableMotor();
-    control.ChangeDriveSpeed(0);
 
     services.push_back(handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this));
     services.push_back(handle.advertiseService("motor_state", &Rc110DriveControl::onMotorState, this));
     services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
 
     subscribers.push_back(handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this));
-    subscribers.push_back(handle.subscribe("motor_speed", 10, &Rc110DriveControl::onMotorSpeed, this));
-    subscribers.push_back(handle.subscribe("steering_angle", 10, &Rc110DriveControl::onSteeringAngle, this));
     subscribers.push_back(handle.subscribe("gyro_offset", 10, &Rc110DriveControl::onGyroOffset, this));
     subscribers.push_back(handle.subscribe("motor_current_offset", 10, &Rc110DriveControl::onMotorCurrentOffset, this));
     subscribers.push_back(handle.subscribe("steering_offset", 10, &Rc110DriveControl::onSteeringAngleOffset, this));
-
-    publishers["baseboard_error"] = handle.advertise<std_msgs::UInt8>("baseboard_error", 10, true);
 
     publishers["motor_speed_goal"] = handle.advertise<std_msgs::Float32>("motor_speed_goal", 10, true);
     publishers["steering_angle_goal"] = handle.advertise<std_msgs::Float32>("steering_angle_goal", 10, true);
@@ -48,6 +43,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     publishers["motor_current_offset_goal"] = handle.advertise<std_msgs::Float32>("motor_current_offset_goal", 10, true);
     publishers["steering_offset_goal"] = handle.advertise<std_msgs::Float32>("steering_offset_goal", 10, true);
 
+    publishers["baseboard_error"] = handle.advertise<std_msgs::UInt8>("baseboard_error", 10, true);
+    publishers["robot_status"] = handle.advertise<rc110_msgs::Rc110Status>("robot_status", 10, true);
     publishers["drive_status"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     publishers["imu"] = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
     publishers["servo_temperature"] = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
@@ -63,16 +60,11 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     publishers["baseboard_error"].publish(std_msgs::UInt8());
 
     // publish status
-    std_msgs::Float32 speedMessage, angleMessage, gyroOffsetMessage, motorCurrentOffsetMessage, steeringOffsetMessage;
-    auto driveInfo = control.GetDriveInfo();
-    speedMessage.data = driveInfo.speed;
-    angleMessage.data = driveInfo.steeringAngle;
+    std_msgs::Float32 gyroOffsetMessage, motorCurrentOffsetMessage, steeringOffsetMessage;
     gyroOffsetMessage.data = control.GetGyroOffset();
     motorCurrentOffsetMessage.data = control.GetMotorCurrentOffset();
     steeringOffsetMessage.data = control.GetSteeringAngleOffset();
 
-    publishers["motor_speed_goal"].publish(speedMessage);
-    publishers["steering_angle_goal"].publish(angleMessage);
     publishers["gyro_offset_goal"].publish(gyroOffsetMessage);
     publishers["motor_current_offset_goal"].publish(motorCurrentOffsetMessage);
     publishers["steering_offset_goal"].publish(steeringOffsetMessage);
@@ -87,78 +79,35 @@ Rc110DriveControl::~Rc110DriveControl()
 
 bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
 {
-    if (EnabledState(request.data) == EnabledState::ASK) {
-        response.success = true;
-        response.message = control.IsBaseboardEnabled() ? "enabled" : "disabled";
-    } else {
-        if ((response.success = control.EnableBaseboard(request.data))) {
-            response.message = request.data ? "enabled" : "disabled";
-        } else {
-            response.message = "disabled";
-        }
-    }
+    response.success = control.EnableBaseboard(request.data);
     return true;
 }
 
 bool Rc110DriveControl::onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
 {
-    MotorState state;
-    if (MotorState(request.data) == MotorState::ASK) {
-        response.success = true;
-        state = control.GetMotorState();
-    } else {
-        state = MotorState(request.data);
-        response.success = control.EnableMotor(state);
-        if (!response.success) {
-            state = MotorState::OFF;
-        }
-    }
-    response.message = state == MotorState::NEUTRAL ? "neutral" : state == MotorState::ON ? "on" : "off";
+    auto state = MotorState(request.data);
+    response.success = control.EnableMotor(state);
     return true;
 }
 
 bool Rc110DriveControl::onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
 {
-    MotorState state;
-    if (MotorState(request.data) == MotorState::ASK) {
-        response.success = true;
-        state = control.GetServoState();
-    } else {
-        state = MotorState(request.data);
-        response.success = control.EnableServo(state);
-        if (!response.success) {
-            state = MotorState::OFF;
-        }
-    }
-    response.message = state == MotorState::NEUTRAL ? "neutral" : state == MotorState::ON ? "on" : "off";
+    auto state = MotorState(request.data);
+    response.success = control.EnableServo(state);
     return true;
 }
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
 {
-    std_msgs::Float32 angleMessage, speedMessage;
-
-    if (control.ChangeSteeringAngle(message->drive.steering_angle)) {
-        angleMessage.data = message->drive.steering_angle;
-        publishers["steering_angle_goal"].publish(angleMessage);
-    }
     if (control.ChangeDriveSpeed(message->drive.speed)) {
+        std_msgs::Float32 speedMessage;
         speedMessage.data = message->drive.speed;
         publishers["motor_speed_goal"].publish(speedMessage);
     }
-}
-
-void Rc110DriveControl::onMotorSpeed(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
-{
-    if (control.ChangeDriveSpeed(message->data)) {
-        publishers["motor_speed_goal"].publish(message);
-    }
-}
-
-void Rc110DriveControl::onSteeringAngle(const std_msgs::Float32_<std::allocator<void>>::ConstPtr& message)
-{
-    if (control.ChangeSteeringAngle(message->data)) {
-        publishers["steering_angle_goal"].publish(message);
+    if (control.ChangeSteeringAngle(message->drive.steering_angle)) {
+        std_msgs::Float32 angleMessage;
+        angleMessage.data = message->drive.steering_angle;
+        publishers["steering_angle_goal"].publish(angleMessage);
     }
 }
 
@@ -183,6 +132,7 @@ void Rc110DriveControl::onSteeringAngleOffset(const std_msgs::Float32_<std::allo
 void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
 {
     publishErrors();
+    getAndPublishRobotStatus();
     getAndPublishDriveInfo();
     getAndPublishServoInfo();
     getAndPublishImu();
@@ -201,6 +151,16 @@ void Rc110DriveControl::publishErrors()
     message.data = uint8_t(baseboardError.load());
 
     publishers["baseboard_error"].publish(message);
+}
+
+void Rc110DriveControl::getAndPublishRobotStatus()
+{
+    rc110_msgs::Rc110Status message;
+    message.board_enabled = control.IsBaseboardEnabled();
+    message.motor_state = uint8_t(control.GetMotorState());
+    message.servo_state = uint8_t(control.GetServoState());
+
+    publishers["robot_status"].publish(message);
 }
 
 void Rc110DriveControl::getAndPublishDriveInfo()

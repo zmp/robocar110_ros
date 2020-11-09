@@ -1,7 +1,7 @@
 <launch>
   <arg name="config_dir"/>
   <arg name="joy_msg" default="/joy"/>
-  <arg name="drive_msg" default="/drive_joy"/>
+  <arg name="drive_msg" default="/drive_manual"/>
 
   <node pkg="joy" type="joy_node" name="joy_node"/>
 

@@ -5,6 +5,7 @@ set(catkin_exec_depends
         rviz
         ackermann_msgs
         sensor_msgs
+        rc110_msgs
 )
 find_package(catkin REQUIRED ${catkin_exec_depends})
 

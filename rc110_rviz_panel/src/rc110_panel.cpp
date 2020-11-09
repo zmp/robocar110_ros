@@ -51,20 +51,22 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
             QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked),
             this,
             &Rc110Panel::onSetServoState);
-    connect(ui->motorSpeedEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->driveSpeedEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->gyroOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->motorCurrentOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
 
     subscribers.push_back(handle.subscribe("mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
-    subscribers.push_back(handle.subscribe("baseboard_error", 1, &Rc110Panel::onError, this));
 
     subscribers.push_back(handle.subscribe("motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
     subscribers.push_back(handle.subscribe("steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
     subscribers.push_back(handle.subscribe("gyro_offset_goal", 1, &Rc110Panel::onGyroOffset, this));
     subscribers.push_back(handle.subscribe("motor_current_offset_goal", 1, &Rc110Panel::onMotorCurrentOffset, this));
     subscribers.push_back(handle.subscribe("steering_offset_goal", 1, &Rc110Panel::onSteeringOffset, this));
+
+    subscribers.push_back(handle.subscribe("baseboard_error", 1, &Rc110Panel::onError, this));
+    subscribers.push_back(handle.subscribe("robot_status", 1, &Rc110Panel::onRobotStatus, this));
     subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
     subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
     subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
@@ -73,20 +75,24 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu/data_raw", 1, &Rc110Panel::onImu, this));
 
-    publishers["motorSpeedEdit"] = handle.advertise<std_msgs::Float32>("motor_speed", 1);
-    publishers["steeringEdit"] = handle.advertise<std_msgs::Float32>("steering_angle", 1);
+    publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1);
     publishers["gyroOffsetEdit"] = handle.advertise<std_msgs::Float32>("gyro_offset", 1);
     publishers["motorCurrentOffsetEdit"] = handle.advertise<std_msgs::Float32>("motor_current_offset", 1);
     publishers["steeringOffsetEdit"] = handle.advertise<std_msgs::Float32>("steering_offset", 1);
 
-    // ask initial states
-    changeBoardState(EnabledState::ASK);
-    onSetMotorState(nullptr);
-    onSetServoState(nullptr);
     statusBar->showMessage("");
+
+    startTimer(100);  // ms
 }
 
 Rc110Panel::~Rc110Panel() = default;
+
+void Rc110Panel::timerEvent(QTimerEvent* event)
+{
+    if (driveSpeed != 0) {
+        publishDrive();  // prevent motor from stopping by timeout
+    }
+}
 
 QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) const
 {
@@ -112,21 +118,11 @@ QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) 
 
 void Rc110Panel::onEnableBoard(bool on)
 {
-    changeBoardState(on ? EnabledState::ON : EnabledState::OFF);
-}
-
-void Rc110Panel::changeBoardState(EnabledState request)
-{
     std_srvs::SetBool service;
-    service.request.data = uint8_t(request);
+    service.request.data = uint8_t(on);
+    ros::service::call("enable_board", service);
 
-    if (!ros::service::call("enable_board", service)) {
-        service.response.success = false;
-        service.response.message = "disabled";
-    }
-
-    ui->boardButton->setChecked(service.response.message == "enabled");
-    statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(service.response.message.data())
+    statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(on ? "on" : "off")
                                                     : QString("Failed to set board state"),
                            5000);
 }
@@ -134,7 +130,7 @@ void Rc110Panel::changeBoardState(EnabledState request)
 void Rc110Panel::onEnableAd(bool on)
 {
     topic_tools::MuxSelect service;
-    service.request.topic = on ? "drive_ad" : "drive_joy";
+    service.request.topic = on ? "drive_ad" : "drive_manual";
 
     if (ros::service::call("mux_drive/select", service)) {
         statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", 5000);
@@ -145,25 +141,12 @@ void Rc110Panel::onEnableAd(bool on)
 
 void Rc110Panel::onSetMotorState(QAbstractButton* button)
 {
-    MotorState state = (button == ui->motorOffRadio)       ? MotorState::OFF
-                       : (button == ui->motorOnRadio)      ? MotorState::ON
+    MotorState state = (button == ui->motorOnRadio)        ? MotorState::ON
                        : (button == ui->motorNeutralRadio) ? MotorState::NEUTRAL
-                                                           : MotorState::ASK;
+                                                           : MotorState::OFF;
     std_srvs::SetBool service;
     service.request.data = uint8_t(state);
-
-    if (!ros::service::call("motor_state", service)) {
-        service.response.success = false;
-        service.response.message = "off";
-    }
-
-    if (service.response.message == "neutral") {
-        ui->motorNeutralRadio->setChecked(true);
-    } else if (service.response.message == "on") {
-        ui->motorOnRadio->setChecked(true);
-    } else {
-        ui->motorOffRadio->setChecked(true);
-    }
+    ros::service::call("motor_state", service);
 
     statusBar->showMessage(service.response.success
                                    ? QString("Drive motor was set to %1").arg(service.response.message.data())
@@ -173,25 +156,12 @@ void Rc110Panel::onSetMotorState(QAbstractButton* button)
 
 void Rc110Panel::onSetServoState(QAbstractButton* button)
 {
-    MotorState state = (button == ui->servoOffRadio)       ? MotorState::OFF
-                       : (button == ui->servoOnRadio)      ? MotorState::ON
+    MotorState state = (button == ui->servoOnRadio)        ? MotorState::ON
                        : (button == ui->servoNeutralRadio) ? MotorState::NEUTRAL
-                                                           : MotorState::ASK;
+                                                           : MotorState::OFF;
     std_srvs::SetBool service;
     service.request.data = uint8_t(state);
-
-    if (!ros::service::call("servo_state", service)) {
-        service.response.success = false;
-        service.response.message = "off";
-    }
-
-    if (service.response.message == "neutral") {
-        ui->servoNeutralRadio->setChecked(true);
-    } else if (service.response.message == "on") {
-        ui->servoOnRadio->setChecked(true);
-    } else {
-        ui->servoOffRadio->setChecked(true);
-    }
+    ros::service::call("servo_state", service);
 
     statusBar->showMessage(service.response.success
                                    ? QString("Servomotor was set to %1").arg(service.response.message.data())
@@ -202,15 +172,31 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
 void Rc110Panel::onEditingFinished()
 {
     if (auto edit = dynamic_cast<QLineEdit*>(sender())) {
-        std_msgs::Float32 message;
-        message.data = edit->text().toFloat();
+        float value = edit->text().toFloat();
 
         auto name = edit->objectName().toStdString();
-        if (name == "steeringEdit") {
-            message.data *= DEG_TO_RAD;
+        if (name == "driveSpeedEdit") {
+            driveSpeed = value;
+            publishDrive();
+        } else if (name == "steeringEdit") {
+            steeringAngle = value;
+            publishDrive();
+        } else {
+            std_msgs::Float32 message;
+            message.data = value;
+            publishers[name.data()].publish(message);
         }
-        publishers[name.data()].publish(message);
     }
+}
+
+void Rc110Panel::publishDrive()
+{
+    ackermann_msgs::AckermannDriveStamped message;
+    message.header.stamp = ros::Time::now();
+    message.drive.speed = driveSpeed;
+    message.drive.steering_angle = steeringAngle * DEG_TO_RAD;
+
+    publishers["drive_manual"].publish(message);
 }
 
 void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
@@ -218,30 +204,9 @@ void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
     ui->adButton->setChecked(message.data == "drive_ad");
 }
 
-void Rc110Panel::onError(const std_msgs::UInt8& message)
-{
-    if (!message.data) {
-        ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
-        ui->errorLabel->setToolTip("Working");
-    } else {
-        ui->errorLabel->setPixmap(QPixmap(":/error.png"));
-        BaseboardError error {message.data};
-        QString tooltip = "Please, restart baseboard: %1";
-        if (error == BaseboardError::BOARD_HEAT) {
-            ui->errorLabel->setToolTip(tooltip.arg("board has too high temperature"));
-        } else if (error == BaseboardError::MOTOR_HEAT) {
-            ui->errorLabel->setToolTip(tooltip.arg("motor has too high temperature"));
-        } else if (error == BaseboardError::MOTOR_FAILURE) {
-            ui->errorLabel->setToolTip(tooltip.arg("encoder feedback and polarity of the motor"));
-        } else if (error == BaseboardError::LOW_VOLTAGE) {
-            ui->errorLabel->setToolTip(tooltip.arg("voltage dropped less than 6V for around 1s"));
-        }
-    }
-}
-
 void Rc110Panel::onMotorSpeed(const std_msgs::Float32& message)
 {
-    ui->motorSpeedEdit->setText(QString::number(message.data));
+    ui->driveSpeedEdit->setText(QString::number(message.data));
     showDriveGoalStatus();
 }
 
@@ -254,7 +219,7 @@ void Rc110Panel::onSteeringAngle(const std_msgs::Float32& message)
 void Rc110Panel::showDriveGoalStatus()
 {
     statusBar->showMessage(QString("Drive was updated. Speed: %1, Angle: %2")
-                                   .arg(ui->motorSpeedEdit->text())
+                                   .arg(ui->driveSpeedEdit->text())
                                    .arg(ui->steeringEdit->text()),
                            5000);
 }
@@ -275,6 +240,55 @@ void Rc110Panel::onSteeringOffset(const std_msgs::Float32& message)
 {
     ui->steeringOffsetEdit->setText(QString::number(message.data));
     statusBar->showMessage(QString("Steering angle offset was updated: %1").arg(message.data), 5000);
+}
+
+void Rc110Panel::onError(const std_msgs::UInt8& message)
+{
+    BaseboardError error{message.data};
+    if (error == BaseboardError::NONE) {
+        ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
+        ui->errorLabel->setToolTip("Working");
+    } else {
+        ui->errorLabel->setPixmap(QPixmap(":/error.png"));
+
+        QString tooltip = "Please, restart baseboard: %1";
+        if (error == BaseboardError::BOARD_HEAT) {
+            ui->errorLabel->setToolTip(tooltip.arg("board has too high temperature"));
+        } else if (error == BaseboardError::MOTOR_HEAT) {
+            ui->errorLabel->setToolTip(tooltip.arg("motor has too high temperature"));
+        } else if (error == BaseboardError::MOTOR_FAILURE) {
+            ui->errorLabel->setToolTip(tooltip.arg("encoder feedback and polarity of the motor"));
+        } else if (error == BaseboardError::LOW_VOLTAGE) {
+            ui->errorLabel->setToolTip(tooltip.arg("voltage dropped less than 6V for around 1s"));
+        }
+    }
+}
+
+void Rc110Panel::onRobotStatus(const rc110_msgs::Rc110Status& message)
+{
+    ui->boardButton->setChecked(message.board_enabled);
+
+    switch (MotorState(message.motor_state)) {
+        case MotorState::NEUTRAL:
+            ui->motorNeutralRadio->setChecked(true);
+            break;
+        case MotorState::ON:
+            ui->motorOnRadio->setChecked(true);
+            break;
+        default:
+            ui->motorOffRadio->setChecked(true);
+    }
+
+    switch (MotorState(message.servo_state)) {
+        case MotorState::NEUTRAL:
+            ui->servoNeutralRadio->setChecked(true);
+            break;
+        case MotorState::ON:
+            ui->servoOnRadio->setChecked(true);
+            break;
+        default:
+            ui->servoOffRadio->setChecked(true);
+    }
 }
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
@@ -300,6 +314,19 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
 {
     getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
     getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000));
+
+    float voltage = batteryState.voltage;
+    if (voltage < 6.f) {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_0.png"));
+    } else if (voltage < 6.5f) {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_1.png"));
+    } else if (voltage < 7.0f) {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_2.png"));
+    } else if (voltage < 7.5f) {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_3.png"));
+    } else {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_4.png"));
+    }
 }
 
 void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)

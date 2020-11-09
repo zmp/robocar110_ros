@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rc110_drive_control</name>
+  <name>rc110_msgs</name>
   <version>0.0.0</version>
-  <description>RoboCar 1/10 drive control</description>
+  <description>RoboCar 1/10 launcher</description>
 
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
 
   <license>Copyright (C) 2020 - present ZMP Inc</license>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>message_generation</depend>
+  <depend>message_runtime</depend>
   <depend>roscpp</depend>
-  <depend>ackermann_msgs</depend>
-  <depend>geometry_msgs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>rc110_msgs</depend>
+  <depend>std_msgs</depend>
+
 </package>

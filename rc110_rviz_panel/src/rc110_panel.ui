@@ -140,7 +140,7 @@
         </layout>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="motorSpeedEdit"/>
+        <widget class="QLineEdit" name="driveSpeedEdit"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="steeringLabel">
@@ -165,7 +165,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="motorSpeedlabel">
          <property name="text">
-          <string>Goal Motor Speed [m/s]</string>
+          <string>Goal Drive Speed [m/s]</string>
          </property>
         </widget>
        </item>
@@ -195,9 +195,22 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonsLayout">
-     <property name="spacing">
-      <number>4</number>
+     <property name="leftMargin">
+      <number>9</number>
      </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="batteryLabel">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../res/main.qrc">:/battery_4.png</pixmap>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="errorLabel">
        <property name="text">
@@ -281,7 +294,7 @@ QPushButton:checked {
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="servoGroup"/>
   <buttongroup name="motorGroup"/>
+  <buttongroup name="servoGroup"/>
  </buttongroups>
 </ui>

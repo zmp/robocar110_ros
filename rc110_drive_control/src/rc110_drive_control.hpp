@@ -42,13 +42,12 @@ private:
     bool onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
     void onGyroOffset(const std_msgs::Float32::ConstPtr& message);
-    void onMotorSpeed(const std_msgs::Float32::ConstPtr& message);
-    void onSteeringAngle(const std_msgs::Float32::ConstPtr& message);
     void onMotorCurrentOffset(const std_msgs::Float32::ConstPtr& message);
     void onSteeringAngleOffset(const std_msgs::Float32::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);
 
     void publishErrors();
+    void getAndPublishRobotStatus();
     void getAndPublishDriveInfo();
     void getAndPublishServoInfo();
     void getAndPublishImu();
@@ -68,6 +67,6 @@ private:
     std::map<std::string, ros::Publisher> publishers;
     ros::Timer statusUpdateTimer;
     std::atomic<BaseboardError> baseboardError = BaseboardError::NONE;
-    BaseboardError lastBaseboardError;
+    BaseboardError lastBaseboardError = BaseboardError::NONE;
 };
 }  // namespace zmp

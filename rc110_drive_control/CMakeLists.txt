@@ -7,6 +7,7 @@ set(catkin_exec_depends
         roscpp
         ackermann_msgs
         geometry_msgs
+        rc110_msgs
 )
 find_package(catkin REQUIRED ${catkin_exec_depends})
 

@@ -1,6 +1,11 @@
 <RCC>
   <qresource>
     <file>error.png</file>
+    <file>battery_0.png</file>
+    <file>battery_1.png</file>
+    <file>battery_2.png</file>
+    <file>battery_3.png</file>
+    <file>battery_4.png</file>
     <file>ok.png</file>
   </qresource>
 </RCC>
