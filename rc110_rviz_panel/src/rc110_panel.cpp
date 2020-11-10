@@ -23,6 +23,8 @@ namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
 constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+
+constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
 }  // namespace
 
 Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
@@ -121,7 +123,7 @@ void Rc110Panel::onEnableBoard(bool on)
 
     statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(on ? "on" : "off")
                                                     : QString("Failed to set board state"),
-                           5000);
+                           STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onEnableAd(bool on)
@@ -130,9 +132,9 @@ void Rc110Panel::onEnableAd(bool on)
     service.request.topic = on ? "drive_ad" : "drive_manual";
 
     if (ros::service::call("mux_drive/select", service)) {
-        statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", 5000);
+        statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", STATUS_MESSAGE_TIME);
     } else {
-        statusBar->showMessage("Failed to switch AD mode", 5000);
+        statusBar->showMessage("Failed to switch AD mode", STATUS_MESSAGE_TIME);
     }
 }
 
@@ -145,10 +147,12 @@ void Rc110Panel::onSetMotorState(QAbstractButton* button)
     service.request.data = uint8_t(state);
     ros::service::call("motor_state", service);
 
-    statusBar->showMessage(service.response.success
-                                   ? QString("Drive motor was set to %1").arg(service.response.message.data())
-                                   : QString("Failed to set motor state"),
-                           5000);
+    statusBar->showMessage(service.response.success ? QString("Drive motor was set to %1")
+                                                              .arg(state == MotorState::ON    ? "on"
+                                                                   : state == MotorState::OFF ? "off"
+                                                                                              : "neutral")
+                                                    : QString("Failed to set motor state"),
+                           STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onSetServoState(QAbstractButton* button)
@@ -160,10 +164,12 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
     service.request.data = uint8_t(state);
     ros::service::call("servo_state", service);
 
-    statusBar->showMessage(service.response.success
-                                   ? QString("Servomotor was set to %1").arg(service.response.message.data())
-                                   : QString("Failed to set servo state"),
-                           5000);
+    statusBar->showMessage(service.response.success ? QString("Servomotor was set to %1")
+                                                              .arg(state == MotorState::ON    ? "on"
+                                                                   : state == MotorState::OFF ? "off"
+                                                                                              : "neutral")
+                                                    : QString("Failed to set servo state"),
+                           STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onEditingFinished()
@@ -224,7 +230,7 @@ void Rc110Panel::showDriveGoalStatus()
     statusBar->showMessage(QString("Drive was updated. Speed: %1, Angle: %2")
                                    .arg(ui->driveSpeedEdit->text())
                                    .arg(ui->steeringEdit->text()),
-                           5000);
+                           STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onError(const std_msgs::UInt8& message)
@@ -292,7 +298,7 @@ void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
 
     statusBar->showMessage(
             QString("Offsets updated: %1, %2, %3").arg(message.gyro).arg(message.motor_current).arg(message.steering),
-            5000);
+            STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)

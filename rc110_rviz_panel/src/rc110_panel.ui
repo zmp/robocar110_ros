@@ -155,7 +155,7 @@
        <item row="7" column="0">
         <widget class="QLabel" name="gyroOffsetLabel">
          <property name="text">
-          <string>Gyro Offset [deg/s]</string>
+          <string>Gyro Offset [rad/s]</string>
          </property>
         </widget>
        </item>
@@ -309,7 +309,7 @@ QPushButton:checked {
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="motorGroup"/>
   <buttongroup name="servoGroup"/>
+  <buttongroup name="motorGroup"/>
  </buttongroups>
 </ui>
