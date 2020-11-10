@@ -232,7 +232,7 @@ void Rc110Panel::onError(const std_msgs::UInt8& message)
     BaseboardError error{message.data};
     if (error == BaseboardError::NONE) {
         ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
-        ui->errorLabel->setToolTip("Working");
+        ui->errorLabel->setToolTip("Baseboard is ok");
     } else {
         ui->errorLabel->setPixmap(QPixmap(":/error.png"));
 
