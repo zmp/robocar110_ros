@@ -9,7 +9,7 @@ function(to_deb_name result name)
 endfunction()
 
 if(NOT CPACK_PACKAGE_NAME)
-    set(CPACK_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+    set(CPACK_PACKAGE_NAME ros-$ENV{ROS_DISTRO}-${CMAKE_PROJECT_NAME})
 endif()
 to_deb_name(CPACK_PACKAGE_NAME ${CPACK_PACKAGE_NAME})
 
