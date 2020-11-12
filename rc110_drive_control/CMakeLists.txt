@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_drive_control VERSION 1.0.0)
 
-find_package(robocar110 REQUIRED base)
+set(RC110_COMPONENTS base CACHE STRING "")
+find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
 
 set(catkin_exec_depends
         roscpp

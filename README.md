@@ -39,8 +39,7 @@ make install
 ```
 * It will install those files with `sudo apt-get install`.
 
-## Robot configuration
-#### ROS
+## ROS configuration
 
 Configuration is installed during packages installation.
 
@@ -49,10 +48,3 @@ If you want to install robot config without installing packages, run:
 make config
 ```
 * It will install default config files to `/etc/zmp/rc110_config/`
-
-#### Network
-
-To setup wifi connection, check your router SSID and Key and run:
-```
-sudo rc110-wifi
-```
