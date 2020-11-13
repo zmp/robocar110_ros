@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# default ROS_IP
 if [ ! -f /etc/zmp/ros.env ]; then
     mkdir -p /etc/zmp
-    echo "ROS_IP=192.168.110.5" > /etc/zmp/ros.env
+    echo "
+# rc110 service configuration file
+
+RC110_INTERFACE=wlan0
+"\
+ > /etc/zmp/ros.env
 fi
