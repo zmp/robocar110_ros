@@ -61,6 +61,8 @@ private:
     void onSetMotorState(QAbstractButton* button);
     void onSetServoState(QAbstractButton* button);
     void onEditingFinished();
+    void onCalibrate();
+    void onFinishCalibration();
     void publishDrive();
     void publishOffsets();
 
@@ -87,8 +89,11 @@ private:
     QMap<QString, ros::Publisher> publishers;
     QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
     QStatusBar* statusBar;
+    QTimer* calibrationTimer;
+    QMap<QString, QPair<int, float>> calibrationSums;
 
     float driveSpeed = 0;
     float steeringAngle = 0;
+    rc110_msgs::Offsets offsets = {};
 };
 }  // namespace zmp

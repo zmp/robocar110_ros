@@ -13,6 +13,7 @@
 #include <topic_tools/MuxSelect.h>
 
 #include <QStatusBar>
+#include <QTimer>
 #include <boost/math/constants/constants.hpp>
 
 #include "ui_rc110_panel.h"
@@ -23,13 +24,15 @@ namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
 constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
 
 constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
 }  // namespace
 
-Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
+Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget), calibrationTimer(new QTimer(this))
 {
     ui->setupUi(this);
+    calibrationTimer->setSingleShot(true);
 
     QList<QTreeWidgetItem*> items;
     for (int i = 0; i < std::size(TREE_ITEM_GROUP_NAMES); ++i) {
@@ -55,9 +58,9 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
             &Rc110Panel::onSetServoState);
     connect(ui->driveSpeedEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
-    connect(ui->gyroOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
-    connect(ui->motorCurrentOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->calibrateButton, &QPushButton::clicked, this, &Rc110Panel::onCalibrate);
+    connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
 
     subscribers.push_back(handle.subscribe("mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
 
@@ -184,10 +187,48 @@ void Rc110Panel::onEditingFinished()
         } else if (name == "steeringEdit") {
             steeringAngle = value;
             publishDrive();
-        } else {
+        } else if (name == "steeringOffsetEdit") {
+            offsets.steering = ui->steeringOffsetEdit->text().toFloat();
             publishOffsets();
         }
     }
+}
+
+void Rc110Panel::onCalibrate()
+{
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    ui->calibrateButton->setEnabled(false);
+
+    calibrationSums.clear();
+    calibrationTimer->start(3000);
+}
+
+void Rc110Panel::onFinishCalibration()
+{
+    const auto& motorCurrent = calibrationSums["motor current"];
+    if (motorCurrent.first) {
+        offsets.motor_current += motorCurrent.second / motorCurrent.first;
+    }
+    const auto& accelX = calibrationSums["accel x"];
+    if (accelX.first) {
+        offsets.accel_x += accelX.second / accelX.first;
+    }
+    const auto& accelY = calibrationSums["accel y"];
+    if (accelY.first) {
+        offsets.accel_y += accelY.second / accelY.first;
+    }
+    const auto& accelZ = calibrationSums["accel z"];
+    if (accelZ.first) {
+        offsets.accel_z += accelZ.second / accelZ.first - G_TO_MS2;
+    }
+    const auto& gyroYaw = calibrationSums["gyro yaw"];
+    if (gyroYaw.first) {
+        offsets.gyro += gyroYaw.second / gyroYaw.first;
+    }
+    publishOffsets();
+
+    ui->calibrateButton->setEnabled(true);
+    QApplication::restoreOverrideCursor();
 }
 
 void Rc110Panel::publishDrive()
@@ -201,11 +242,7 @@ void Rc110Panel::publishDrive()
 
 void Rc110Panel::publishOffsets()
 {
-    rc110_msgs::Offsets message;
-    message.gyro = ui->gyroOffsetEdit->text().toFloat();
-    message.motor_current = ui->motorCurrentOffsetEdit->text().toFloat();
-    message.steering = ui->steeringOffsetEdit->text().toFloat();
-    publishers["offsets"].publish(message);
+    publishers["offsets"].publish(offsets);
 }
 
 void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
@@ -284,38 +321,48 @@ void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
 {
-    getTreeItem(DRIVE, "speed")->setText(1, QString("%1 m/s").arg(driveStatus.drive.speed));
-    getTreeItem(DRIVE, "steering angle")->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * RAD_TO_DEG));
+    getTreeItem(DRIVE, "speed")->setText(1, QString("%1 m/s").arg(driveStatus.drive.speed, -10, 'f', 2));
+    getTreeItem(DRIVE, "steering angle")
+            ->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * RAD_TO_DEG, -10, 'f', 2));
     getTreeItem(DRIVE, "steering speed")
-            ->setText(1, QString("%1 °/s").arg(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG));
+            ->setText(1, QString("%1 °/s").arg(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG, -10, 'f', 2));
 }
 
 void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
 {
-    ui->gyroOffsetEdit->setText(QString::number(message.gyro));
-    ui->motorCurrentOffsetEdit->setText(QString::number(message.motor_current));
+    offsets = message;
+    QString text = "Motor Current:\t %1 mA\n"
+                   "Accel X:\t\t %2 m/s/s\n"
+                   "Accel Y:\t\t %3 m/s/s\n"
+                   "Accel Z:\t\t %4 m/s/s\n"
+                   "Gyro Yaw:\t %5 rad/s\n";
+    ui->offsetsLabel->setText(text.arg(message.motor_current * 1000, -10, 'f', 6)
+                                      .arg(message.accel_x, -10, 'f', 6)
+                                      .arg(message.accel_y, -10, 'f', 6)
+                                      .arg(message.accel_z, -10, 'f', 6)
+                                      .arg(message.gyro, -10, 'f', 6));
+
     ui->steeringOffsetEdit->setText(QString::number(message.steering));
 
-    statusBar->showMessage(
-            QString("Offsets updated: %1, %2, %3").arg(message.gyro).arg(message.motor_current).arg(message.steering),
-            STATUS_MESSAGE_TIME);
+    statusBar->showMessage(QString("Offsets updated."), STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)
 {
-    getTreeItem(DRIVE, "angle speed")->setText(1, QString("%1 °/s").arg(odometry.twist.twist.angular.z * RAD_TO_DEG));
+    getTreeItem(DRIVE, "angular velocity")
+            ->setText(1, QString("%1 °/s").arg(odometry.twist.twist.angular.z * RAD_TO_DEG, -10, 'f', 2));
 }
 
 void Rc110Panel::onServoBattery(const sensor_msgs::BatteryState& batteryState)
 {
-    getTreeItem(BATTERY, "servo voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
-    getTreeItem(BATTERY, "servo current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000));
+    getTreeItem(BATTERY, "servo voltage")->setText(1, QString("%1 V").arg(batteryState.voltage, -10, 'f', 2));
+    getTreeItem(BATTERY, "servo current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000, -12, 'f', 0));
 }
 
 void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
 {
-    getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage));
-    getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000));
+    getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage, -10, 'f', 2));
+    getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000, -12, 'f', 0));
 
     float voltage = batteryState.voltage;
     if (voltage < 6.f) {
@@ -329,24 +376,45 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
     } else {
         ui->batteryLabel->setPixmap(QPixmap(":/battery_4.png"));
     }
+
+    if (calibrationTimer->isActive()) {
+        auto& value = calibrationSums["motor current"];
+        ++value.first;
+        value.second += batteryState.current;
+    }
 }
 
 void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)
 {
-    getTreeItem(TEMPERATURE, "baseboard")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature));
+    getTreeItem(TEMPERATURE, "baseboard")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature, -10, 'f', 1));
 }
 
 void Rc110Panel::onServoTemperature(const sensor_msgs::Temperature& temperature)
 {
-    getTreeItem(TEMPERATURE, "servo")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature));
+    getTreeItem(TEMPERATURE, "servo")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature, -10, 'f', 1));
 }
 
 void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
 {
-    getTreeItem(IMU, "x")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.x));
-    getTreeItem(IMU, "y")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.y));
-    getTreeItem(IMU, "z")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.z));
-    getTreeItem(IMU, "yaw")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.z));
+    getTreeItem(IMU, "accel x")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.x, -10, 'f', 2));
+    getTreeItem(IMU, "accel y")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.y, -10, 'f', 2));
+    getTreeItem(IMU, "accel z")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.z, -10, 'f', 2));
+    getTreeItem(IMU, "gyro yaw")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.z, -10, 'f', 2));
+
+    if (calibrationTimer->isActive()) {
+        auto& accelX = calibrationSums["accel x"];
+        ++accelX.first;
+        accelX.second += imu.linear_acceleration.x;
+        auto& accelY = calibrationSums["accel y"];
+        ++accelY.first;
+        accelY.second += imu.linear_acceleration.y;
+        auto& accelZ = calibrationSums["accel z"];
+        ++accelZ.first;
+        accelZ.second += imu.linear_acceleration.z;
+        auto& gyroYaw = calibrationSums["gyro yaw"];
+        ++gyroYaw.first;
+        gyroYaw.second += imu.angular_velocity.z;
+    }
 }
 
 }  // namespace zmp

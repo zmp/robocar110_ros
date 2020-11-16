@@ -60,6 +60,9 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     rc110_msgs::Offsets offsetsMessage;
     auto offsets = control.GetOffsets();
     offsetsMessage.gyro = offsets.gyro;
+    offsetsMessage.accel_x = offsets.accelX;
+    offsetsMessage.accel_y = offsets.accelY;
+    offsetsMessage.accel_z = offsets.accelZ;
     offsetsMessage.motor_current = offsets.motorCurrent;
     offsetsMessage.steering = offsets.steeringAngle;
     publishers["offsets_status"].publish(offsetsMessage);
@@ -108,7 +111,8 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::Con
 
 void Rc110DriveControl::onOffsets(const rc110_msgs::Offsets::ConstPtr& message)
 {
-    control.SetOffsets({message->gyro, message->motor_current, message->steering});
+    control.SetOffsets(
+            {message->gyro, message->accel_x, message->accel_y, message->accel_z, message->motor_current, message->steering});
     publishers["offsets_status"].publish(message);
 }
 

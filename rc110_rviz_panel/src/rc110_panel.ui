@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>670</height>
+    <height>664</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,141 +55,185 @@
        </property>
       </column>
      </widget>
-     <widget class="QWidget" name="controlsWidget" native="true">
-      <layout class="QFormLayout" name="formLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="motorLabel">
-         <property name="text">
-          <string>Drive Motor</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <layout class="QHBoxLayout" name="motorRadioLayout">
-         <item>
-          <widget class="QRadioButton" name="motorOffRadio">
-           <property name="text">
-            <string>OFF</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">motorGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="motorOnRadio">
-           <property name="text">
-            <string>ON</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">motorGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="motorNeutralRadio">
-           <property name="text">
-            <string>Neutral</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">motorGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="servoLabel">
-         <property name="text">
-          <string>Servomotor</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <layout class="QHBoxLayout" name="servoRadioLayout">
-         <item>
-          <widget class="QRadioButton" name="servoOffRadio">
-           <property name="text">
-            <string>OFF</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">servoGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="servoOnRadio">
-           <property name="text">
-            <string>ON</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">servoGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="servoNeutralRadio">
-           <property name="text">
-            <string>Neutral</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">servoGroup</string>
-           </attribute>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="driveSpeedEdit"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="steeringLabel">
-         <property name="text">
-          <string>Goal Steering Angle [deg]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="steeringEdit"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="gyroOffsetLabel">
-         <property name="text">
-          <string>Gyro Offset [rad/s]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="gyroOffsetEdit"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="motorSpeedlabel">
-         <property name="text">
-          <string>Goal Drive Speed [m/s]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="motorCurrentOffsetLabel">
-         <property name="text">
-          <string>Motor Current Offset [A]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QLineEdit" name="motorCurrentOffsetEdit"/>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="steeringOffsetLabel">
-         <property name="text">
-          <string>Steering Angle Offset [deg]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLineEdit" name="steeringOffsetEdit"/>
-       </item>
-      </layout>
+     <widget class="QTabWidget" name="controlsTabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="controlsTab">
+       <attribute name="title">
+        <string>Controls</string>
+       </attribute>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="motorLabel">
+          <property name="text">
+           <string>Drive Motor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <layout class="QHBoxLayout" name="motorRadioLayout">
+          <item>
+           <widget class="QRadioButton" name="motorOffRadio">
+            <property name="text">
+             <string>OFF</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">motorGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="motorOnRadio">
+            <property name="text">
+             <string>ON</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">motorGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="motorNeutralRadio">
+            <property name="text">
+             <string>Neutral</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">motorGroup</string>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="servoLabel">
+          <property name="text">
+           <string>Servomotor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <layout class="QHBoxLayout" name="servoRadioLayout">
+          <item>
+           <widget class="QRadioButton" name="servoOffRadio">
+            <property name="text">
+             <string>OFF</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">servoGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="servoOnRadio">
+            <property name="text">
+             <string>ON</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">servoGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="servoNeutralRadio">
+            <property name="text">
+             <string>Neutral</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">servoGroup</string>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="motorSpeedlabel">
+          <property name="text">
+           <string>Goal Drive Speed [m/s]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="driveSpeedEdit"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="steeringLabel">
+          <property name="text">
+           <string>Goal Steering Angle [deg]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="steeringEdit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="offsetsTab">
+       <attribute name="title">
+        <string>Offsets</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="1">
+         <widget class="QPushButton" name="calibrateButton">
+          <property name="toolTip">
+           <string>You'll need to wait few seconds.</string>
+          </property>
+          <property name="text">
+           <string>Calibrate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="steeringOffsetLabel">
+          <property name="text">
+           <string>Steering Angle [deg] :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="steeringOffsetEdit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Separate calibration for steering</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Put the robot on horizontal surface and press the button below:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="2">
+         <widget class="QLabel" name="offsetsLabel">
+          <property name="text">
+           <string>Offset Values</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
    </item>
