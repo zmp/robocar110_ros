@@ -365,13 +365,13 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
     getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000, -12, 'f', 0));
 
     float voltage = batteryState.voltage;
-    if (voltage < 6.f) {
+    if (voltage < 6.4f) {
         ui->batteryLabel->setPixmap(QPixmap(":/battery_0.png"));
-    } else if (voltage < 6.5f) {
-        ui->batteryLabel->setPixmap(QPixmap(":/battery_1.png"));
     } else if (voltage < 7.0f) {
+        ui->batteryLabel->setPixmap(QPixmap(":/battery_1.png"));
+    } else if (voltage < 7.4f) {
         ui->batteryLabel->setPixmap(QPixmap(":/battery_2.png"));
-    } else if (voltage < 7.5f) {
+    } else if (voltage < 7.6f) {
         ui->batteryLabel->setPixmap(QPixmap(":/battery_3.png"));
     } else {
         ui->batteryLabel->setPixmap(QPixmap(":/battery_4.png"));
