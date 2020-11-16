@@ -1,11 +1,12 @@
 #include <QApplication>
 #include <QTimer>
+#include <QUrl>
 
 #include "../src/rc110_panel.hpp"
 
 using namespace zmp;
 
-const char* APP_NAME = "rc110_panel_app";
+const char* APP_NAME = "RC110";
 
 /**
  * A small application to test sensors widget without rviz.
@@ -18,7 +19,12 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     Rc110Panel panel;
-    panel.setWindowTitle(APP_NAME);
+    if (auto uri = std::getenv("ROS_MASTER_URI")) {
+        auto title = QString("%1: %2").arg(APP_NAME).arg(QUrl(uri).host());
+        panel.setWindowTitle(title.toStdString().data());
+    } else {
+        panel.setWindowTitle(APP_NAME);
+    }
     panel.show();
 
     QTimer timer;
