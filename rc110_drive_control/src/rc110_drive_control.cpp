@@ -111,8 +111,14 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::Con
 
 void Rc110DriveControl::onOffsets(const rc110_msgs::Offsets::ConstPtr& message)
 {
-    control.SetOffsets(
-            {message->gyro, message->accel_x, message->accel_y, message->accel_z, message->motor_current, message->steering});
+    control.SetOffsets({
+            .gyro = message->gyro,
+            .accelX = message->accel_x,
+            .accelY = message->accel_y,
+            .accelZ = message->accel_z,
+            .motorCurrent = message->motor_current,
+            .steeringAngle = message->steering,
+    });
     publishers["offsets_status"].publish(message);
 }
 

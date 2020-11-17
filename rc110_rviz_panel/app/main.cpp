@@ -20,8 +20,7 @@ int main(int argc, char* argv[])
 
     Rc110Panel panel;
     if (auto uri = std::getenv("ROS_MASTER_URI")) {
-        auto title = QString("%1: %2").arg(APP_NAME).arg(QUrl(uri).host());
-        panel.setWindowTitle(title.toStdString().data());
+        panel.setWindowTitle(QString("%1: %2").arg(APP_NAME).arg(QUrl(uri).host()));
     } else {
         panel.setWindowTitle(APP_NAME);
     }
