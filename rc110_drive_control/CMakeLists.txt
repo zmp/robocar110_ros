@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_drive_control VERSION 1.0.0)
 
-set(RC110_COMPONENTS base CACHE STRING "")
+set(RC110_COMPONENTS control CACHE STRING "")
 find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
 
 set(catkin_exec_depends
@@ -23,7 +23,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
-        rc-base
+        rc-control
 )
 
 install(TARGETS ${PROJECT_NAME}
