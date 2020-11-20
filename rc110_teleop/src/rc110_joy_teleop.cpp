@@ -10,6 +10,9 @@
 
 #include "rc110_joy_teleop.hpp"
 
+#include <std_srvs/SetBool.h>
+#include <topic_tools/MuxSelect.h>
+
 namespace zmp
 {
 namespace
@@ -26,14 +29,19 @@ float correctSteeringAngle(float angle)  // angle = [-1.0 .. 1.0]
 }  // namespace
 
 Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
-        m_joySub(pnh.subscribe<sensor_msgs::Joy>("input_joy", 10, &zmp::Rc110JoyTeleop::joyCallback, this)),
-        m_drivePub(pnh.advertise<ackermann_msgs::AckermannDriveStamped>("output_cmd", 1))
+        m_drivePub(nh.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1))
 {
     pnh.param<int>("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
     pnh.param<int>("gear_up_button", m_param.gearUpButton, m_param.gearUpButton);
     pnh.param<int>("gear_down_button", m_param.gearDownButton, m_param.gearDownButton);
+    pnh.param<int>("board_button", m_param.boardButton, m_param.boardButton);
+    pnh.param<int>("ad_button", m_param.adButton, m_param.adButton);
     pnh.param<int>("base_steering_axis", m_param.steeringAxis, m_param.steeringAxis);
     pnh.param<int>("base_speed_axis", m_param.speedAxis, m_param.speedAxis);
+
+    m_subscribers.push_back(nh.subscribe("joy", 1, &zmp::Rc110JoyTeleop::onJoy, this));
+    m_subscribers.push_back(nh.subscribe("robot_status", 1, &Rc110JoyTeleop::onRobotStatus, this));
+    m_subscribers.push_back(nh.subscribe("mux_drive/selected", 1, &Rc110JoyTeleop::onAdModeChanged, this));
 
     int direction = m_param.steeringAxis < 0 ? -1 : 1;
     m_param.steeringAxis *= direction;
@@ -50,13 +58,13 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
 
     pnh.param<double>("max_speed", m_param.maxSpeed, m_param.maxSpeed);
     pnh.param<std::string>("base_frame_id", m_param.frameId, m_param.frameId);
-    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), [this](const ros::TimerEvent&) { publish(); });
+    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), [this](const ros::TimerEvent&) { publishDrive(); });
 }
 
-void Rc110JoyTeleop::publish()
+void Rc110JoyTeleop::publishDrive()
 {
-    if (m_deadmanPressed) {
-        m_drivePub.publish(m_lastMessage);
+    if (m_deadManPressed) {
+        m_drivePub.publish(m_driveMessage);
         m_stopMessagePublished = false;
     } else if (!m_stopMessagePublished) {
         m_drivePub.publish(ackermann_msgs::AckermannDriveStamped());
@@ -64,25 +72,55 @@ void Rc110JoyTeleop::publish()
     }
 }
 
-void Rc110JoyTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg)
+void Rc110JoyTeleop::updateToggles(const sensor_msgs::Joy::ConstPtr& message)
 {
-    m_deadmanPressed = joyMsg->buttons[m_param.deadManButton];
-    bool gearUp = joyMsg->buttons[m_param.gearUpButton];
-    bool gearDown = joyMsg->buttons[m_param.gearDownButton];
+    if (checkButtonClicked(message, m_param.boardButton)) {
+        std_srvs::SetBool service;
+        service.request.data = uint8_t(!m_boardEnabled);  // toggle board
+        ros::service::call("enable_board", service);
+    }
 
-    if (gearUp && !m_gearUpPressed) ++m_gear;
-    if (gearDown && !m_gearDownPressed) --m_gear;
+    if (checkButtonClicked(message, m_param.adButton)) {
+        topic_tools::MuxSelect service;
+        service.request.topic = m_adEnabled ? "drive_manual" : "drive_ad";  // toggle AD
+        ros::service::call("mux_drive/select", service);
+    }
+}
 
-    m_gearUpPressed = gearUp;
-    m_gearDownPressed = gearDown;
-    m_gear = m_deadmanPressed ? std::max(1, m_gear) : 0;
+bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button)
+{
+    return message->buttons[button] && !m_joyMessage->buttons[button];
+}
+
+void Rc110JoyTeleop::onJoy(const sensor_msgs::Joy::ConstPtr& message)
+{
+    if (checkButtonClicked(message, m_param.gearUpButton)) ++m_gear;
+    if (checkButtonClicked(message, m_param.gearDownButton)) --m_gear;
+
+    m_deadManPressed = message->buttons[m_param.deadManButton];
+    m_gear = m_deadManPressed ? std::max(1, m_gear) : 0;
 
     double speedFactor = (m_gear < 2) ? GEAR_1 : (m_gear < 3) ? GEAR_2 : m_param.maxSpeed;
-    float correctedAngle = correctSteeringAngle(joyMsg->axes[m_param.steeringAxis]) * float(m_param.maxSteeringAngleRad);
+    float correctedAngle = correctSteeringAngle(message->axes[m_param.steeringAxis]) * float(m_param.maxSteeringAngleRad);
 
-    m_lastMessage.drive.steering_angle = m_axisDirection[m_param.steeringAxis] * correctedAngle;
-    m_lastMessage.drive.speed = m_axisDirection[m_param.speedAxis] * joyMsg->axes[m_param.speedAxis] * speedFactor;
-    m_lastMessage.header.stamp = ros::Time::now();
-    m_lastMessage.header.frame_id = m_param.frameId;
+    m_driveMessage.drive.steering_angle = m_axisDirection[m_param.steeringAxis] * correctedAngle;
+    m_driveMessage.drive.speed = m_axisDirection[m_param.speedAxis] * message->axes[m_param.speedAxis] * speedFactor;
+    m_driveMessage.header.stamp = ros::Time::now();
+    m_driveMessage.header.frame_id = m_param.frameId;
+
+    updateToggles(message);
+
+    m_joyMessage = message;
 }
+
+void Rc110JoyTeleop::onRobotStatus(const rc110_msgs::Status& message)
+{
+    m_boardEnabled = message.board_enabled;
+}
+
+void Rc110JoyTeleop::onAdModeChanged(const std_msgs::String& message)
+{
+    m_adEnabled = message.data == "drive_ad";
+}
+
 }  // namespace zmp

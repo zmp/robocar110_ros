@@ -12,8 +12,10 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <angles/angles.h>
+#include <rc110_msgs/Status.h>
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
+#include <std_msgs/String.h>
 
 #include <map>
 #include <mutex>
@@ -29,6 +31,8 @@ public:
         int deadManButton = 4;
         int gearUpButton = 6;
         int gearDownButton = 7;
+        int boardButton = 10;
+        int adButton = 11;
         int steeringAxis = 3;
         int speedAxis = 1;
         double maxSteeringAngleRad = angles::from_degrees(30);
@@ -46,21 +50,27 @@ public:
     Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
 
 private:
-    void joyCallback(const sensor_msgs::Joy::ConstPtr& joyMsg);
-    void publish();
+    void publishDrive();
+    void updateToggles(const sensor_msgs::Joy::ConstPtr& message);
+    bool checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button);
+
+    void onJoy(const sensor_msgs::Joy::ConstPtr& message);
+    void onRobotStatus(const rc110_msgs::Status& message);
+    void onAdModeChanged(const std_msgs::String& message);
 
 private:
     Param m_param;
 
-    ros::Subscriber m_joySub;
+    std::vector<ros::Subscriber> m_subscribers;
     ros::Publisher m_drivePub;
-    bool m_deadmanPressed = false;
-    bool m_gearUpPressed = false;
-    bool m_gearDownPressed = false;
-    bool m_stopMessagePublished = false;
-    ackermann_msgs::AckermannDriveStamped m_lastMessage;
+    sensor_msgs::Joy::ConstPtr m_joyMessage;
+    ackermann_msgs::AckermannDriveStamped m_driveMessage;
     ros::Timer m_timer;
     std::map<int, int> m_axisDirection;  /// +1 or -1 for inverted axis
     int m_gear = 0;
+    bool m_stopMessagePublished = false;
+    bool m_deadManPressed = false;
+    bool m_boardEnabled = false;
+    bool m_adEnabled = false;
 };
 }  // namespace zmp
