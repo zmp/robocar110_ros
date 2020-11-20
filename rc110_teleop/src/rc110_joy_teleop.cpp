@@ -14,8 +14,8 @@ namespace zmp
 {
 namespace
 {
-constexpr double GEAR_1 = 0.83;    // 3 km/h
-constexpr double GEAR_2 = 1.67;    // 6 km/h
+constexpr double GEAR_1 = 0.3;     // ~1 km/h
+constexpr double GEAR_2 = 0.6;     // ~2 km/h
 constexpr float CURVE_POWER = 10;  // similar to x^2
 
 float correctSteeringAngle(float angle)  // angle = [-1.0 .. 1.0]
