@@ -40,10 +40,10 @@ BT::NodeStatus CheckObstacle::tick()
             break;
         } else if (farLeftBox.contains(point)) {
             result = "far";
-            closestLeftX = x;
+            closestLeftX = std::min(x, closestLeftX);
         } else if (farRightBox.contains(point)) {
             result = "far";
-            closestRightX = x;
+            closestRightX = std::min(x, closestRightX);
         }
     }
 

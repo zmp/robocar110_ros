@@ -13,6 +13,7 @@
 
     <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
         <rosparam file="$(arg config_dir)/behavior.yaml" subst_value="true"/>
+        <remap from="scan" to="/lidar_2d_front/scan"/>
     </node>
 
     <!-- Switching between joystick and AD.
