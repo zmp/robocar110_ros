@@ -17,15 +17,13 @@
         <param name="camera_info_url" value="$(env HOME)/.config/rc110/calibration/rear_camera.yaml"></param>
     </node>
 
-    <node pkg="hokuyo_node" type="hokuyo_node" name="lidar_2d_front" launch-prefix="bash -c 'sleep 15; $0 $@'">
-        <!-- Sleep is needed to give hokuyo time to start -->
-
+    <node pkg="hokuyo_node" type="hokuyo_node" name="lidar_2d_front">
         <param name="port" value="/dev/hokuyo_front"/>
         <param name="frame_id" value="lidar_2d_front"/>
         <remap from="scan" to="~scan"/>
     </node>
 
-    <node pkg="hokuyo_node" type="hokuyo_node" name="lidar_2d_rear" launch-prefix="bash -c 'sleep 15; $0 $@'">
+    <node pkg="hokuyo_node" type="hokuyo_node" name="lidar_2d_rear">
         <param name="port" value="/dev/hokuyo_rear"/>
         <param name="frame_id" value="lidar_2d_rear"/>
         <remap from="scan" to="~scan"/>
