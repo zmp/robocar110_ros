@@ -18,14 +18,18 @@
 - Button 5: press and hold it to drive
 - Button 7: increases gear (gear 1 on start)
 - Button 8: decreases gear
+- Button 11: enable/disable baseboard
+- Button 12: enable/disable AD
 - Axis 9:  up and down regulates speed
 - Axis 10: left and right changes steering angle
 
-#### Gears
+#### Default Gears
 
-1. Up to 3 km/h
-2. Up to 6 km/h
-3. Maximum speed
+1. 0.3 m/s
+2. 0.6 m/s
+3. 1.0 m/s
+
+Be careful on putting higher values, because the car is not designed for crashing.
 
 ## Remapping
 

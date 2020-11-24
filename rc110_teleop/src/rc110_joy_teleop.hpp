@@ -41,7 +41,7 @@ public:
         // from the hardware document, the operation speed is 0.11 / 60 [sec/degree]
         double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
 
-        double maxSpeed = 2.8;  // [m/s]
+        std::vector<double> gears = { 0.3, 0.6, 1.0 };
         std::string frameId = "rc110_base";
         double rate = 30.0;  // Hz
     };
