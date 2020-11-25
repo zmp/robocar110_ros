@@ -25,15 +25,15 @@ function(ros_to_deb_name result dep)
             RESULTS_VARIABLE results
     )
     list(GET results 0 rosdep_result)
-    if(NOT rosdep_result)
+    if(rosdep_result EQUAL 0)
         set(${result} ${dep0} PARENT_SCOPE)
         return()
     endif()
 
     # Some use debian package name as is. For example usual packages, that are not in rosdep yaml list.
     to_deb_name(dep ${dep})
-    execute_process(COMMAND apt-cache search -qq ${dep} OUTPUT_VARIABLE output)
-    if(output)
+    execute_process(COMMAND apt-cache search --names-only ^${dep}$ OUTPUT_VARIABLE output)
+    if(NOT output STREQUAL "")
         set(${result} ${dep} PARENT_SCOPE)
         return()
     endif()
@@ -43,6 +43,9 @@ function(ros_to_deb_name result dep)
         set(${result} ros-$ENV{ROS_DISTRO}-${dep} PARENT_SCOPE)
         return()
     endif()
+
+    set(${result} "" PARENT_SCOPE)
+    message(WARNING "Couldn't convert dependency to deb name: ${dep}")
 endfunction()
 
 if(NOT CPACK_PACKAGE_NAME)
@@ -59,12 +62,14 @@ set(CPACK_DEBIAN_PACKAGE_RELEASE "")
 set(CPACK_PACKAGING_INSTALL_PREFIX /opt/ros/$ENV{ROS_DISTRO})
 
 foreach(dependency IN LISTS ${PROJECT_NAME}_EXEC_DEPENDS)
-    if (CPACK_DEBIAN_PACKAGE_DEPENDS)
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, ")
-    endif()
-
     ros_to_deb_name(deb ${dependency})
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}${deb}")
+
+    if (NOT ${deb} STREQUAL "")
+        if (CPACK_DEBIAN_PACKAGE_DEPENDS)
+            set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, ")
+        endif()
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}${deb}")
+    endif()
 endforeach()
 
 include(CPack)
