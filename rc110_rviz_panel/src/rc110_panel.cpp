@@ -78,6 +78,8 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
     subscribers.push_back(handle.subscribe("imu/data_raw", 1, &Rc110Panel::onImu, this));
+    subscribers.push_back(handle.subscribe("motor_rate", 1, &Rc110Panel::onMotorRate, this));
+    subscribers.push_back(handle.subscribe("wheel_speeds", 1, &Rc110Panel::onWheelSpeeds, this));
 
     publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1);
     publishers["offsets"] = handle.advertise<rc110_msgs::Offsets>("offsets", 1);
@@ -415,6 +417,19 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
         ++gyroYaw.first;
         gyroYaw.second += imu.angular_velocity.z;
     }
+}
+
+void Rc110Panel::onMotorRate(const rc110_msgs::MotorRate& motorRate)
+{
+    getTreeItem(DRIVE, "motor rate")->setText(1, QString::fromUtf8("%1 cycles/s").arg(motorRate.motor_rate, -10, 'f', 2));
+}
+
+void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
+{
+    getTreeItem(DRIVE, "wheel speed FL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fl, -10, 'f', 2));
+    getTreeItem(DRIVE, "wheel speed FR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fr, -10, 'f', 2));
+    getTreeItem(DRIVE, "wheel speed RL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rl, -10, 'f', 2));
+    getTreeItem(DRIVE, "wheel speed RR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rr, -10, 'f', 2));
 }
 
 }  // namespace zmp

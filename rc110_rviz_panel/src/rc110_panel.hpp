@@ -12,8 +12,10 @@
 #ifndef Q_MOC_RUN
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
-#include <rc110_msgs/Status.h>
+#include <rc110_msgs/MotorRate.h>
 #include <rc110_msgs/Offsets.h>
+#include <rc110_msgs/Status.h>
+#include <rc110_msgs/WheelSpeeds.h>
 #include <ros/ros.h>
 #include <rviz/panel.h>
 #include <sensor_msgs/BatteryState.h>
@@ -81,6 +83,8 @@ private:
     void onBaseboardTemperature(const sensor_msgs::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::Temperature& temperature);
     void onImu(const sensor_msgs::Imu& imu);
+    void onMotorRate(const rc110_msgs::MotorRate& motorRate);
+    void onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds);
 
 private:
     std::unique_ptr<Ui::PanelWidget> ui;
