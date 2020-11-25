@@ -11,7 +11,9 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
+#include <rc110_msgs/MotorRate.h>
 #include <rc110_msgs/Status.h>
+#include <rc110_msgs/WheelSpeeds.h>
 #include <ros/callback_queue.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
@@ -49,6 +51,8 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     publishers["servo_battery"] = handle.advertise<sensor_msgs::BatteryState>("servo_battery", 10);
     publishers["motor_battery"] = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
     publishers["odometry"] = handle.advertise<nav_msgs::Odometry>("odometry", 10);
+    publishers["motor_rate"] = handle.advertise<rc110_msgs::MotorRate>("motor_rate", 10);
+    publishers["wheel_speeds"] = handle.advertise<rc110_msgs::WheelSpeeds>("wheel_speeds", 10);
 
     statusUpdateTimer = handle.createTimer(ros::Duration(1 / parameters.rate),
                                            [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
@@ -131,6 +135,8 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     getAndPublishImu();
     getAndPublishBaseboardTemperature();
     getAndPublishMotorBattery();
+    getAndPublishMotorRate();
+    getAndPublishWheelSpeeds();
 }
 
 void Rc110DriveControl::publishErrors()
@@ -201,6 +207,28 @@ void Rc110DriveControl::getAndPublishMotorBattery()
 {
     PowerInfo power = control.GetPowerInfo();
     publishBattery(publishers["motor_battery"], power.motorVoltage, power.motorCurrent);
+}
+
+void Rc110DriveControl::getAndPublishMotorRate()
+{
+    rc110_msgs::MotorRate msg;
+    msg.motor_rate = control.GetSensorInfo().motorRate;
+    publishers["motor_rate"].publish(msg);
+}
+
+void Rc110DriveControl::getAndPublishWheelSpeeds()
+{
+    rc110_msgs::WheelSpeeds msg;
+    msg.header.stamp = ros::Time::now();
+    msg.header.frame_id = parameters.baseFrameId;
+
+    SensorInfo sensor = control.GetSensorInfo();
+    msg.speed_fl = sensor.speedFL;
+    msg.speed_fr = sensor.speedFR;
+    msg.speed_rl = sensor.speedRL;
+    msg.speed_rr = sensor.speedRR;
+
+    publishers["wheel_speeds"].publish(msg);
 }
 
 void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)

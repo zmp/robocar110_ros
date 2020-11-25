@@ -52,6 +52,8 @@ private:
     void getAndPublishImu();
     void getAndPublishBaseboardTemperature();
     void getAndPublishMotorBattery();
+    void getAndPublishMotorRate();
+    void getAndPublishWheelSpeeds();
 
     void publishDriveStatus(const DriveInfo& drive);
     void publishOdometry(const DriveInfo& drive);
