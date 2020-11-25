@@ -45,8 +45,8 @@ class Rc110Panel : public rviz::Panel
 {
     Q_OBJECT
 
-    enum TreeItemGroup { DRIVE, BATTERY, TEMPERATURE, IMU };
-    static constexpr const char* TREE_ITEM_GROUP_NAMES[] = {"Drive", "Battery", "Temperature", "IMU"};
+    enum TreeItemGroup { DRIVE, BATTERY, TEMPERATURE, IMU, OTHER };
+    static constexpr const char* TREE_ITEM_GROUP_NAMES[] = {"Drive", "Battery", "Temperature", "IMU", "Other"};
 
 public:
     explicit Rc110Panel(QWidget* parent = nullptr);

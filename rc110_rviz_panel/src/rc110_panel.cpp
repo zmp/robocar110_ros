@@ -421,15 +421,16 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
 
 void Rc110Panel::onMotorRate(const rc110_msgs::MotorRate& motorRate)
 {
-    getTreeItem(DRIVE, "motor rate")->setText(1, QString::fromUtf8("%1 cycles/s").arg(motorRate.motor_rate, -10, 'f', 2));
+    getTreeItem(OTHER, "motor rate")->setText(1, QString::fromUtf8("%1 cycles/s").arg(motorRate.motor_rate, -10, 'f', 2));
+    getTreeItem(OTHER, "estimated speed")->setText(1, QString::fromUtf8("%1 m/s").arg(motorRate.estimated_speed, -10, 'f', 2));
 }
 
 void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
 {
-    getTreeItem(DRIVE, "wheel speed FL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fl, -10, 'f', 2));
-    getTreeItem(DRIVE, "wheel speed FR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fr, -10, 'f', 2));
-    getTreeItem(DRIVE, "wheel speed RL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rl, -10, 'f', 2));
-    getTreeItem(DRIVE, "wheel speed RR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rr, -10, 'f', 2));
+    getTreeItem(OTHER, "wheel speed FL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fl, -10, 'f', 2));
+    getTreeItem(OTHER, "wheel speed FR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fr, -10, 'f', 2));
+    getTreeItem(OTHER, "wheel speed RL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rl, -10, 'f', 2));
+    getTreeItem(OTHER, "wheel speed RR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rr, -10, 'f', 2));
 }
 
 }  // namespace zmp

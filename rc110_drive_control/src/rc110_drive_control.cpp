@@ -135,8 +135,7 @@ void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
     getAndPublishImu();
     getAndPublishBaseboardTemperature();
     getAndPublishMotorBattery();
-    getAndPublishMotorRate();
-    getAndPublishWheelSpeeds();
+    getAndPublishOtherSensors();
 }
 
 void Rc110DriveControl::publishErrors()
@@ -209,26 +208,31 @@ void Rc110DriveControl::getAndPublishMotorBattery()
     publishBattery(publishers["motor_battery"], power.motorVoltage, power.motorCurrent);
 }
 
-void Rc110DriveControl::getAndPublishMotorRate()
+void Rc110DriveControl::getAndPublishOtherSensors()
 {
-    rc110_msgs::MotorRate msg;
-    msg.motor_rate = control.GetSensorInfo().motorRate;
-    publishers["motor_rate"].publish(msg);
-}
-
-void Rc110DriveControl::getAndPublishWheelSpeeds()
-{
-    rc110_msgs::WheelSpeeds msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = parameters.baseFrameId;
-
     SensorInfo sensor = control.GetSensorInfo();
-    msg.speed_fl = sensor.speedFL;
-    msg.speed_fr = sensor.speedFR;
-    msg.speed_rl = sensor.speedRL;
-    msg.speed_rr = sensor.speedRR;
+    {
+        rc110_msgs::MotorRate msg;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = parameters.baseFrameId;
 
-    publishers["wheel_speeds"].publish(msg);
+        msg.motor_rate = sensor.motorRate;
+        msg.estimated_speed = sensor.estimatedSpeed;
+
+        publishers["motor_rate"].publish(msg);
+    }
+    {
+        rc110_msgs::WheelSpeeds msg;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = parameters.baseFrameId;
+
+        msg.speed_fl = sensor.speedFL;
+        msg.speed_fr = sensor.speedFR;
+        msg.speed_rl = sensor.speedRL;
+        msg.speed_rr = sensor.speedRR;
+
+        publishers["wheel_speeds"].publish(msg);
+    }
 }
 
 void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
