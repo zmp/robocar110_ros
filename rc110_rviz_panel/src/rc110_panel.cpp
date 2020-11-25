@@ -15,6 +15,7 @@
 #include <QStatusBar>
 #include <QTimer>
 #include <boost/math/constants/constants.hpp>
+#include <zmp/RcCommon.hpp>
 
 #include "ui_rc110_panel.h"
 

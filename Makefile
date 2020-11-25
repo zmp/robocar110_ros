@@ -5,15 +5,30 @@ SHELL := /bin/bash
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
-source:
+define source
+	source /opt/ros/melodic/setup.bash
+endef
+
+
+install-source:
+	@
 ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
 	echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+	echo "ROS sourcing is added. Please, restart the shell to apply."
+else
+	echo "ROS sourcing exists already."
 endif
 
-all: source
+deps:
+	$(call source)
+	rosdep install -iry --from-paths .
+
+all:
+	$(call source)
 	catkin build ${cmake_flags}
 
 package:
+	$(call source)
 	catkin build ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
 
 	function check_make_target {
@@ -37,11 +52,13 @@ package:
 	wait
 
 install: package
+	$(call source)
 	cd $$(catkin locate --build)
 	sudo apt-get install --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 clean:
+	$(call source)
 	catkin clean -y
 
 config:

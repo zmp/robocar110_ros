@@ -10,8 +10,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
+  <depend>std_srvs</depend>
   <depend>ackermann_msgs</depend>
-  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>rc110_msgs</depend>
 </package>

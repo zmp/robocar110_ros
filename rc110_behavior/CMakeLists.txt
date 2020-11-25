@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_behavior VERSION 1.0.0)
 
-set(catkin_exec_depends
-        roscpp
+find_package(catkin REQUIRED
         ackermann_msgs
-        geometry_msgs
         sensor_msgs
-        laser_geometry
         behaviortree_cpp_v3
+        laser_geometry
+        roscpp
 )
-find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
 

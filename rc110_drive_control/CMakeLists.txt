@@ -4,13 +4,14 @@ project(rc110_drive_control VERSION 1.0.0)
 set(RC110_COMPONENTS control CACHE STRING "")
 find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
 
-set(catkin_exec_depends
+find_package(catkin REQUIRED
         roscpp
+        std_srvs
         ackermann_msgs
-        geometry_msgs
+        nav_msgs
+        sensor_msgs
         rc110_msgs
 )
-find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
 

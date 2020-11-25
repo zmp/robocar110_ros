@@ -1,17 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_rviz_panel VERSION 1.0.0)
 
-set(catkin_exec_depends
+find_package(Qt5 5.9 REQUIRED Core Widgets)
+
+find_package(catkin REQUIRED
         rviz
+        std_srvs
+        topic_tools
         ackermann_msgs
-        sensor_msgs
+        nav_msgs
         rc110_msgs
+        sensor_msgs
 )
-find_package(catkin REQUIRED ${catkin_exec_depends})
 
 catkin_package()
-
-find_package(Qt5 5.9 REQUIRED Core Widgets)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)

@@ -10,14 +10,18 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>qtbase5-dev</build_depend>
-  <build_depend>rviz</build_depend>
+
+  <depend>rviz</depend>
+  <depend>std_srvs</depend>
+  <depend>topic_tools</depend>
+  <depend>ackermann_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rc110_msgs</depend>
+  <depend>sensor_msgs</depend>
 
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
-  <exec_depend>rviz</exec_depend>
-
-  <depend>rc110_msgs</depend>
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>

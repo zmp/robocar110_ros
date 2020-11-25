@@ -9,5 +9,5 @@
   <license>Copyright (C) 2020 - present ZMP Inc</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>rc110_launch</build_depend>
+  <exec_depend>rc110_launch</exec_depend>
 </package>

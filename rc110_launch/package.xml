@@ -9,12 +9,17 @@
   <license>Copyright (C) 2020 - present ZMP Inc</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roslaunch</build_depend>
-  <depend>cv_camera</depend>
-  <depend>hokuyo_node</depend>
-  <depend>joy</depend>
-  <depend>imu_tools</depend>
-  <depend>rc110_drive_control</depend>
-  <depend>rc110_behavior</depend>
-  <depend>rc110_teleop</depend>
+  <depend>roslaunch</depend>
+
+  <exec_depend>compressed_image_transport</exec_depend>
+  <exec_depend>cv_camera</exec_depend>
+  <exec_depend>hokuyo_node</exec_depend>
+  <exec_depend>imu_complementary_filter</exec_depend>
+  <exec_depend>imu_tools</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+
+  <exec_depend>rc110_drive_control</exec_depend>
+  <exec_depend>rc110_behavior</exec_depend>
+  <exec_depend>rc110_teleop</exec_depend>
 </package>
