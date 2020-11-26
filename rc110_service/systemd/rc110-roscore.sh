@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source /opt/ros/@ROS_DISTRO@/setup.bash
+source /usr/lib/systemd/user/rc110-prepare.sh
 
-export ROS_IP=$(ifconfig "${RC110_INTERFACE}" | grep 'inet ' | awk '{print $2}')
 roscore
