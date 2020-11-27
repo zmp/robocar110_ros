@@ -1,22 +1,53 @@
 # RoboCar 1/10 ROS nodes
 
-## Dependencies
+It's a set of default ROS nodes for Robocar 1/10.
 
-* ROS melodic
-* robocar110
+They are preinstalled on robot and run with systemd service.
 
-## Prepare source
-Create ROS workspace
+| Name | Description
+| --- | --- |
+| **behavior**        | simple AD example |
+| **drive_control**   | robot ros driver |
+| **launch**          | default launch files |
+| **msgs**            | robot specific messages |
+| **rviz_panel**      | rviz control panel |
+| **service**         | systemd service package |
+| **teleop**          | joystick manipulation |
+
+By default, most of the nodes run with 30 Hz frequency.
+
+## Prerequisites
+#### ROS
+
+http://wiki.ros.org/Installation/Ubuntu
+
+#### Get Source
+
 ```
 source /opt/ros/melodic/setup.bash
 mkdir -p ~/ros/src && cd ~/ros
 catkin build
-```
-Clone repo
-```
+
 cd src/
-git clone <url> 
+git clone <url>
+cd robocar110_ros/
 ```
+
+#### Dependencies
+
+```
+sudo apt install python-rosdep
+sudo rosdep init
+rosdep update
+make deps
+```
+
+#### ROS Environment
+
+```
+make ros-source
+```
+* It will place ros sourcing to `~/.bashrc`. 
 
 ## Build
 

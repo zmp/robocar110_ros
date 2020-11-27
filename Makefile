@@ -10,7 +10,7 @@ define source
 endef
 
 
-install-source:
+ros-source:
 	@
 ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
 	echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
