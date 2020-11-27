@@ -28,6 +28,12 @@ constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
 constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
 
 constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
+
+QString printSensor(float value, const QString& suffix, int precision = 2)
+{
+    return (value < 0 ? QString("%1 ").arg(value, -10, 'f', precision) : QString(" %1 ").arg(value, -9, 'f', precision)) +
+           suffix;
+}
 }  // namespace
 
 Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget), calibrationTimer(new QTimer(this))
@@ -324,26 +330,25 @@ void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
 
 void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
 {
-    getTreeItem(DRIVE, "speed")->setText(1, QString("%1 m/s").arg(driveStatus.drive.speed, -10, 'f', 2));
-    getTreeItem(DRIVE, "steering angle")
-            ->setText(1, QString("%1 °").arg(driveStatus.drive.steering_angle * RAD_TO_DEG, -10, 'f', 2));
+    getTreeItem(DRIVE, "speed")->setText(1, printSensor(driveStatus.drive.speed, "m/s"));
+    getTreeItem(DRIVE, "steering angle")->setText(1, printSensor(driveStatus.drive.steering_angle * RAD_TO_DEG, "°"));
     getTreeItem(DRIVE, "steering speed")
-            ->setText(1, QString("%1 °/s").arg(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG, -10, 'f', 2));
+            ->setText(1, printSensor(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG, "°"));
 }
 
 void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
 {
     offsets = message;
-    QString text = "Motor Current:\t %1 mA\n"
-                   "Accel X:\t\t %2 m/s/s\n"
-                   "Accel Y:\t\t %3 m/s/s\n"
-                   "Accel Z:\t\t %4 m/s/s\n"
-                   "Gyro Yaw:\t %5 rad/s\n";
-    ui->offsetsLabel->setText(text.arg(message.motor_current * 1000, -10, 'f', 6)
-                                      .arg(message.accel_x, -10, 'f', 6)
-                                      .arg(message.accel_y, -10, 'f', 6)
-                                      .arg(message.accel_z, -10, 'f', 6)
-                                      .arg(message.gyro, -10, 'f', 6));
+    QString text = "Motor Current:\t %1\n"
+                   "Accel X:\t\t %2\n"
+                   "Accel Y:\t\t %3\n"
+                   "Accel Z:\t\t %4\n"
+                   "Gyro Yaw:\t %5\n";
+    ui->offsetsLabel->setText(text.arg(printSensor(message.motor_current * 1000, "mA", 4))
+                                      .arg(printSensor(message.accel_x, "m/s²", 4))
+                                      .arg(printSensor(message.accel_y, "m/s²", 4))
+                                      .arg(printSensor(message.accel_z, "m/s²", 4))
+                                      .arg(printSensor(message.gyro, "rad/s", 4)));
 
     ui->steeringOffsetEdit->setText(QString::number(message.steering));
 
@@ -353,19 +358,19 @@ void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
 void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)
 {
     getTreeItem(DRIVE, "angular velocity")
-            ->setText(1, QString("%1 °/s").arg(odometry.twist.twist.angular.z * RAD_TO_DEG, -10, 'f', 2));
+            ->setText(1, printSensor(float(odometry.twist.twist.angular.z * RAD_TO_DEG), "°/s"));
 }
 
 void Rc110Panel::onServoBattery(const sensor_msgs::BatteryState& batteryState)
 {
-    getTreeItem(BATTERY, "servo voltage")->setText(1, QString("%1 V").arg(batteryState.voltage, -10, 'f', 2));
-    getTreeItem(BATTERY, "servo current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000, -12, 'f', 0));
+    getTreeItem(BATTERY, "servo voltage")->setText(1, printSensor(batteryState.voltage, "V"));
+    getTreeItem(BATTERY, "servo current")->setText(1, printSensor(batteryState.current * 1000, "mA", 0));
 }
 
 void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
 {
-    getTreeItem(BATTERY, "motor voltage")->setText(1, QString("%1 V").arg(batteryState.voltage, -10, 'f', 2));
-    getTreeItem(BATTERY, "motor current")->setText(1, QString("%1 mA").arg(batteryState.current * 1000, -12, 'f', 0));
+    getTreeItem(BATTERY, "motor voltage")->setText(1, printSensor(batteryState.voltage, "V"));
+    getTreeItem(BATTERY, "motor current")->setText(1, printSensor(batteryState.current * 1000, "mA", 0));
 
     float voltage = batteryState.voltage;
     if (voltage < 6.4f) {
@@ -389,20 +394,20 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
 
 void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)
 {
-    getTreeItem(TEMPERATURE, "baseboard")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature, -10, 'f', 1));
+    getTreeItem(TEMPERATURE, "baseboard")->setText(1, printSensor(temperature.temperature, "°C", 1));
 }
 
 void Rc110Panel::onServoTemperature(const sensor_msgs::Temperature& temperature)
 {
-    getTreeItem(TEMPERATURE, "servo")->setText(1, QString::fromUtf8("%1 °C").arg(temperature.temperature, -10, 'f', 1));
+    getTreeItem(TEMPERATURE, "servo")->setText(1, printSensor(temperature.temperature, "°C", 1));
 }
 
 void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
 {
-    getTreeItem(IMU, "accel x")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.x, -10, 'f', 2));
-    getTreeItem(IMU, "accel y")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.y, -10, 'f', 2));
-    getTreeItem(IMU, "accel z")->setText(1, QString::fromUtf8("%1 m/s^2").arg(imu.linear_acceleration.z, -10, 'f', 2));
-    getTreeItem(IMU, "gyro yaw")->setText(1, QString::fromUtf8("%1 rad/s").arg(imu.angular_velocity.z, -10, 'f', 2));
+    getTreeItem(IMU, "accel x")->setText(1, printSensor(imu.linear_acceleration.x, "m/s²"));
+    getTreeItem(IMU, "accel y")->setText(1, printSensor(imu.linear_acceleration.y, "m/s²"));
+    getTreeItem(IMU, "accel z")->setText(1, printSensor(imu.linear_acceleration.z, "m/s²"));
+    getTreeItem(IMU, "gyro yaw")->setText(1, printSensor(imu.angular_velocity.z, "rad/s"));
 
     if (calibrationTimer->isActive()) {
         auto& accelX = calibrationSums["accel x"];
@@ -422,16 +427,16 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
 
 void Rc110Panel::onMotorRate(const rc110_msgs::MotorRate& motorRate)
 {
-    getTreeItem(OTHER, "motor rate")->setText(1, QString::fromUtf8("%1 cycles/s").arg(motorRate.motor_rate, -10, 'f', 2));
-    getTreeItem(OTHER, "estimated speed")->setText(1, QString::fromUtf8("%1 m/s").arg(motorRate.estimated_speed, -10, 'f', 2));
+    getTreeItem(OTHER, "motor rate")->setText(1, printSensor(motorRate.motor_rate, "cycles/s"));
+    getTreeItem(OTHER, "estimated speed")->setText(1, printSensor(motorRate.estimated_speed, "m/s"));
 }
 
 void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
 {
-    getTreeItem(OTHER, "wheel speed FL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fl, -10, 'f', 2));
-    getTreeItem(OTHER, "wheel speed FR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_fr, -10, 'f', 2));
-    getTreeItem(OTHER, "wheel speed RL")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rl, -10, 'f', 2));
-    getTreeItem(OTHER, "wheel speed RR")->setText(1, QString::fromUtf8("%1 m/s").arg(wheelSpeeds.speed_rr, -10, 'f', 2));
+    getTreeItem(OTHER, "wheel speed FL")->setText(1, printSensor(wheelSpeeds.speed_fl, "m/s"));
+    getTreeItem(OTHER, "wheel speed FR")->setText(1, printSensor(wheelSpeeds.speed_fr, "m/s"));
+    getTreeItem(OTHER, "wheel speed RL")->setText(1, printSensor(wheelSpeeds.speed_rl, "m/s"));
+    getTreeItem(OTHER, "wheel speed RR")->setText(1, printSensor(wheelSpeeds.speed_rr, "m/s"));
 }
 
 }  // namespace zmp

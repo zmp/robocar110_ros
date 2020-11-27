@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>726</height>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,6 +35,11 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="QTreeWidget" name="treeWidget">
+      <property name="font">
+       <font>
+        <family>Monospace</family>
+       </font>
+      </property>
       <property name="columnCount">
        <number>2</number>
       </property>
@@ -42,7 +47,7 @@
        <bool>true</bool>
       </attribute>
       <attribute name="headerDefaultSectionSize">
-       <number>150</number>
+       <number>200</number>
       </attribute>
       <column>
        <property name="text">
@@ -108,7 +113,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="servoLabel">
           <property name="text">
-           <string>Servomotor</string>
+           <string>Steering</string>
           </property>
          </widget>
         </item>
@@ -173,38 +178,14 @@
         <string>Offsets</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="1">
-         <widget class="QPushButton" name="calibrateButton">
-          <property name="toolTip">
-           <string>You'll need to wait few seconds.</string>
-          </property>
-          <property name="text">
-           <string>Calibrate</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="steeringOffsetLabel">
-          <property name="text">
-           <string>Steering Angle [deg] :</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="steeringOffsetEdit">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="toolTip">
-           <string>Separate calibration for steering</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -212,7 +193,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Put the robot on horizontal surface and press the button below:</string>
+           <string>Put the robot on horizontal surface and press the button:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
@@ -222,13 +203,72 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0" rowspan="2">
+        <item row="0" column="1">
+         <widget class="QPushButton" name="calibrateButton">
+          <property name="toolTip">
+           <string>You'll need to wait few seconds.</string>
+          </property>
+          <property name="text">
+           <string>Calibrate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="offsetsLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Offset Values</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <italic>true</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>While steering being Neutral, manually make the front wheels be directed front. Then enter the value of current steering angle into the field below:</string>
+          </property>
           <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="steeringOffsetLabel">
+          <property name="text">
+           <string>Steering Angle [deg] :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="steeringOffsetEdit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Separate calibration for steering</string>
           </property>
          </widget>
         </item>
