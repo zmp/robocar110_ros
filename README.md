@@ -4,20 +4,22 @@ It's a set of default ROS nodes for Robocar 1/10.
 
 They are preinstalled on robot and run with systemd service.
 
-| Name | Description
-| --- | --- |
-| **behavior**        | simple AD example |
-| **drive_control**   | robot ros driver |
-| **launch**          | default launch files |
-| **msgs**            | robot specific messages |
-| **rviz_panel**      | rviz control panel |
-| **service**         | systemd service package |
-| **teleop**          | joystick manipulation |
+| Name              | Description             |
+|:------------------|:------------------------|
+| **behavior**      | simple AD example       |
+| **drive_control** | robot ros driver        |
+| **launch**        | default launch files    |
+| **msgs**          | robot specific messages |
+| **rviz_panel**    | rviz control panel      |
+| **service**       | systemd service package |
+| **teleop**        | joystick manipulation   |
 
 By default, most of the nodes run with 30 Hz frequency.
 
 ## Prerequisites
 #### ROS
+
+Please, install ROS melodic following the instruction:
 
 http://wiki.ros.org/Installation/Ubuntu
 
@@ -29,7 +31,7 @@ mkdir -p ~/ros/src && cd ~/ros
 catkin build
 
 cd src/
-git clone <url>
+git clone <url>  # or unzip from archive
 cd robocar110_ros/
 ```
 
@@ -38,7 +40,9 @@ cd robocar110_ros/
 ```
 sudo apt install python-rosdep
 sudo rosdep init
-rosdep update
+rosdep update --rosdistro=$ROS_DISTRO
+
+cd ~/ros/src/robocar110_ros/
 make deps
 ```
 
