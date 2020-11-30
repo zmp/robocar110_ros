@@ -26,13 +26,14 @@ http://wiki.ros.org/Installation/Ubuntu
 #### Get Source
 
 ```
-source /opt/ros/melodic/setup.bash
+export ROS_DISTRO=melodic
+source /opt/ros/${ROS_DISTRO}/setup.bash
 mkdir -p ~/ros/src && cd ~/ros
 catkin build
 
-cd src/
+cd ~/ros/src
 git clone <url>  # or unzip from archive
-cd robocar110_ros/
+cd ~/ros/src/robocar110_ros/
 ```
 
 #### Dependencies
