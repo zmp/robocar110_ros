@@ -30,17 +30,26 @@ function(ros_to_deb_name result dep)
         return()
     endif()
 
-    # Some use debian package name as is. For example usual packages, that are not in rosdep yaml list.
-    to_deb_name(dep ${dep})
-    execute_process(COMMAND apt-cache search --names-only ^${dep}$ OUTPUT_VARIABLE output)
+    # Rosdep cannot look for non listed packages in resolve mode, so we check it manually.
+    to_deb_name(dep1 ros-$ENV{ROS_DISTRO}-${dep})
+    execute_process(COMMAND apt-cache search --names-only ^${dep1}$ OUTPUT_VARIABLE output)
     if(NOT output STREQUAL "")
-        set(${result} ${dep} PARENT_SCOPE)
+        set(${result} ${dep1} PARENT_SCOPE)
         return()
     endif()
 
-    # Exception for packages started with rc110-, because they can appear in the same workspace
-    if (dep MATCHES "^rc110-")
-        set(${result} ros-$ENV{ROS_DISTRO}-${dep} PARENT_SCOPE)
+    # Some use debian package name as is. For example usual packages, that are not in rosdep yaml list.
+    to_deb_name(dep2 ${dep})
+    execute_process(COMMAND apt-cache search --names-only ^${dep2}$ OUTPUT_VARIABLE output)
+    if(NOT output STREQUAL "")
+        set(${result} ${dep2} PARENT_SCOPE)
+        return()
+    endif()
+
+    # Exception for packages started with rc110_, because they can appear in the same workspace
+    if (dep MATCHES "^rc110_")
+        to_deb_name(dep3 ros-$ENV{ROS_DISTRO}-${dep})
+        set(${result} ${dep3} PARENT_SCOPE)
         return()
     endif()
 

@@ -9,3 +9,6 @@ RC110_INTERFACE=wlan0
 "\
  > /etc/zmp/ros.env
 fi
+
+# Enable services by default
+systemctl --user enable rc110
