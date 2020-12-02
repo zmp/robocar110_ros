@@ -6,6 +6,8 @@ if [ ! -f /etc/zmp/ros.env ]; then
 # rc110 service configuration file
 
 RC110_INTERFACE=wlan0
+
+RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch'
 "\
  > /etc/zmp/ros.env
 fi
