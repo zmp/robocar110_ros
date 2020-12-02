@@ -90,6 +90,9 @@ void Rc110JoyTeleop::updateToggles(const sensor_msgs::Joy::ConstPtr& message)
 
 bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button)
 {
+    if (!m_joyMessage) {
+        return false;
+    }
     return message->buttons[button] && !m_joyMessage->buttons[button];
 }
 
