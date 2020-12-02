@@ -11,4 +11,4 @@ RC110_INTERFACE=wlan0
 fi
 
 # Enable services by default
-systemctl --user enable rc110
+systemctl --global enable rc110
