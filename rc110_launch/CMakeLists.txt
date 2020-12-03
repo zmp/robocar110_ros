@@ -5,7 +5,7 @@ find_package(catkin)
 
 catkin_package()
 
-install(DIRECTORY config launch rviz DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY config launch rviz urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 # prepare configuration files for roslaunch
 set(RC110_CONFIG_PATH /opt/ros/$ENV{ROS_DISTRO}/${CATKIN_PACKAGE_SHARE_DESTINATION})

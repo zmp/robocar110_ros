@@ -1,0 +1,17 @@
+<robot name="rc110">
+    <link name="body" />
+    <link name="hokuyo1" />
+    <link name="hokuyo2" />
+
+    <joint name="hokuyo1_joint" type="fixed">
+        <parent link="body"/>
+        <child link="hokuyo1"/>
+        <origin xyz="0.2 0 0.05" rpy="3.1415926 0 0" />
+    </joint>
+
+    <joint name="hokuyo2_joint" type="fixed">
+        <parent link="body"/>
+        <child link="hokuyo2"/>
+        <origin xyz="-0.1 0 0.05" rpy="0 3.1415926 0" />
+    </joint>
+</robot>
