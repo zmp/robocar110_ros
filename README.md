@@ -10,7 +10,7 @@ They are preinstalled on robot and run with systemd service.
 | **drive_control** | robot ros driver        |
 | **launch**        | default launch files    |
 | **msgs**          | robot specific messages |
-| **rviz_panel**    | rviz control panel      |
+| **rviz**          | rviz control panel      |
 | **service**       | systemd service package |
 | **teleop**        | joystick manipulation   |
 

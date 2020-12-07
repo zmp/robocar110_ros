@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rc110_rviz_panel</name>
+  <name>rc110_rviz</name>
   <version>0.0.0</version>
-  <description>RoboCar 1/10 rviz panel</description>
+  <description>RoboCar 1/10 rviz tools</description>
 
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
 
