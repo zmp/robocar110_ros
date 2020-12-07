@@ -2,6 +2,9 @@
     <arg name="config_dir"/>
     <arg name="urdf_file" default="$(find rc110_launch)/urdf/robot.xml"/>
 
+    <param name="robot_description" textfile="$(arg urdf_file)"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
     <include file="$(find rc110_launch)/launch/nodes/sensors.launch"/>
 
     <include file="$(find rc110_launch)/launch/nodes/joy_teleop.launch">
@@ -23,7 +26,4 @@
       Or use joystick or rviz.
     -->
     <node pkg="topic_tools" type="mux" name="mux_drive" args="drive drive_manual drive_ad mux:=mux_drive"/>
-
-    <param name="robot_description" textfile="$(arg urdf_file)"/>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 </launch>

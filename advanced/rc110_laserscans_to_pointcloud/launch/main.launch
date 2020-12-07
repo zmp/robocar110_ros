@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="rc110_laserscans_to_pointcloud" type="rc110_laserscans_to_pointcloud" name="laserscans_to_pointcloud">
+        <remap from="scan_1" to="front_lidar/scan"/>
+        <remap from="scan_2" to="rear_lidar/scan"/>
+    </node>
+</launch>
