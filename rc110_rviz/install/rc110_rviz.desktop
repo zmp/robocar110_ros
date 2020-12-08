@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=RoboCar 1/10
+Version=1.0
+Type=Application
+Exec=bash -c "source /opt/ros/melodic/setup.bash; roslaunch rc110_rviz rviz.launch"
+Icon=rc110_ros.png
+Categories=Development
