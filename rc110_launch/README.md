@@ -17,7 +17,7 @@
 - Subscribed Topics:
 ```text
 /imu/data_raw [sensor_msgs::Imu]
-    raw imu data published with frame_id rc110_imu
+    raw imu data published with frame_id imu_link
 ```
 
 - Published Topics:

@@ -18,8 +18,7 @@
 namespace zmp
 {
 Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "behavior.xml"),
-                    .frameId = handlePrivate.param<std::string>("frame_id", "rc110_base")})
+        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "behavior.xml")})
 {
     laserSubscriber = handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this);
     drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1);

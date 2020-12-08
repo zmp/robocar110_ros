@@ -23,8 +23,8 @@
 namespace zmp
 {
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "rc110_base"),
-                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "rc110_imu"),
+        parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "base_link"),
+                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
                     .rate = handlePrivate.param<double>("rate", 30)}),
         control([this](BaseboardError error) { baseboardError = error; })
 {

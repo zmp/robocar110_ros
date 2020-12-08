@@ -28,8 +28,8 @@ class Rc110DriveControl
 {
 public:
     struct Parameters {
-        std::string baseFrameId = "rc110_base";
-        std::string imuFrameId = "rc110_imu";
+        std::string baseFrameId = "base_link";
+        std::string imuFrameId = "imu_link";
         double rate = 30.0;  // Hz
     };
 

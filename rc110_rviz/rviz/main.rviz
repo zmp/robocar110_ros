@@ -108,7 +108,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.029999999329447746
       Style: Flat Squares
-      Topic: /lidar_2d_front/scan
+      Topic: /front_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -138,7 +138,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.029999999329447746
       Style: Flat Squares
-      Topic: /lidar_2d_rear/scan
+      Topic: /rear_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -147,7 +147,7 @@ Visualization Manager:
   Global Options:
     Background Color: 0; 0; 0
     Default Light: true
-    Fixed Frame: lidar_2d_front
+    Fixed Frame: front_lidar
     Frame Rate: 30
   Name: root
   Tools:

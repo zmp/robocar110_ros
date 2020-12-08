@@ -42,7 +42,7 @@ public:
         double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
 
         std::vector<double> gears = { 0.3, 0.6, 1.0 };
-        std::string frameId = "rc110_base";
+        std::string frameId = "base_link";
         double rate = 30.0;  // Hz
     };
 
