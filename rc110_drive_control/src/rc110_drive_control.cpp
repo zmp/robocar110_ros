@@ -182,7 +182,6 @@ void Rc110DriveControl::getAndPublishImu()
     sensor_msgs::Imu msg;
     msg.header.stamp = ros::Time::now();
     msg.header.frame_id = parameters.imuFrameId;
-    msg.orientation_covariance[0] = -1;  // data not available
 
     msg.angular_velocity.x = 0;
     msg.angular_velocity.y = 0;
@@ -191,6 +190,12 @@ void Rc110DriveControl::getAndPublishImu()
     msg.linear_acceleration.x = sensor.accelX;
     msg.linear_acceleration.y = sensor.accelY;
     msg.linear_acceleration.z = sensor.accelZ;
+
+    // data not available
+    msg.orientation = {};
+    msg.orientation_covariance.fill(-1);
+    msg.angular_velocity_covariance.fill(-1);
+    msg.linear_acceleration_covariance.fill(-1);
 
     publishers["imu"].publish(msg);
 }
