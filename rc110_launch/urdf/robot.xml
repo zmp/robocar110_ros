@@ -1,9 +1,16 @@
 <robot name="rc110">
     <link name="base_link" />
+    <link name="imu_link" />
     <link name="front_camera" />
     <link name="rear_camera" />
     <link name="front_lidar" />
     <link name="rear_lidar" />
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0.085 0.026 0.0631" rpy="3.1415926 0 0" />
+    </joint>
 
     <joint name="front_camera_joint" type="fixed">
         <parent link="base_link"/>
