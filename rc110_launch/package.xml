@@ -3,10 +3,8 @@
   <name>rc110_launch</name>
   <version>0.0.0</version>
   <description>RoboCar 1/10 launcher</description>
-
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
-
-  <license>Copyright (C) 2020 - present ZMP Inc</license>
+  <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roslaunch</depend>
