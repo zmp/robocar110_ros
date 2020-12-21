@@ -179,25 +179,25 @@ void Rc110DriveControl::getAndPublishImu()
 {
     SensorInfo sensor = control.GetSensorInfo();
 
-    sensor_msgs::Imu msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = parameters.imuFrameId;
+    sensor_msgs::Imu message;
+    message.header.stamp = ros::Time::now();
+    message.header.frame_id = parameters.imuFrameId;
 
-    msg.angular_velocity.x = 0;
-    msg.angular_velocity.y = 0;
-    msg.angular_velocity.z = sensor.gyroYaw;
+    message.angular_velocity.x = 0;
+    message.angular_velocity.y = 0;
+    message.angular_velocity.z = sensor.gyroYaw;
 
-    msg.linear_acceleration.x = sensor.accelX;
-    msg.linear_acceleration.y = sensor.accelY;
-    msg.linear_acceleration.z = sensor.accelZ;
+    message.linear_acceleration.x = sensor.accelX;
+    message.linear_acceleration.y = sensor.accelY;
+    message.linear_acceleration.z = sensor.accelZ;
 
     // data not available
-    msg.orientation = {};
-    msg.orientation_covariance.fill(-1);
-    msg.angular_velocity_covariance.fill(-1);
-    msg.linear_acceleration_covariance.fill(-1);
+    message.orientation = {};
+    message.orientation_covariance.fill(-1);
+    message.angular_velocity_covariance.fill(-1);
+    message.linear_acceleration_covariance.fill(-1);
 
-    publishers["imu"].publish(msg);
+    publishers["imu"].publish(message);
 }
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
@@ -217,46 +217,47 @@ void Rc110DriveControl::getAndPublishOtherSensors()
 {
     SensorInfo sensor = control.GetSensorInfo();
     {
-        rc110_msgs::MotorRate msg;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = parameters.baseFrameId;
+        rc110_msgs::MotorRate message;
+        message.header.stamp = ros::Time::now();
+        message.header.frame_id = parameters.baseFrameId;
 
-        msg.motor_rate = sensor.motorRate;
-        msg.estimated_speed = sensor.estimatedSpeed;
+        message.motor_rate = sensor.motorRate;
+        message.estimated_speed = sensor.estimatedSpeed;
 
-        publishers["motor_rate"].publish(msg);
+        publishers["motor_rate"].publish(message);
     }
     {
-        rc110_msgs::WheelSpeeds msg;
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = parameters.baseFrameId;
+        rc110_msgs::WheelSpeeds message;
+        message.header.stamp = ros::Time::now();
+        message.header.frame_id = parameters.baseFrameId;
 
-        msg.speed_fl = sensor.speedFL;
-        msg.speed_fr = sensor.speedFR;
-        msg.speed_rl = sensor.speedRL;
-        msg.speed_rr = sensor.speedRR;
+        message.speed_fl = sensor.speedFL;
+        message.speed_fr = sensor.speedFR;
+        message.speed_rl = sensor.speedRL;
+        message.speed_rr = sensor.speedRR;
 
-        publishers["wheel_speeds"].publish(msg);
+        publishers["wheel_speeds"].publish(message);
     }
 }
 
 void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
 {
-    ackermann_msgs::AckermannDriveStamped msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = parameters.baseFrameId;
+    ackermann_msgs::AckermannDriveStamped message;
+    message.header.stamp = ros::Time::now();
+    message.header.frame_id = parameters.baseFrameId;
 
-    msg.drive.speed = drive.speed;
-    msg.drive.steering_angle = drive.steeringAngle;
-    msg.drive.steering_angle_velocity = drive.steeringAngularSpeed;
+    message.drive.speed = drive.speed;
+    message.drive.steering_angle = drive.steeringAngle;
+    message.drive.steering_angle_velocity = drive.steeringAngularSpeed;
 
-    publishers["drive_status"].publish(msg);
+    publishers["drive_status"].publish(message);
 }
 
 void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 {
     nav_msgs::Odometry message;
     message.header.stamp = ros::Time::now();
+    message.header.frame_id = parameters.baseFrameId;
     message.twist.twist.linear.x = drive.speed;
     message.twist.twist.angular.z = drive.angularSpeed;
 
@@ -265,25 +266,25 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 
 void Rc110DriveControl::publishTemperature(ros::Publisher& publisher, float temperature)
 {
-    sensor_msgs::Temperature msg;
-    msg.header.stamp = ros::Time::now();
+    sensor_msgs::Temperature message;
+    message.header.stamp = ros::Time::now();
 
-    msg.variance = 0;
-    msg.temperature = temperature;
+    message.variance = 0;
+    message.temperature = temperature;
 
-    publisher.publish(msg);
+    publisher.publish(message);
 }
 
 void Rc110DriveControl::publishBattery(ros::Publisher& publisher, float voltage, float current)
 {
-    sensor_msgs::BatteryState msg;
-    msg.header.stamp = ros::Time::now();
+    sensor_msgs::BatteryState message;
+    message.header.stamp = ros::Time::now();
 
-    msg.voltage = voltage;
-    msg.current = current;
-    msg.present = true;
+    message.voltage = voltage;
+    message.current = current;
+    message.present = true;
 
-    publisher.publish(msg);
+    publisher.publish(message);
 }
 
 }  // namespace zmp
