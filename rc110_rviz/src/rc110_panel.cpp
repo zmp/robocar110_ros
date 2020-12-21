@@ -348,7 +348,7 @@ void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
                                       .arg(printSensor(message.accel_x, "m/s²", 4))
                                       .arg(printSensor(message.accel_y, "m/s²", 4))
                                       .arg(printSensor(message.accel_z, "m/s²", 4))
-                                      .arg(printSensor(message.gyro, "rad/s", 4)));
+                                      .arg(printSensor(message.gyro * RAD_TO_DEG, "°/s", 4)));
 
     ui->steeringOffsetEdit->setText(QString::number(message.steering));
 
@@ -407,7 +407,7 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
     getTreeItem(IMU, "accel x")->setText(1, printSensor(imu.linear_acceleration.x, "m/s²"));
     getTreeItem(IMU, "accel y")->setText(1, printSensor(imu.linear_acceleration.y, "m/s²"));
     getTreeItem(IMU, "accel z")->setText(1, printSensor(imu.linear_acceleration.z, "m/s²"));
-    getTreeItem(IMU, "gyro yaw")->setText(1, printSensor(imu.angular_velocity.z, "rad/s"));
+    getTreeItem(IMU, "gyro yaw")->setText(1, printSensor(imu.angular_velocity.z * RAD_TO_DEG, "°/s"));
 
     if (calibrationTimer->isActive()) {
         auto& accelX = calibrationSums["accel x"];
