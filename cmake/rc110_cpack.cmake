@@ -54,7 +54,9 @@ function(ros_to_deb_name result dep)
     endif()
 
     set(${result} "" PARENT_SCOPE)
-    message(WARNING "Couldn't convert dependency to deb name: ${dep}")
+    if(CATKIN_BUILD_BINARY_PACKAGE)
+        message(WARNING "Couldn't convert dependency to deb name: ${dep}")
+    endif()
 endfunction()
 
 if(NOT CPACK_PACKAGE_NAME)

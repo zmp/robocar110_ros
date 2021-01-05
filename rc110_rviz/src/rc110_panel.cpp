@@ -15,12 +15,27 @@
 #include <QStatusBar>
 #include <QTimer>
 #include <boost/math/constants/constants.hpp>
-#include <zmp/RcCommon.hpp>
 
 #include "ui_rc110_panel.h"
 
 namespace zmp
 {
+/// drive or servo motor state
+enum class MotorState : uint8_t {
+    OFF = 0,      /// No current
+    ON = 1,       /// On and not movable by hand
+    NEUTRAL = 2,  /// On but movable by hand
+};
+
+/// all errors that can be emitted from baseboard
+enum class BaseboardError : uint8_t {
+    NONE = 0,
+    BOARD_HEAT = 1,     /// board has too high temperature
+    MOTOR_HEAT = 2,     /// motor has too high temperature
+    MOTOR_FAILURE = 3,  /// encoder feedback and polarity of the motor
+    LOW_VOLTAGE = 4,    /// voltage dropped less than 6V for around 1s
+};
+
 namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;

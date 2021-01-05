@@ -57,6 +57,10 @@ install: package
 	sudo apt-get install --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
+rviz:
+	$(call source)
+	catkin build rc110_rviz ${cmake_flags}
+
 clean:
 	$(call source)
 	catkin clean -y
