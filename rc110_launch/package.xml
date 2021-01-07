@@ -9,7 +9,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roslaunch</depend>
 
-  <exec_depend>compressed_image_transport</exec_depend>
   <exec_depend>cv_camera</exec_depend>
   <exec_depend>hokuyo_node</exec_depend>
   <exec_depend>imu_complementary_filter</exec_depend>
