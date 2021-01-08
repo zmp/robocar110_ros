@@ -12,6 +12,7 @@
 #ifndef Q_MOC_RUN
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
+#include <rc110_msgs/BaseboardError.h>
 #include <rc110_msgs/MotorRate.h>
 #include <rc110_msgs/Offsets.h>
 #include <rc110_msgs/Status.h>
@@ -71,7 +72,7 @@ private:
     void onSteeringAngle(const std_msgs::Float32& message);
     void showDriveGoalStatus();
 
-    void onError(const std_msgs::UInt8& message);
+    void onError(const rc110_msgs::BaseboardError& message);
     void onRobotStatus(const rc110_msgs::Status& message);
     void onOffsets(const rc110_msgs::Offsets& message);
     void onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus);

@@ -20,22 +20,6 @@
 
 namespace zmp
 {
-/// drive or servo motor state
-enum class MotorState : uint8_t {
-    OFF = 0,      /// No current
-    ON = 1,       /// On and not movable by hand
-    NEUTRAL = 2,  /// On but movable by hand
-};
-
-/// all errors that can be emitted from baseboard
-enum class BaseboardError : uint8_t {
-    NONE = 0,
-    BOARD_HEAT = 1,     /// board has too high temperature
-    MOTOR_HEAT = 2,     /// motor has too high temperature
-    MOTOR_FAILURE = 3,  /// encoder feedback and polarity of the motor
-    LOW_VOLTAGE = 4,    /// voltage dropped less than 6V for around 1s
-};
-
 namespace
 {
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
@@ -167,34 +151,34 @@ void Rc110Panel::onEnableAd(bool on)
 
 void Rc110Panel::onSetMotorState(QAbstractButton* button)
 {
-    MotorState state = (button == ui->motorOnRadio)        ? MotorState::ON
-                       : (button == ui->motorNeutralRadio) ? MotorState::NEUTRAL
-                                                           : MotorState::OFF;
+    int state = (button == ui->motorOnRadio)        ? rc110_msgs::Status::MOTOR_ON
+                : (button == ui->motorNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
+                                                    : rc110_msgs::Status::MOTOR_OFF;
     std_srvs::SetBool service;
     service.request.data = uint8_t(state);
     ros::service::call("motor_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Drive motor was set to %1")
-                                                              .arg(state == MotorState::ON    ? "on"
-                                                                   : state == MotorState::OFF ? "off"
-                                                                                              : "neutral")
+                                                              .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
+                                                                   : state == rc110_msgs::Status::MOTOR_OFF ? "off"
+                                                                                                      : "neutral")
                                                     : QString("Failed to set motor state"),
                            STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onSetServoState(QAbstractButton* button)
 {
-    MotorState state = (button == ui->servoOnRadio)        ? MotorState::ON
-                       : (button == ui->servoNeutralRadio) ? MotorState::NEUTRAL
-                                                           : MotorState::OFF;
+    int state = (button == ui->servoOnRadio)        ? rc110_msgs::Status::MOTOR_ON
+                : (button == ui->servoNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
+                                                    : rc110_msgs::Status::MOTOR_OFF;
     std_srvs::SetBool service;
     service.request.data = uint8_t(state);
     ros::service::call("servo_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Servomotor was set to %1")
-                                                              .arg(state == MotorState::ON    ? "on"
-                                                                   : state == MotorState::OFF ? "off"
-                                                                                              : "neutral")
+                                                              .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
+                                                                   : state == rc110_msgs::Status::MOTOR_OFF ? "off"
+                                                                                                      : "neutral")
                                                     : QString("Failed to set servo state"),
                            STATUS_MESSAGE_TIME);
 }
@@ -294,23 +278,23 @@ void Rc110Panel::showDriveGoalStatus()
                            STATUS_MESSAGE_TIME);
 }
 
-void Rc110Panel::onError(const std_msgs::UInt8& message)
+void Rc110Panel::onError(const rc110_msgs::BaseboardError& message)
 {
-    BaseboardError error{message.data};
-    if (error == BaseboardError::NONE) {
+    int error = message.data;
+    if (error == rc110_msgs::BaseboardError::NONE) {
         ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
         ui->errorLabel->setToolTip("Baseboard is ok");
     } else {
         ui->errorLabel->setPixmap(QPixmap(":/error.png"));
 
         QString tooltip = "Please, restart baseboard: %1";
-        if (error == BaseboardError::BOARD_HEAT) {
+        if (error == rc110_msgs::BaseboardError::BOARD_HEAT) {
             ui->errorLabel->setToolTip(tooltip.arg("board has too high temperature"));
-        } else if (error == BaseboardError::MOTOR_HEAT) {
+        } else if (error == rc110_msgs::BaseboardError::MOTOR_HEAT) {
             ui->errorLabel->setToolTip(tooltip.arg("motor has too high temperature"));
-        } else if (error == BaseboardError::MOTOR_FAILURE) {
+        } else if (error == rc110_msgs::BaseboardError::MOTOR_FAILURE) {
             ui->errorLabel->setToolTip(tooltip.arg("encoder feedback and polarity of the motor"));
-        } else if (error == BaseboardError::LOW_VOLTAGE) {
+        } else if (error == rc110_msgs::BaseboardError::LOW_VOLTAGE) {
             ui->errorLabel->setToolTip(tooltip.arg("voltage dropped less than 6V for around 1s"));
         }
     }
@@ -320,22 +304,22 @@ void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
 {
     ui->boardButton->setChecked(message.board_enabled);
 
-    switch (MotorState(message.motor_state)) {
-        case MotorState::NEUTRAL:
+    switch (message.motor_state) {
+        case rc110_msgs::Status::MOTOR_NEUTRAL:
             ui->motorNeutralRadio->setChecked(true);
             break;
-        case MotorState::ON:
+        case rc110_msgs::Status::MOTOR_ON:
             ui->motorOnRadio->setChecked(true);
             break;
         default:
             ui->motorOffRadio->setChecked(true);
     }
 
-    switch (MotorState(message.servo_state)) {
-        case MotorState::NEUTRAL:
+    switch (message.servo_state) {
+        case rc110_msgs::Status::MOTOR_NEUTRAL:
             ui->servoNeutralRadio->setChecked(true);
             break;
-        case MotorState::ON:
+        case rc110_msgs::Status::MOTOR_ON:
             ui->servoOnRadio->setChecked(true);
             break;
         default:

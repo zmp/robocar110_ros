@@ -11,6 +11,7 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
+#include <rc110_msgs/BaseboardError.h>
 #include <rc110_msgs/MotorRate.h>
 #include <rc110_msgs/Status.h>
 #include <rc110_msgs/WheelSpeeds.h>
@@ -40,7 +41,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
     publishers["motor_speed_goal"] = handle.advertise<std_msgs::Float32>("motor_speed_goal", 10, true);
     publishers["steering_angle_goal"] = handle.advertise<std_msgs::Float32>("steering_angle_goal", 10, true);
 
-    publishers["baseboard_error"] = handle.advertise<std_msgs::UInt8>("baseboard_error", 10, true);
+    publishers["baseboard_error"] = handle.advertise<rc110_msgs::BaseboardError>("baseboard_error", 10, true);
     publishers["robot_status"] = handle.advertise<rc110_msgs::Status>("robot_status", 10, true);
     publishers["drive_status"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
     publishers["offsets_status"] = handle.advertise<rc110_msgs::Offsets>("offsets_status", 10, true);
@@ -145,7 +146,7 @@ void Rc110DriveControl::publishErrors()
     }
     lastBaseboardError = baseboardError;
 
-    std_msgs::UInt8 message;
+    rc110_msgs::BaseboardError message;
     message.data = uint8_t(baseboardError.load());
 
     publishers["baseboard_error"].publish(message);
