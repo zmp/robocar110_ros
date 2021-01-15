@@ -19,7 +19,7 @@ By default, most of the nodes run with 30 Hz frequency.
 ## Prerequisites
 #### ROS
 
-Please, install ROS melodic following the instruction:
+Please, install **ROS melodic** on **Ubuntu** following the instruction:
 
 http://wiki.ros.org/Installation/Ubuntu
 
@@ -74,6 +74,19 @@ make package
 make install
 ```
 * It will install those files with `sudo apt-get install`.
+
+## RViz Panel
+
+```
+make deps-rviz
+make rviz
+```
+* It will build rviz plugin only in the current ros workspace.
+
+```
+source ~/ros/devel/setup.bash
+```
+* to use it in RViz.
 
 ## ROS configuration
 

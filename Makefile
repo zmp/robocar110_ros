@@ -57,6 +57,10 @@ install: package
 	sudo apt-get install --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
+deps-rviz:
+	$(call source)
+	rosdep install -iry --from-paths rc110_rviz --skip-keys=rc110_msgs
+
 rviz:
 	$(call source)
 	catkin build rc110_rviz ${cmake_flags}
