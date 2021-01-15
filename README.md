@@ -23,28 +23,23 @@ Please, install **ROS melodic** on **Ubuntu** following the instruction:
 
 http://wiki.ros.org/Installation/Ubuntu
 
-#### Get Source
+#### RC110 Source
 
 ```
 export ROS_DISTRO=melodic
 source /opt/ros/${ROS_DISTRO}/setup.bash
 mkdir -p ~/ros/src && cd ~/ros
-catkin build
 
 cd ~/ros/src
-git clone <url>  # or unzip from archive
+git clone <url or this repo>  # or unzip from archive
+
 cd ~/ros/src/robocar110_ros/
 ```
 
-#### Dependencies
+#### Build Tools
 
 ```
-sudo apt install python-rosdep
-sudo rosdep init
-rosdep update --rosdistro=$ROS_DISTRO
-
-cd ~/ros/src/robocar110_ros/
-make deps
+make tools
 ```
 
 #### ROS Environment
@@ -52,11 +47,14 @@ make deps
 ```
 make ros-source
 ```
-* It will place ros sourcing to `~/.bashrc`. 
+* It will place ros sourcing to `~/.bashrc`.
+* You need to restart terminal after that.
 
 ## Build
 
 ```
+make deps    # ros dependencies
+
 make
 ```
 * It will build all with catkin build.

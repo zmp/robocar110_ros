@@ -19,6 +19,12 @@ else
 	echo "ROS sourcing exists already."
 endif
 
+tools:
+	sudo apt-get install -y -q python-catkin-tools python-rosdep
+	sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
+	sudo rosdep init
+	rosdep update --rosdistro=$${ROS_DISTRO}
+
 deps:
 	$(call source)
 	rosdep install -iry --from-paths .
