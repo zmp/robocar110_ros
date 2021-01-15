@@ -21,7 +21,7 @@ endif
 
 tools:
 	sudo apt-get install -y -q python-catkin-tools python-rosdep
-	sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
+	sudo rm -f /etc/ros/rosdep/sources.list.d/20-default.list
 	sudo rosdep init
 	rosdep update --rosdistro=$${ROS_DISTRO}
 
