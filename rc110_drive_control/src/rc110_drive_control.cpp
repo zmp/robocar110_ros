@@ -19,7 +19,6 @@
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
-#include <std_msgs/UInt8.h>
 
 namespace zmp
 {
@@ -59,7 +58,7 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
                                            [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
 
     // publish no error
-    publishers["baseboard_error"].publish(std_msgs::UInt8());
+    publishers["baseboard_error"].publish(rc110_msgs::BaseboardError());
 
     // publish offsets
     rc110_msgs::Offsets offsetsMessage;
