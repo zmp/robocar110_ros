@@ -28,18 +28,18 @@ http://wiki.ros.org/Installation/Ubuntu
 ```
 export ROS_DISTRO=melodic
 source /opt/ros/${ROS_DISTRO}/setup.bash
-mkdir -p ~/ros/src && cd ~/ros
 
+mkdir -p ~/ros/src
 cd ~/ros/src
 git clone <url or this repo>  # or unzip from archive
 
 cd ~/ros/src/robocar110_ros/
 ```
 
-#### Build Tools
+#### Init Catkin and RosDep
 
 ```
-make tools
+make init
 ```
 
 #### ROS Environment
