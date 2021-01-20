@@ -12,7 +12,7 @@ endef
 
 ros-source:
 	@
-ifeq (,$(shell grep "source /opt/ros" ~/.bashrc))
+ifeq (,$(shell grep -q "source /opt/ros" ~/.bashrc))
 	echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 	echo "ROS sourcing is added. Please, restart the shell to apply."
 else

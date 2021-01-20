@@ -1,16 +1,4 @@
 #!/bin/bash
 
-if [ ! -f /etc/zmp/ros.env ]; then
-    mkdir -p /etc/zmp
-    echo "
-# rc110 service configuration file
-
-RC110_INTERFACE=wlan0
-
-RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch'
-"\
- > /etc/zmp/ros.env
-fi
-
 # Enable services by default
 systemctl --global enable rc110
