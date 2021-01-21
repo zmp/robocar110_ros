@@ -10,7 +10,7 @@ if [ ! -f $config_file ]; then
     echo "
 # RC110 service configuration file
 
-# Uncomment and specify IP to connect remotely to the robot.
+# Uncomment and specify IP of this robot to connect remotely.
 # We recommend to specify the same static IP in Network Manager.
 #     Other way: you can resolve hostname (zmp) to IP on client PC (e.g. in hosts file).
 #ROS_IP=192.168.110.5
@@ -18,7 +18,7 @@ if [ ! -f $config_file ]; then
 # Change to your launch command, if you created another one.
 RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch'
 "\
- > $config_file
+        > $config_file
 fi
 
 # Add config to bashrc too.
@@ -29,7 +29,7 @@ set -a
 . $config_file
 set +a
 "\
- >> ~/.bashrc
+        >> ~/.bashrc
 fi
 
 # Apply config
