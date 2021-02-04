@@ -86,6 +86,11 @@ source ~/ros/devel/setup.bash
 ```
 * to use it in RViz.
 
+```
+make show
+```
+* to show RViz with default layout
+
 ## ROS configuration
 
 Configuration is installed during packages installation.
@@ -95,3 +100,13 @@ If you want to install robot config without installing packages, run:
 make config
 ```
 * It will install default config files to `/etc/zmp/rc110_config/`
+
+## Commands Available in Windows
+The effect for these commands is similar to the linux ones.
+
+Please, use `x64 Native Tools Command Prompt` to run them. 
+```
+nmake rviz
+nmake show
+nmake clean
+```
