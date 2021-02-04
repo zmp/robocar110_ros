@@ -76,6 +76,17 @@ rviz:
 	$(call source)
 	catkin build rc110_rviz ${cmake_flags}
 
+show:
+	if [ -f ../../env.sh ]; then
+		source ../../env.sh
+		# On remote client, please, fill the file similar to:
+		#
+		# export ROS_MASTER_URI=http://192.168.110.5:11311
+		# export ROS_IP=192.168.110.2
+	fi
+	source ../../devel/setup.bash
+	roslaunch rc110_rviz rviz.launch
+
 clean:
 	$(call source)
 	catkin clean -y
