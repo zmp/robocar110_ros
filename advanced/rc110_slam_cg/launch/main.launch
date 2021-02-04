@@ -1,0 +1,15 @@
+<launch>
+    <node pkg="cartographer_ros" type="cartographer_node" name="cartographer"
+          args="
+                -configuration_directory $(find rc110_slam_cg)/config
+                -configuration_basename main.lua
+                --minloglevel 2
+                "
+            output="screen">
+        <!-- Log level 2, to omit warnings about lidar points dropped (because of time overlapping). -->
+
+        <remap from="scan_1" to="front_lidar/scan"/>
+        <remap from="scan_2" to="rear_lidar/scan"/>
+        <remap from="imu" to="imu/data"/>
+    </node>
+</launch>
