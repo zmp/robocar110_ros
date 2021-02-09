@@ -5,6 +5,7 @@
         <param name="rate" value="30.0"/>
         <param name="image_width" value="1920"/>
         <param name="image_height" value="1080"/>
+        <param name="rescale_camera_info" value="true"/>
         <param name="camera_info_url" value="$(env HOME)/.config/rc110/calibration/front_camera.yaml"></param>
     </node>
 
@@ -14,6 +15,7 @@
         <param name="rate" value="30.0"/>
         <param name="image_width" value="1920"/>
         <param name="image_height" value="1080"/>
+        <param name="rescale_camera_info" value="true"/>
         <param name="camera_info_url" value="$(env HOME)/.config/rc110/calibration/rear_camera.yaml"></param>
     </node>
 
