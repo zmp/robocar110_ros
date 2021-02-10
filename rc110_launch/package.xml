@@ -11,7 +11,6 @@
 
   <exec_depend>cv_camera</exec_depend>
   <exec_depend>hokuyo_node</exec_depend>
-  <exec_depend>imu_complementary_filter</exec_depend>
   <exec_depend>imu_tools</exec_depend>
   <exec_depend>joy</exec_depend>
   <exec_depend>topic_tools</exec_depend>
