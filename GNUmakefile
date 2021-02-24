@@ -6,6 +6,7 @@
 SHELL := /bin/bash
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
+main_nodes := rc110_service rc110_rviz
 
 define source
 	source /opt/ros/melodic/setup.bash
@@ -32,15 +33,15 @@ init:
 
 deps:
 	$(call source)
-	rosdep install -iry --from-paths .
+	rosdep install -iry --from-paths rc110_*
 
 all:
 	$(call source)
-	catkin build ${cmake_flags}
+	catkin build ${main_nodes} --cmake-args ${cmake_flags}
 
 package:
 	$(call source)
-	catkin build ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
+	catkin build ${main_nodes} --cmake-args ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
 
 	function check_make_target {
 		output=$$(make -n "$$1" 2>&1 | head -1)
@@ -74,7 +75,7 @@ deps-rviz:
 
 rviz:
 	$(call source)
-	catkin build rc110_rviz ${cmake_flags}
+	catkin build rc110_rviz --cmake-args ${cmake_flags}
 
 show:
 	if [ -f ../../env.sh ]; then
@@ -93,3 +94,22 @@ clean:
 
 config:
 	sudo ./rc110_launch/deb/postinst
+
+
+# advanced nodes
+adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(wildcard advanced/rc110_*)))))
+deps_adv_nodes := $(addprefix deps-,$(adv_nodes))
+run_adv_nodes := $(addprefix run-,$(adv_nodes))
+show_adv_nodes := $(addprefix show-,$(adv_nodes))
+
+$(adv_nodes):
+	cd advanced/$(subst -,_,$(addprefix rc110_,$@)) && $(MAKE)
+
+$(deps_adv_nodes):
+	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst deps-,,$@))) && $(MAKE) deps
+
+$(run_adv_nodes):
+	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst run-,,$@))) && $(MAKE) run
+
+$(show_adv_nodes):
+	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))) && $(MAKE) show

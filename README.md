@@ -79,12 +79,7 @@ make install
 make deps-rviz
 make rviz
 ```
-* It will build rviz plugin only in the current ros workspace.
-
-```
-source ~/ros/devel/setup.bash
-```
-* to use it in RViz.
+* It will build rviz plugin in the current ros workspace.
 
 ```
 make show
@@ -101,12 +96,7 @@ make config
 ```
 * It will install default config files to `/etc/zmp/rc110_config/`
 
-## Commands Available in Windows
-The effect for these commands is similar to the linux ones.
+## ~ Additional ~
 
-Please, use `x64 Native Tools Command Prompt` to run them. 
-```
-nmake rviz
-nmake show
-nmake clean
-```
+* [**Windows**](docs/Windows.md)
+* [**Advanced Nodes**](advanced/README.md)
