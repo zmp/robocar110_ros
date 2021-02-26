@@ -1,5 +1,20 @@
-# rc110 service
+# RoboCar 1/10 Service Files
 
-`robot.launch` file will be executed at the robot startup.
+Systemd service files allow to start robot during system startup.
 
-The default implementation will use `wlan0` interface to communicate through network.
+* By default, `robot.launch` is executed.
+
+## Configuration
+
+You can find configuration in `~/.config/rc110/service.conf`
+
+* Please, specify your ip as `ROS_IP` in the following file to communicate with robot through network.
+* Also, you can change the default launch command through `RC110_LAUNCH_COMMAND` variable.
+
+## Manipulation Commands
+```
+systemctl --user status rc110
+systemctl --user stop rc110
+systemctl --user start rc110
+systemctl --user restart rc110
+```

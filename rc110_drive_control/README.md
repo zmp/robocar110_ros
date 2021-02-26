@@ -1,5 +1,7 @@
 # RC 1/10 Drive Control
 
+ROS driver node. Please, communicate with it, if you want to get sensor information or drive the robot.
+
 ## Subscribed Topics
 
 ```
