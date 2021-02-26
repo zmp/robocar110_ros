@@ -7,13 +7,31 @@ ROS driver node. Please, communicate with it, if you want to get sensor informat
 ```
 /drive [ackermann_msgs::AckermannDrive]
     set speed and steering angle
+    
+/offsets [rc110_msgs::Offsets]
+    various device value offsets
 ```
 
 ## Published Topic
 
 ```
+/motor_speed_goal [std_msgs::Float32]
+    drive motor target speed (m/s)
+
+/steering_angle_goal [std_msgs::Float32]
+    steering target angle (rad)
+    
+/baseboard_error [rc110_msgs::BaseboardError]
+    Error from baseboard
+
+/robot_status [rc110_msgs::Status]
+    Status of baseboard, drive and steering motors
+
 /drive_status [ackermann_msgs::AckermannDriveStamped]
     actual speed and angle published with frame_id base_link
+
+/offsets_status [rc110_msgs::Offsets]
+    current devices offsets values
 
 /imu/data_raw [sensor_msgs::Imu]
     raw imu data published with frame_id imu_link
@@ -24,19 +42,44 @@ ROS driver node. Please, communicate with it, if you want to get sensor informat
 /baseboard_temperature [sensor_msgs::Temperature]
     baseboard temperature
 
+/servo_battery [sensor_msgs::BatteryState]
+    steering motor battery state
+    
 /motor_battery [sensor_msgs::BatteryState]
-    motor battery state
+    drive motor battery state
+    
+/odometry [nav_msgs::Odometry]
+    odometry calculated basing on wheel encoders
+    
+/motor_rate [rc110_msgs::MotorRate]
+    drive motor rotation speed and robot speed estimated from it (optional)
+    
+/wheel_speeds [rc110_msgs::WheelSpeeds]
+    separate speed of each wheel
+```
+
+## Services
+
+```
+enable_board [std_srvs::SetBool]
+    enable/disable baseboard
+    
+motor_state [std_srvs::SetBool]
+    enable/disable drive motor
+    
+servo_state [std_srvs::SetBool]
+    enable/disable steering motor
 ```
 
 ## Parameters
 
 ```
-rs232_device (string, default: /dev/ttyUSB1)
-    motor device name
+base_frame_id (string, default: base_link)
+    base frame id
 
-rs485_device (string, default: /dev/ttyUSB0)
-    steering device name
+imu_frame_id (string, default: imu_link)
+    imu frame id
 
-steering_offset (double, default: 0.0)
-    steering angle calibration error in degrees
+rate (double, default: 30)
+    node refresh rate (Hz)
 ```

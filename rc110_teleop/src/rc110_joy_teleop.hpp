@@ -24,6 +24,10 @@
 
 namespace zmp
 {
+/**
+ * A node that handles joystick message and provides drive message based on it.
+ * Also it can enable/disable baseboard and AD mode.
+ */
 class Rc110JoyTeleop
 {
 public:

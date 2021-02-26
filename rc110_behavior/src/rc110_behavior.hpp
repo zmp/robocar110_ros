@@ -29,6 +29,9 @@ class Rc110Behavior
 public:
     Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate);
 
+    /**
+     * Behavior tree tick that is triggered in the main loop.
+     */
     void update();
 
 private:
