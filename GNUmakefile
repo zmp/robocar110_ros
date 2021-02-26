@@ -92,9 +92,6 @@ clean:
 	$(call source)
 	catkin clean -y
 
-config:
-	sudo ./rc110_launch/deb/postinst
-
 
 # advanced nodes
 adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(wildcard advanced/rc110_*)))))

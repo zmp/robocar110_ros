@@ -1,5 +1,0 @@
-<launch>
-    <include file="$(find rc110_launch)/launch/nodes/all.launch">
-        <arg name="config_dir" value="$(find rc110_launch)/config" />
-    </include>
-</launch>

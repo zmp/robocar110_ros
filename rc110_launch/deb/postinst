@@ -1,19 +1,17 @@
 #!/bin/bash
 
-# get config path from cmake or default if run not from cmake
-config_prefix="@RC110_CONFIG_PATH@"
-if [[ "$config_prefix" =~ "RC110_CONFIG_PATH" ]]; then
-    config_prefix=$(realpath "$(dirname "${0}")"/..)
-fi
+# Copy config files from installation directory to editable directory, if they have not existed already.
 
-etc_zmp_rc110_config=/etc/zmp/rc110_config
-mkdir -p $etc_zmp_rc110_config
+config_prefix="@RC110_SHARE_PATH@"
+default_config=${config_prefix}/config_default
+editable_config=${config_prefix}/config
 
-# default config
-for config_file in "$config_prefix"/config/*.yaml
+mkdir -p ${editable_config}
+
+for default_file in ${default_config}/*.yaml
 do
-    etc_config_file=$etc_zmp_rc110_config/$(basename "$config_file")
-    if [ ! -f "$etc_config_file" ]; then
-        cp "$config_file" "$etc_config_file"
+    editable_file=${editable_config}/$(basename ${default_file})
+    if [ ! -f ${editable_file} ]; then
+        cp ${default_file} ${editable_file}
     fi
 done

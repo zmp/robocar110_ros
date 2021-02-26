@@ -90,11 +90,9 @@ make show
 
 Configuration is installed during packages installation.
 
-If you want to install robot config without installing packages, run:
-```
-make config
-```
-* It will install default config files to `/etc/zmp/rc110_config/`
+It is possible to edit the configuration, the next package update won't change it.
+
+* `/opt/ros/${ROS_DISTRO}/share/rc110/config/`
 
 ## ~ Additional ~
 

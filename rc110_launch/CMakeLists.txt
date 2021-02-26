@@ -5,10 +5,11 @@ find_package(catkin)
 
 catkin_package()
 
-install(DIRECTORY config launch urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY launch urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config_default)
 
 # prepare configuration files for roslaunch
-set(RC110_CONFIG_PATH /opt/ros/$ENV{ROS_DISTRO}/${CATKIN_PACKAGE_SHARE_DESTINATION})
+set(RC110_SHARE_PATH /opt/ros/$ENV{ROS_DISTRO}/${CATKIN_PACKAGE_SHARE_DESTINATION})
 configure_file(${PROJECT_SOURCE_DIR}/deb/postinst ${PROJECT_BINARY_DIR}/deb/postinst @ONLY)
 
 # tests
