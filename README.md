@@ -23,12 +23,9 @@ Please, install **ROS melodic** on **Ubuntu** following the instruction:
 
 http://wiki.ros.org/Installation/Ubuntu
 
-#### RC110 Source
+#### RC110 Source Code
 
 ```
-export ROS_DISTRO=melodic
-source /opt/ros/${ROS_DISTRO}/setup.bash
-
 mkdir -p ~/ros/src
 cd ~/ros/src
 git clone <url or this repo>  # or unzip from archive

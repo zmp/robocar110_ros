@@ -8,15 +8,16 @@ SHELL := /bin/bash
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 main_nodes := rc110_service rc110_rviz
 
+ROS_DISTRO ?= melodic
 define source
-	source /opt/ros/melodic/setup.bash
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 endef
 
 
 ros-source:
 	@
 ifeq (,$(shell grep -q "source /opt/ros" ~/.bashrc))
-	echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+	echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 	echo "ROS sourcing is added. Please, restart the shell to apply."
 else
 	echo "ROS sourcing exists already."
@@ -29,7 +30,7 @@ init:
 
 	sudo rm -f /etc/ros/rosdep/sources.list.d/20-default.list
 	sudo rosdep init
-	rosdep update --rosdistro=$${ROS_DISTRO}
+	rosdep update --rosdistro=${ROS_DISTRO}
 
 deps:
 	$(call source)
