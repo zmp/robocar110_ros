@@ -16,7 +16,9 @@ foreach(file ${systemd_files})
     configure_file(${file} ${PROJECT_BINARY_DIR}/${file} @ONLY)
 endforeach()
 
-install(DIRECTORY ${PROJECT_BINARY_DIR}/systemd/ DESTINATION /usr/lib/systemd/user USE_SOURCE_PERMISSIONS)
+if (CATKIN_BUILD_BINARY_PACKAGE)
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/systemd/ DESTINATION /usr/lib/systemd/user USE_SOURCE_PERMISSIONS)
+endif()
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_SOURCE_DIR}/deb/postinst;")

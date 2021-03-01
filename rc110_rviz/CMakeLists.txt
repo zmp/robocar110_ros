@@ -40,8 +40,11 @@ install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 install(FILES plugin_description.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-install(FILES install/rc110_rviz.desktop DESTINATION /usr/share/applications/)
-install(FILES install/rc110_ros.png DESTINATION /usr/share/pixmaps/)
+
+if (CATKIN_BUILD_BINARY_PACKAGE)
+    install(FILES install/rc110_rviz.desktop DESTINATION /usr/share/applications/)
+    install(FILES install/rc110_ros.png DESTINATION /usr/share/pixmaps/)
+endif()
 
 
 add_executable(${PROJECT_NAME}_app app/main.cpp)
