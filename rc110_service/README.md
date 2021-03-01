@@ -8,7 +8,7 @@ Systemd service files allow to start robot during system startup.
 
 You can find configuration in `~/.config/rc110/service.conf`
 
-* Please, specify your ip as `ROS_IP` in the following file to communicate with robot through network.
+* Please, specify your ip as `ROS_IP` in the file to communicate with the robot through network.
 * Also, you can change the default launch command through `RC110_LAUNCH_COMMAND` variable.
 
 ## Manipulation Commands

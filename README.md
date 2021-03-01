@@ -88,9 +88,9 @@ make show
 
 ## ROS configuration
 
-Configuration is installed during packages installation.
+Default configuration is installed during packages installation.
 
-It is possible to edit the configuration, the next package update won't change it.
+It is possible to edit the configuration, the next package update won't change it, but new parameters are to be added manually if needed.
 
 * `/opt/ros/${ROS_DISTRO}/share/rc110/config/`
 

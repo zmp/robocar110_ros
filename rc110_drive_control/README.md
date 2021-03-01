@@ -1,6 +1,6 @@
 # RC 1/10 Drive Control
 
-ROS driver node. Please, communicate with it, if you want to get sensor information or drive the robot.
+ROS driver node. This node receives drive control commands and publishes sensor information from the robot.
 
 ## Subscribed Topics
 
@@ -52,7 +52,7 @@ ROS driver node. Please, communicate with it, if you want to get sensor informat
     odometry calculated basing on wheel encoders
     
 /motor_rate [rc110_msgs::MotorRate]
-    drive motor rotation speed and robot speed estimated from it (optional)
+    drive motor rotation speed and robot speed estimated from it (auxiliary)
     
 /wheel_speeds [rc110_msgs::WheelSpeeds]
     separate speed of each wheel
