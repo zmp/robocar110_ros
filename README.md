@@ -33,17 +33,12 @@ git clone <url or this repo>  # or unzip from archive
 cd ~/ros/src/robocar110_ros/
 ```
 
-#### Init Catkin and RosDep
-
-```
-make init
-```
-
 #### ROS Environment
 
 ```
 make ros-source
 ```
+* Optional.
 * It will place ros sourcing to `~/.bashrc`.
 * You need to restart terminal after that.
 

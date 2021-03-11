@@ -24,23 +24,26 @@ else
 endif
 
 init:
-	sudo apt-get install -y -q python-catkin-tools python-rosdep
+ifneq (0, $(shell catkin locate &>/dev/null; echo $$?))
+	sudo apt-get install -qq python-catkin-tools
 	cd ../..
 	catkin init
-
-	sudo rm -f /etc/ros/rosdep/sources.list.d/20-default.list
+endif
+ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
+	sudo apt-get install -qq python-rosdep
 	sudo rosdep init
 	rosdep update --rosdistro=${ROS_DISTRO}
+endif
 
-deps:
+deps: init
 	$(call source)
 	rosdep install -iry --from-paths rc110_*
 
-all:
+all: init
 	$(call source)
 	catkin build ${main_nodes} --cmake-args ${cmake_flags}
 
-package:
+package: init
 	$(call source)
 	catkin build ${main_nodes} --cmake-args ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
 
@@ -70,11 +73,11 @@ install: package
 	sudo apt-get install --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
-deps-rviz:
+deps-rviz: init
 	$(call source)
 	rosdep install -iry --from-paths rc110_rviz --skip-keys=rc110_msgs
 
-rviz:
+rviz: init
 	$(call source)
 	catkin build rc110_rviz --cmake-args ${cmake_flags}
 

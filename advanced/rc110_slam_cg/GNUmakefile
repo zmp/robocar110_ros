@@ -9,11 +9,14 @@ define source
 	source /opt/ros/melodic/setup.bash
 endef
 
-deps:
+init:
+	cd ../.. && $(MAKE) init
+
+deps: init
 	$(call source)
 	rosdep install -iry --from-paths .
 
-all:
+all: init
 	$(call source)
 	catkin build --this --cmake-args ${cmake_flags}
 
