@@ -1,0 +1,7 @@
+debug_level: 1
+port: "8554"
+url_suffix: "front"
+video_device: "video0"
+max_framerate: 60
+width: 1920
+height: 1080

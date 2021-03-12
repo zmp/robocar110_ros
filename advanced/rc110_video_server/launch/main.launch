@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="rc110_video_server" type="rc110_video_server" name="video_server" respawn="true">
+        <rosparam file="$(find rc110_video_server)/config/video_server.yaml" subst_value="true"/>
+    </node>
+</launch>
