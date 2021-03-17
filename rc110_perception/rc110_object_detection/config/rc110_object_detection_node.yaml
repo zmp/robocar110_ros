@@ -1,0 +1,10 @@
+confidence_thresh: 0.6
+model_path: "$(env HOME)/.cache/rc110/jetson-inference/data/networks/SSD-Inception-v2/ssd_inception_v2_coco.uff"
+class_labels_path: "$(env HOME)/.cache/rc110/jetson-inference/data/networks/SSD-Inception-v2/ssd_coco_labels.txt"
+overlay_str: "box,labels,conf"
+input_blob: "Input"
+output_blob: "NMS"
+output_count: "NMS_1"
+num_channels: 3
+input_height: 300
+input_width: 300

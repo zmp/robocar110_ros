@@ -1,19 +1,16 @@
 /*
  * Copyright (C) 2021 ZMP Inc info@zmp.co.jp
- * All Rights Reserved
  *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  *
  * Written by btran
  */
 
-#include <ros/ros.h>
+#include "rc110_image_converter.hpp"
 
 #include <jetson-utils/cudaColorspace.h>
 #include <jetson-utils/cudaMappedMemory.h>
-
-#include "rc110_image_converter.hpp"
+#include <ros/ros.h>
 
 namespace zmp
 {

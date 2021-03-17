@@ -1,26 +1,26 @@
 /*
  * Copyright (C) 2021 ZMP Inc info@zmp.co.jp
- * All Rights Reserved
  *
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  *
  * Written by btran
  */
 
 #pragma once
 
-#include <sensor_msgs/Image.h>
-#include <sensor_msgs/image_encodings.h>
-
 #include <jetson-utils/cudaUtility.h>
 #include <jetson-utils/imageFormat.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/image_encodings.h>
 
 #include <cstdlib>
 #include <string>
 
 namespace zmp
 {
+/**
+ * Utility class that handles transferring of data between host and device.
+ */
 class Rc110ImageConverter
 {
 public:
@@ -41,24 +41,24 @@ public:
     /**
      *  @brief convert image encoding to imageFormat enum type defined in jetson-utils
      *
-     *  @param imageEnconding (ROS) sensor_msgs' image enconding
+     *  @param imageEncoding (ROS) sensor_msgs' image encoding
      *  @return imageFormat enum image format type
      */
-    static imageFormat toImageFormat(const std::string& imageEnconding);
+    static imageFormat toImageFormat(const std::string& imageEncoding);
 
     /**
      *  @brief convert imageFormat enum type defined in jetson-utils to image encoding
      *
      *  @param iFormat enum image format type
-     *  @return (ROS) sensor_msgs' image enconding
+     *  @return (ROS) sensor_msgs' image encoding
      */
     static std::string toImageEncoding(const imageFormat iFormat);
 
-    inline std::size_t imageWidth() const { return m_imageWidth; }
+    std::size_t imageWidth() const { return m_imageWidth; }
 
-    inline std::size_t imageHeight() const { return m_imageHeight; }
+    std::size_t imageHeight() const { return m_imageHeight; }
 
-    inline PixelType* deviceOutput() const { return m_deviceOutput; }
+    PixelType* deviceOutput() const { return m_deviceOutput; }
 
     /**
      *  @brief transfer image message data to device and convert to internal format (IMAGE_RGB8)
@@ -71,7 +71,7 @@ public:
     /**
      *  @brief create image message from internal device data, mainly for overlay debug purpose
      *
-     *  @param outputImageFormat output image message's format
+     *  @param outputImageFormat output image message's format (enum type defined in jetson-utils)
      *  @return output image message
      */
     sensor_msgs::ImagePtr toImageMessage(const imageFormat outputImageFormat) const;
@@ -79,12 +79,12 @@ public:
     /**
      *  @brief allocate pinned-memory resources needed for inference process, or storing overlaid image after inference
      *
-     *  basically, raw image data, after being transfered to device, need to be further transformed
+     *  basically, raw image data, after being transferred to device, need to be further transformed
      *  so that it can be readily fed into the inference network.
      *
      *  @param imageWidth image width
      *  @param imageHeight image height
-     *  @param imageFormat imageFormat
+     *  @param imageFormat image format (enum type defined in jetson-utils)
      *  @return true if allocated successfully; false otherwise
      */
     bool allocateMemory(const std::size_t imageWidth, const std::size_t imageHeight, const imageFormat iFormat);
