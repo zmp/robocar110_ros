@@ -9,8 +9,19 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 main_nodes := rc110_service rc110_rviz
 
 ROS_DISTRO ?= melodic
+
 define source
 	source /opt/ros/${ROS_DISTRO}/setup.bash
+endef
+
+define env_content
+# Please, adjust the ips below to match you real ips.
+
+export ROS_MASTER_URI=http://192.168.110.5:11311
+export ROS_IP=192.168.110.2
+echo
+echo "../../env.sh is configued as: ROS_MASTER_URI=$$ROS_MASTER_URI, ROS_IP=$$ROS_IP"
+echo
 endef
 
 
@@ -82,15 +93,23 @@ rviz: init
 	catkin build rc110_rviz --cmake-args ${cmake_flags}
 
 show:
-	if [ -f ../../env.sh ]; then
-		source ../../env.sh
-		# On remote client, please, fill the file similar to:
-		#
-		# export ROS_MASTER_URI=http://192.168.110.5:11311
-		# export ROS_IP=192.168.110.2
-	fi
 	source ../../devel/setup.bash
 	roslaunch rc110_rviz rviz.launch
+
+export env_content
+env:
+ifeq (,$(wildcard ../../env.sh))
+	echo "$$env_content" > ../../env.sh
+endif
+
+remote-show: env
+	source ../../env.sh
+	$(MAKE) show
+
+remote-drive: env
+	source ../../env.sh
+	source ../../devel/setup.bash
+	rosrun joy joy_node __name:=joy_node_remote
 
 clean:
 	$(call source)

@@ -65,6 +65,15 @@ make install
 ```
 * It will install those files with `sudo apt-get install`.
 
+## Remote Configuration
+
+In order to connect to robot from remote PC, `ROS_MASTER_URI` and `ROS_IP` environment variables should be set. `env.sh` file is created automatically for this purpose to use with `make` command.
+
+If you want to configure those variables beforehand, please, run the following command and adjust the variables.
+```
+make env
+```
+
 ## RViz Panel
 
 ```
@@ -76,7 +85,19 @@ make rviz
 ```
 make show
 ```
-* to show RViz with default layout
+* to show RViz with default layout locally, or
+
+```
+make remote-show
+```
+* to show RViz with default layout on remote PC
+
+## Joystick Connected to PC
+
+Connect joystick dongle to your remote PC instead of robot.
+```
+make remote-drive
+```
 
 ## ROS configuration
 
