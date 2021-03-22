@@ -25,13 +25,15 @@ run:
 	roslaunch --screen rc110_video_server main.launch
 
 show:
-	if [ -f ../../../../env.sh ]; then
-		source ../../../../env.sh
-		# On remote client, please, fill the file similar to:
-		#
-		# export ROS_MASTER_URI=http://192.168.110.5:11311
-		# export ROS_IP=192.168.110.2
-	fi
+	gst-launch-1.0 rtspsrc latency=0 location=rtsp://127.0.0.1:8554/front \
+		! rtph265depay ! h265parse ! queue ! omxh265dec ! nvoverlaysink sync=false async=false
+	# ------------------------------------------------------------------------------
+	# Press Ctrl+C to exit full screen.
+
+remote-show:
+	$(MAKE) env -C ../..
+	source ../../../../env.sh
+
 	if [[ $$ROS_MASTER_URI =~ http://(.*):[0-9]+ ]]; then
 		ip=$${BASH_REMATCH[1]}
 		gst-launch-1.0 rtspsrc latency=0 location=rtsp://$$ip:8554/front \
@@ -39,4 +41,11 @@ show:
 	else
 		echo "Unable to parse ROS_MASTER_URI"
 	fi
+	# ------------------------------------------------------------------------------
+
+# Just for local testing without RTSP
+test-show:
+	gst-launch-1.0 v4l2src device=/dev/video0
+		! 'video/x-raw, format=(string)UYVY, width=(int)1920,height=(int)1080'
+		! xvimagesink
 	# ------------------------------------------------------------------------------

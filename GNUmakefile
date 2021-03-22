@@ -121,6 +121,7 @@ adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(wildcard advanced/rc1
 deps_adv_nodes := $(addprefix deps-,$(adv_nodes))
 run_adv_nodes := $(addprefix run-,$(adv_nodes))
 show_adv_nodes := $(addprefix show-,$(adv_nodes))
+remote_show_adv_nodes := $(addprefix remote-show-,$(adv_nodes))
 
 $(adv_nodes):
 	cd advanced/$(subst -,_,$(addprefix rc110_,$@)) && $(MAKE)
@@ -133,3 +134,6 @@ $(run_adv_nodes):
 
 $(show_adv_nodes):
 	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))) && $(MAKE) show
+
+$(remote_show_adv_nodes):
+	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst remote-show-,,$@))) && $(MAKE) remote-show
