@@ -1,3 +1,13 @@
+## v1.3.0
+
+* h265 video streaming (around 10 times faster than ROS image).
+* Remote joystick control.
+
+## v1.2.0
+
+* SLAM samples based on Cartographer and Hector.
+* Tested with JetPack 4.5.1
+
 ## v1.1.0
 
 * Setting constant ROS_IP in configuration.

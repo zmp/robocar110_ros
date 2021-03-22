@@ -11,10 +11,11 @@ Hector Mapping can do SLAM basing only on 2D lidar.
 
 ## Makefile
 ```
-make deps     # check dependencies
-make          # build
-make run      # run slam node
-make show     # show rviz
+make deps         # check dependencies
+make              # build
+make run          # run slam node
+make show         # show rviz
+make remote-show  # show rviz on remote pc
 ```
 
 ## Mapping

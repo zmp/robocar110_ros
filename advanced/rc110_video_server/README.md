@@ -23,10 +23,11 @@ systemctl --user restart rc110
 
 ## Usage
 ```
-make deps     # check dependencies
-make          # build
-make run      # run streaming on robot
-make show     # playback the stream on remote pc
+make deps         # check dependencies
+make              # build
+make run          # run streaming on robot
+make show         # playback the stream on local pc
+make remote-show  # playback the stream on remote pc
 ```
 
 Also you can playback video stream with GUI application like VLC.
