@@ -107,8 +107,8 @@ remote-show: env
 	$(MAKE) show
 
 remote-drive: env
+	$(call source)
 	source ../../env.sh
-	source ../../devel/setup.bash
 	rosrun joy joy_node __name:=joy_node_remote
 
 clean:
