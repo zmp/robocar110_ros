@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find rc110_object_detection)/launch/rc110_object_detection_node.launch" />
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find rc110_object_detection)/rviz/rc110_object_detection_node.rviz">
+  </node>
+</launch>
