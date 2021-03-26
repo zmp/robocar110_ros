@@ -36,9 +36,18 @@ cd $JETSON_INFERENCE_DIR/jetson-inference/tools
 
 ![download model](docs/images/download.jpg)
 
-## How to Run ##
+## Usage ##
 ***
 
+```
+make deps         # check dependencies
+make              # build
+make run          # roslaunch (see below)
+make show         # show overlay image in rviz
+make remote-show  # same on remote pc
+```
+
+**RosLaunch**
 ```bash
 roslaunch rc110_object_detection rc110_object_detection_node.launch
 
@@ -46,10 +55,7 @@ roslaunch rc110_object_detection rc110_object_detection_node.launch
 roslaunch rc110_object_detection rc110_object_detection_node_rviz.launch
 ```
 
-**Note:**
-
-- the first launch will start the build of tensorrt's runtime engine, so it will take a little while ONLY for this first time.
-- if you use the model 15 downloaded in the previous steps, you can just use the default value for *object_detection_node_param_path*.
+- The first time you launch the node, it will start the build of tensorrt's runtime engine, so it will take a little while ONLY for this first time.
 
 ## Subscribed Topics ##
 ***
