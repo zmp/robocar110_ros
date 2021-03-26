@@ -7,12 +7,14 @@
         <node pkg="usb_cam" type="usb_cam_node" name="front_camera">
             <rosparam file="$(arg config_dir)/sensors/front_camera.yaml" subst_value="true"/>
         </node>
+        <node name="image_proc" pkg="image_proc" type="image_proc" ns="front_camera"/>
     </group>
 
     <group if="$(arg use_rear_camera)">
         <node pkg="usb_cam" type="usb_cam_node" name="rear_camera">
             <rosparam file="$(arg config_dir)/sensors/rear_camera.yaml" subst_value="true"/>
         </node>
+        <node name="image_proc" pkg="image_proc" type="image_proc" ns="rear_camera"/>
     </group>
 
     <node pkg="hokuyo_node" type="hokuyo_node" name="front_lidar">

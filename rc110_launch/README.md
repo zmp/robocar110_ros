@@ -25,3 +25,8 @@
 /imu/data [sensor_msgs::Imu]
     integrated imu data with orientation
 ```
+
+### Notes ###
+***
+
+- [Note on monocular camera calibration](docs/monocular_cam_calibration_node.md)
