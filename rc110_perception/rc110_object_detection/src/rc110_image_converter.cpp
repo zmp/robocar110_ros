@@ -90,8 +90,7 @@ bool Rc110ImageConverter::toDevice(const sensor_msgs::ImageConstPtr& inputImageM
     ROS_DEBUG("converting %ux%u %s image", inputImageMsg->width, inputImageMsg->height, inputImageMsg->encoding.c_str());
     const imageFormat inputImageFormat = Rc110ImageConverter::toImageFormat(inputImageMsg->encoding);
     if (inputImageFormat == IMAGE_UNKNOWN) {
-        ROS_ERROR("image encoding %s is not a compatible format to use with ros_deep_learning",
-                  inputImageMsg->encoding.c_str());
+        ROS_ERROR("image encoding %s is not a compatible format", inputImageMsg->encoding.c_str());
         return false;
     }
 
@@ -129,7 +128,7 @@ sensor_msgs::ImagePtr Rc110ImageConverter::toImageMessage(const imageFormat outp
 
     if (CUDA_FAILED(cudaConvertColor(
                 m_deviceOutput, INTERNAL_IMAGE_FORMAT, m_deviceInput, outputImageFormat, m_imageWidth, m_imageHeight))) {
-        ROS_ERROR("failed to convert %ld%ld image (from %s to %s) with CUDA",
+        ROS_ERROR("failed to convert %ldx%ld image (from %s to %s) with CUDA",
                   m_imageWidth,
                   m_imageHeight,
                   imageFormatToStr(INTERNAL_IMAGE_FORMAT),
