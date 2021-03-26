@@ -5,12 +5,15 @@ find_package(catkin)
 
 catkin_package()
 
-install(DIRECTORY launch urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config_default)
+install(DIRECTORY config launch urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 # prepare configuration files for roslaunch
 set(RC110_SHARE_PATH /opt/ros/$ENV{ROS_DISTRO}/${CATKIN_PACKAGE_SHARE_DESTINATION})
-configure_file(${PROJECT_SOURCE_DIR}/deb/postinst ${PROJECT_BINARY_DIR}/deb/postinst @ONLY)
+file(REMOVE ${PROJECT_BINARY_DIR}/deb/conffiles)
+file(GLOB_RECURSE config_files RELATIVE ${PROJECT_SOURCE_DIR} config/*.yaml urdf/*.xml)
+foreach(file ${config_files})
+    file(APPEND ${PROJECT_BINARY_DIR}/deb/conffiles "${RC110_SHARE_PATH}/${file}\n")
+endforeach()
 
 # tests
 if (CATKIN_ENABLE_TESTING)
@@ -19,5 +22,5 @@ if (CATKIN_ENABLE_TESTING)
 endif()
 
 # package
-set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/postinst;")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
 include(../cmake/rc110_cpack.cmake)
