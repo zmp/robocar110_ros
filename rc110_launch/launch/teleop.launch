@@ -1,5 +1,5 @@
 <launch>
-    <arg name="config_dir"/>
+    <arg name="config_dir" default="$(find rc110_launch)/config"/>
     <arg name="joy_topic" default="joy"/>
     <arg name="drive_topic" default="drive_manual"/>
 

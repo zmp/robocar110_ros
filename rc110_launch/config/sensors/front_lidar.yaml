@@ -1,0 +1,4 @@
+port: "/dev/hokuyo_front"
+frame_id: "front_lidar"
+min_ang: -2.08
+max_ang: 2.08
