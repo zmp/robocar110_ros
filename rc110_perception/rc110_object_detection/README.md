@@ -14,12 +14,12 @@ mkdir -p $JETSON_INFERENCE_DIR && cd $JETSON_INFERENCE_DIR
 git clone -b $JETSON_INFERENCE_VERSION --recursive https://github.com/dusty-nv/jetson-inference
 cd jetson-inference
 mkdir build && cd build && cmake ../
-make
+make -j
 sudo make install
 sudo ldconfig
 ```
 
-**Note** during this step of installation of jetson-inference, please ignore installing/downloading optional softwares/weights by selecting *quit* or *skip*.
+**Note** during this step of installation of jetson-inference, please ignore installing/downloading optional software/weights by selecting *quit* or *skip*.
 
 ## Downloading default trained weights ##
 ***
@@ -79,7 +79,7 @@ roslaunch rc110_object_detection rc110_object_detection_node_rviz.launch
 ```text
 confidence_thresh (float, default: 0.6)
     threshold of confidence score of the detection network.
-    confidence score is the probabiliy that a bounding box contains an object.
+    confidence score is the probability that a bounding box contains an object.
 
 model_path (string)
     absolute path to model weights
