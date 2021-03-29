@@ -4,7 +4,8 @@
 ## Dependencies ##
 ***
 
-- [Jetson Inference Library](https://github.com/dusty-nv/jetson-inference)
+- [x86 Specific Dependencies](docs/dependencies_installation_x86.md) (not needed on robot)
+- [Jetson Inference Library](https://github.com/dusty-nv/jetson-inference):
 
 ```bash
 export JETSON_INFERENCE_DIR="$HOME/.cache/rc110"
@@ -19,20 +20,7 @@ sudo make install
 sudo ldconfig
 ```
 
-**Note** during this step of installation of jetson-inference, please ignore installing/downloading optional software/weights by selecting *quit* or *skip*.
-
-## Downloading default trained weights ##
-***
-
-```bash
-cd $JETSON_INFERENCE_DIR/jetson-inference/tools
-./download-models.sh
-# select model 15 as can be seen in the following image
-# the model will be saved in $JETSON_INFERENCE_DIR/jetson-inference/data/networks/SSD-Inception-v2
-# there are two files in $JETSON_INFERENCE_DIR/jetson-inference/data/networks/SSD-Inception-v2:
-#  1. ssd_coco_labels.txt (label file)
-#  2. ssd_inception_v2_coco.uff (weights file)
-```
+* During cmake step of installation, please, select model 15 and disable others, as on the following image:
 
 ![download model](docs/images/download.jpg)
 
@@ -114,6 +102,23 @@ input_height (int, default: 300)
 input_width (int, default: 300)
     width of the network input
 ```
+
+# Additional Info #
+## Models Download ##
+***
+
+Models download can be started after build with a different command:
+
+```bash
+cd $JETSON_INFERENCE_DIR/jetson-inference/tools
+./download-models.sh
+```
+
+* The models are saved in
+    - `$JETSON_INFERENCE_DIR/jetson-inference/data/networks/SSD-Inception-v2`
+* There are two files in the directory:
+    1. `ssd_coco_labels.txt` (label file)
+    2. `ssd_inception_v2_coco.uff` (weights file)
 
 # References #
 ***
