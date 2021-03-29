@@ -14,6 +14,8 @@
   <exec_depend>imu_tools</exec_depend>
   <exec_depend>joy</exec_depend>
   <exec_depend>topic_tools</exec_depend>
+  <exec_depend>image_proc</exec_depend>
+  <exec_depend>camera_calibration</exec_depend>
 
   <exec_depend>rc110_drive_control</exec_depend>
   <exec_depend>rc110_behavior</exec_depend>
