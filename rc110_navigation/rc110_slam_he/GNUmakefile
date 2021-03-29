@@ -14,7 +14,7 @@ init:
 
 deps: init
 	$(call source)
-	rosdep install -iry --from-paths .
+	rosdep install -iry --from-paths . --skip-keys=rc110_laserscans_to_pointcloud
 
 all: init
 	$(call source)
@@ -22,11 +22,11 @@ all: init
 
 run:
 	source ../../../../devel/setup.bash
-	roslaunch rc110_object_detection rc110_object_detection_node.launch
+	roslaunch rc110_slam_he main.launch
 
 show:
-	$(call source)
-	rosrun rviz rviz -d rviz/rc110_object_detection_node.rviz
+	source ../../../../devel/setup.bash
+	rosrun rviz rviz -d rviz/rc110_slam_he.rviz
 	# without roslaunch, so it worked also on remote host without building the package
 
 monitor:

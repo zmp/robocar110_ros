@@ -22,11 +22,11 @@ all: init
 
 run:
 	source ../../../../devel/setup.bash
-	roslaunch rc110_object_detection rc110_object_detection_node.launch
+	roslaunch rc110_slam_cg main.launch
 
 show:
-	$(call source)
-	rosrun rviz rviz -d rviz/rc110_object_detection_node.rviz
+	source ../../../../devel/setup.bash
+	rosrun rviz rviz -d rviz/rc110_slam_cg.rviz
 	# without roslaunch, so it worked also on remote host without building the package
 
 monitor:

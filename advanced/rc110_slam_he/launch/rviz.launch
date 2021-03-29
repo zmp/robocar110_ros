@@ -1,3 +1,0 @@
-<launch>
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rc110_slam_he)/rviz/main.rviz" />
-</launch>

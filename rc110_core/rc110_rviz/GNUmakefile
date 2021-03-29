@@ -14,7 +14,7 @@ init:
 
 deps: init
 	$(call source)
-	rosdep install -iry --from-paths .
+	rosdep install -iry --from-paths . --skip-keys=rc110_msgs
 
 all: init
 	$(call source)
@@ -22,12 +22,11 @@ all: init
 
 run:
 	source ../../../../devel/setup.bash
-	roslaunch rc110_object_detection rc110_object_detection_node.launch
+	$$(catkin locate --devel)/lib/rc110_rviz/rc110_rviz_app
 
 show:
-	$(call source)
-	rosrun rviz rviz -d rviz/rc110_object_detection_node.rviz
-	# without roslaunch, so it worked also on remote host without building the package
+	source ../../../../devel/setup.bash
+	roslaunch rc110_rviz rviz.launch
 
 monitor:
 	$(MAKE) env -C ../..

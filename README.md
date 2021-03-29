@@ -1,20 +1,17 @@
-# RoboCar 1/10 ROS nodes
+# RoboCar 1/10 ROS
 
-It's a set of default ROS nodes for Robocar 1/10.
+ROS nodes for RoboCar 1/10 are divided to multiple groups:
 
-They are preinstalled on robot and run with systemd service.
+| Group                                              | Description                   |
+|:------------------                                 |:------------------------      |
+| [**core**](rc110_core/README.md)                   | Major Nodes                   |
+| [**monitoring**](rc110_monitoring/README.md)       | Monitoring and Remote Control |
+| [**navigation**](rc110_navigation/README.md)       | Navigation Nodes              |
+| [**perception**](rc110_perception/README.md)       | Perception Nodes              |
+| [**utils**](rc110_utils/README.md)                 | Utilities                     |
 
-| Name                                               | Description             |
-|:------------------                                 |:------------------------|
-| [**behavior**](rc110_behavior/README.md)           | simple AD example       |
-| [**drive_control**](rc110_drive_control/README.md) | robot ros driver        |
-| [**launch**](rc110_launch/README.md)               | default launch files    |
-| **msgs**                                           | robot specific messages |
-| **rviz**                                           | rviz control panel      |
-| [**service**](rc110_service/README.md)             | systemd service package |
-| [**teleop**](rc110_teleop/README.md)               | joystick manipulation   |
-
-By default, most of the nodes run with 30 Hz frequency.
+* The difference between core group and other groups is that Core Nodes are installed by default and tend to have more support than other groups.
+* Any node can be customized later. Please, create and use a separate project within the same ROS workspace, instead of modifying inside **robocar110_ros**.
 
 ## Prerequisites
 #### ROS
@@ -88,7 +85,7 @@ make show
 * to show RViz with default layout locally, or
 
 ```
-make remote-show
+make monitor
 ```
 * to show RViz with default layout on remote PC
 
@@ -96,19 +93,18 @@ make remote-show
 
 Connect joystick dongle to your remote PC instead of robot.
 ```
-make remote-drive
+make remote-joy
 ```
 
 ## ROS configuration
 
 Default configuration is installed during packages installation.
 
-It is possible to edit the configuration, the next package update won't change it, but new parameters are to be added manually if needed.
+If on update the configuration was changed in both new package and your local file, you will be prompted to adjust it manually.
 
-* `/opt/ros/${ROS_DISTRO}/share/rc110/config/`
+* `/opt/ros/${ROS_DISTRO}/share/rc110_launch/config/`
 
 ## ~ Additional ~
 
 * [**Windows**](docs/Windows.md)
-* [**Advanced Nodes**](advanced/README.md)
 * [**Contribution Rules**](docs/Contribution.md)

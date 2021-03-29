@@ -6,7 +6,7 @@
 SHELL := /bin/bash
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
-main_nodes := rc110_service rc110_rviz
+main_nodes := rc110_system rc110_rviz
 
 ROS_DISTRO ?= melodic
 
@@ -84,29 +84,13 @@ install: package
 	sudo apt-get install --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
-deps-rviz: init
-	$(call source)
-	rosdep install -iry --from-paths rc110_rviz --skip-keys=rc110_msgs
-
-rviz: init
-	$(call source)
-	catkin build rc110_rviz --cmake-args ${cmake_flags}
-
-show:
-	source ../../devel/setup.bash
-	roslaunch rc110_rviz rviz.launch
-
 export env_content
 env:
 ifeq (,$(wildcard ../../env.sh))
 	echo "$$env_content" > ../../env.sh
 endif
 
-remote-show: env
-	source ../../env.sh
-	$(MAKE) show
-
-remote-drive: env
+remote-joy: env
 	$(call source)
 	source ../../env.sh
 	rosrun joy joy_node __name:=joy_node_remote
@@ -117,23 +101,29 @@ clean:
 
 
 # advanced nodes
-adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(wildcard advanced/rc110_*)))))
-deps_adv_nodes := $(addprefix deps-,$(adv_nodes))
-run_adv_nodes := $(addprefix run-,$(adv_nodes))
-show_adv_nodes := $(addprefix show-,$(adv_nodes))
-remote_show_adv_nodes := $(addprefix remote-show-,$(adv_nodes))
+adv_node_dirs := $(subst /GNUmakefile,,$(wildcard rc110_*/rc110_*/GNUmakefile))  # all nodes that contain GNUmakefile
+adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(adv_node_dirs)))))    # get their names
 
 $(adv_nodes):
-	cd advanced/$(subst -,_,$(addprefix rc110_,$@)) && $(MAKE)
+	$(MAKE) -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$@)))
 
+deps_adv_nodes := $(addprefix deps-,$(adv_nodes))
 $(deps_adv_nodes):
-	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst deps-,,$@))) && $(MAKE) deps
+	$(MAKE) deps -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst deps-,,$@))))
 
+run_adv_nodes := $(addprefix run-,$(adv_nodes))
 $(run_adv_nodes):
-	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst run-,,$@))) && $(MAKE) run
+	$(MAKE) run -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst run-,,$@))))
 
+show_adv_nodes := $(addprefix show-,$(adv_nodes))
 $(show_adv_nodes):
-	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))) && $(MAKE) show
+	$(MAKE) show -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))))
 
-$(remote_show_adv_nodes):
-	cd advanced/$(subst -,_,$(addprefix rc110_,$(subst remote-show-,,$@))) && $(MAKE) remote-show
+monitor_adv_nodes := $(addprefix monitor-,$(adv_nodes))
+$(monitor_adv_nodes):
+	$(MAKE) monitor -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst monitor-,,$@))))
+
+
+# convenient shortcuts
+show: show-rviz
+monitor: monitor-rviz
