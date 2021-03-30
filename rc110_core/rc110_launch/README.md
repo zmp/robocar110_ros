@@ -9,24 +9,21 @@
 
 - Current IMU in robocar110 consists of a single-axis gyroscope and an accelerometer. We use [imu_complementary_filter](https://github.com/ccny-ros-pkg/imu_tools/tree/melodic/imu_complementary_filter) to integrate the two sensors to estimate orientation.
 
-- Install imu_tools:
-```
-    sudo apt-get install ros-${ROS_DISTRO}-imu-tools
-```
-
-- Subscribed Topics:
+#### Subscribed Topics
 ```text
 /imu/data_raw [sensor_msgs::Imu]
     raw imu data published with frame_id imu_link
 ```
 
-- Published Topics:
+#### Published Topics
 ```text
 /imu/data [sensor_msgs::Imu]
     integrated imu data with orientation
 ```
 
-### Notes ###
+### Camera ###
 ***
 
-- [Note on monocular camera calibration](docs/monocular_cam_calibration_node.md)
+If your application requires undistorted camera images, please follow the document:
+
+- [Monocular Camera Calibration](docs/monocular_camera_calibration.md)

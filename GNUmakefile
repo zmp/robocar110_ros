@@ -127,3 +127,6 @@ $(monitor_adv_nodes):
 # convenient shortcuts
 show: show-rviz
 monitor: monitor-rviz
+
+# additional targets
+include rc110_core/rc110_launch/mk/camera_calibration.mk
