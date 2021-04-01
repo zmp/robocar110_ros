@@ -23,4 +23,8 @@ endif()
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_SOURCE_DIR}/deb/postinst;")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS ros-$ENV{ROS_DISTRO}-rc110-launch)
+
+set(CPACK_DEBIAN_PACKAGE_CONFLICTS ros-$ENV{ROS_DISTRO}-rc110-service)
+set(CPACK_DEBIAN_PACKAGE_PROVIDES ros-$ENV{ROS_DISTRO}-rc110-service)
+set(CPACK_DEBIAN_PACKAGE_REPLACES ros-$ENV{ROS_DISTRO}-rc110-service)
 include(../../cmake/rc110_cpack.cmake)
