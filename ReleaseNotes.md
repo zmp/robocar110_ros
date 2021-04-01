@@ -1,7 +1,10 @@
 ## v1.3.0
 
+* 2D object detection with jetson_inference.
+* Convenient camera calibration.
 * h265 video streaming (around 10 times faster than ROS image).
 * Remote joystick control.
+* Improved hierarchy of package directories.
 
 ## v1.2.0
 
