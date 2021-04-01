@@ -1,5 +1,7 @@
 # RoboCar 1/10 ROS
 
+[![](docs/images/robocar110x_360p.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)
+
 ROS nodes for RoboCar 1/10 are divided to multiple groups:
 
 | Group                                              | Description                   |
