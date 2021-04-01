@@ -1,12 +1,16 @@
 <launch>
     <arg name="config_dir" default="$(find rc110_launch)/config"/>
     <arg name="urdf_file" default="$(find rc110_launch)/urdf/robot.xml"/>
+    <arg name="use_front_camera" default="true"/>
+    <arg name="use_rear_camera" default="false"/>
 
     <param name="robot_description" textfile="$(arg urdf_file)"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
     <include file="$(find rc110_launch)/launch/sensors.launch">
         <arg name="config_dir" value="$(arg config_dir)"/>
+        <arg name="use_front_camera" value="$(arg use_front_camera)"/>
+        <arg name="use_rear_camera" value="$(arg use_rear_camera)"/>
     </include>
 
     <include file="$(find rc110_launch)/launch/teleop.launch">

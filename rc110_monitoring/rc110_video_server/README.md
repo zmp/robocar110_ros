@@ -13,10 +13,10 @@ Depends on **gstreamer-rtsp-server** ( **GPL3** ).
 
 ## Limitations
 
-You need to stop cv_camera node, before running this one.
+You need to stop camera node, before running this one.
 ```
-sudo nano /opt/ros/melodic/share/rc110_launch/launch/sensors.launch
-# Change to <arg name="use_front_camera" default="false"/>
+nano ~/.config/rc110/service.conf
+# Add one more parameter: 'roslaunch ... use_front_camera:=false'
 
 systemctl --user restart rc110
 ```
