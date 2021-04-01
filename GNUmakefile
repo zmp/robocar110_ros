@@ -1,29 +1,11 @@
 # Convenient script to use with make on Linux.
-
-.DEFAULT_GOAL := all
-.ONESHELL:
-.SHELLFLAGS := -ec
-SHELL := /bin/bash
+include mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 main_nodes := rc110_system rc110_rviz
 
-ROS_DISTRO ?= melodic
 
-define source
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-endef
-
-define env_content
-# Please, adjust the ips below to match you real ips.
-
-export ROS_MASTER_URI=http://192.168.110.5:11311
-export ROS_IP=192.168.110.2
-echo
-echo "../../env.sh is configued as: ROS_MASTER_URI=$$ROS_MASTER_URI, ROS_IP=$$ROS_IP"
-echo
-endef
-
+# targets
 
 ros-source:
 	@
@@ -52,11 +34,11 @@ deps: init
 
 all: init
 	$(call source)
-	catkin build ${main_nodes} --cmake-args ${cmake_flags}
+	$(call build,${main_nodes},${cmake_flags})
 
 package: init
 	$(call source)
-	catkin build ${main_nodes} --cmake-args ${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1
+	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1)
 
 	function check_make_target {
 		output=$$(make -n "$$1" 2>&1 | head -1)
@@ -87,7 +69,7 @@ install: package
 export env_content
 env:
 ifeq (,$(wildcard ../../env.sh))
-	echo "$$env_content" > ../../env.sh
+	cp mk/env_template.sh ../../env.sh
 endif
 
 remote-joy: env

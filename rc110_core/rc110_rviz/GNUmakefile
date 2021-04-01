@@ -1,13 +1,7 @@
-.DEFAULT_GOAL := all
-.ONESHELL:
-.SHELLFLAGS := -ec
-SHELL := /bin/bash
+include ../../mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
-define source
-	source /opt/ros/melodic/setup.bash
-endef
 
 init:
 	cd ../.. && $(MAKE) init
