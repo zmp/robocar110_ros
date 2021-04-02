@@ -23,16 +23,13 @@
 #include <memory>
 #include <string>
 
-struct _GOptionEntry;
-typedef struct _GOptionEntry GOptionEntry;
-
 namespace zmp
 {
 class Rc110VideoServer
 {
     struct Parameters {
         int debugLevel;
-        std::string port;
+        int port;
         std::string urlSuffix;
         std::string videoDevice;
         int maxFrameRate;
@@ -52,7 +49,7 @@ private:
     ros::NodeHandle handlePrivate;
 
     Parameters parameters;
-    char* portPointer;
-    std::unique_ptr<GOptionEntry[]> entries;
+    std::string portString;
+    char* portPointer;  // valid pointer is needed for GOptionEntry
 };
 }  // namespace zmp

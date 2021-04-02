@@ -28,14 +28,15 @@ Rc110VideoServer::Rc110VideoServer() :
         handlePrivate("~"),
         parameters({
                 .debugLevel = handlePrivate.param<int>("debug_level", 1),
-                .port = handlePrivate.param<std::string>("port", "8554"),
+                .port = handlePrivate.param<int>("port", 8554),
                 .urlSuffix = handlePrivate.param<std::string>("url_suffix", "front"),
                 .videoDevice = handlePrivate.param<std::string>("video_device", "video0"),
                 .maxFrameRate = handlePrivate.param<int>("max_framerate", 60),
                 .width = handlePrivate.param<int>("width", 1920),
                 .height = handlePrivate.param<int>("height", 1080),
         }),
-        portPointer(parameters.port.data())
+        portString(std::to_string(parameters.port)),
+        portPointer(portString.data())
 {
     if (!gstreamerInit()) {
         throw std::runtime_error("Unable to initialize gstreamer.");
@@ -50,7 +51,8 @@ std::string Rc110VideoServer::parseOptions()
                        MAX_LEN,
                        "%s --gst-debug=%d \"("
                        " nvv4l2camerasrc device=/dev/%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
-                       //" v4l2src device=/dev/%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"  // if nvv4l2camerasrc won't work
+                       //" v4l2src device=/dev/%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
+                       // , if nvv4l2camerasrc won't work
                        " ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420"
                        " ! omxh265enc ! video/x-h265, stream-format=(string)byte-stream"
                        " ! h265parse"
@@ -70,12 +72,12 @@ std::string Rc110VideoServer::parseOptions()
     ROS_INFO("Generated args:\n\t%s\n", optionsString);
 
     GOptionContext* options = g_option_context_new("");
-    entries.reset(new GOptionEntry[2]{
+    GOptionEntry entries[2] = {
             {"port", 'p', 0, G_OPTION_ARG_STRING, &portPointer, "Port to listen on", "PORT"},
             {nullptr},
-    });
+    };
 
-    g_option_context_add_main_entries(options, entries.get(), nullptr);
+    g_option_context_add_main_entries(options, entries, nullptr);  // does memcpy of entries inside
     g_option_context_add_group(options, gst_init_get_option_group());
 
     int argc;
