@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_video_server VERSION 1.2.0)
+project(rc110_video_server VERSION 1.3.0)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GST REQUIRED IMPORTED_TARGET gstreamer-1.0)
