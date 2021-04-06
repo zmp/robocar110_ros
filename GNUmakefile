@@ -30,7 +30,7 @@ endif
 
 deps: init
 	$(call source)
-	rosdep install -iry --from-paths rc110_*
+	rosdep install -iry --from-paths rc110_core rc110_navigation/rc110_behavior
 
 all: init
 	$(call source)
