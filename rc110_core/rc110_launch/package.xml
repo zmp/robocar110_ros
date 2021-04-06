@@ -9,7 +9,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roslaunch</depend>
 
-  <exec_depend>cv_camera</exec_depend>
+  <exec_depend>usb_cam</exec_depend>
   <exec_depend>hokuyo_node</exec_depend>
   <exec_depend>imu_tools</exec_depend>
   <exec_depend>joy</exec_depend>
