@@ -2,12 +2,14 @@
     <arg name="config_dir" default="$(find rc110_launch)/config"/>
     <arg name="joy_topic" default="joy"/>
     <arg name="drive_topic" default="drive_manual"/>
+    <arg name="type" default="elecom"/>
 
     <node pkg="joy" type="joy_node" name="joy_node"/>
 
     <node pkg="rc110_teleop" type="rc110_joy_teleop" name="rc110_joy_teleop" output="screen">
         <remap from="joy" to="$(arg joy_topic)"/>
         <remap from="drive_manual" to="$(arg drive_topic)"/>
-        <rosparam file="$(arg config_dir)/joy_teleop.yaml" subst_value="true"/>
+        <rosparam file="$(arg config_dir)/joy.yaml" subst_value="true"/>
+        <rosparam file="$(arg config_dir)/joy_$(arg type).yaml" subst_value="true"/>
     </node>
 </launch>

@@ -3,6 +3,7 @@
     <arg name="urdf_file" default="$(find rc110_launch)/urdf/robot.xml"/>
     <arg name="use_front_camera" default="true"/>
     <arg name="use_rear_camera" default="false"/>
+    <arg name="joy_type" default="elecom"/>
 
     <param name="robot_description" textfile="$(arg urdf_file)"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
@@ -15,6 +16,7 @@
 
     <include file="$(find rc110_launch)/launch/teleop.launch">
         <arg name="config_dir" value="$(arg config_dir)"/>
+        <arg name="type" value="$(arg joy_type)"/>
     </include>
 
     <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive_control" respawn="true">
