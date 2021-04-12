@@ -63,7 +63,7 @@ package: init
 install: package
 	$(call source)
 	cd $$(catkin locate --build)
-	sudo apt-get install --reinstall ./*.deb
+	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 export env_content
