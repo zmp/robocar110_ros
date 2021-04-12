@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 project(rc110_video_server VERSION 1.3.0)
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GST REQUIRED IMPORTED_TARGET gstreamer-1.0)
-pkg_check_modules(GST_RTSP REQUIRED IMPORTED_TARGET gstreamer-rtsp-1.0)
-pkg_check_modules(GST_RTSP_SERVER REQUIRED IMPORTED_TARGET gstreamer-rtsp-server-1.0)
+foreach(dependency gstreamer-1.0 gstreamer-rtsp-1.0 gstreamer-rtsp-server-1.0)
+    pkg_check_modules(${dependency} REQUIRED IMPORTED_TARGET ${dependency})
+endforeach()
 
 find_package(catkin REQUIRED
         roscpp
@@ -21,9 +21,9 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
-        PkgConfig::GST
-        PkgConfig::GST_RTSP
-        PkgConfig::GST_RTSP_SERVER
+        PkgConfig::gstreamer-1.0
+        PkgConfig::gstreamer-rtsp-1.0
+        PkgConfig::gstreamer-rtsp-server-1.0
 )
 
 install(TARGETS ${PROJECT_NAME}
