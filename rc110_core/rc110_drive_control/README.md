@@ -82,4 +82,9 @@ imu_frame_id (string, default: imu_link)
 
 rate (double, default: 30)
     node refresh rate (Hz)
+
+odometry_only_angle_offset (double, default: 1.0)
+    steering angle absolute value is reduced by this number when odometry is calculated (Deg)
+    change the value basing on the experimental data of your environment
+    http://wiki.ros.org/navigation/Tutorials/Navigation%20Tuning%20Guide#Odometry
 ```

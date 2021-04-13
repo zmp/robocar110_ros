@@ -1,17 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_drive_control VERSION 1.3.0)
-
-set(RC110_COMPONENTS control CACHE STRING "")
-find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
+project(rc110_twist_to_ackermann VERSION 1.3.0)
 
 find_package(catkin REQUIRED
-        ackermann_msgs
-        nav_msgs
-        rc110_msgs
         roscpp
-        sensor_msgs
-        std_srvs
-        tf
+        geometry_msgs
+        ackermann_msgs
 )
 
 catkin_package()
@@ -21,11 +14,10 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
-        rc-control
 )
 
 install(TARGETS ${PROJECT_NAME}
@@ -35,5 +27,4 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 # package
-set(CPACK_DEBIAN_PACKAGE_DEPENDS rc-system)
 include(../../cmake/rc110_cpack.cmake)

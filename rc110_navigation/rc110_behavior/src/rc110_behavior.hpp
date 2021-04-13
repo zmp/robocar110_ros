@@ -54,5 +54,6 @@ private:
     BT::Tree behaviorTree;
 
     sensor_msgs::PointCloud2 cloud;
+    ros::Time startTime;
 };
 }  // namespace zmp

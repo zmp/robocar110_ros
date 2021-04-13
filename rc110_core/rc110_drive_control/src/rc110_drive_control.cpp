@@ -17,14 +17,25 @@
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Temperature.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+
+#include <boost/math/constants/constants.hpp>
 
 namespace zmp
 {
+constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.baseFrameId = handlePrivate.param<std::string>("base_frame_id", "base_link"),
-                    .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
-                    .rate = handlePrivate.param<double>("rate", 30)}),
-        control([this](BaseboardError error) { baseboardError = error; })
+        parameters({
+                .baseFrameId = handlePrivate.param<std::string>("base_frame_id", "base_link"),
+                .odomFrameId = handlePrivate.param<std::string>("odom_frame_id", "odom"),
+                .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
+                .rate = handlePrivate.param<double>("rate", 30),
+                .odometryOnlyAngleOffset = handlePrivate.param<double>("odometry_only_angle_offset", 1),
+        }),
+        control([this](BaseboardError error) { baseboardError = error; }),
+        wheelBase(control.GetWheelBase())
 {
     control.Start();
 
@@ -253,13 +264,42 @@ void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
 
 void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 {
-    nav_msgs::Odometry message;
-    message.header.stamp = ros::Time::now();
-    message.header.frame_id = parameters.baseFrameId;
-    message.twist.twist.linear.x = drive.speed;
-    message.twist.twist.angular.z = drive.angularSpeed;
+    double lastTimestamp = odometry.header.stamp.toSec();
+    double t = lastTimestamp == 0 ? 0 : drive.timestamp - lastTimestamp;
 
-    publishers["odometry"].publish(message);
+    float adjustment = float(parameters.odometryOnlyAngleOffset) * DEG_TO_RAD;
+    float adjustedAngle = drive.steeringAngle + (drive.steeringAngle < 0 ? adjustment : -adjustment);
+    float circleRadius = wheelBase / std::tan(adjustedAngle);
+    float angularSpeed = drive.speed / circleRadius;
+    tf2::Quaternion tfYaw;
+    tfYaw.setRPY(0, 0, estimatedYaw);
+
+    // odometry
+    odometry.header.stamp = ros::Time().fromSec(drive.timestamp);
+    odometry.header.frame_id = parameters.odomFrameId;
+    odometry.child_frame_id = parameters.baseFrameId;
+    odometry.twist.twist.linear.x = drive.speed;
+    odometry.twist.twist.angular.z = angularSpeed;
+
+    // https://en.wikipedia.org/wiki/Dead_reckoning
+    estimatedYaw += angularSpeed * t;
+    odometry.pose.pose.position.x += drive.speed * std::cos(estimatedYaw) * t;
+    odometry.pose.pose.position.y += drive.speed * std::sin(estimatedYaw) * t;
+    odometry.pose.pose.position.z = 0;
+    odometry.pose.pose.orientation = tf2::toMsg(tfYaw);
+
+    publishers["odometry"].publish(odometry);
+
+    // transform
+    geometry_msgs::TransformStamped tf;
+    tf.header.stamp = ros::Time::now();
+    tf.header.frame_id = parameters.odomFrameId;
+    tf.child_frame_id = parameters.baseFrameId;
+    tf.transform.translation.x = odometry.pose.pose.position.x;
+    tf.transform.translation.y = odometry.pose.pose.position.y;
+    tf.transform.translation.z = odometry.pose.pose.position.z;
+    tf.transform.rotation = odometry.pose.pose.orientation;
+    odometryBroadcaster.sendTransform(tf);
 }
 
 void Rc110DriveControl::publishTemperature(ros::Publisher& publisher, float temperature)

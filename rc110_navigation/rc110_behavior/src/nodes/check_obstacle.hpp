@@ -22,14 +22,16 @@ public:
 
 public:
     CheckObstacle(const std::string& name, const BT::NodeConfiguration& config, const sensor_msgs::PointCloud2& cloud) :
-            SyncActionNode(name, config),
-            cloud(cloud)
+            SyncActionNode(name, config), cloud(cloud)
     {
     }
 
     static BT::PortsList providedPorts() { return {BT::OutputPort<std::string>("switch")}; }
 
     BT::NodeStatus tick() override;
+
+private:
+    bool checkConditions();
 
 private:
     const sensor_msgs::PointCloud2& cloud;

@@ -1,4 +1,7 @@
+#
 # Convenient script to use with make on Linux.
+# To check the commands list, input: make<space><tab>
+#
 include mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
@@ -72,6 +75,12 @@ ifeq (,$(wildcard ../../env.sh))
 	cp mk/env_template.sh ../../env.sh
 endif
 
+run:
+	systemctl --user start rc110-roscore
+	source ../../devel/setup.bash
+	. ~/.config/rc110/service.conf
+	eval "$$RC110_LAUNCH_COMMAND"
+
 remote-joy: env
 	$(call source)
 	source ../../env.sh
@@ -82,33 +91,9 @@ clean:
 	catkin clean -y
 
 
-# advanced nodes
-adv_node_dirs := $(subst /GNUmakefile,,$(wildcard rc110_*/rc110_*/GNUmakefile))  # all nodes that contain GNUmakefile
-adv_nodes := $(subst _,-,$(subst rc110_,,$(sort $(notdir $(adv_node_dirs)))))    # get their names
+# additional targets
+include mk/subdirs.mk
 
-$(adv_nodes):
-	$(MAKE) -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$@)))
-
-deps_adv_nodes := $(addprefix deps-,$(adv_nodes))
-$(deps_adv_nodes):
-	$(MAKE) deps -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst deps-,,$@))))
-
-run_adv_nodes := $(addprefix run-,$(adv_nodes))
-$(run_adv_nodes):
-	$(MAKE) run -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst run-,,$@))))
-
-show_adv_nodes := $(addprefix show-,$(adv_nodes))
-$(show_adv_nodes):
-	$(MAKE) show -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))))
-
-monitor_adv_nodes := $(addprefix monitor-,$(adv_nodes))
-$(monitor_adv_nodes):
-	$(MAKE) monitor -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst monitor-,,$@))))
-
-
-# convenient shortcuts
+# shortcuts
 show: show-rviz
 monitor: monitor-rviz
-
-# additional targets
-include rc110_core/rc110_launch/mk/camera_calibration.mk

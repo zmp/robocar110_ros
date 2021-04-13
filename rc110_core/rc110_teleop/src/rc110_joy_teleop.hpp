@@ -37,11 +37,7 @@ public:
         int adButton = 11;
         int steeringAxis = 3;
         int speedAxis = 1;
-        double maxSteeringAngleRad = angles::from_degrees(30);
-
-        // steering angle of the car = 0.7 * steering angle of servo due to the hardware
-        // from the hardware document, the operation speed is 0.11 / 60 [sec/degree]
-        double maxSteeringAngleVelRad = angles::from_degrees(381.81);  // 60 * 0.7 / 0.11
+        double maxSteeringAngleRad = angles::from_degrees(28);
 
         std::vector<double> gears = { 0.3, 0.6, 1.0 };
         std::string frameId = "base_link";

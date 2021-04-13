@@ -1,0 +1,85 @@
+base_global_planner: navfn/NavfnROS
+NavfnROS:
+    allow_unknown: false
+
+base_local_planner: teb_local_planner/TebLocalPlannerROS
+TebLocalPlannerROS:
+    odom_topic: odom
+    map_frame: map
+
+    # Robot
+
+    acc_lim_x: 0.2
+    acc_lim_theta: 0.5
+    max_vel_x: 0.4
+    max_vel_x_backwards: 0.2
+    max_vel_theta: 1.0
+    min_turning_radius: 0.52  # should be a bit bigger than real radius
+    wheelbase: 0.26
+    cmd_angle_instead_rotvel: True
+    footprint_model:
+        type: "polygon"
+        vertices: [[-0.08, -0.09], [0.34, -0.09], [0.34, 0.09], [-0.08, 0.09]]
+
+    # GoalTolerance
+
+    xy_goal_tolerance: 0.2
+    yaw_goal_tolerance: 0.1
+    free_goal_vel: False
+
+    # Trajectory
+
+    teb_autosize: True
+    dt_ref: 0.3
+    dt_hysteresis: 0.1
+    global_plan_overwrite_orientation: True
+    max_global_plan_lookahead_dist: 4.0
+    feasibility_check_no_poses: 4
+    allow_init_with_backwards_motion: True
+    exact_arc_length: False  # I didn't notice any change if True
+
+    # Obstacles
+
+    min_obstacle_dist: 0.03
+    inflation_dist: 0.05
+    include_costmap_obstacles: True
+    costmap_obstacles_behind_robot_dist: 2.0
+    obstacle_poses_affected: 30
+    obstacle_association_force_inclusion_factor: 4.0
+    obstacle_association_cutoff_factor: 20.0
+    costmap_converter_plugin: ""
+    costmap_converter_spin_thread: True
+    costmap_converter_rate: 1
+
+    # Optimization
+
+    no_inner_iterations: 5
+    no_outer_iterations: 4
+    optimization_activate: True
+    optimization_verbose: False
+    penalty_epsilon: 0.1
+    weight_max_vel_x: 2
+    weight_max_vel_theta: 1
+    weight_acc_lim_x: 0
+    weight_acc_lim_theta: 1
+    weight_kinematics_nh: 1000
+    weight_kinematics_forward_drive: 1000
+    weight_kinematics_turning_radius: 1
+    weight_optimaltime: 2.0
+    weight_obstacle: 50
+    weight_inflation: 0.1
+    selection_alternative_time_cost: False
+
+    # Homotopy Class Planner
+
+    enable_homotopy_class_planning: False  # If true it is too slow
+    enable_multithreading: True
+    max_number_classes: 2
+    roadmap_graph_no_samples: 15
+    roadmap_graph_area_width: 5
+    h_signature_prescaler: 0.5
+    h_signature_threshold: 0.1
+    obstacle_keypoint_offset: 0.1
+    obstacle_heading_threshold: 0.45
+    visualize_hc_graph: False
+    switching_blocking_period: 5

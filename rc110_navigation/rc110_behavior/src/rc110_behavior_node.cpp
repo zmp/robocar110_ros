@@ -12,7 +12,7 @@
 using namespace zmp;
 
 int main(int argc, char** argv)
-{
+try {
     ros::init(argc, argv, "rc110_behavior");
 
     ros::NodeHandle nh;
@@ -21,18 +21,18 @@ int main(int argc, char** argv)
     Rc110Behavior node(nh, nhPrivate);
     ros::Rate spinRate(10);
 
-    try {
-        while (ros::ok()) {
-            node.update();
-            ros::spinOnce();
-            spinRate.sleep();
-        }
-    } catch (std::exception& ex) {
-        std::cerr << "Exception in main(): " << ex.what() << std::endl;
-        return EXIT_FAILURE;
-    } catch (...) {
-        std::cerr << "Unknown exception in main()" << std::endl;
-        return EXIT_FAILURE;
+    while (ros::ok()) {
+        ros::spinOnce();
+        node.update();
+        spinRate.sleep();
     }
     return EXIT_SUCCESS;
+}  //
+catch (std::exception& ex) {
+    std::cerr << "Exception in main(): " << ex.what() << std::endl;
+    return EXIT_FAILURE;
+}  //
+catch (...) {
+    std::cerr << "Unknown exception in main()" << std::endl;
+    return EXIT_FAILURE;
 }

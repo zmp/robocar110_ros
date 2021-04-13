@@ -18,6 +18,5 @@
   <exec_depend>camera_calibration</exec_depend>
 
   <exec_depend>rc110_drive_control</exec_depend>
-  <exec_depend>rc110_behavior</exec_depend>
   <exec_depend>rc110_teleop</exec_depend>
 </package>

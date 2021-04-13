@@ -8,10 +8,12 @@
 #pragma once
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
+#include <nav_msgs/Odometry.h>
+#include <rc110_msgs/Offsets.h>
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <std_srvs/SetBool.h>
-#include <rc110_msgs/Offsets.h>
+#include <tf2_ros/transform_broadcaster.h>
 
 #include <string>
 #include <zmp/RcControl.hpp>
@@ -26,9 +28,11 @@ class Rc110DriveControl
 {
 public:
     struct Parameters {
-        std::string baseFrameId = "base_link";
-        std::string imuFrameId = "imu_link";
-        double rate = 30.0;  // Hz
+        std::string baseFrameId;
+        std::string odomFrameId;
+        std::string imuFrameId;
+        double rate;                     // Hz
+        double odometryOnlyAngleOffset;  // Deg
     };
 
 public:
@@ -60,11 +64,15 @@ private:
 private:
     Parameters parameters;
     RcControl control;
+    float wheelBase;
     std::vector<ros::ServiceServer> services;
     std::vector<ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;
+    tf2_ros::TransformBroadcaster odometryBroadcaster;
     ros::Timer statusUpdateTimer;
     std::atomic<BaseboardError> baseboardError = BaseboardError::NONE;
     BaseboardError lastBaseboardError = BaseboardError::NONE;
+    nav_msgs::Odometry odometry;
+    double estimatedYaw = 0;
 };
 }  // namespace zmp

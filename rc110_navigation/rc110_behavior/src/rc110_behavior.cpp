@@ -16,11 +16,11 @@
 namespace zmp
 {
 Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "behavior.xml")})
+        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "tree.xml")}),
+        laserSubscriber(handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this)),
+        drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1)),
+        startTime(ros::Time::now())
 {
-    laserSubscriber = handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this);
-    drivePublisher = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1);
-
     registerNodeBuilder<CheckObstacle>(std::cref(cloud));
     registerNodeBuilder<DriveAction>(std::ref(drivePublisher));
 
@@ -33,6 +33,10 @@ Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePri
 
 void Rc110Behavior::update()
 {
+    if (cloud.data.empty() && ros::Time::now() - startTime < ros::Duration(1)) {
+        // waiting for point cloud 1 sec
+        return;
+    }
     if (behaviorTree.tickRoot() == BT::NodeStatus::FAILURE) {
         ROS_INFO_THROTTLE(10, "Behavior tree failed");
     }

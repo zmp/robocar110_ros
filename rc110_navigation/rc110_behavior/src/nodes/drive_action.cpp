@@ -20,6 +20,7 @@ BT::NodeStatus DriveAction::tick()
     auto speed = getInput<double>("speed");
     auto steering = getInput<double>("steering");
     if (!speed || !steering) {
+        ROS_INFO_THROTTLE(10, "Check you set values for speed and steering.");
         return BT::NodeStatus::FAILURE;
     }
 

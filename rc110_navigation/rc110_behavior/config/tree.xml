@@ -7,8 +7,8 @@
             <Switch4 case_1="none" case_2="near" case_3="left" case_4="right" variable="{result}">
                 <Action ID="DriveAction" speed="0.4" steering="0"/>
                 <Action ID="DriveAction" speed="0" steering="0"/>
-                <Action ID="DriveAction" speed="0.4" steering="-30"/>
-                <Action ID="DriveAction" speed="0.4" steering="30"/>
+                <Action ID="DriveAction" speed="0.4" steering="-28"/>
+                <Action ID="DriveAction" speed="0.4" steering="28"/>
                 <AlwaysFailure/>
             </Switch4>
         </SequenceStar>

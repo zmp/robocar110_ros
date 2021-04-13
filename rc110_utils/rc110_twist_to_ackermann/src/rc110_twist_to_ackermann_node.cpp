@@ -7,18 +7,15 @@
  */
 #include <ros/ros.h>
 
-#include "rc110_laserscans_to_pointcloud.hpp"
+#include "rc110_twist_to_ackermann.hpp"
 
 using namespace zmp;
 
 int main(int argc, char** argv)
 try {
-    ros::init(argc, argv, "rc110_laserscans_to_pointcloud");
+    ros::init(argc, argv, "rc110_twist_to_ackermann");
 
-    ros::NodeHandle nh;
-    ros::NodeHandle nhPrivate("~");
-
-    Rc110LaserScansToPointCloud node(nh, nhPrivate);
+    Rc110TwistToAckermann node;
 
     ros::spin();
 

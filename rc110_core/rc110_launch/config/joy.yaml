@@ -1,4 +1,4 @@
 base_frame_id: base_link
-max_steering_angle_deg: 30
+max_steering_angle_deg: 28
 gears: [ 0.3, 0.6, 1.0 ]
 rate: 30.0

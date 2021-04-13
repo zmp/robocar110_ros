@@ -16,13 +16,13 @@ namespace zmp
 {
 BT::NodeStatus CheckObstacle::tick()
 {
+    if (!checkConditions()) {
+        return BT::NodeStatus::FAILURE;
+    }
+
     static Eigen::AlignedBox2f nearBox = {Eigen::Vector2f(0, -0.2f), Eigen::Vector2f(0.2f, 0.2f)};
     static Eigen::AlignedBox2f farLeftBox = {Eigen::Vector2f(0.2f, 0), Eigen::Vector2f(1.0f, 0.3f)};
     static Eigen::AlignedBox2f farRightBox = {Eigen::Vector2f(0.2f, -0.3f), Eigen::Vector2f(1.0f, 0)};
-
-    if (cloud.data.empty()) {
-        return BT::NodeStatus::FAILURE;
-    }
 
     std::string result = "none";
     float closestLeftX = std::numeric_limits<float>::infinity();
@@ -51,5 +51,18 @@ BT::NodeStatus CheckObstacle::tick()
 
     setOutput("switch", result);
     return BT::NodeStatus::SUCCESS;
+}
+
+bool CheckObstacle::checkConditions()
+{
+    if (cloud.data.empty()) {
+        ROS_INFO_THROTTLE(10, "Point cloud must be non empty.");
+        return false;
+    }
+    if (ros::Time::now() - cloud.header.stamp > ros::Duration(1)) {
+        ROS_INFO_THROTTLE(10, "Point cloud must be updated.");
+        return false;
+    }
+    return true;
 }
 }  // namespace zmp

@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
+        <rosparam file="$(find rc110_behavior)/config/behavior.yaml" subst_value="true"/>
+        <remap from="scan" to="/front_lidar/scan"/>
+    </node>
+</launch>

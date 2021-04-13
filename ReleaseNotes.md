@@ -1,3 +1,8 @@
+## v1.4.0
+
+* Navigation on the map created with Hector SLAM.
+* rc110_behavior is removed from core nodes.
+
 ## v1.3.0
 
 * 2D object detection with jetson_inference.
