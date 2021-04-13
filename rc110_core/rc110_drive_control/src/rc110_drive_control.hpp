@@ -33,6 +33,7 @@ public:
         std::string imuFrameId;
         double rate;                     // Hz
         double odometryOnlyAngleOffset;  // Deg
+        double steeringVelocity;         // Deg/s
     };
 
 public:

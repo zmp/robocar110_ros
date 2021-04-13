@@ -33,11 +33,13 @@ Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& h
                 .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
                 .rate = handlePrivate.param<double>("rate", 30),
                 .odometryOnlyAngleOffset = handlePrivate.param<double>("odometry_only_angle_offset", 1),
+                .steeringVelocity = handlePrivate.param<double>("steering_velocity", 90),
         }),
         control([this](BaseboardError error) { baseboardError = error; }),
         wheelBase(control.GetWheelBase())
 {
     control.Start();
+    control.SetSteeringVelocity(float(parameters.steeringVelocity));
 
     services.push_back(handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this));
     services.push_back(handle.advertiseService("motor_state", &Rc110DriveControl::onMotorState, this));
