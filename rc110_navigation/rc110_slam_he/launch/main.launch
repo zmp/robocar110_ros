@@ -1,4 +1,7 @@
 <launch>
+    <arg name="map_resolution" default="0.025" />
+    <arg name="map_size" default="2000" />
+
     <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
@@ -10,5 +13,7 @@
         <param name="map_frame" value="map" />
         <param name="odom_frame" value="odom" />
         <param name="base_frame" value="base_link" />
+        <param name="map_size" value="$(arg map_size)" />
+        <param name="map_resolution" value="$(arg map_resolution)" />
     </node>
 </launch>

@@ -1,7 +1,8 @@
 include ../../mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
-
+map_size ?= 2000         # rectangle with 2000 px side
+map_resolution ?= 0.025  # 25 mm per px
 
 init:
 	cd ../.. && $(MAKE) init
@@ -16,7 +17,7 @@ all: init
 
 run:
 	source ../../../../devel/setup.bash
-	roslaunch rc110_slam_he main.launch
+	roslaunch rc110_slam_he main.launch map_size:=$(map_size) map_resolution:=$(map_resolution)
 
 show:
 	source ../../../../devel/setup.bash
