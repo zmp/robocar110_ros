@@ -3,7 +3,8 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /FrontScan1/Autocompute Value Bounds1
       Splitter Ratio: 0.48071980476379395
     Tree Height: 541
   - Class: rviz/Selection
@@ -74,9 +75,9 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.5375304222106934
-        Min Value: 0.03733562305569649
-        Value: true
+        Max Value: 4
+        Min Value: 0
+        Value: false
       Axis: X
       Channel Name: intensity
       Class: rviz/LaserScan
@@ -102,7 +103,7 @@ Visualization Manager:
       Use rainbow: true
       Value: false
     - Alpha: 1
-      Autocompute Intensity Bounds: true
+      Autocompute Intensity Bounds: false
       Autocompute Value Bounds:
         Max Value: 0.6520214080810547
         Min Value: -3.075909376144409
