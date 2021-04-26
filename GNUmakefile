@@ -66,6 +66,7 @@ package: init
 install: package
 	$(call source)
 	cd $$(catkin locate --build)
+	sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
