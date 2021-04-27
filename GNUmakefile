@@ -83,9 +83,9 @@ run:
 	eval "$$RC110_LAUNCH_COMMAND"
 
 remote-joy: env
-	$(call source)
+	source ../../devel/setup.bash
 	source ../../env.sh
-	rosrun joy joy_node __name:=joy_node_remote
+	roslaunch rc110_launch remote_joy.launch
 
 clean:
 	$(call source)

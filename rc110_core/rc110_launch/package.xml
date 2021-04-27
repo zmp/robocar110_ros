@@ -19,4 +19,5 @@
 
   <exec_depend>rc110_drive_control</exec_depend>
   <exec_depend>rc110_teleop</exec_depend>
+  <exec_depend>rc110_master_hold</exec_depend>
 </package>

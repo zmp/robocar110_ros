@@ -4,7 +4,7 @@
     <arg name="drive_topic" default="drive_manual"/>
     <arg name="type" default="elecom"/>
 
-    <node pkg="joy" type="joy_node" name="joy_node"/>
+    <node pkg="joy" type="joy_node" name="joy"/>
 
     <node pkg="rc110_teleop" type="rc110_joy_teleop" name="rc110_joy_teleop" output="screen">
         <remap from="joy" to="$(arg joy_topic)"/>
