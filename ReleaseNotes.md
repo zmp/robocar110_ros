@@ -2,6 +2,7 @@
 
 * Navigation on the map created with Hector SLAM.
 * rc110_behavior is removed from core nodes.
+* Driver v1.1.0. Few steering improvements for better odometry.
 
 ## v1.3.0
 
