@@ -20,8 +20,8 @@ make monitor      # show rviz on remote pc
 
 Default map is a rectangle with 50m side and the robot in the middle. If it goes outside the map, hector mapping can break, so it's better to setup a size that you need.
 ```
-make run map_size=4000 map_resolution=0.025   # 4000 * 0.025 = 100m
-make run map_size=4000                        # same
+make run map_size:=4000 map_resolution:=0.025   # 4000 * 0.025 = 100m
+make run map_size:=4000                         # same
 ```
 
 ## Mapping

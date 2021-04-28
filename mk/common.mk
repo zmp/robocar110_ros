@@ -28,3 +28,10 @@ define build
 	catkin build ${1} --cmake-args ${2}
 )
 endef
+
+# Get flags that follow target name
+#     param: 1 - variable to store flags
+define get_flags
+	$(1)=$$(grep '\--' <<< "$(MAKEFLAGS)" || true)  # get only flags containing --
+	$(1)=$${$(1)#* -- }                     # remove flags before --
+endef

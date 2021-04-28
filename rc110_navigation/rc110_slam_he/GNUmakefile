@@ -1,8 +1,6 @@
 include ../../mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
-map_size ?= 2000         # rectangle with 2000 px side
-map_resolution ?= 0.025  # 25 mm per px
 
 init:
 	cd ../.. && $(MAKE) init
@@ -16,8 +14,9 @@ all: init
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
+	$(call get_flags,flags)
 	source ../../../../devel/setup.bash
-	roslaunch rc110_slam_he main.launch map_size:=$(map_size) map_resolution:=$(map_resolution)
+	roslaunch rc110_slam_he main.launch $${flags}
 
 show:
 	source ../../../../devel/setup.bash
