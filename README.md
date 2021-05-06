@@ -7,13 +7,17 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 | Group                                              | Description                   |
 |:------------------                                 |:------------------------      |
 | [**core**](rc110_core/README.md)                   | Major Nodes                   |
-| [**monitoring**](rc110_monitoring/README.md)       | Monitoring and Remote Control |
+| [**monitoring**](rc110_monitoring/README.md)       | Remote Monitoring and Control |
 | [**navigation**](rc110_navigation/README.md)       | Navigation Nodes              |
 | [**perception**](rc110_perception/README.md)       | Perception Nodes              |
 | [**utils**](rc110_utils/README.md)                 | Utilities                     |
 
-* The difference between core group and other groups is that Core Nodes are installed by default and tend to have more support than other groups.
-* Any node can be customized later. Please, create and use a separate project within the same ROS workspace, instead of modifying inside **robocar110_ros**.
+* Core group includes robot manipulation and sensor values retrieval.
+    - It is installed and running by default on the robot.
+	- It tends to have more support than other groups.
+* Any node can be customized. 
+    - For a completely different node, please, create and use a separate git repo on the same folder level as **robocar110_ros**.
+	- For small improvements and bugfixes, it's better to modify **robocar110_ros** ([**Contribution Rules**](docs/Contribution.md))
 
 ## Prerequisites
 #### ROS
