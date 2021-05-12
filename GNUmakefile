@@ -70,7 +70,6 @@ install: package
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
-export env_content
 env:
 ifeq (,$(wildcard ../../env.sh))
 	cp mk/env_template.sh ../../env.sh
