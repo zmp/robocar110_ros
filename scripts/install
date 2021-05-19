@@ -1,3 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
-sudo apt install --reinstall ./*.deb
+sudo apt install -yq --reinstall ./*.deb
+sudo apt autoremove
