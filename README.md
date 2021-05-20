@@ -41,6 +41,7 @@ cd ~/ros/src/robocar110_ros/
 ```
 make ros-source
 ```
+
 * Optional.
 * It will place ros sourcing to `~/.bashrc`.
 * You need to restart terminal after that.
@@ -54,12 +55,19 @@ If you want to build all the packages at once, try the following:
 make init  # to prepare rosdep
 rosdep install -iry --from-paths .
 ```
+
 * Then install manually dependencies that rosdep does not support.
 * And run the build:
 ```
-catkin build -DCATKIN_BLACKLIST_PACKAGES=rc110_video_server;rc110_object_detection
+catkin config --blacklist rc110_video_server rc110_object_detection
+catkin build -DCATKIN_ENABLE_TESTING=OFF
 ```
-* `CATKIN_BLACKLIST_PACKAGES` variable above allows to skip nodes you don't need.
+or
+```
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="rc110_video_server;rc110_object_detection" -DCATKIN_ENABLE_TESTING=OFF
+```
+
+* Please, change blacklisted packages according to your needs.
 
 ## ~ Additional ~
 
