@@ -120,37 +120,6 @@ bool Rc110ImageConverter::toDevice(const sensor_msgs::ImageConstPtr& inputImageM
     return true;
 }
 
-sensor_msgs::ImagePtr Rc110ImageConverter::toImageMessage(const imageFormat outputImageFormat) const
-{
-    if (!m_hostInput || !m_deviceOutput || m_imageWidth == 0 || m_imageHeight == 0) {
-        return nullptr;
-    }
-
-    if (CUDA_FAILED(cudaConvertColor(
-                m_deviceOutput, INTERNAL_IMAGE_FORMAT, m_deviceInput, outputImageFormat, m_imageWidth, m_imageHeight))) {
-        ROS_ERROR("failed to convert %ldx%ld image (from %s to %s) with CUDA",
-                  m_imageWidth,
-                  m_imageHeight,
-                  imageFormatToStr(INTERNAL_IMAGE_FORMAT),
-                  imageFormatToStr(outputImageFormat));
-
-        return nullptr;
-    }
-
-    const std::size_t msgSize = imageFormatSize(outputImageFormat, m_imageWidth, m_imageHeight);
-    sensor_msgs::ImagePtr outputMsg(new sensor_msgs::Image());
-    outputMsg->data.resize(msgSize);
-
-    memcpy(outputMsg->data.data(), m_hostInput, msgSize);
-    outputMsg->width = m_imageWidth;
-    outputMsg->height = m_imageHeight;
-    outputMsg->step = (m_imageWidth * imageFormatDepth(outputImageFormat)) / 8;
-    outputMsg->encoding = Rc110ImageConverter::toImageEncoding(outputImageFormat);
-    outputMsg->is_bigendian = false;
-
-    return outputMsg;
-}
-
 bool Rc110ImageConverter::allocateMemory(const std::size_t imageWidth,
                                          const std::size_t imageHeight,
                                          const imageFormat iFormat)

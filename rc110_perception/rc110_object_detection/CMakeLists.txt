@@ -4,6 +4,7 @@ project(rc110_object_detection VERSION 1.4.0)
 find_package(CUDA REQUIRED)  # Change CUDA to CUDAToolkit after upgrade to CMake >=3.17
 find_package(jetson-utils REQUIRED)
 find_package(jetson-inference REQUIRED)
+find_package(OpenCV REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -18,6 +19,7 @@ add_executable(rc110_object_detection_node
   src/rc110_object_detection_node.cpp
   src/rc110_object_detection.cpp
   src/rc110_image_converter.cpp
+  src/rc110_custom_detect_net.cpp
 )
 add_dependencies(rc110_object_detection_node
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
@@ -31,10 +33,12 @@ target_include_directories(rc110_object_detection_node
   SYSTEM PUBLIC
     ${CUDA_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
 )
 target_link_libraries(rc110_object_detection_node
   jetson-inference
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 install(TARGETS rc110_object_detection_node

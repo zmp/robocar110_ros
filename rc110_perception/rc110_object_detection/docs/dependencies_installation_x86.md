@@ -16,7 +16,7 @@ sudo apt-get update
 
 * Install the dependencies:
 ```
-sudo apt-get install cuda-10-2 libnvinfer-dev=7.2.3-1+cuda10.2 libnvinfer-plugin-dev=7.2.3-1+cuda10.2 libnvparsers-dev=7.2.3-1+cuda10.2 libnvonnxparsers-dev=7.2.3-1+cuda10.2
+sudo apt-get install cuda-10-2 libnvinfer-dev=7.2.3-1+cuda10.2 libnvinfer-plugin-dev=7.2.3-1+cuda10.2 libnvparsers-dev=7.2.3-1+cuda10.2 libnvonnxparsers-dev=7.2.3-1+cuda10.2 libnvparsers7=7.2.3-1+cuda10.2 libnvinfer7=7.2.3-1+cuda10.2 libnvinfer-plugin7=7.2.3-1+cuda10.2 libnvonnxparsers7=7.2.3-1+cuda10.2
 ```
 * Change 10-2 to the version shipped with your JetPack.
 * Here 7.2.3-1 can be changed to the latest version compatible with your cuda version.
