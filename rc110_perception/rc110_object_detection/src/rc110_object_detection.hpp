@@ -8,14 +8,17 @@
 
 #pragma once
 
-#include <jetson-inference/detectNet.h>
 #include <rc110_msgs/StringArray.h>
 #include <ros/ros.h>
+#include <vision_msgs/Detection2DArray.h>
+
+#include <opencv2/opencv.hpp>
 
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "rc110_custom_detect_net.hpp"
 #include "rc110_image_converter.hpp"
 
 namespace zmp
@@ -36,6 +39,10 @@ public:
         std::string outputBlob = "NMS";
         std::string outputCount = "NMS_1";
 
+        float meanPixel = 0.0;
+        float stdPixel = 1.0;
+        bool useDarknetYolo = false;
+
         int numChannels = 3;
         int inputHeight = 300;
         int inputWidth = 300;
@@ -53,9 +60,15 @@ private:
     /**
      *  @brief create and publish overlaid result image message
      */
-    void publishOverlay(detectNet::Detection* detections,
-                        int numDetections,
+    void publishOverlay(const vision_msgs::Detection2DArray& detectionsMsg,
+                        const rc110_msgs::StringArray& classesMsg,
+                        const std::vector<cv::Scalar>& colors,
                         const ros::Time& timeStamp = ros::Time::now());
+
+    cv::Mat drawBoundingBox(const cv::Mat& image,
+                            const vision_msgs::Detection2DArray& detectionsMsg,
+                            const rc110_msgs::StringArray& classesMsg,
+                            const std::vector<cv::Scalar>& colors) const;
 
     void publishClassesInfo();
 
@@ -63,10 +76,10 @@ private:
     Param m_param;
     std::uint32_t m_overlayFlags;
     rc110_msgs::StringArray m_classesMsg;
+    std::vector<cv::Scalar> m_classColors;
 
-    std::unique_ptr<detectNet> m_inferenceNet;
+    Rc110CustomDetectNet::Ptr m_inferenceNet;
     Rc110ImageConverter m_inputConverter;
-    Rc110ImageConverter m_overlayConverter;
 
     ros::Subscriber m_inputImageSub;
 

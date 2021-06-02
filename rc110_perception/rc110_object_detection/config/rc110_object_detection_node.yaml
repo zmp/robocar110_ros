@@ -5,6 +5,9 @@ overlay_str: "box,labels,conf"
 input_blob: "Input"
 output_blob: "NMS"
 output_count: "NMS_1"
+mean_pixel: 0.0
+std_pixel: 1.0
+use_darknet_yolo: false
 num_channels: 3
 input_height: 300
 input_width: 300

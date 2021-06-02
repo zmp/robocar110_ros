@@ -60,6 +60,8 @@ public:
 
     PixelType* deviceOutput() const { return m_deviceOutput; }
 
+    void* hostOutput() const { return m_hostInput; }
+
     /**
      *  @brief transfer image message data to device and convert to internal format (IMAGE_RGB8)
      *
@@ -67,14 +69,6 @@ public:
      *  @return true if successful; false otherwise
      */
     bool toDevice(const sensor_msgs::ImageConstPtr& inputImageMsg);
-
-    /**
-     *  @brief create image message from internal device data, mainly for overlay debug purpose
-     *
-     *  @param outputImageFormat output image message's format (enum type defined in jetson-utils)
-     *  @return output image message
-     */
-    sensor_msgs::ImagePtr toImageMessage(const imageFormat outputImageFormat) const;
 
     /**
      *  @brief allocate pinned-memory resources needed for inference process, or storing overlaid image after inference
@@ -98,8 +92,6 @@ private:
     imageFormat m_inputImageFormat;
 
     // m_hostInput (m_deviceInput) corresponds to the resource needed for raw input image data
-    // the other purpose of this resource is to store the overlaid image after inference to create an overlaid debug
-    // image message
     void* m_hostInput;
     void* m_deviceInput;
 
@@ -108,5 +100,4 @@ private:
     PixelType* m_hostOutput;
     PixelType* m_deviceOutput;
 };
-
 }  // namespace zmp
