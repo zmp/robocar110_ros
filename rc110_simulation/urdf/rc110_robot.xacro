@@ -1,0 +1,335 @@
+<?xml version='1.0'?>
+
+<robot name="rc110_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find rc110_simulation)/urdf/rc110_robot.gazebo" />
+
+    <link name="robot_footprint"></link>
+
+    <joint name="robot_footprint_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="robot_footprint" />
+        <child link="base_link" />
+    </joint>
+
+    <!-- base_link -->
+    <link name='base_link'>
+        <pose>0 0 0.1 0 0 0</pose>
+
+        <inertial>
+            <mass value="15.0" />
+            <origin xyz="0.0 0 0" rpy=" 0 0 0" />
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+        </inertial>
+
+        <collision name='collision'>
+            <origin xyz="0 0 0" rpy=" 0 0 0" />
+            <geometry>
+                <box size="0.4 0.2 0.1" />
+            </geometry>
+        </collision>
+
+        <visual name='base_link_visual'>
+            <origin xyz="0 0 0" rpy=" 0 0 0" />
+            <geometry>
+                <box size="0.4 0.2 0.1" />
+            </geometry>
+        </visual>
+    </link>
+    <gazebo reference="base_link">
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+    <!-- rear left wheel -->
+    <link name='rear_left_wheel'>
+        <inertial>
+            <mass value="5.0" />
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+        </inertial>
+
+        <visual name='rear_left_wheel_visual'>
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </visual>
+
+        <collision name='rear_left_wheel_collision'>
+            <origin xyz="0 0 0" rpy=" 0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="continuous" name="rear_left_wheel_joint">
+        <origin xyz="-0.15 0.12 -0.05" rpy="0 0 0" />
+        <child link="rear_left_wheel" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="10000" velocity="1000" />
+        <dynamics damping="1.0" friction="1.0" />
+    </joint>
+    <gazebo reference="rear_left_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- rear right wheel -->
+    <link name='rear_right_wheel'>
+        <inertial>
+            <mass value="5.0" />
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+        </inertial>
+
+        <visual name='rear_right_wheel_visual'>
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </visual>
+
+        <collision name='rear_right_wheel_collision'>
+            <origin xyz="0 0 0" rpy=" 0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="continuous" name="rear_right_wheel_joint">
+        <origin xyz="-0.15 -0.12 -0.05" rpy="0 0 0" />
+        <child link="rear_right_wheel" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="10000" velocity="1000" />
+        <dynamics damping="1.0" friction="1.0" />
+    </joint>
+    <gazebo reference="rear_right_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- front left wheel -->
+    <link name='front_left_wheel'>
+        <inertial>
+            <mass value="5.0" />
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+        </inertial>
+
+        <visual name='front_left_wheel_visual'>
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </visual>
+
+        <collision name='front_left_wheel_collision'>
+            <origin xyz="0 0 0" rpy=" 0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="continuous" name="front_left_wheel_joint">
+        <origin xyz="0.12 0.12 -0.05" rpy="0 0 0" />
+        <child link="front_left_wheel" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="10000" velocity="1000" />
+        <dynamics damping="1.0" friction="1.0" />
+    </joint>
+    <gazebo reference="front_left_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- front right wheel -->
+    <link name='front_right_wheel'>
+        <inertial>
+            <mass value="5.0" />
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+        </inertial>
+
+        <visual name='front_right_wheel_visual'>
+            <origin xyz="0 0 0" rpy="0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </visual>
+
+        <collision name='front_right_wheel_collision'>
+            <origin xyz="0 0 0" rpy=" 0 1.5708 1.5708" />
+            <geometry>
+                <cylinder radius="0.05" length="0.02" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="continuous" name="front_right_wheel_joint">
+        <origin xyz="0.12 -0.12 -0.05" rpy="0 0 0" />
+        <child link="front_right_wheel" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+        <limit effort="10000" velocity="1000" />
+        <dynamics damping="1.0" friction="1.0" />
+    </joint>
+    <gazebo reference="front_right_wheel">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- front camera -->
+    <link name='front_camera'>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <box_inertia m="0.1" x="0.05" y="0.05" z="0.05" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+
+        <visual name='front_camera_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.05" />
+            </geometry>
+        </visual>
+
+        <collision name='front_camera_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.05" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="fixed" name="front_camera_joint">
+        <origin xyz="0.2 0 0" rpy="0 0 0" />
+        <child link="front_camera" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+    <gazebo reference="front_camera">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- rear camera -->
+    <link name='rear_camera'>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <box_inertia m="0.1" x="0.05" y="0.05" z="0.05" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+
+        <visual name='rear_camera_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.05" />
+            </geometry>
+        </visual>
+
+        <collision name='rear_camera_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.05 0.05 0.05" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="fixed" name="rear_camera_joint">
+        <origin xyz="-0.2 0 0" rpy="0 0 3.1416" />
+        <child link="rear_camera" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+    <gazebo reference="rear_camera">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- front 2D lidar -->
+    <link name='front_lidar'>
+        <inertial>
+            <mass value="1e-5" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+
+        <visual name='front_lidar_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://rc110_simulation/models/meshes/hokuyo.dae" />
+            </geometry>
+        </visual>
+
+        <collision name='front_lidar_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.1 0.1" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="fixed" name="front_lidar_joint">
+        <origin xyz="0.1 0 0.07" rpy="0 0 0" />
+        <child link="front_lidar" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- rear 2D lidar -->
+    <link name='rear_lidar'>
+        <inertial>
+            <mass value="1e-5" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+
+        <visual name='rear_lidar_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://rc110_simulation/meshes/hokuyo.dae" />
+            </geometry>
+        </visual>
+
+        <collision name='rear_lidar_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1 0.1 0.1" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="fixed" name="rear_lidar_joint">
+        <origin xyz="-0.1 0 0.07" rpy="0 0 3.1416" />
+        <child link="rear_lidar" />
+        <parent link="base_link" />
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- imu -->
+    <link name='imu_link'>
+        <inertial>
+            <mass value="0.05" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <box_inertia m="0.1" x="0.05" y="0.05" z="0.05" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+
+        <visual name='imu_link_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.02 0.02 0.01" />
+            </geometry>
+        </visual>
+
+        <collision name='imu_link_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.02 0.02 0.01" />
+            </geometry>
+        </collision>
+    </link>
+    <joint type="fixed" name="imu_joint">
+        <origin xyz="0 0 0.055" rpy="0 0 0" />
+        <child link="imu_link"/>
+        <parent link="base_link"/>
+        <axis xyz="0 1 0" rpy="0 0 0" />
+    </joint>
+        <gazebo reference="imu_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+</robot>
