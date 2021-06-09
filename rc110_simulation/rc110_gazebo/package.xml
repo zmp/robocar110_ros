@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rc110_simulation</name>
+  <name>rc110_gazebo</name>
   <version>1.4.0</version>
   <description>RoboCar 1/10 simulation using Gazebo.</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
@@ -10,12 +10,15 @@
   <depend>roscpp</depend>
   <depend>geometry_msgs</depend>
   <depend>ackermann_msgs</depend>
-  <depend>rc110_msgs</depend>
   <exec_depend>gazebo_ros</exec_depend>
-  <exec_depend>rc110_launch</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>rosmon</exec_depend>
+
+  <depend>rc110_msgs</depend>
+  <exec_depend>rc110_common</exec_depend>
 
   <export>
-    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_model_path="${prefix}/../../rc110_core/rc110_common/models"/>
     <gazebo_ros gazebo_media_path="${prefix}"/>
   </export>
 </package>

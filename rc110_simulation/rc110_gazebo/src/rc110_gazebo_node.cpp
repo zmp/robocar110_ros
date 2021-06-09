@@ -7,15 +7,15 @@
  */
 #include <ros/ros.h>
 
-#include "rc110_simulation_interface.hpp"
+#include "rc110_gazebo.hpp"
 
 using namespace zmp;
 
 int main(int argc, char** argv)
 try {
-    ros::init(argc, argv, "rc110_simulation_interface");
+    ros::init(argc, argv, "rc110_gazebo");
 
-    Rc110SimulationInterface node;
+    Rc110Gazebo node;
 
     ros::spin();
 

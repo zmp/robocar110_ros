@@ -1,0 +1,195 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="robocar110">
+    <static>false</static>
+    
+    <link name="base_link">
+      <pose>0.0 0.0 0.0 0 0 0</pose>
+
+      <inertial>
+        <mass>3.0</mass>
+        <pose>0.125 0.0 0.07 0 0 0</pose>
+        <inertia>
+          <ixx>0.03</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.050</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.054</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <pose>0.132 0.0 0.075</pose>
+        <geometry>
+          <box>
+            <size>0.43 0.2 0.15</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://rc110/meshes/rc110.dae</uri>
+            <submesh>
+              <name>base</name>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="imu_link">
+      <pose>0.085 0.026 0.0631 0 0 0</pose>
+
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+        <topic>__default_topic__</topic>
+        <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <topicName>imu/data_raw</topicName>
+          <bodyName>imu_link</bodyName>
+          <updateRateHZ>10.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>imu_link</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name="imu_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>imu_link</child>
+    </joint>
+
+    <link name="front_camera">
+      <pose>0.32 0 0.124 0 0 0</pose>
+
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://rc110/meshes/rc110.dae</uri>
+            <submesh>
+              <name>front_camera</name>
+              <center>true</center>
+            </submesh>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <sensor type="camera" name="front_camera">
+        <update_rate>30.0</update_rate>
+        <camera name="front">
+          <horizontal_fov>2.35</horizontal_fov> <!-- DFOV 140 degrees -->
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>300</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <cameraName>front_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>camera</frameName>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name="front_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>front_camera</child>
+    </joint>
+
+    <link name="front_lidar">
+      <pose>0.256 0 0.0915 3.1415926 0 0</pose>
+
+      <sensor type="gpu_ray" name="front_lidar">
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>1024</samples>
+              <resolution>1</resolution>
+              <!--+/- 120 degrees -->
+              <min_angle>-2.09</min_angle>
+              <max_angle>2.09</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.05</min>
+            <max>1000</max>  <!-- real value is 5.6, but we use 1000 because of plugin issue of not skipping rays -->
+            <resolution>0.03</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+          <topicName>front_lidar/scan</topicName>
+          <frameName>front_lidar</frameName>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name="front_lidar_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>front_lidar</child>
+    </joint>
+
+    <link name="rear_lidar">
+      <pose>0.004 0 0.0915 0 3.1415926 0</pose>
+
+      <sensor type="gpu_ray" name="rear_lidar">
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>1024</samples>
+              <resolution>1</resolution>
+              <!--+/- 120 degrees -->
+              <min_angle>-2.09</min_angle>
+              <max_angle>2.09</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.05</min>
+            <max>1000</max>  <!-- real value is 5.6, but we use 1000 because of plugin issue of not skipping rays -->
+            <resolution>0.03</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+          <topicName>rear_lidar/scan</topicName>
+          <frameName>rear_lidar</frameName>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name="rear_lidar_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>rear_lidar</child>
+    </joint>
+
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>drive_twist</commandTopic>
+      <robotBaseFrame>base_link</robotBaseFrame>
+      <odometryTopic>odometry</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>10.0</odometryRate>
+    </plugin>
+  </model>
+</sdf>

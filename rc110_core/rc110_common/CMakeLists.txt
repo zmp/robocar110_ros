@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_launch VERSION 1.4.0)
+project(rc110_common VERSION 1.4.0)
 
 find_package(catkin)
 
 catkin_package()
 
-install(DIRECTORY config launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY config launch models urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 # prepare configuration files for roslaunch
 set(RC110_SHARE_PATH /opt/ros/$ENV{ROS_DISTRO}/${CATKIN_PACKAGE_SHARE_DESTINATION})
 file(REMOVE ${PROJECT_BINARY_DIR}/deb/conffiles)
-file(GLOB_RECURSE config_files RELATIVE ${PROJECT_SOURCE_DIR} config/*.yaml)
+file(GLOB_RECURSE config_files RELATIVE ${PROJECT_SOURCE_DIR} config/*.yaml models/*.sdf urdf/*.xml)
 foreach(file ${config_files})
     file(APPEND ${PROJECT_BINARY_DIR}/deb/conffiles "${RC110_SHARE_PATH}/${file}\n")
 endforeach()

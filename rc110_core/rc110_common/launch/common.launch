@@ -1,0 +1,20 @@
+<launch>
+    <arg name="config_dir" default="$(find rc110_common)/config"/>
+    <arg name="urdf_file" default="$(find rc110_common)/urdf/robot.xml"/>
+    <arg name="joy_type" default="elecom"/>
+
+    <param name="robot_description" textfile="$(arg urdf_file)"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <include file="$(find rc110_common)/launch/teleop.launch">
+        <arg name="config_dir" value="$(arg config_dir)"/>
+        <arg name="type" value="$(arg joy_type)"/>
+    </include>
+
+    <!-- Switching between joystick and AD.
+      By default drive_manual topic is mapped to drive.
+      To switch run: rosservice call mux_drive/select drive_ad
+      Or use joystick or rviz.
+    -->
+    <node pkg="topic_tools" type="mux" name="mux_drive" args="drive drive_manual drive_ad mux:=mux_drive"/>
+</launch>
