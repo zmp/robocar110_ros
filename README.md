@@ -6,11 +6,12 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 
 | Group                                              | Description                   |
 |:------------------                                 |:------------------------      |
-| [**core**](rc110_core/README.md)                   | Major Nodes                   |
-| [**monitoring**](rc110_monitoring/README.md)       | Remote Monitoring and Control |
-| [**navigation**](rc110_navigation/README.md)       | Navigation Nodes              |
-| [**perception**](rc110_perception/README.md)       | Perception Nodes              |
-| [**utils**](rc110_utils/README.md)                 | Utilities                     |
+| [**rc110_core**](rc110_core/README.md)             | Major Nodes                   |
+| [**rc110_monitoring**](rc110_monitoring/README.md) | Remote Monitoring and Control |
+| [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
+| [**rc110_perception**](rc110_perception/README.md) | Perception                    |
+| [**rc110_simulation**](rc110_simulation/README.md) | Simulation                    |
+| [**rc110_utils**](rc110_utils/README.md)           | Utilities                     |
 
 * Core group includes robot manipulation and sensor values retrieval.
     - It is installed and running by default on the robot.
@@ -46,11 +47,17 @@ make ros-source
 * It will place ros sourcing to `~/.bashrc`.
 * You need to restart terminal after that.
 
-## Build
+## Build For Robot
 
-We recommend to build the [**core packages**](rc110_core/README.md#Build) first, and then each additional node one by one.
+On the robot, we recommend building [**core packages**](rc110_core/README.md#Build) first, and then each additional node one by one.
 
-If you want to build all the packages at once, try the following:
+## Build For Simulation
+
+Without robot, there's no need to build driver and system service packages, thus it's ok to skip **core packages** above.
+
+After installing ROS, proceed to [**simulation**](rc110_simulation/README.md) instead.
+
+## Build All
 ```
 make init  # to prepare rosdep
 rosdep install -iry --from-paths .

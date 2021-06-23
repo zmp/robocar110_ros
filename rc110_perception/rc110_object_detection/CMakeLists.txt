@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_object_detection VERSION 1.4.0)
+project(rc110_object_detection VERSION 1.5.0)
 
 find_package(CUDA REQUIRED)  # Change CUDA to CUDAToolkit after upgrade to CMake >=3.17
 find_package(jetson-utils REQUIRED)

@@ -1,3 +1,8 @@
+## v1.5.0
+
+* Object detection with Darknet Yolo.
+* Simulation with Gazebo.
+
 ## v1.4.0
 
 * Navigation on the map created with Hector SLAM.
