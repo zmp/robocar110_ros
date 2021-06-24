@@ -6,5 +6,4 @@ A default SDK is preinstalled on the robot. We will provide the scripts with eac
 
 ## Actions
 
-* `./install_ros` to install ROS.
-* `./install` to install SDK (from a directory with SDK deb files)
+* `./install` to install ROS and RC 1/10 SDK (from a directory with SDK deb files)

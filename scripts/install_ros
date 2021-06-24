@@ -1,7 +1,29 @@
 #!/bin/bash -e
 
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+# add apt list
+if [ ! -f /etc/apt/sources.list.d/ros-latest.list ]
+then
+	sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+fi
+
+# add apt key
+key=C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+output=$(APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv -k ${key} || true)
+exp_string=$(grep expires <<< "${output}" || true)
+valid=false
+if [ -n "${exp_string}" ]
+then
+    exp_date=${exp_string: -11:-1}
+    cur_date=$(date +"%Y-%m-%d")
+    if [[ ${cur_date} < ${exp_date} ]]
+    then
+        valid=true
+    fi
+fi
+if [ ${valid} = false ]
+then
+	sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key ${key}
+fi
 
 sudo apt-get update
 sudo apt-get install -yq ros-melodic-desktop

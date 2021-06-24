@@ -8,8 +8,9 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 main_nodes := rc110_system rc110_rviz
 
 
-# targets
+# == targets ==
 
+# Add ros environment to .bashrc.
 ros-source:
 	@
 ifeq (,$(shell grep -q "source /opt/ros" ~/.bashrc))
@@ -19,8 +20,9 @@ else
 	echo "ROS sourcing exists already."
 endif
 
+# Install catkin and rosdep.
 init:
-ifneq (0, $(shell catkin locate &>/dev/null; echo $$?))
+ifeq (,$(shell which catkin))
 	sudo apt-get install -qq python-catkin-tools
 	cd ../..
 	catkin init
@@ -31,38 +33,44 @@ ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	rosdep update --rosdistro=${ROS_DISTRO}
 endif
 
+# Install core dependencies.
 deps: init
 	$(call source)
-	rosdep install -iry --from-paths rc110_core rc110_navigation/rc110_behavior
+	rosdep install -iry --from-paths rc110_core
 
+# Build all.
 all: init
 	$(call source)
 	$(call build,${main_nodes},${cmake_flags})
 
+# Make packages in build directory.
 package: init
 	$(call source)
 	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1)
 
 	function check_make_target {
-		output=$$(make -n "$$1" 2>&1 | head -1)
+		output=$$(make -n "$$1" -C "$$2" 2>&1 || true | head -1)
 		[[ "$$output" != *"No rule to make target"* ]]
 	}
 
 	cd $$(catkin locate --build)
 	rm -f *.deb
-	for d in */
+	for d in rc110_*/
 	do
-		(  # make package in parallel
-		pushd "$$d"
-			if check_make_target package; then
-				$(MAKE) package
+		(  # parallel run
+		if check_make_target package "$$d"
+		then
+			cd "$$d"
+				$(MAKE) package >/dev/null
 				mv *.deb ../
-			fi
-		popd
+				echo "Package created: $$d"
+			cd ..
+		fi
 		) &
 	done
 	wait
 
+# Install packages to system folder.
 install: package
 	$(call source)
 	cd $$(catkin locate --build)
@@ -70,30 +78,53 @@ install: package
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
+# Self-extracting archive with core packages.
+self: package
+ifeq (,$(shell which makeself))
+	sudo apt-get install -qq makeself
+endif
+
+	root_dir=$$(pwd)
+	$(call source)
+	cd $$(catkin locate --build)
+	
+	version=$$(dpkg-deb -f $$(ls *.deb | head -1) Version)
+	rm -rf stage; mkdir stage
+	mv *.deb stage/
+	cp $${root_dir}/scripts/install* stage/
+
+	makeself stage rc110_core_$${version}.run "package" ./install
+
+# Environment variables for remote access.
 env:
 ifeq (,$(wildcard ../../env.sh))
 	cp mk/env_template.sh ../../env.sh
 endif
 
+# Run nodes built from source.
 run:
 	systemctl --user start rc110-roscore
 	source ../../devel/setup.bash
 	. ~/.config/rc110/service.conf
 	eval "$$RC110_LAUNCH_COMMAND"
 
+# Run only joystick node on remote PC.
 remote-joy: env
 	source ../../devel/setup.bash
 	source ../../env.sh
 	roslaunch rc110_launch remote_joy.launch
 
+# Clean all.
 clean:
 	$(call source)
 	catkin clean -y
 
 
-# additional targets
+# == additional targets ==
+
 include mk/subdirs.mk
 
-# shortcuts
+# == shortcuts ==
+
 show: show-rviz
 monitor: monitor-rviz

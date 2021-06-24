@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
-sudo apt install -yq --reinstall ./*.deb
-sudo apt autoremove
+./install_ros
+./install_rc110

@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+sudo apt install -yq --allow-downgrades ./*.deb
+sudo apt autoremove -yq
