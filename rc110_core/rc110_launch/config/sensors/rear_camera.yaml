@@ -6,4 +6,4 @@ framerate: 30.0
 image_width: 640
 image_height: 480
 io_method: "mmap"
-#camera_info_url: "file://$(env HOME)/.ros/camera_info/rear_camera.yaml"
+camera_info_url: "file://$(env HOME)/.ros/camera_info/rear_camera.yaml"

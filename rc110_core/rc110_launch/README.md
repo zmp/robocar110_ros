@@ -24,6 +24,7 @@
 ### Camera ###
 ***
 
-If your application requires undistorted camera images, please follow the document:
+- Please follow this [Monocular Camera Calibration](docs/monocular_camera_calibration.md) to obtain calibration parameters. This calibration step is optional.
+- The default path of calibration params for front camera is set in *camera_info_url* of [this configuration file](config/sensors/front_camera.yaml); and optionally, [here](config/sensors/rear_camera.yaml) for rear camera.
 
-- [Monocular Camera Calibration](docs/monocular_camera_calibration.md)
+- ROS system will give a warning if the calibration files do not exist, which is an expected behavior and can be ignored.
