@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(hokuyo_node)
+cmake_minimum_required(VERSION 3.10)
+project(hokuyo_node VERSION 1.7.8)
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 
@@ -71,3 +71,11 @@ install(TARGETS hokuyo_node getID getFirmwareVersion
 install(FILES test/TODO test/unplug_test.launch COPYING.lib hokuyo_test.launch hokuyo_test.vcg hokuyo_test_intensity.launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+# package
+set(CPACK_DEBIAN_PACKAGE_PROVIDES ros-$ENV{ROS_DISTRO}-hokuyo-node)
+set(CPACK_DEBIAN_PACKAGE_CONFLICTS ${CPACK_DEBIAN_PACKAGE_PROVIDES})
+set(CPACK_DEBIAN_PACKAGE_REPLACES ${CPACK_DEBIAN_PACKAGE_PROVIDES})
+set(CPACK_PACKAGE_NAME ${CPACK_DEBIAN_PACKAGE_PROVIDES}-zpkg)
+set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
+include(../../cmake/rc110_cpack.cmake)

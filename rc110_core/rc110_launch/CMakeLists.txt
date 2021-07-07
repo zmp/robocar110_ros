@@ -23,4 +23,5 @@ endif()
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
+set(RC110_DEP.hokuyo_node ros-$ENV{ROS_DISTRO}-hokuyo-node)
 include(../../cmake/rc110_cpack.cmake)

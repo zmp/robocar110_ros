@@ -55,7 +55,7 @@ package: init
 
 	cd $$(catkin locate --build)
 	rm -f *.deb
-	for d in rc110_*/
+	for d in */
 	do
 		(  # parallel run
 		if check_make_target package "$$d"
@@ -88,7 +88,7 @@ endif
 	$(call source)
 	cd $$(catkin locate --build)
 	
-	version=$$(dpkg-deb -f $$(ls *.deb | head -1) Version)
+	version=$$(dpkg-deb -f $$(ls *rc110*.deb | head -1) Version)
 	rm -rf stage; mkdir stage
 	mv *.deb stage/
 	cp $${root_dir}/scripts/install* stage/

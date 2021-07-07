@@ -7,6 +7,7 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 | Group                                              | Description                   |
 |:------------------                                 |:------------------------      |
 | [**rc110_core**](rc110_core/README.md)             | Major Nodes                   |
+| [**rc110_external**](rc110_external/README.md)     | External ROS Nodes            |
 | [**rc110_monitoring**](rc110_monitoring/README.md) | Remote Monitoring and Control |
 | [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
 | [**rc110_perception**](rc110_perception/README.md) | Perception                    |
