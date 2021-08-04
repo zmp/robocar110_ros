@@ -6,12 +6,7 @@ Node Based on [ROS Navigation Stack](http://wiki.ros.org/navigation)
 ![](docs/navigation.gif)
 
 ## Makefile
-
-* In order to save map, you need Hector SLAM node running.
 ```
-make save-map [map_name=office_map]    # save map under some name (default: map)
-make select-map [map_name=office_map]  # select the map for navigation
-
 make deps         # check dependencies
 make              # build
 make run          # run the node

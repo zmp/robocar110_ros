@@ -6,16 +6,17 @@ init:
 	cd ../.. && $(MAKE) init
 
 deps: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths . --skip-keys=rc110_laserscans_to_pointcloud
 
 all: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
 	$(call get_flags,flags)
 	source ../../../../devel/setup.bash
+	source ~/.config/rc110/service.conf
 	roslaunch rc110_slam_he main.launch $${flags}
 
 show:
@@ -27,3 +28,6 @@ monitor:
 	$(MAKE) env -C ../..
 	source ../../../../env.sh
 	$(MAKE) show
+
+# extra
+include mk/extra.mk

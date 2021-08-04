@@ -16,7 +16,10 @@ if [ ! -f $config_file ]; then
 #ROS_IP=192.168.110.5
 
 # Change to your launch command, if you created another one.
-RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch'
+RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch use_front_camera:=true joy_type:=elecom'
+
+# Map name for SLAM and navigation
+RC110_MAP_NAME=map
 "\
         > $config_file
 fi

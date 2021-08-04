@@ -35,17 +35,17 @@ endif
 
 # Install core dependencies.
 deps: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths rc110_core
 
 # Build all.
 all: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${main_nodes},${cmake_flags})
 
 # Make packages in build directory.
 package: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1)
 
 	function check_make_target {
@@ -72,7 +72,7 @@ package: init
 
 # Install packages to system folder.
 install: package
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	cd $$(catkin locate --build)
 	sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
@@ -85,7 +85,7 @@ ifeq (,$(shell which makeself))
 endif
 
 	root_dir=$$(pwd)
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	cd $$(catkin locate --build)
 	
 	version=$$(dpkg-deb -f $$(ls *rc110*.deb | head -1) Version)
@@ -105,7 +105,7 @@ endif
 run:
 	systemctl --user start rc110-roscore
 	source ../../devel/setup.bash
-	. ~/.config/rc110/service.conf
+	source ~/.config/rc110/service.conf
 	eval "$$RC110_LAUNCH_COMMAND"
 
 # Run only joystick node on remote PC.
@@ -116,7 +116,7 @@ remote-joy: env
 
 # Clean all.
 clean:
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin clean -y
 
 

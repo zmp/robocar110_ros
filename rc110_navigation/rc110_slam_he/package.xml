@@ -10,4 +10,5 @@
   <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
   <exec_depend>pointcloud_to_laserscan</exec_depend>
   <exec_depend>hector_mapping</exec_depend>
+  <exec_depend>map_server</exec_depend>
 </package>

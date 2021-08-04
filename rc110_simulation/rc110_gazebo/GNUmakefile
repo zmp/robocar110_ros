@@ -7,11 +7,11 @@ init:
 	cd ../.. && $(MAKE) init
 
 deps: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths . --skip-keys="rc110_msgs rc110_common"
 
 all: init
-	$(call source)
+	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:

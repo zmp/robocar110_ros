@@ -1,7 +1,5 @@
 <launch>
-    <arg name="map_name" default="map" />
-
-    <node name="map_server" pkg="map_server" type="map_server" args="$(env HOME)/.ros/$(arg map_name).yaml" />
+    <node name="map_server" pkg="map_server" type="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
 
     <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">

@@ -5,11 +5,6 @@ SHELL := /bin/bash
 
 ROS_DISTRO ?= melodic
 
-# ROS sourcing
-define source
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-endef
-
 # Faster build using all cores on tegra
 define build
 (
