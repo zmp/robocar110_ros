@@ -2,6 +2,9 @@
 
 Node Based on [ROS Navigation Stack](http://wiki.ros.org/navigation)
 
+## UI
+![](docs/navigation.gif)
+
 ## Makefile
 
 * In order to save map, you need Hector SLAM node running.

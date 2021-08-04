@@ -52,6 +52,8 @@ make ros-source
 
 On the robot, we recommend building [**core packages**](rc110_core/README.md#Build) first, and then each additional node one by one.
 
+![](docs/images/rviz.gif)
+
 ## Build For Simulation
 
 Without robot, there's no need to build driver and system service packages, thus it's ok to skip **core packages** above.

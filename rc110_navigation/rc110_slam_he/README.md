@@ -2,6 +2,9 @@
 
 Hector Mapping can do SLAM basing only on 2D lidar.
 
+## UI
+![](docs/slam_he.gif)
+
 ## Hector Mapping
 #### Project repo
 * https://github.com/tu-darmstadt-ros-pkg/hector_slam

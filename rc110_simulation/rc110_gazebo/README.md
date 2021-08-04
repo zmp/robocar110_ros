@@ -1,11 +1,12 @@
 # RC 1/10 Gazebo Simulation Sample
 
-![](docs/demo.gif)
-
 This package contains components for simulation of RC 1/10 in Gazebo with drive control functionality and sensors output using open-source Gazebo ROS plugins.
 
 * Conversion of RC 1/10 AckermannDrive message to Twist message that is supported by the Gazebo Model plugin.
 * Publishing information similar to **rc110_drive_control**.
+
+## UI
+![](docs/gazebo.gif)
 
 ## Makefile
 

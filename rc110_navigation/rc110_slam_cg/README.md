@@ -2,6 +2,9 @@
 
 Current configuration allows creating a map basing on 2D lidar.
 
+## UI
+![](docs/slam_cg.png)
+
 ## Google Cartographer
 #### Project repo
 * https://github.com/cartographer-project/cartographer
