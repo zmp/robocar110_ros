@@ -27,8 +27,10 @@ ifeq (,$(shell which catkin))
 	cd ../..
 	catkin init
 endif
-ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
+ifeq (,$(shell which rosdep))
 	sudo apt-get install -qq python-rosdep
+endif
+ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
 	rosdep update --rosdistro=${ROS_DISTRO}
 endif
@@ -36,7 +38,7 @@ endif
 # Install core dependencies.
 deps: init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths rc110_core
+	rosdep install -iry --from-paths rc110_core --skip-keys=rc110_master_hold
 
 # Build all.
 all: init
