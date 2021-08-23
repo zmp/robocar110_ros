@@ -23,8 +23,7 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 
 ## Prerequisites
 #### ROS
-
-Please, install **ROS melodic** on **Ubuntu** following the instruction:
+If ROS is not installed, please, install it following the instruction for **melodic**:
 
 http://wiki.ros.org/Installation/Ubuntu
 
@@ -33,7 +32,7 @@ http://wiki.ros.org/Installation/Ubuntu
 ```
 mkdir -p ~/ros/src
 cd ~/ros/src
-git clone <url or this repo>  # or unzip from archive
+git clone https://github.com/zmp/robocar110_ros.git
 
 cd ~/ros/src/robocar110_ros/
 ```
@@ -48,17 +47,23 @@ make ros-source
 * It will place ros sourcing to `~/.bashrc`.
 * You need to restart terminal after that.
 
-## Build For Robot
+## Build on Robot
 
-On the robot, we recommend building [**core packages**](rc110_core/README.md#Build) first, and then each additional node one by one.
+* Mandatory: 
+    * [**core packages**](rc110_core/README.md#Build) 
+* Optional:
+    * [**rc110_behavior**](rc110_navigation/rc110_behavior/README.md)
+    * [**rc110_slam_he**](rc110_navigation/rc110_slam_he/README.md)
+    * etc...
 
 ![](docs/images/rviz.gif)
 
-## Build For Simulation
+## Build for Simulation
 
 Without robot, there's no need to build driver and system service packages, thus it's ok to skip **core packages** above.
 
-After installing ROS, proceed to [**simulation**](rc110_simulation/README.md) instead.
+After installing ROS, proceed to 
+* [**rc110_gazebo**](rc110_simulation/rc110_gazebo/README.md)
 
 ## Build All
 ```
