@@ -31,8 +31,13 @@ monitor:
 
 	if [[ $$ROS_MASTER_URI =~ http://(.*):[0-9]+ ]]; then
 		ip=$${BASH_REMATCH[1]}
+		if [[ -n "$(fps)" ]]; then
+			sink=fpsdisplaysink sync=false async=false
+		else
+			sink=xvimagesink
+		fi
 		gst-launch-1.0 rtspsrc latency=0 location=rtsp://$$ip:8554/front \
-			! rtph265depay ! h265parse ! queue ! avdec_h265 ! fpsdisplaysink sync=false async=false
+			! rtph265depay ! h265parse ! queue ! avdec_h265 ! $${sink}
 	else
 		echo "Unable to parse ROS_MASTER_URI"
 	fi
