@@ -20,6 +20,7 @@ run:
 	export GAZEBO_MODEL_DATABASE_URI=" "   # See: https://github.com/osrf/gazebo/issues/2934
 	roscore &>/dev/null &
 	mon launch rc110_gazebo main.launch $${flags}
+	kill $$!
 
 show:
 	cd ../.. && $(MAKE) show
