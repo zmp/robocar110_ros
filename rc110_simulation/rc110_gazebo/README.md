@@ -13,7 +13,7 @@ This package contains components for simulation of RC 1/10 in Gazebo with drive 
 ```
 make deps         # check dependencies
 make              # build
-make run          # run simulation
+make run          # run simulation  (If it's run on robot, from robocar110_ros/, please, run: make stop) 
 make show         # show rviz  (At first from robocar110_ros/, you need to run: make rviz)
 
 make run use_gui:=false    # run without gazebo gui

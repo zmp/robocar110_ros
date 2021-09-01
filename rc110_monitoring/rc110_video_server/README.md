@@ -21,6 +21,8 @@ nano ~/.config/rc110/service.conf
 systemctl --user restart rc110
 ```
 
+* Maybe you'll need to restart robot to reconnect video device.
+
 ## Usage
 ```
 make deps         # check dependencies
