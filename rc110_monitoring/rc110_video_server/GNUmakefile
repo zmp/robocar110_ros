@@ -3,14 +3,13 @@ include ../../mk/common.mk
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
 
-init:
-	cd ../.. && $(MAKE) init
-
-deps: init
+deps:
+	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths .
 
-all: init
+all:
+	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
@@ -26,7 +25,7 @@ show:
 	# Press Ctrl+C to exit full screen.
 
 monitor:
-	$(MAKE) env -C ../..
+	$(MAKE) -C ../.. env
 	source ../../../../env.sh
 
 	if [[ $$ROS_MASTER_URI =~ http://(.*):[0-9]+ ]]; then

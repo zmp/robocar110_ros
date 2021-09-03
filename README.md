@@ -22,23 +22,30 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 	- For small improvements and bugfixes, it's better to modify **robocar110_ros** ([**Contribution Rules**](docs/Contribution.md))
 
 ## Prerequisites
+
+#### RC110 Source Code
+```
+mkdir -p ~/ros/src
+cd ~/ros/src
+git clone https://github.com/zmp/robocar110_ros.git
+```
+```
+cd ~/ros/src/robocar110_ros/  # make commands below are called from here!
+```
+
+* It's possible to use other directory (for example `~/robocar110_ros/`), but it's not ROS standard way, so we don't provide support for it. Do it on your own risk.
+
 #### ROS
 If ROS is not installed, please, install it following the instruction for **melodic**:
 
 http://wiki.ros.org/Installation/Ubuntu
 
-#### RC110 Source Code
-
+Alternatively you can use the following command, but we cannot guarantee it will always work.
 ```
-mkdir -p ~/ros/src
-cd ~/ros/src
-git clone https://github.com/zmp/robocar110_ros.git
-
-cd ~/ros/src/robocar110_ros/
+make ros-install
 ```
 
 #### ROS Environment
-
 ```
 make ros-source
 ```

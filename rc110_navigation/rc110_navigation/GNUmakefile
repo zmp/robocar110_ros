@@ -3,14 +3,13 @@ include ../../mk/common.mk
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
 
-init:
-	cd ../.. && $(MAKE) init
-
-deps: init
+deps:
+	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths . --skip-keys=rc110_twist_to_ackermann
 
-all: init
+all:
+	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
@@ -25,6 +24,6 @@ show:
 	rosrun rviz rviz -d rviz/rc110_navigation.rviz
 
 monitor:
-	$(MAKE) env -C ../..
+	$(MAKE) -C ../.. env
 	source ../../../../env.sh
 	$(MAKE) show

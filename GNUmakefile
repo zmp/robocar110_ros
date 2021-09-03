@@ -7,8 +7,49 @@ include mk/common.mk
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 main_nodes := rc110_system rc110_rviz
 
+define help_text
+
+GNUmakefile provides the following targets for make:
+
+    ros-install               ROS installation
+    ros-source                Add ros environment to .bashrc
+
+    deps                      Install dependencies for rc110_core
+    deps-%                    Install dependencies for %
+    all (empty)               Build rc110_core
+    %                         Build %
+    package                   Create deb packages in build/ directory
+    install                   Install the packages to system
+    self                      Create "run" installation file
+    clean                     Clean build and package files
+
+    start                     Restart RoboCar nodes from system
+    stop                      Stop RoboCar nodes from system
+    run                       Run rc110_core from build (Don't forget to stop system nodes first!)
+    run-%                     Run % node from build
+    show                      Show general RViz on robot
+    show-%                    Show % RViz on robot
+
+    env                       Create env.sh file for connection to remote PC (Needs to be edited!)
+    monitor                   Show general RViz on remote PC
+    monitor-%                 Show % RViz on remote PC
+    remote-joy                Run joystick connected to remote PC (By default it's connected to RoboCar)
+
+    save-map                  Save Hector SLAM map   [map_name=map]
+    select-map                Select Hector SLAM map [map_name=map]
+    camera-calibration-file   Setup calibration from archive  (For details, see: CameraCalibration.md)
+
+endef
 
 # == targets ==
+
+export help_text
+help:
+	@echo -e "\033[1;36m$${help_text}\033[0m"
+
+# Shortcut for ROS installation.
+ros-install:
+	./scripts/install_ros
 
 # Add ros environment to .bashrc.
 ros-source:
@@ -20,13 +61,8 @@ else
 	echo "ROS sourcing exists already."
 endif
 
-# Install catkin and rosdep.
-init:
-ifeq (,$(shell which catkin))
-	sudo apt-get install -qq python-catkin-tools
-	cd ../..
-	catkin init
-endif
+# Install rosdep and get packages list.
+init-deps:
 ifeq (,$(shell which rosdep))
 	sudo apt-get install -qq python-rosdep
 endif
@@ -36,18 +72,39 @@ ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 endif
 
 # Install core dependencies.
-deps: init
+deps: init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths rc110_core --skip-keys=rc110_master_hold
 
+# Init catkin workspace.
+init:
+ifeq (,$(shell which catkin))
+	sudo apt-get install -qq python-catkin-tools
+endif
+ifeq (src,$(notdir $(abspath ..)))
+  ifeq (,$(wildcard ../../.catkin_tools))
+	cd ../..
+	catkin config --init --log-space .catkin_tools/logs
+  endif
+else
+  ifeq (,$(wildcard .catkin_tools))
+	@echo -e "\033[1;31m\
+	    \nWarning: Catkin workspace will be created in the current directory!\
+	    \nCreate and use rc110_contrib/ directory for new nodes.\
+	    \nIf you want to have usual workspace, please, put robocar110_ros to src/\
+	    \n\033[0m"
+	catkin config --init --source-space . --log-space .catkin_tools/logs
+  endif
+endif
+
 # Build all.
 all: init
-	source /opt/ros/${ROS_DISTRO}/setup.bash
+	@source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${main_nodes},${cmake_flags})
 
 # Make packages in build directory.
 package: init
-	source /opt/ros/${ROS_DISTRO}/setup.bash
+	@source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1)
 
 	function check_make_target {
@@ -97,6 +154,11 @@ endif
 
 	makeself stage rc110_core_$${version}.run "package" ./install
 
+# Clean all.
+clean:
+	source /opt/ros/${ROS_DISTRO}/setup.bash
+	catkin clean -y
+
 # Environment variables for remote access.
 env:
 ifeq (,$(wildcard ../../env.sh))
@@ -115,11 +177,6 @@ remote-joy: env
 	source ../../devel/setup.bash
 	source ../../env.sh
 	roslaunch rc110_launch remote_joy.launch
-
-# Clean all.
-clean:
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-	catkin clean -y
 
 
 # == additional targets ==

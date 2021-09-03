@@ -3,14 +3,13 @@ include ../../mk/common.mk
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 
 
-init:
-	cd ../.. && $(MAKE) init
-
-deps: init
+deps:
+	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths .
 
-all: init
+all:
+	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
@@ -20,7 +19,7 @@ run:
 	mon launch rc110_behavior main.launch
 
 show:
-	cd ../.. && $(MAKE) show
+	$(MAKE) -C ../.. show
 
 monitor:
-	cd ../.. && $(MAKE) monitor
+	$(MAKE) -C ../.. monitor
