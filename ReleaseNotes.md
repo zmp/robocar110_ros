@@ -1,3 +1,10 @@
+## v1.6.0
+
+* Documentation improvement (make commands explanation, gifs, etc)
+* Better installer with run file.
+* Remote monitoring ROS_IP fix.
+* ROS installation fix.
+
 ## v1.5.0
 
 * Object detection with Darknet Yolo.
