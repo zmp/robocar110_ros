@@ -14,6 +14,10 @@ make show         # show rviz
 make monitor      # show rviz on remote pc
 ```
 
+* Use `2D Pose Estimate` button to position robot on map.
+* Use `2D Nav Goal` button to specify goal position.
+* Use `AD` button to switch between joystick and autonomous driving.
+
 ## Known Issues
 
 **ros-melodic-navigation** v1.16.7
