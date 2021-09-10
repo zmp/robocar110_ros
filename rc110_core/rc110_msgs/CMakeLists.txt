@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_msgs VERSION 1.5.0)
+project(rc110_msgs VERSION 1.6.0)
 
 find_package(catkin REQUIRED COMPONENTS
         message_generation

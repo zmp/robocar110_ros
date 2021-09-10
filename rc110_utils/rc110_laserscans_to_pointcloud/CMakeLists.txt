@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_laserscans_to_pointcloud VERSION 1.5.0)
+project(rc110_laserscans_to_pointcloud VERSION 1.6.0)
 
 find_package(catkin REQUIRED
         sensor_msgs

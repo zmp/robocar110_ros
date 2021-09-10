@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rc110_slam_cg</name>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
   <description>RoboCar 1/10 SLAM Using Cartographer</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
