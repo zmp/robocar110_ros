@@ -11,6 +11,7 @@ define help_text
 
 GNUmakefile provides the following targets for make:
 
+    version                   Show current versions of source and packages
     ros-install               ROS installation
     ros-source                Add ros environment to .bashrc
 
@@ -46,6 +47,15 @@ endef
 export help_text
 help:
 	@echo -e "\033[1;36m$${help_text}\033[0m"
+
+# Show versions
+version:
+	@echo -e "\
+	Tegra: $$(cat /etc/nv_tegra_release 2> /dev/null) \n\
+	Last JetPack: $$(apt-cache show nvidia-jetpack 2> /dev/null | grep Version | awk 'NR==1{print $$2}') \n\
+	Base Driver:  $$(dpkg -s rc-system 2> /dev/null | grep Version | awk '{print $$2}') \n\
+	Core Nodes:   $$(dpkg -s ros-${ROS_DISTRO}-rc110-msgs 2> /dev/null | grep Version | awk '{print $$2}') \n\
+	Source Code:  $$(grep -oPm1 '(?<=<version>)[^<]+' rc110_core/rc110_common/package.xml) "
 
 # Shortcut for ROS installation.
 ros-install:
