@@ -5,7 +5,7 @@ ROS driver node. This node receives drive control commands and publishes sensor 
 ## Subscribed Topics
 
 ```
-/drive [ackermann_msgs::AckermannDrive]
+/drive [ackermann_msgs::AckermannDriveStamped]
     set speed and steering angle
     
 /offsets [rc110_msgs::Offsets]
