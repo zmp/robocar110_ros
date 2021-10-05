@@ -4,6 +4,8 @@ It's a set of major ROS nodes for Robocar 1/10.
 
 They are preinstalled on robot and run with systemd service.
 
+This node group tends to have more support than others.
+
 | Name                                               | Description             |
 |:------------------                                 |:------------------------|
 | [**drive_control**](rc110_drive_control/README.md) | robot ros driver        |

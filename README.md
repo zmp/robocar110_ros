@@ -2,7 +2,7 @@
 
 [![](docs/images/robocar110x_360p.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)
 
-ROS nodes for RoboCar 1/10 are divided to multiple groups:
+## Contents
 
 | Group                                              | Description                   |
 |:------------------                                 |:------------------------      |
@@ -14,16 +14,9 @@ ROS nodes for RoboCar 1/10 are divided to multiple groups:
 | [**rc110_simulation**](rc110_simulation/README.md) | Simulation                    |
 | [**rc110_utils**](rc110_utils/README.md)           | Utilities                     |
 
-* Core group includes robot manipulation and sensor values retrieval.
-    - It is installed and running by default on the robot.
-	- It tends to have more support than other groups.
-* Any node can be customized. 
-    - For a completely different node, please, create and use a separate git repo on the same folder level as **robocar110_ros**.
-	- For small improvements and bugfixes, it's better to modify **robocar110_ros** ([**Contribution Rules**](docs/Contribution.md))
-
 ## Prerequisites
 
-#### RC110 Source Code
+#### Get RC110 Source Code
 ```
 mkdir -p ~/ros/src
 cd ~/ros/src
@@ -35,7 +28,7 @@ cd ~/ros/src/robocar110_ros/  # make commands below are called from here!
 
 * It's possible to use other directory (for example `~/robocar110_ros/`), but it's not ROS standard way, so we don't provide support for it. Do it on your own risk.
 
-#### ROS
+#### Install ROS
 If ROS is not installed, please, install it following the instruction for **melodic**:
 
 http://wiki.ros.org/Installation/Ubuntu
@@ -46,53 +39,38 @@ make ros-install
 ```
 
 #### ROS Environment
+Optionally, ros sourcing can be put to `~/.bashrc`. You need to restart terminal after that.
 ```
 make ros-source
 ```
 
-* Optional.
-* It will place ros sourcing to `~/.bashrc`.
-* You need to restart terminal after that.
+## Build ROS Driver
+For this, you need a real RoboCar 1/10X. If you don't have one, try simulation described in the next paragraph.
 
-## Build on Robot
-
-* Mandatory: 
-    * [**core packages**](rc110_core/README.md#Build) 
-* Optional:
-    * [**rc110_behavior**](rc110_navigation/rc110_behavior/README.md)
-    * [**rc110_slam_he**](rc110_navigation/rc110_slam_he/README.md)
-    * etc...
+* [**rc110_core**](rc110_core/README.md) 
 
 ![](docs/images/rviz.gif)
 
-## Build for Simulation
+## Build Simulated ROS Driver
+Without robot, there's no need to build driver and system service packages.
+After installing ROS, proceed to:
 
-Without robot, there's no need to build driver and system service packages, thus it's ok to skip **core packages** above.
-
-After installing ROS, proceed to 
 * [**rc110_gazebo**](rc110_simulation/rc110_gazebo/README.md)
 
-## Build All
-```
-make init  # to prepare rosdep
-rosdep install -iry --from-paths .
-```
+## Build Other Samples
+When a driver is up and running, it's possible to start other ROS nodes that communicate with it.
 
-* Then install manually dependencies that rosdep does not support.
-* And run the build:
-```
-catkin config --blacklist rc110_video_server rc110_object_detection
-catkin build -DCATKIN_ENABLE_TESTING=OFF
-```
-or
-```
-catkin_make -DCATKIN_BLACKLIST_PACKAGES="rc110_video_server;rc110_object_detection" -DCATKIN_ENABLE_TESTING=OFF
-```
+* [**rc110_behavior**](rc110_navigation/rc110_behavior/README.md)
+* [**rc110_slam_he**](rc110_navigation/rc110_slam_he/README.md)
+* etc...
 
-* Please, change blacklisted packages according to your needs.
+## Contribution
+
+* For a completely different node, please, create and use a separate git repo on the same folder level as **robocar110_ros**.
+* For improvements and bugfixes, it's better to modify **robocar110_ros** (See: [**Contribution Rules**](docs/Contribution.md)). We are open to your feedback!
 
 ## ~ Additional ~
 
 * [**Windows**](docs/Windows.md)
-* [**Contribution Rules**](docs/Contribution.md)
 * [**Make Commands Explanation**](docs/Makefiles.md)
+* [**More Details on Nodes Build**](docs/BuildDetails.md)
