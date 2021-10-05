@@ -15,6 +15,7 @@ all:
 
 run:
 	$(call get_flags,flags)
+	$(MAKE) -C ../.. init-run
 	source ../../../../devel/setup.bash
 	source ~/.config/rc110/service.conf
 	roslaunch rc110_slam_he main.launch $${flags}

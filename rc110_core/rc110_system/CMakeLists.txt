@@ -18,6 +18,7 @@ endforeach()
 
 if (CATKIN_BUILD_BINARY_PACKAGE)
     install(DIRECTORY ${PROJECT_BINARY_DIR}/systemd/ DESTINATION /usr/lib/systemd/user USE_SOURCE_PERMISSIONS)
+    install(FILES deb/service_template.conf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 endif()
 
 # package

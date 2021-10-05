@@ -7,21 +7,7 @@ config_file=~/.config/rc110/service.conf
 # Create config file if not exists.
 if [ ! -f $config_file ]; then
     mkdir -p ~/.config/rc110
-    echo "
-# RC110 service configuration file
-
-# Uncomment and specify IP of this robot to connect remotely.
-# We recommend to specify the same static IP in Network Manager.
-#     Other way: you can resolve hostname (zmp) to IP on client PC (e.g. in hosts file).
-#ROS_IP=192.168.110.5
-
-# Change to your launch command, if you created another one.
-RC110_LAUNCH_COMMAND='roslaunch --wait rc110_launch robot.launch use_front_camera:=true joy_type:=elecom'
-
-# Map name for SLAM and navigation
-RC110_MAP_NAME=map
-"\
-        > $config_file
+    cp /opt/ros/@ROS_DISTRO@/share/rc110_system/service_template.conf $config_file
 fi
 
 # Add config to bashrc too.

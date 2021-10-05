@@ -14,6 +14,7 @@ all:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
+	$(MAKE) -C ../.. init-run
 	source ../../../../devel/setup.bash
 	source ~/.config/rc110/service.conf
 	export RC110_MAP_NAME=$${RC110_MAP_NAME:-map}

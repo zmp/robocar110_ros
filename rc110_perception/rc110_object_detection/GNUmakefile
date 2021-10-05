@@ -14,6 +14,7 @@ all:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
+	$(MAKE) -C ../.. init-run
 	source ../../../../devel/setup.bash
 	source ~/.config/rc110/service.conf
 	roslaunch rc110_object_detection rc110_object_detection_node.launch

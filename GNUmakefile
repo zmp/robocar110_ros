@@ -175,8 +175,14 @@ ifeq (,$(wildcard ../../env.sh))
 	cp mk/env_template.sh ../../env.sh
 endif
 
+# Prepare variables for run-* targets.
+init-run:
+ifeq (,$(wildcard ~/.config/rc110/service.conf))
+	cp rc110_core/rc110_system/deb/service_template.conf ~/.config/rc110/service.conf
+endif
+
 # Run nodes built from source.
-run:
+run: init-run
 	systemctl --user start rc110-roscore
 	source ../../devel/setup.bash
 	source ~/.config/rc110/service.conf

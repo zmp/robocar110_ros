@@ -15,7 +15,6 @@ all:
 
 run:
 	source ../../../../devel/setup.bash
-	source ~/.config/rc110/service.conf
 	roslaunch --screen rc110_video_server main.launch
 
 show:
