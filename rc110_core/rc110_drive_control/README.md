@@ -64,11 +64,11 @@ ROS driver node. This node receives drive control commands and publishes sensor 
 enable_board [std_srvs::SetBool]
     enable/disable baseboard
     
-motor_state [std_srvs::SetBool]
-    enable/disable drive motor
+motor_state [rc110_msgs::SetInteger]
+    drive motor: off / on / neutral
     
-servo_state [std_srvs::SetBool]
-    enable/disable steering motor
+servo_state [rc110_msgs::SetInteger]
+    steering motor: off / on / neutral
 ```
 
 ## Parameters

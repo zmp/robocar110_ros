@@ -10,6 +10,7 @@
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <rc110_msgs/Offsets.h>
+#include <rc110_msgs/SetInteger.h>
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <std_srvs/SetBool.h>
@@ -42,8 +43,8 @@ public:
 
 private:
     bool onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
-    bool onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
-    bool onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+    bool onMotorState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response);
+    bool onServoState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
     void onOffsets(const rc110_msgs::Offsets::ConstPtr& message);
     void onStatusUpdateTimer(const ros::TimerEvent&);

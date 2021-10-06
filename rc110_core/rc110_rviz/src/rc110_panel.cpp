@@ -7,6 +7,7 @@
  */
 #include "rc110_panel.hpp"
 
+#include <rc110_msgs/SetInteger.h>
 #include <std_srvs/SetBool.h>
 #include <topic_tools/MuxSelect.h>
 
@@ -152,14 +153,14 @@ void Rc110Panel::onSetMotorState(QAbstractButton* button)
     int state = (button == ui->motorOnRadio)        ? rc110_msgs::Status::MOTOR_ON
                 : (button == ui->motorNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
                                                     : rc110_msgs::Status::MOTOR_OFF;
-    std_srvs::SetBool service;
-    service.request.data = uint8_t(state);
+    rc110_msgs::SetInteger service;
+    service.request.data = state;
     ros::service::call("motor_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Drive motor was set to %1")
                                                               .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
                                                                    : state == rc110_msgs::Status::MOTOR_OFF ? "off"
-                                                                                                      : "neutral")
+                                                                                                            : "neutral")
                                                     : QString("Failed to set motor state"),
                            STATUS_MESSAGE_TIME);
 }
@@ -169,14 +170,14 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
     int state = (button == ui->servoOnRadio)        ? rc110_msgs::Status::MOTOR_ON
                 : (button == ui->servoNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
                                                     : rc110_msgs::Status::MOTOR_OFF;
-    std_srvs::SetBool service;
-    service.request.data = uint8_t(state);
+    rc110_msgs::SetInteger service;
+    service.request.data = state;
     ros::service::call("servo_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Servomotor was set to %1")
                                                               .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
                                                                    : state == rc110_msgs::Status::MOTOR_OFF ? "off"
-                                                                                                      : "neutral")
+                                                                                                            : "neutral")
                                                     : QString("Failed to set servo state"),
                            STATUS_MESSAGE_TIME);
 }

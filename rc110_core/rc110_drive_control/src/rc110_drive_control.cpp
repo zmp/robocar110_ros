@@ -96,14 +96,14 @@ bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_s
     return true;
 }
 
-bool Rc110DriveControl::onMotorState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+bool Rc110DriveControl::onMotorState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response)
 {
     auto state = MotorState(request.data);
     response.success = control.EnableMotor(state);
     return true;
 }
 
-bool Rc110DriveControl::onServoState(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+bool Rc110DriveControl::onServoState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response)
 {
     auto state = MotorState(request.data);
     response.success = control.EnableServo(state);

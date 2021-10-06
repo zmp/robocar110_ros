@@ -1,3 +1,7 @@
+## v1.7.0
+* MATLAB support (requires [MATLAB Connection Option](https://www.zmp.co.jp/en/products/robocar/robocar-110X/support/matlab)).
+* API change: `/motor_state` and `/servo_state` from  `std_srvs::SetBool` to `rc110_msgs::SetInteger`.
+
 ## v1.6.0
 
 * Documentation improvement (make commands explanation, gifs, etc)
