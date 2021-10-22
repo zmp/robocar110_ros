@@ -1,4 +1,4 @@
-# RoboCar 1/10 core nodes
+# RoboCar 1/10 Core Nodes
 
 It's a set of major ROS nodes for Robocar 1/10.
 
@@ -25,18 +25,16 @@ make         # build core packages
 ```
 
 ## Package
-
+Create deb files in the build directory:
 ```
 make package
 ```
-* It will create deb files in the build directory.
 
 ## Install
-
+Install those files with `sudo apt-get install`:
 ```
 make install
 ```
-* It will install those files with `sudo apt-get install`.
 
 ## Remote Configuration
 
@@ -48,29 +46,27 @@ make env
 ```
 
 ## RViz Panel
-
 ```
 make deps-rviz
-make rviz
+make rviz        # Build rviz plugin in the current ros workspace
+make show        # Show RViz with default layout locally
+make monitor     # Show RViz with default layout on remote PC
 ```
-* It will build rviz plugin in the current ros workspace.
-
-```
-make show
-```
-* to show RViz with default layout locally, or
-
-```
-make monitor
-```
-* to show RViz with default layout on remote PC
 
 ## Joystick Connected to PC
-
-Connect joystick dongle to your remote PC instead of robot.
+Connect joystick dongle to your remote PC instead of robot:
 ```
+make deps-teleop
+make teleop
 make remote-joy
 ```
+
+Connect other joystick to remote PC:
+```
+make remote-joy device:=js1 type:=logicool
+```
+
+* To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
 
 ## ROS configuration
 

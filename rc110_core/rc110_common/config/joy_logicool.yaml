@@ -1,0 +1,7 @@
+base_dead_man_button: -1
+gear_up_button: 13
+gear_down_button: 12
+board_button: 11
+ad_button: 10
+steering: [0, 42]
+accel: [1, 1, 0]

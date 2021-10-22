@@ -5,6 +5,8 @@ A sample of streaming h265 over network.
 Depends on **gstreamer-rtsp-server** ( **GPL3** ).
 * https://github.com/GStreamer/gst-rtsp-server
 
+![](docs/monitoring.jpg)
+
 ## Pipeline Scheme
 
 ![](docs/diagram.svg)
@@ -18,7 +20,7 @@ You need to stop camera node, before running this one.
 nano ~/.config/rc110/service.conf
 # Add one more parameter: 'roslaunch ... use_front_camera:=false'
 
-systemctl --user restart rc110
+systemctl --user restart rc110  # or from repo root: make start
 ```
 
 * Maybe you'll need to restart robot to reconnect video device.
@@ -28,6 +30,7 @@ systemctl --user restart rc110
 make deps            # check dependencies
 make                 # build
 make run             # run streaming on robot
+make run r:=qhd      # same in QHD (other values: vga, hd, sxga, fhd)
 make show            # playback the stream on local pc
 make monitor         # playback the stream on remote pc
 make monitor fps=on  # same with FPS overlay (can crash with SIGSEGV)
@@ -64,7 +67,8 @@ height (int, default: 1080)
 
 ## Additional Info
 
-#### Test Results
+### Test Results
+For 1920x1080, 60fps:
 
 * Throughput: < ~700 KB/s
 * LAN Lag: < ~200 ms

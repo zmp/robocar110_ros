@@ -112,14 +112,16 @@ bool Rc110DriveControl::onServoState(rc110_msgs::SetInteger::Request& request, r
 
 void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
 {
-    if (control.ChangeDriveSpeed(message->drive.speed)) {
+    float limitedSpeed;
+    if (control.ChangeDriveSpeed(message->drive.speed, &limitedSpeed)) {
         std_msgs::Float32 speedMessage;
-        speedMessage.data = message->drive.speed;
+        speedMessage.data = limitedSpeed;
         publishers["motor_speed_goal"].publish(speedMessage);
     }
-    if (control.ChangeSteeringAngle(message->drive.steering_angle)) {
+    float limitedAngle;
+    if (control.ChangeSteeringAngle(message->drive.steering_angle, &limitedAngle)) {
         std_msgs::Float32 angleMessage;
-        angleMessage.data = message->drive.steering_angle;
+        angleMessage.data = limitedAngle;
         publishers["steering_angle_goal"].publish(angleMessage);
     }
 }

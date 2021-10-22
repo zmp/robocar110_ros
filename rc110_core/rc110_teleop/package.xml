@@ -12,10 +12,10 @@
   <depend>roscpp</depend>
   <depend>std_srvs</depend>
   <depend>topic_tools</depend>
-
   <depend>ackermann_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>rc110_msgs</depend>
 
   <exec_depend>joy</exec_depend>
+  <exec_depend>rc110_master_hold</exec_depend>
 </package>

@@ -8,7 +8,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roslaunch</depend>
-  <exec_depend>joy</exec_depend>
   <exec_depend>topic_tools</exec_depend>
   <exec_depend>rc110_teleop</exec_depend>
 </package>

@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="rc110_master_hold" type="rc110_master_hold" name="master_hold" args="joy_remote"/>
-
-    <node pkg="joy" type="joy_node" name="joy_remote" respawn="true" />
-</launch>

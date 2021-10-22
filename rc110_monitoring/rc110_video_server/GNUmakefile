@@ -14,8 +14,9 @@ all:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
+	$(call get_flags,flags)
 	source ../../../../devel/setup.bash
-	roslaunch --screen rc110_video_server main.launch
+	roslaunch --screen rc110_video_server main.launch $${flags}
 
 show:
 	gst-launch-1.0 rtspsrc latency=0 location=rtsp://127.0.0.1:8554/front \

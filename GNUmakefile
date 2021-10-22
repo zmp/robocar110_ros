@@ -190,9 +190,8 @@ run: init-run
 
 # Run only joystick node on remote PC.
 remote-joy: env
-	source ../../devel/setup.bash
 	source ../../env.sh
-	roslaunch rc110_launch remote_joy.launch
+	$(MAKE) run -C rc110_core/rc110_teleop
 
 
 # == additional targets ==

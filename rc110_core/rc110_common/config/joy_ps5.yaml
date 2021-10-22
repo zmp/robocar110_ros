@@ -3,5 +3,5 @@ gear_up_button: 6
 gear_down_button: 7
 board_button: 8
 ad_button: 9
-base_steering_axis: 2
-base_speed_axis: 1
+steering: [2]
+accel: [1]

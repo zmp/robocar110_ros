@@ -35,12 +35,12 @@ public:
         int gearDownButton = 7;
         int boardButton = 10;
         int adButton = 11;
-        int steeringAxis = 3;
-        int speedAxis = 1;
-        double maxSteeringAngleRad = angles::from_degrees(28);
+        std::vector<double> steering = {3};
+        int steeringAuxiliary = -1;  // auxiliary axis for better precision
+        std::vector<double> accel = {1};
 
-        std::vector<double> gears = { 0.3, 0.6, 1.0 };
         std::string frameId = "base_link";
+        std::vector<double> gears = {0.3, 0.6, 1.0};
         double rate = 30.0;  // Hz
     };
 
@@ -48,9 +48,13 @@ public:
     Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
 
 private:
+    void updateAxis(std::vector<double>& axis, double defaultMax);
     void publishDrive();
     void updateToggles(const sensor_msgs::Joy::ConstPtr& message);
     bool checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button);
+    bool checkAxisChanged(const sensor_msgs::Joy::ConstPtr& message, int axis);
+    float getAxisValue(const sensor_msgs::Joy::ConstPtr& message, int axis);
+    float mapAxisValue(const std::vector<double>& axis, float value);
 
     void onJoy(const sensor_msgs::Joy::ConstPtr& message);
     void onRobotStatus(const rc110_msgs::Status& message);
@@ -64,10 +68,12 @@ private:
     sensor_msgs::Joy::ConstPtr m_joyMessage;
     ackermann_msgs::AckermannDriveStamped m_driveMessage;
     ros::Timer m_timer;
-    std::map<int, int> m_axisDirection;  /// +1 or -1 for inverted axis
+    ros::Time m_lastTime;
+    std::map<int, int> m_axisDirection;   /// +1 or -1 for inverted axis
+    std::map<int, bool> m_axisActivated;  /// joy_node workaround
     int m_gear = 0;
     bool m_stopMessagePublished = false;
-    bool m_deadManPressed = false;
+    bool m_publishingEnabled = false;
     bool m_boardEnabled = false;
     bool m_adEnabled = false;
 };
