@@ -11,34 +11,37 @@ define help_text
 
 GNUmakefile provides the following targets for make:
 
-    version                   Show current versions of source and packages
-    ros-install               ROS installation
-    ros-source                Add ros environment to .bashrc
+	version                   Show current versions of source and packages
+	ros-install               ROS installation
+	ros-source                Add ros environment to .bashrc
 
-    deps                      Install dependencies for rc110_core
-    deps-%                    Install dependencies for %
-    all (empty)               Build rc110_core
-    %                         Build %
-    package                   Create deb packages in build/ directory
-    install                   Install the packages to system
-    self                      Create "run" installation file
-    clean                     Clean build and package files
+	init-deps-offline         Offline deps installation, if github files download gives error
+	clean-deps                Clean any previous rosdep configuration in /etc/ros/rosdep/
+	deps                      Install dependencies for rc110_core
+	deps-%                    Install dependencies for %
 
-    start                     Restart RoboCar nodes from system
-    stop                      Stop RoboCar nodes from system
-    run                       Run rc110_core from build (Don't forget to stop system nodes first!)
-    run-%                     Run % node from build
-    show                      Show general RViz on robot
-    show-%                    Show % RViz on robot
+	all (empty)               Build rc110_core
+	%                         Build %
+	package                   Create deb packages in build/ directory
+	install                   Install the packages to system
+	self                      Create "run" installation file
+	clean                     Clean build and package files
 
-    env                       Create env.sh file for connection to remote PC (Needs to be edited!)
-    monitor                   Show general RViz on remote PC
-    monitor-%                 Show % RViz on remote PC
-    remote-joy                Run joystick connected to remote PC (By default it's connected to RoboCar)
+	start                     Restart RoboCar nodes from system
+	stop                      Stop RoboCar nodes from system
+	run                       Run rc110_core from build (Don't forget to stop system nodes first!)
+	run-%                     Run % node from build
+	show                      Show general RViz on robot
+	show-%                    Show % RViz on robot
 
-    save-map                  Save Hector SLAM map   [map_name=map]
-    select-map                Select Hector SLAM map [map_name=map]
-    camera-calibration-file   Setup calibration from archive  (For details, see: CameraCalibration.md)
+	env                       Create env.sh file for connection to remote PC (Needs to be edited!)
+	monitor                   Show general RViz on remote PC
+	monitor-%                 Show % RViz on remote PC
+	remote-joy                Run joystick connected to remote PC (By default it's connected to RoboCar)
+
+	save-map                  Save Hector SLAM map   [map_name=map]
+	select-map                Select Hector SLAM map [map_name=map]
+	camera-calibration-file   Setup calibration from archive  (For details, see: CameraCalibration.md)
 
 endef
 
@@ -80,6 +83,17 @@ ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
 	rosdep update --rosdistro=${ROS_DISTRO}
 endif
+
+# Install rosdep offline
+init-deps-offline:
+	sudo scripts/rosdep_offline/install
+	export ROSDISTRO_INDEX_URL=file:///etc/ros/rosdep/config/index-v4.yaml
+
+	rosdep update --rosdistro=${ROS_DISTRO}
+
+# Clean rosdep configs
+clean-deps:
+	sudo rm -rf /etc/ros/rosdep
 
 # Install core dependencies.
 deps: init-deps

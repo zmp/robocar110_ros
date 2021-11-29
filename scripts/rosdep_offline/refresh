@@ -1,0 +1,10 @@
+#!/bin/bash
+
+script_dir=$(dirname "$0")
+mkdir -p "${script_dir}/config/melodic"
+
+curl https://raw.githubusercontent.com/ros/rosdistro/master/index-v4.yaml -o "${script_dir}/config/index-v4.yaml"
+curl https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/base.yaml -o "${script_dir}/config/base.yaml"
+curl https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/python.yaml -o "${script_dir}/config/python.yaml"
+curl https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/ruby.yaml -o "${script_dir}/config/ruby.yaml"
+curl https://raw.githubusercontent.com/ros/rosdistro/master/melodic/distribution.yaml -o "${script_dir}/config/melodic/distribution.yaml"

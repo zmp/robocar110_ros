@@ -1,0 +1,4 @@
+# generic
+yaml file:///etc/ros/rosdep/config/base.yaml
+yaml file:///etc/ros/rosdep/config/python.yaml
+yaml file:///etc/ros/rosdep/config/ruby.yaml
