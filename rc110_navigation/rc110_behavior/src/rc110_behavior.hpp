@@ -7,53 +7,44 @@
  */
 #pragma once
 
-#include <behaviortree_cpp_v3/bt_factory.h>
 #include <ros/ros.h>
-#include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud2.h>
 
 namespace zmp
 {
 /**
- * Main car controlling class.
- * It's reading sensors and moving drives accordingly.
+ * Simple behavior example. It's reading sensors and moving drives accordingly.
+ * ┌───────────┬───────────┐
+ * │           │           │
+ * │   left    │   right   │
+ * │           │           │
+ * └─────┬─────┴─────┬─────┘
+ *       │   near    │
+ *       └───────────┘
+ *             ■ ← robot origin
+ *
+ * if there's a point in near box, stop.
+ * if in left box, move right.
+ * if in right box, move left.
+ * if neither, move forward.
  */
 class Rc110Behavior
 {
-    struct Parameters {
-        std::string treeFile;
-    };
-
 public:
-    Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate);
-
-    /**
-     * Behavior tree tick that is triggered in the main loop.
-     */
-    void update();
+    Rc110Behavior();
 
 private:
-    template <class Node, class... Args>
-    void registerNodeBuilder(Args... args)
-    {
-        behaviorTreeFactory.registerBuilder<Node>(  //
-                Node::NAME,
-                [args...](const std::string& name, const BT::NodeConfiguration& config) {
-                    return std::make_unique<Node>(name, config, args...);
-                });
-    }
-
-    void onLaser(const sensor_msgs::LaserScan& scan);
+    void onCloud(const sensor_msgs::PointCloud2& cloud);
+    void publishCommand(float speed, float steering);
 
 private:
-    Parameters parameters;
-    ros::Subscriber laserSubscriber;
+    ros::NodeHandle handle;
+    ros::Subscriber cloudSubscriber;
     ros::Publisher drivePublisher;
 
-    BT::BehaviorTreeFactory behaviorTreeFactory;
-    BT::Tree behaviorTree;
-
-    sensor_msgs::PointCloud2 cloud;
-    ros::Time startTime;
+    std::vector<float> stopCommand = {0, 0};
+    std::vector<float> forwardCommand = {0.4f, 0};
+    std::vector<float> leftCommand = {0.25f, 28};
+    std::vector<float> rightCommand = {0.25f, -28};
 };
 }  // namespace zmp

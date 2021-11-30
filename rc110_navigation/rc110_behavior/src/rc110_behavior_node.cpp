@@ -15,17 +15,10 @@ int main(int argc, char** argv)
 try {
     ros::init(argc, argv, "rc110_behavior");
 
-    ros::NodeHandle nh;
-    ros::NodeHandle nhPrivate("~");
+    Rc110Behavior node;
 
-    Rc110Behavior node(nh, nhPrivate);
-    ros::Rate spinRate(10);
+    ros::spin();
 
-    while (ros::ok()) {
-        ros::spinOnce();
-        node.update();
-        spinRate.sleep();
-    }
     return EXIT_SUCCESS;
 }  //
 catch (std::exception& ex) {

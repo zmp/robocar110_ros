@@ -1,11 +1,8 @@
 # RC 1/10 Behavior Example Node
 
-The node is a simple example of manipulating the robot basing on information from the front lidar using [BehaviorTree.CPP](https://github.com/BehaviorTree/BehaviorTree.CPP).
+The node is a simple example of manipulating the robot basing on information from 2D lidars.
 
-The logic is as follows:
-* If there are points in a small rectangle before the robot - stop.
-* If there are points in a bigger rectangle after that - turn left or right.
-* Else - go straight.
+Please, see [implementation](src/rc110_behavior.hpp) for more details.
 
 ## Makefile
 ```
@@ -20,8 +17,8 @@ make monitor      # show rviz on remote pc
 ## Subscribed Topics
 
 ```
-/scan [sensor_msgs::LaserScan]
-    2D lidar point cloud
+/lidar_cloud [sensor_msgs::PointCloud2]
+    3D point cloud combined from front and rear lidars
 ```
 
 ## Published Topic
@@ -34,6 +31,12 @@ make monitor      # show rviz on remote pc
 ## Parameters
 
 ```
-tree_file (string, default: tree.xml)
-    path to behavior tree configuration file
+forward_command (vector, default: [0.4, 0])
+    forward speed and steering
+    
+left_command (vector, default: [0.25, 28])
+    left turn speed and steering
+    
+right_command (vector, default: [0.25, -28])
+    right turn speed and steering
 ```

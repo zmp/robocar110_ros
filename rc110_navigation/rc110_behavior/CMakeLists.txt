@@ -4,7 +4,6 @@ project(rc110_behavior VERSION 1.6.1)
 find_package(catkin REQUIRED
         ackermann_msgs
         sensor_msgs
-        behaviortree_cpp_v3
         laser_geometry
         roscpp
 )

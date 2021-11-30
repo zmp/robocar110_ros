@@ -8,44 +8,73 @@
 #include "rc110_behavior.hpp"
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
-#include <laser_geometry/laser_geometry.h>
+#include <sensor_msgs/point_cloud2_iterator.h>
 
-#include "nodes/check_obstacle.hpp"
-#include "nodes/drive_action.hpp"
+#include <Eigen/Geometry>
 
 namespace zmp
 {
-Rc110Behavior::Rc110Behavior(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
-        parameters({.treeFile = handlePrivate.param<std::string>("tree_file", "tree.xml")}),
-        laserSubscriber(handle.subscribe("scan", 1, &Rc110Behavior::onLaser, this)),
-        drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1)),
-        startTime(ros::Time::now())
+namespace
 {
-    registerNodeBuilder<CheckObstacle>(std::cref(cloud));
-    registerNodeBuilder<DriveAction>(std::ref(drivePublisher));
+constexpr float DEG_TO_RAD = M_PI / 180;
+constexpr float INF = std::numeric_limits<float>::infinity();
 
-    try {
-        behaviorTree = behaviorTreeFactory.createTreeFromFile(parameters.treeFile);
-    } catch (std::runtime_error& e) {
-        throw std::runtime_error("Unable to find tree file in: " + parameters.treeFile);
-    }
+// coordinates relative to robot origin, i.e. center of rear wheels axis
+const Eigen::AlignedBox2f nearBox = {Eigen::Vector2f(0.2, -0.15f), Eigen::Vector2f(0.5f, 0.15f)};
+const Eigen::AlignedBox2f leftBox = {Eigen::Vector2f(0.5f, 0), Eigen::Vector2f(1.0f, 0.35f)};
+const Eigen::AlignedBox2f rightBox = {Eigen::Vector2f(0.5f, -0.35f), Eigen::Vector2f(1.0f, 0)};
+}  // namespace
+
+Rc110Behavior::Rc110Behavior() :
+        handle(),
+        cloudSubscriber(handle.subscribe("lidar_cloud", 1, &Rc110Behavior::onCloud, this)),
+        drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1))
+{
+    ros::NodeHandle privateHandle("~");
+    privateHandle.param("forward_command", forwardCommand, forwardCommand);
+    privateHandle.param("left_command", leftCommand, leftCommand);
+    privateHandle.param("right_command", rightCommand, rightCommand);
 }
 
-void Rc110Behavior::update()
+void Rc110Behavior::onCloud(const sensor_msgs::PointCloud2& cloud)
 {
-    if (cloud.data.empty() && ros::Time::now() - startTime < ros::Duration(1)) {
-        // waiting for point cloud 1 sec
-        return;
+    float closestLeftX = INF;
+    float closestRightX = INF;
+    auto result = forwardCommand;
+
+    using Iter = sensor_msgs::PointCloud2ConstIterator<float>;
+    for (Iter it = {cloud, "x"}; it != it.end(); ++it) {
+        float x = it[0], y = it[1];
+        Eigen::Vector2f point = {x, y};
+
+        if (nearBox.contains(point)) {
+            result = stopCommand;
+            break;
+        } else if (leftBox.contains(point)) {
+            closestLeftX = std::min(x, closestLeftX);
+        } else if (rightBox.contains(point)) {
+            closestRightX = std::min(x, closestRightX);
+        }
     }
-    if (behaviorTree.tickRoot() == BT::NodeStatus::FAILURE) {
-        ROS_INFO_THROTTLE(10, "Behavior tree failed");
+
+    if (result == forwardCommand) {
+        if (closestLeftX != INF || closestRightX != INF) {
+            result = closestLeftX < closestRightX ? rightCommand : leftCommand;
+        }
     }
+    if (result.size() != 2) {
+        ROS_ERROR_STREAM("Command should have 2 values: speed and steering! Current number of values: " << result.size());
+    }
+    publishCommand(result[0], result[1]);
 }
 
-void Rc110Behavior::onLaser(const sensor_msgs::LaserScan& scan)
+void Rc110Behavior::publishCommand(float speed, float steering)
 {
-    laser_geometry::LaserProjection projection;
-    projection.projectLaser(scan, cloud);
+    ackermann_msgs::AckermannDriveStamped message;
+    message.drive.speed = speed;
+    message.drive.steering_angle = steering * DEG_TO_RAD;
+
+    drivePublisher.publish(message);
 }
 
 }  // namespace zmp
