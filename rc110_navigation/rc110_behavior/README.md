@@ -17,7 +17,7 @@ make monitor      # show rviz on remote pc
 ## Subscribed Topics
 
 ```
-/lidar_cloud [sensor_msgs::PointCloud2]
+/points2 [sensor_msgs::PointCloud2]
     3D point cloud combined from front and rear lidars
 ```
 

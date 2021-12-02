@@ -18,4 +18,5 @@
 
   <exec_depend>rc110_common</exec_depend>
   <exec_depend>rc110_drive_control</exec_depend>
+  <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
 </package>

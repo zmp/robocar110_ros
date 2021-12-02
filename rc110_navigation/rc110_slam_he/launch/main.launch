@@ -2,10 +2,8 @@
     <arg name="map_resolution" default="0.025" />
     <arg name="map_size" default="2000" />
 
-    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
-
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
-        <remap from="cloud_in" to="lidar_cloud"/>
+        <remap from="cloud_in" to="points2"/>
     </node>
 
     <node pkg="hector_mapping" type="hector_mapping" name="hector">

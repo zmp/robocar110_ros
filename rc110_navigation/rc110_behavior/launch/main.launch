@@ -1,6 +1,4 @@
 <launch>
-    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
-
     <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
         <rosparam file="$(find rc110_behavior)/config/behavior.yaml" subst_value="true"/>
     </node>

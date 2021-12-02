@@ -15,10 +15,7 @@ int main(int argc, char** argv)
 try {
     ros::init(argc, argv, "rc110_laserscans_to_pointcloud");
 
-    ros::NodeHandle nh;
-    ros::NodeHandle nhPrivate("~");
-
-    Rc110LaserScansToPointCloud node(nh, nhPrivate);
+    Rc110LaserScansToPointCloud node;
 
     ros::spin();
 

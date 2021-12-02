@@ -1,9 +1,8 @@
 <launch>
     <node name="map_server" pkg="map_server" type="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
 
-    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
-        <remap from="cloud_in" to="lidar_cloud"/>
+        <remap from="cloud_in" to="points2"/>
     </node>
 
     <node pkg="amcl" type="amcl" name="amcl" output="screen">

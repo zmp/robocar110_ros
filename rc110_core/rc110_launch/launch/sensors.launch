@@ -27,6 +27,8 @@
         <remap from="scan" to="~scan"/>
     </node>
 
+    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
+
     <node pkg="imu_complementary_filter" type="complementary_filter_node" name="imu_complementary_filter" output="screen">
         <rosparam file="$(arg config_dir)/sensors/imu_complementary_filter.yaml" subst_value="true"/>
     </node>

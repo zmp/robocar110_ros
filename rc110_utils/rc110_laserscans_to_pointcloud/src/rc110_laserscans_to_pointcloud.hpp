@@ -8,6 +8,9 @@
 #pragma once
 
 #include <laser_geometry/laser_geometry.h>
+#include <message_filters/subscriber.h>
+#include <message_filters/sync_policies/approximate_time.h>
+#include <message_filters/synchronizer.h>
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud2.h>
@@ -20,19 +23,26 @@ namespace zmp
  */
 class Rc110LaserScansToPointCloud
 {
+    using ApproxSyncPolicy =
+            message_filters::sync_policies::ApproximateTime<sensor_msgs::LaserScan, sensor_msgs::LaserScan>;
+    using ApproxSync = message_filters::Synchronizer<ApproxSyncPolicy>;
+
 public:
-    Rc110LaserScansToPointCloud(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate);
+    Rc110LaserScansToPointCloud();
 
 private:
-    void onScan(const sensor_msgs::LaserScan::ConstPtr& message);
-    void mergeAndPublishCloud();
+    void onConnect();
+    void onScans(const sensor_msgs::LaserScan::ConstPtr& front, const sensor_msgs::LaserScan::ConstPtr& rear);
 
 private:
-    std::string baseFrame, lidarFrame1, lidarFrame2;
+    ros::NodeHandle handle;
+    ros::NodeHandle handlePrivate = ros::NodeHandle("~");
+    std::string baseFrame, frontLidarFrame, rearLidarFrame;
     laser_geometry::LaserProjection projection;
-    std::vector<ros::Subscriber> subscribers;
-    sensor_msgs::PointCloud2 cloud1, cloud2;
-    tf::TransformListener transformer1, transformer2;
+    std::unique_ptr<ApproxSync> sync;
+    message_filters::Subscriber<sensor_msgs::LaserScan> frontSubscriber, rearSubscriber;
+    bool subscribed = false;
+    tf::TransformListener frontTransformer, rearTransformer;
     ros::Publisher cloudPublisher;
 };
 }  // namespace zmp

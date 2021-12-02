@@ -27,7 +27,7 @@ const Eigen::AlignedBox2f rightBox = {Eigen::Vector2f(0.5f, -0.35f), Eigen::Vect
 
 Rc110Behavior::Rc110Behavior() :
         handle(),
-        cloudSubscriber(handle.subscribe("lidar_cloud", 1, &Rc110Behavior::onCloud, this)),
+        cloudSubscriber(handle.subscribe("points2", 1, &Rc110Behavior::onCloud, this)),
         drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1))
 {
     ros::NodeHandle privateHandle("~");
