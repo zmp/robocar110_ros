@@ -27,15 +27,12 @@ make run map_size:=4000 map_resolution:=0.025   # 4000 * 0.025 = 100m
 make run map_size:=4000                         # same
 ```
 
-To save the map, while running Hector SLAM node, execute:
+To save the map, while running SLAM node, execute:
 ```
-make save-map [map_name=office_map]    # default: map
+make save-map-he map_name=map
 ```
 
-Later it's possible to select it for navigation:
-```
-make select-map [map_name=office_map]
-```
+* Parameters are optional. If skipped, default values used.
 
 ## Mapping
 * Build and run slam as written above.

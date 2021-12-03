@@ -296,7 +296,7 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 
     // transform
     geometry_msgs::TransformStamped tf;
-    tf.header.stamp = ros::Time::now();
+    tf.header.stamp = ros::Time().fromSec(drive.timestamp);
     tf.header.frame_id = parameters.odomFrameId;
     tf.child_frame_id = parameters.baseFrameId;
     tf.transform.translation.x = odometry.pose.pose.position.x;

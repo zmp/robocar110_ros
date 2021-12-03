@@ -21,7 +21,15 @@ make show         # show rviz
 make monitor      # show rviz on remote pc
 ```
 
+To save the map, while running SLAM node, execute:
+```
+make save-map-cg map_name=map map_resolution=0.025
+```
+
+* Parameters are optional. If skipped, default values used.
+
 ## Mapping
 * Build and run slam as written above.
 * Then drive robot around slowly with joystick.
 * You should see a map and localization points.
+* Save the map when it's ready.

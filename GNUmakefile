@@ -39,8 +39,9 @@ GNUmakefile provides the following targets for make:
 	monitor-%                 Show % RViz on remote PC
 	remote-joy                Run joystick connected to remote PC (By default it's connected to RoboCar)
 
-	save-map                  Save Hector SLAM map   [map_name=map]
-	select-map                Select Hector SLAM map [map_name=map]
+	save-map-he               Save Hector SLAM map [map_name=map]
+	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
+	select-map                Select SLAM map [map_name=map]
 	camera-calibration-file   Setup calibration from archive  (For details, see: CameraCalibration.md)
 
 endef

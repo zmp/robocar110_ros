@@ -18,6 +18,14 @@ make monitor      # show rviz on remote pc
 * Use `2D Nav Goal` button to specify goal position.
 * Use `AD` button to switch between joystick and autonomous driving.
 
+## Another Map
+By default the map name is `map`. If you want to use more maps, you can select them as follows:
+```
+make select-map map_name=my_custom_map
+```
+
+* The map should be saved first with `save-map-he` or `save-map-cg`.
+
 ## Known Issues
 
 **ros-melodic-navigation** v1.16.7

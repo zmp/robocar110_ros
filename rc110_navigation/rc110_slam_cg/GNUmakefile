@@ -28,3 +28,6 @@ monitor:
 	$(MAKE) -C ../.. env
 	source ../../../../env.sh
 	$(MAKE) show
+
+# extra
+include mk/extra.mk
