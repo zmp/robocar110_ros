@@ -5,12 +5,12 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "base_link",
+  tracking_frame = "imu_link",
   published_frame = "odom",
   odom_frame = "",
   provide_odom_frame = false,
   publish_frame_projected_to_2d = true,
-  use_odometry = true,
+  use_odometry = false,   -- if IMU works, it seems better to use it, and disable odometry
   use_nav_sat = false,
   use_landmarks = false,
   num_laser_scans = 0,
@@ -29,7 +29,7 @@ options = {
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
-TRAJECTORY_BUILDER_2D.use_imu_data = false
+TRAJECTORY_BUILDER_2D.use_imu_data = true
 TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 10
 TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 10
 

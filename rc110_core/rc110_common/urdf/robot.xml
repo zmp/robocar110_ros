@@ -11,7 +11,7 @@
     <joint name="imu_joint" type="fixed">
         <parent link="base_link"/>
         <child link="imu_link"/>
-        <origin xyz="0.085 0.026 0.0631" rpy="3.1415926 0 0" />
+        <origin xyz="0.085 0.026 0.0631" rpy="0 0 0" />
     </joint>
 
     <link name="front_camera" />

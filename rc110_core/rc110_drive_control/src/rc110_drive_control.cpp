@@ -20,11 +20,22 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-#include <boost/math/constants/constants.hpp>
-
 namespace zmp
 {
-constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
+namespace
+{
+constexpr float G_TO_MS2 = 9.8f;            // G to m/s2 conversion factor (Tokyo)
+constexpr float DEG_TO_RAD = M_PI / 180;    // degrees to radians
+constexpr float YAW_RANGE = 600.f;          // deg
+constexpr float YAW_NONLINEARITY = 0.001f;  // 0.1 %
+constexpr float YAW_SIGMA = YAW_RANGE * YAW_NONLINEARITY * DEG_TO_RAD;
+constexpr float YAW_VARIANCE = YAW_SIGMA * YAW_SIGMA;
+constexpr float ACC_RANGE = 3;              // g
+constexpr float ACC_NONLINEARITY = 0.003f;  // 0.3%
+constexpr float ACC_SIGMA = ACC_RANGE * ACC_NONLINEARITY * G_TO_MS2;
+constexpr float ACC_VARIANCE = ACC_SIGMA * ACC_SIGMA;
+constexpr float ACC_CROSS_AXIS = 0.01;  // 1%
+}  // namespace
 
 Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
         parameters({
@@ -199,16 +210,27 @@ void Rc110DriveControl::getAndPublishImu()
     message.angular_velocity.x = 0;
     message.angular_velocity.y = 0;
     message.angular_velocity.z = sensor.gyroYaw;
+    message.angular_velocity_covariance = {
+            // clang-format off
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, YAW_VARIANCE,
+    };  // clang-format on
 
-    message.linear_acceleration.x = sensor.accelX;
-    message.linear_acceleration.y = sensor.accelY;
-    message.linear_acceleration.z = sensor.accelZ;
+    float aX = sensor.accelX, aY = sensor.accelY, aZ = sensor.accelZ;
+    message.linear_acceleration.x = aX;
+    message.linear_acceleration.y = aY;
+    message.linear_acceleration.z = aZ;
+    message.linear_acceleration_covariance = {
+            // clang-format off
+            ACC_VARIANCE, std::abs(aX * aY * ACC_CROSS_AXIS), std::abs(aX * aZ * ACC_CROSS_AXIS),
+            std::abs(aY * aX * ACC_CROSS_AXIS), ACC_VARIANCE, std::abs(aY * aZ * ACC_CROSS_AXIS),
+            std::abs(aZ * aX * ACC_CROSS_AXIS), std::abs(aZ * aY * ACC_CROSS_AXIS), ACC_VARIANCE,
+    };  // clang-format on
 
     // data not available
     message.orientation = {};
     message.orientation_covariance.fill(-1);
-    message.angular_velocity_covariance.fill(-1);
-    message.linear_acceleration_covariance.fill(-1);
 
     publishers["imu"].publish(message);
 }
