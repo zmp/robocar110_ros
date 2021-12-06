@@ -28,7 +28,8 @@ ROS driver node. This node receives drive control commands and publishes sensor 
     Status of baseboard, drive and steering motors
 
 /drive_status [ackermann_msgs::AckermannDriveStamped]
-    actual speed and angle published with frame_id base_link
+    steering angle and drive speed published on "base_link" frame id
+    , the speed is the same as /motor_rate estimated_speed
 
 /offsets_status [rc110_msgs::Offsets]
     current devices offsets values
@@ -43,19 +44,20 @@ ROS driver node. This node receives drive control commands and publishes sensor 
     baseboard temperature
 
 /servo_battery [sensor_msgs::BatteryState]
-    steering motor battery state
+    baseboard battery state measured by steering motor
     
 /motor_battery [sensor_msgs::BatteryState]
-    drive motor battery state
+    baseboard battery state measured by drive motor
     
 /odometry [nav_msgs::Odometry]
-    odometry calculated basing on wheel encoders
+    odometry calculated basing on motor rate and steering info
     
 /motor_rate [rc110_msgs::MotorRate]
-    drive motor rotation speed and robot speed estimated from it (auxiliary)
+    auxiliary drive motor rotation rate and robot speed estimated from it
+    , the speed is the rate * gears factor * PI * wheel radius
     
 /wheel_speeds [rc110_msgs::WheelSpeeds]
-    separate speed of each wheel
+    separate speeds of each wheel measured by wheel encoders
 ```
 
 ## Services
