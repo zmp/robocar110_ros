@@ -1,13 +1,19 @@
 ## v1.7.0
+
 * MATLAB support (requires [MATLAB Connection Option](https://www.zmp.co.jp/en/products/robocar/robocar-110X/support/matlab)).
 * API change: `/motor_state` and `/servo_state` from  `std_srvs::SetBool` to `rc110_msgs::SetInteger`.
+* Wheel joystick support (`make remote-joy type:=logicool`).
+* Offline rosdep configuration (`make init-deps-offline`).
+* Simplified behavior node.
+* Improved cartographer slam configuration, IMU usage.
+* Cartographer map saving (`make save-map-cg map_name=map_cg`).
 
 ## v1.6.0
 
 * Documentation improvement (make commands explanation, gifs, etc)
 * Better installer with run file.
 * Remote monitoring ROS_IP fix.
-* ROS installation fix.
+* ROS installation fix (`make ros-install`).
 
 ## v1.5.0
 
