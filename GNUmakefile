@@ -13,9 +13,9 @@ GNUmakefile provides the following targets for make:
 
 	version                   Show current versions of source and packages
 	ros-install               ROS installation
-	ros-source                Add ros environment to .bashrc
+	ros-source                Add ros environment to .bashrc (so commands like rostopic worked)
 
-	init-deps-offline         Offline deps installation, if github files download gives error
+	init-deps-offline         Offline deps initialization, if github files download gives error (apt still needed)
 	clean-deps                Clean any previous rosdep configuration in /etc/ros/rosdep/
 	deps                      Install dependencies for rc110_core
 	deps-%                    Install dependencies for %
@@ -37,12 +37,11 @@ GNUmakefile provides the following targets for make:
 	env                       Create env.sh file for connection to remote PC (Needs to be edited!)
 	monitor                   Show general RViz on remote PC
 	monitor-%                 Show % RViz on remote PC
-	remote-joy                Run joystick connected to remote PC (By default it's connected to RoboCar)
+	remote-teleop             Run joystick connected to remote PC [device:=js0 type:=elecom|ps5|logicool]
 
 	save-map-he               Save Hector SLAM map [map_name=map]
 	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
-	select-map                Select SLAM map [map_name=map]
-	camera-calibration-file   Setup calibration from archive  (For details, see: CameraCalibration.md)
+	select-map                Select map for navigation [map_name=map]
 
 endef
 
@@ -99,7 +98,7 @@ clean-deps:
 # Install core dependencies.
 deps: init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths rc110_core --skip-keys=rc110_master_hold
+	rosdep install -iry --from-paths rc110_core --skip-keys="rc110_master_hold rc110_laserscans_to_pointcloud"
 
 # Init catkin workspace.
 init:
@@ -198,16 +197,15 @@ endif
 
 # Run nodes built from source.
 run: init-run
-	systemctl --user start rc110-roscore
+	roscore &>/dev/null &
 	source ../../devel/setup.bash
 	source ~/.config/rc110/service.conf
 	eval "$$RC110_LAUNCH_COMMAND"
 
 # Run only joystick node on remote PC.
-remote-joy: env
+remote-teleop: env
 	source ../../env.sh
 	$(MAKE) run -C rc110_core/rc110_teleop
-
 
 # == additional targets ==
 

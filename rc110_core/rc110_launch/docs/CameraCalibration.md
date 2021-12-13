@@ -23,12 +23,6 @@ rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.35 --camera_
 ## Installation from Saved File ##
 
 If you clicked **SAVE**, instead of **COMMIT** above, it's still possible to apply the calibration to camera:
-```bash
-cd ~/ros/src/robocar110_ros/
-make camera-calibration-file-front
-```
-
-#### Explanation ####
 
 - The calibrated data is saved into `/tmp/calibrationdata.tar.gz`
 - First, it is extracted and the yaml file is adjusted:

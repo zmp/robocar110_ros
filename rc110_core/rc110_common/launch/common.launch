@@ -6,7 +6,7 @@
     <param name="robot_description" textfile="$(arg urdf_file)"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
-    <include file="$(find rc110_common)/launch/teleop.launch">
+    <include file="$(find rc110_teleop)/launch/teleop.launch">
         <arg name="config_dir" value="$(arg config_dir)"/>
         <arg name="type" value="$(arg joy_type)"/>
     </include>

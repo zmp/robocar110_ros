@@ -58,12 +58,12 @@ Connect joystick dongle to your remote PC instead of robot:
 ```
 make deps-teleop
 make teleop
-make remote-joy
+make remote-teleop
 ```
 
 Connect other joystick to remote PC:
 ```
-make remote-joy device:=js1 type:=logicool
+make remote-teleop device:=js1 type:=logicool
 ```
 
 * To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`

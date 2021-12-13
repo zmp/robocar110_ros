@@ -16,4 +16,4 @@ all:
 run:
 	$(call get_flags,flags)
 	source ../../../../devel/setup.bash
-	roslaunch rc110_teleop remote_joy.launch $${flags}
+	roslaunch rc110_teleop teleop.launch $${flags}
