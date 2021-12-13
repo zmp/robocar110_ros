@@ -121,39 +121,34 @@ else
   endif
 endif
 
-# Build all.
+# Build core nodes.
 all: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${main_nodes},${cmake_flags})
 
-# Make packages in build directory.
+# Package core nodes in build directory.
 package: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
-	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=1)
+	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=ON)
 
-	function check_make_target {
-		output=$$(make -n "$$1" -C "$$2" 2>&1 || true | head -1)
-		[[ "$$output" != *"No rule to make target"* ]]
-	}
+	# find core nodes with dependencies
+	nodes=$$(catkin build -n ${main_nodes} | sed -n -e '/Packages to be built/,/Total packages/{//!p;}' | sed -e 's/- \(.*\)(catkin)/\1/')
 
 	cd $$(catkin locate --build)
 	rm -f *.deb
-	for d in */
+	for node in $$nodes
 	do
 		(  # parallel run
-		if check_make_target package "$$d"
-		then
-			cd "$$d"
-				$(MAKE) package >/dev/null
-				mv *.deb ../
-				echo "Package created: $$d"
-			cd ..
-		fi
+		cd "$$node"
+			$(MAKE) package >/dev/null
+			mv *.deb ../
+			echo "Package created: $$node"
+		cd ..
 		) &
 	done
 	wait
 
-# Install packages to system folder.
+# Install core packages to system folder.
 install: package
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	cd $$(catkin locate --build)
