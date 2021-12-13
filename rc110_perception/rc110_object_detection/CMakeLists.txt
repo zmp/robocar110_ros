@@ -13,6 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   rc110_msgs
 )
 
+link_directories(/usr/lib/aarch64-linux-gnu/tegra/)  # https://forums.developer.nvidia.com/t/cannot-link-usr-bin-ld-cannot-find-lnvbuf-utils/190973/13
+
 catkin_package()
 
 add_executable(rc110_object_detection_node
@@ -37,6 +39,7 @@ target_include_directories(rc110_object_detection_node
 )
 target_link_libraries(rc110_object_detection_node
   jetson-inference
+  jetson-utils
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
 )
