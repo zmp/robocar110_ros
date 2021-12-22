@@ -37,7 +37,7 @@ GNUmakefile provides the following targets for make:
 	env                       Create env.sh file for connection to remote PC (Needs to be edited!)
 	monitor                   Show general RViz on remote PC
 	monitor-%                 Show % RViz on remote PC
-	remote-teleop             Run joystick connected to remote PC [device:=js0 type:=elecom|ps5|logicool]
+	remote-teleop             Run joystick connected to remote PC [device:=js0 joy_type:=elecom|ps5|logicool]
 
 	save-map-he               Save Hector SLAM map [map_name=map]
 	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
@@ -187,6 +187,7 @@ endif
 # Prepare variables for run-* targets.
 init-run:
 ifeq (,$(wildcard ~/.config/rc110/service.conf))
+	mkdir -p ~/.config/rc110
 	cp rc110_core/rc110_system/deb/service_template.conf ~/.config/rc110/service.conf
 endif
 

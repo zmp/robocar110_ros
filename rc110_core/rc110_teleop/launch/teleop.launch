@@ -4,7 +4,7 @@
     <arg name="devicePath" default="/dev/input/$(arg device)"/>
     <arg name="drive_topic" default="drive_manual"/>
     <arg name="joy_topic" default="joy"/>
-    <arg name="type" default="elecom"/>
+    <arg name="joy_type" default="elecom"/>
 
     <arg name="joy_name" value="$(anon joy)"/>
     <arg name="teleop_name" value="$(anon teleop)"/>
@@ -22,6 +22,6 @@
         <remap from="joy" to="joy_remote"/>
         <remap from="drive_manual" to="$(arg drive_topic)"/>
         <rosparam file="$(arg config_dir)/joy.yaml" subst_value="true"/>
-        <rosparam file="$(arg config_dir)/joy_$(arg type).yaml" subst_value="true"/>
+        <rosparam file="$(arg config_dir)/joy_$(arg joy_type).yaml" subst_value="true"/>
     </node>
 </launch>

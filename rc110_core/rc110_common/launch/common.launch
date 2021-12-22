@@ -7,8 +7,7 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
     <include file="$(find rc110_teleop)/launch/teleop.launch">
-        <arg name="config_dir" value="$(arg config_dir)"/>
-        <arg name="type" value="$(arg joy_type)"/>
+        <arg name="joy_type" value="$(arg joy_type)"/>
     </include>
 
     <!-- Switching between joystick and AD.
@@ -17,4 +16,7 @@
       Or use joystick or rviz.
     -->
     <node pkg="topic_tools" type="mux" name="mux_drive" args="drive drive_manual drive_ad mux:=mux_drive"/>
+
+    <!-- Getting /points2 topic from front and rear lidar scans. -->
+    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch" />
 </launch>

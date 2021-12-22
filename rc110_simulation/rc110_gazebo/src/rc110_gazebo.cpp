@@ -60,7 +60,7 @@ void Rc110Gazebo::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr&
     lastDriveTime = drive->header.stamp.toSec();
 
     speed = drive->drive.speed;
-    steeringAngleVelocity = float((steeringAngle - drive->drive.steering_angle) / timeDiff);
+    steeringAngleVelocity = timeDiff == 0 ? 0.f : float((drive->drive.steering_angle - steeringAngle) / timeDiff);
     steeringAngle = drive->drive.steering_angle;
 
     geometry_msgs::Twist twist;
@@ -112,7 +112,7 @@ void Rc110Gazebo::getAndPublishDriveInfo()
 void Rc110Gazebo::getAndPublishServoInfo()
 {
     publishTemperature(publishers["servo_temperature"], 40);
-    publishBattery(publishers["servo_battery"], 8, steeringAngleVelocity * 0.1f);
+    publishBattery(publishers["servo_battery"], 8, std::abs(0.1f * steeringAngleVelocity));
 }
 
 void Rc110Gazebo::getAndPublishBaseboardTemperature()
@@ -122,7 +122,7 @@ void Rc110Gazebo::getAndPublishBaseboardTemperature()
 
 void Rc110Gazebo::getAndPublishMotorBattery()
 {
-    publishBattery(publishers["motor_battery"], 8, speed * 0.1f);
+    publishBattery(publishers["motor_battery"], 8, -0.1f * speed);
 }
 
 void Rc110Gazebo::getAndPublishOtherSensors()
@@ -132,7 +132,7 @@ void Rc110Gazebo::getAndPublishOtherSensors()
         message.header.stamp = ros::Time::now();
         message.header.frame_id = parameters.baseFrameId;
 
-        message.motor_rate = speed * 10; // not exact value
+        message.motor_rate = speed * 10;  // not exact value
         message.estimated_speed = speed;
 
         publishers["motor_rate"].publish(message);

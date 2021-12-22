@@ -9,7 +9,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <exec_depend>navigation</exec_depend>
   <exec_depend>pointcloud_to_laserscan</exec_depend>
-  <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
   <exec_depend>rc110_twist_to_ackermann</exec_depend>
   <exec_depend>rosmon</exec_depend>
   <exec_depend>teb_local_planner</exec_depend>

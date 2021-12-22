@@ -82,7 +82,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
     subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
     subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
-    subscribers.push_back(handle.subscribe("imu/data_raw", 1, &Rc110Panel::onImu, this));
+    subscribers.push_back(handle.subscribe("imu/data", 1, &Rc110Panel::onImu, this));
     subscribers.push_back(handle.subscribe("motor_rate", 1, &Rc110Panel::onMotorRate, this));
     subscribers.push_back(handle.subscribe("wheel_speeds", 1, &Rc110Panel::onWheelSpeeds, this));
 

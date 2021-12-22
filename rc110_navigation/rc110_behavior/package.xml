@@ -14,5 +14,4 @@
   <depend>sensor_msgs</depend>
 
   <exec_depend>rosmon</exec_depend>
-  <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
 </package>

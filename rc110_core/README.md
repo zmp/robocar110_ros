@@ -63,7 +63,7 @@ make remote-teleop
 
 Connect other joystick to remote PC:
 ```
-make remote-teleop device:=js1 type:=logicool
+make remote-teleop device:=js1 joy_type:=logicool
 ```
 
 * To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
