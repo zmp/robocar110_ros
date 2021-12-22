@@ -218,6 +218,11 @@ void Rc110DriveControl::getAndPublishImu()
     };  // clang-format on
 
     float aX = sensor.accelX, aY = sensor.accelY, aZ = sensor.accelZ;
+    if (!(aX > 0.1f || aY > 0.1f || aZ > 0.1f)) {
+        // workaround for: https://github.com/ccny-ros-pkg/imu_tools/issues/140
+        aX = aY = 0;
+        aZ = G_TO_MS2;
+    }
     message.linear_acceleration.x = aX;
     message.linear_acceleration.y = aY;
     message.linear_acceleration.z = aZ;
