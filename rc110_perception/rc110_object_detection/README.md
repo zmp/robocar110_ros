@@ -138,6 +138,7 @@ There are 3 ways to train your own models that can be inferred by this node.
 This tool is a fork of [pytorch-ssd](https://github.com/qfgaohao/pytorch-ssd) and it supports training of light-weight mobilenet-based SSD.
 These light-weight models are fast but can only provide slightly decent detection accuracy.
 This is the easiest way to train a model compatible with jetson-inference.
+For more explanation see: [pytorch_ssd.md](docs/pytorch_ssd.md)
 
 - Use [darknet framework](https://github.com/AlexeyAB/darknet) to train your own yolo models and use [pytorch-YOLOv4](https://github.com/Tianxiaomo/pytorch-YOLOv4) to export to [onnx](https://github.com/onnx/onnx) format.
 The jetson-inference library, by default, does not support yolo models. However, this node has already modified detectNet class to read model weights trained this way.
