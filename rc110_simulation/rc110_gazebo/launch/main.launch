@@ -2,7 +2,7 @@
 <launch>
     <arg name="joy_type" default="elecom"/>
     <arg name="use_gui" default="true"/>
-    <arg name="world" default="$(find rc110_gazebo)/worlds/maze.world"/>
+    <arg name="world" default="/home/zmp/aws-robomaker-small-house-world/worlds/small_house.world"/>
 
     <include file="$(find rc110_common)/launch/common.launch">
         <arg name="config_dir" value="$(find rc110_common)/config"/>
