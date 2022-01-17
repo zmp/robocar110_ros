@@ -20,7 +20,7 @@ export GAZEBO_MODEL_PATH=`pwd`/models
 gazebo worlds/small_house.world --verbose
 ```  
 If the reflection was successful, you will see an image like this.  
-[![](docs/images/norobocar.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)  
+[![](images/norobocar.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)  
 
 After confirmation, stop the operation and make the following changes to `/home/zmp/ros/src/robocar110_ros/rc110_simulation/rc110_gazebo/launch/main.launch`.
 ```
@@ -35,7 +35,7 @@ cd ~/ros/src/roboca110_ros/
 make run-gazebo
 ```  
 If the operation is successful, it will look like the following image.  
-[![](docs/images/robocar_in.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)  
+[![](images/robocar_in.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)  
 
 If the robot car is not displayed, you can add a model and reflect it in gazebo by doing the following:  
 1. Click Insert tab.  

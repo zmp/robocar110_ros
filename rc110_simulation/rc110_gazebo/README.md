@@ -38,7 +38,7 @@ make run use_gui:=false    # run without gazebo gui
 * See the official tutorial: http://gazebosim.org/tutorials?cat=build_world&tut=building_editor
 * Roslaunch parameter for custom world: `make run world:=/path/to/custom.world`
 
-If you want to use map data from Open Source, refer to [**gazebo_pwd.md**].(docs/gazebo_pwd.md)
+If you want to use map data from Open Source, refer to [**gazebo_pwd.md**](docs/gazebo_pwd.md).
 ## Issues
 
 * `gazebo died from signal 9` or `[gazebo-5] escalating to SIGTERM`
