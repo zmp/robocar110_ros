@@ -54,7 +54,7 @@ ROS driver node. This node receives drive control commands and publishes sensor 
     
 /motor_rate [rc110_msgs::MotorRate]
     auxiliary drive motor rotation rate and robot speed estimated from it
-    , the speed is the rate * gears factor * PI * wheel radius
+    , the speed is the rate * gears factor * PI * wheel diameter
     
 /wheel_speeds [rc110_msgs::WheelSpeeds]
     separate speeds of each wheel measured by wheel encoders

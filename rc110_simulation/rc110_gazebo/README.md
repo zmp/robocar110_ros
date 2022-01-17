@@ -33,10 +33,15 @@ make run use_gui:=false    # run without gazebo gui
     ackermann drive converted to twist message
 ```
 
-## World Creation
-
+## Custom World
+### Building From Scratch
 * See the official tutorial: http://gazebosim.org/tutorials?cat=build_world&tut=building_editor
-* Roslaunch parameter for custom world: `make run world:=/path/to/custom.world`
+* Roslaunch parameter for custom world: `make run world:=/absolute/path.world`
+* Or `make run root:=/world/root world:=relative/path.world`
+    * Latter also adds models from `${root}/models`
+
+### Using Ready-Made Worlds
+* Please, refer to [**gazebo_world_switching.md**](docs/gazebo_world_switching.md).
 
 ## Issues
 

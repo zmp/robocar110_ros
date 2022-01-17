@@ -2,7 +2,11 @@
 <launch>
     <arg name="joy_type" default="elecom"/>
     <arg name="use_gui" default="true"/>
-    <arg name="world" default="$(find rc110_gazebo)/worlds/maze.world"/>
+    <arg name="root" default="$(find rc110_gazebo)"/>
+    <arg name="world" default="worlds/maze.world"/>
+
+    <env name="GAZEBO_RESOURCE_PATH" value="$(arg root)"/>
+    <env name="GAZEBO_MODEL_PATH" value="$(arg root)/models"/>
 
     <include file="$(find rc110_common)/launch/common.launch">
         <arg name="config_dir" value="$(find rc110_common)/config"/>
