@@ -68,6 +68,34 @@ make remote-teleop device:=js1 joy_type:=logicool
 
 * To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
 
+## Keyboard teleopration
+Open a terminal and enter the following command.  
+```
+cd ~/ros/src/robocar110_ros/rc110_core/rc110_teleop/
+git clone https://github.com/zmp/teleop_tools.git
+catkin build key_teleop
+```  
+
+Open a new terminal and enter the following command to bring up the operation screen.
+```
+rosrun key_teleop key_teleop.py key_vel:=cmd_vel
+```  
+
+Type or do the following command in the new terminal to change to manual operation mode, 
+```
+cd ~/ros/src/robocar110_ros/
+roslaunch rc110_twist_to_ackermann rc110_twist_to_ackermann drive_ad:=drive_manual
+```  
+or open `teleop.launch` in `/home/zmp/src/robocar110_ros/rc110_core/rc110_teleop/launch` and add the following command.
+```
+    <node pkg="rc110_twist_to_ackermann" type="rc110_twist_to_ackermann" name="twist_to_ackermann">
+         <remap from="drive_ad" to="drive_manual"/>
+    </node>  
+```
+Enter the following command in the new terminal to open the output screen of the operation.
+```
+rostopic echo drive_manual
+```  
 ## ROS configuration
 
 Default configuration is installed during packages installation.
