@@ -8,7 +8,7 @@ git clone https://https://github.com/aws-robotics/aws-robomaker-small-house-worl
 After stopping the robot car, type the following command to run gazebo and check if the map is reflected.
 ```
 cd aws-robomaker-small-house-world
-export GAZEBO_MODEL_PATH=`pwd`/models
+export GAZEBO_MODEL_PATH=`/home/zmp/aws-robomaker-small-house-world`/models
 gazebo worlds/small_house.world --verbose
 ```  
 If the reflection was successful, you will see an image like this.  
@@ -21,7 +21,7 @@ After confirmation, stop the operation and make the following changes to `/home/
 Open a new terminal and type the following command to execute it.
 ```
 cd aws-robomaker-small-house-world
-export GAZEBO_MODEL_PATH=`pwd`/models
+export GAZEBO_MODEL_PATH=`/home/zmp/aws-robomaker-small-house-world`/models
 cd ~/ros/src/robocar110_ros/
 make run-gazebo
 ```  
