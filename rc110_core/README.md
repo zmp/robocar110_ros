@@ -81,7 +81,7 @@ Open a new terminal and enter the following command to bring up the operation sc
 rosrun key_teleop key_teleop.py key_vel:=cmd_vel
 ```  
 
-Type or do the following command in the new terminal to change to manual operation mode, 
+Type or do the following command in the new terminal to change to manual operation mode,
 ```
 cd ~/ros/src/robocar110_ros/
 roslaunch rc110_twist_to_ackermann rc110_twist_to_ackermann drive_ad:=drive_manual
@@ -91,7 +91,13 @@ or open `teleop.launch` in `/home/zmp/src/robocar110_ros/rc110_core/rc110_teleop
     <node pkg="rc110_twist_to_ackermann" type="rc110_twist_to_ackermann" name="twist_to_ackermann">
          <remap from="drive_ad" to="drive_manual"/>
     </node>  
+```  
+Then, activate the operation mode with keyboard input on the new terminal.
 ```
+cd ~/ros/src/robocar110_ros/
+rosrun key_teleop key_teleop.py
+make run
+```  
 Enter the following command in the new terminal to open the output screen of the operation.
 ```
 rostopic echo drive_manual
