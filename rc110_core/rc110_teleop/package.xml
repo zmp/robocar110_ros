@@ -17,6 +17,7 @@
   <depend>rc110_msgs</depend>
 
   <exec_depend>joy</exec_depend>
+  <exec_depend>mouse_teleop</exec_depend>
   <exec_depend>rc110_master_hold</exec_depend>
   <exec_depend>rc110_twist_to_ackermann</exec_depend>
 </package>

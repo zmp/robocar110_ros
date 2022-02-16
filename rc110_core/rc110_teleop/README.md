@@ -1,4 +1,34 @@
-# RoboCar 1/10 ROS Nodes for Teleoperation
+# RoboCar 1/10 Teleoperation
+
+## Joystick Connected to Robot
+Nodes are launched by default for it. Please, check the user manual if you have any troubles.
+
+## Joystick Connected to Remote PC
+Connect joystick dongle to your remote PC instead of robot:
+```
+cd ~/ros/src/robocar110_ros
+
+make deps-teleop
+make teleop
+make remote-teleop
+```
+
+Connect other joystick to remote PC:
+```
+make remote-teleop device:=js1 joy_type:=logicool
+```
+
+* To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
+
+## Mouse Remote Operation
+If you want to move the robocar from remote PC by mouse, do the following:
+```
+cd ~/ros/src/robocar110_ros
+
+make deps-teleop
+make teleop
+make mouse-teleop
+```  
 
 ## Controls
 

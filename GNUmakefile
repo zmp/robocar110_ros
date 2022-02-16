@@ -38,6 +38,7 @@ GNUmakefile provides the following targets for make:
 	monitor                   Show general RViz on remote PC
 	monitor-%                 Show % RViz on remote PC
 	remote-teleop             Run joystick connected to remote PC [device:=js0 joy_type:=elecom|ps5|logicool]
+	mouse-teleop              Mouse instead of joystick on remote PC
 
 	save-map-he               Save Hector SLAM map [map_name=map]
 	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
@@ -202,6 +203,11 @@ run: init-run
 remote-teleop: env
 	source ../../env.sh
 	$(MAKE) run -C rc110_core/rc110_teleop joy_topic:=joy_remote
+
+# Manipulation with mouse on remote PC.
+mouse-teleop: env
+	source ../../env.sh
+	$(MAKE) mouse -C rc110_core/rc110_teleop
 
 # == additional targets ==
 

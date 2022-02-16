@@ -17,3 +17,8 @@ run:
 	$(call get_flags,flags)
 	source ../../../../devel/setup.bash
 	roslaunch rc110_teleop teleop.launch $${flags}
+
+mouse:
+	$(call get_flags,flags)
+	source ../../../../devel/setup.bash
+	roslaunch rc110_teleop mouse_teleop.launch $${flags}

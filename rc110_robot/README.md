@@ -28,3 +28,20 @@ make deps     # ros dependencies
 make          # build robot packages
 make run      # run nodes from build folder
 ```
+
+## Remote Configuration
+
+In order to connect to robot from remote PC, `ROS_MASTER_URI` and `ROS_IP` environment variables should be set. `env.sh` file is created automatically for this purpose to use with `make` command.
+
+If you want to configure those variables beforehand, please, run the following command and adjust the variables.
+```
+make env
+```
+
+## ROS configuration
+
+Default configuration is installed during packages installation.
+
+If on update the configuration was changed in both new package and your local file, you will be prompted to adjust it manually.
+
+* `/opt/ros/${ROS_DISTRO}/share/rc110_launch/config/`
