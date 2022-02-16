@@ -16,7 +16,7 @@ all:
 run:
 	$(call get_flags,flags)
 	$(MAKE) -C ../.. init-run
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	source ~/.config/rc110/service.conf
 	export GAZEBO_MODEL_DATABASE_URI=" "   # See: https://github.com/osrf/gazebo/issues/2934
 	roscore &>/dev/null &

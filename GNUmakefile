@@ -115,7 +115,6 @@ else
   ifeq (,$(wildcard .catkin_tools))
 	@echo -e "\033[1;31m\
 	    \nWarning: Catkin workspace will be created in the current directory!\
-	    \nCreate and use rc110_contrib/ directory for new nodes.\
 	    \nIf you want to have usual workspace, please, put robocar110_ros to src/\
 	    \n\033[0m"
 	catkin config --init --source-space . --log-space .catkin_tools/logs
@@ -181,8 +180,8 @@ clean:
 
 # Environment variables for remote access.
 env:
-ifeq (,$(wildcard ../../env.sh))
-	cp mk/env_template.sh ../../env.sh
+ifeq (,$(wildcard $(shell catkin locate)/env.sh))
+	cp mk/env_template.sh $$(catkin locate)/env.sh
 endif
 
 # Prepare variables for run-* targets.
@@ -195,18 +194,18 @@ endif
 # Run nodes built from source.
 run: init-run
 	roscore &>/dev/null &
-	source ../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	source ~/.config/rc110/service.conf
 	eval "$$RC110_LAUNCH_COMMAND"
 
 # Run only joystick node on remote PC.
 remote-teleop: env
-	source ../../env.sh
+	source $$(catkin locate)/env.sh
 	$(MAKE) run -C rc110_core/rc110_teleop joy_topic:=joy_remote
 
 # Manipulation with mouse on remote PC.
 mouse-teleop: env
-	source ../../env.sh
+	source $$(catkin locate)/env.sh
 	$(MAKE) mouse -C rc110_core/rc110_teleop
 
 # == additional targets ==

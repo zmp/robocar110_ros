@@ -14,14 +14,14 @@ all:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	$$(catkin locate --devel)/lib/rc110_rviz/rc110_rviz_app
 
 show:
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	roslaunch rc110_rviz rviz.launch
 
 monitor:
 	$(MAKE) -C ../.. env
-	source ../../../../env.sh
+	source $$(catkin locate)/env.sh
 	$(MAKE) show

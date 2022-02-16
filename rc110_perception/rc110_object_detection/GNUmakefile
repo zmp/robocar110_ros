@@ -15,7 +15,7 @@ all:
 
 run:
 	$(MAKE) -C ../.. init-run
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	source ~/.config/rc110/service.conf
 	roslaunch rc110_object_detection rc110_object_detection_node.launch
 
@@ -26,5 +26,5 @@ show:
 
 monitor:
 	$(MAKE) -C ../.. env
-	source ../../../../env.sh
+	source $$(catkin locate)/env.sh
 	$(MAKE) show

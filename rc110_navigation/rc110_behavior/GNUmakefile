@@ -15,7 +15,7 @@ all:
 
 run:
 	$(MAKE) -C ../.. init-run
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	source ~/.config/rc110/service.conf
 	mon launch rc110_behavior main.launch
 

@@ -15,18 +15,18 @@ all:
 
 run:
 	$(MAKE) -C ../.. init-run
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	source ~/.config/rc110/service.conf
 	export RC110_MAP_NAME=$${RC110_MAP_NAME:-map}
 	mon launch rc110_navigation main.launch
 
 show:
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	rosrun rviz rviz -d rviz/rc110_navigation.rviz
 
 monitor:
 	$(MAKE) -C ../.. env
-	source ../../../../env.sh
+	source $$(catkin locate)/env.sh
 	$(MAKE) show
 
 # extra

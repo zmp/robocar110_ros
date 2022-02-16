@@ -15,7 +15,7 @@ all:
 
 run:
 	$(call get_flags,flags)
-	source ../../../../devel/setup.bash
+	source $$(catkin locate --devel)/setup.bash
 	roslaunch --screen rc110_video_server main.launch $${flags}
 
 show:
@@ -26,7 +26,7 @@ show:
 
 monitor:
 	$(MAKE) -C ../.. env
-	source ../../../../env.sh
+	source $$(catkin locate)/env.sh
 
 	if [[ $$ROS_MASTER_URI =~ http://(.*):[0-9]+ ]]; then
 		ip=$${BASH_REMATCH[1]}
