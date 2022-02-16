@@ -45,6 +45,21 @@ make remote-teleop device:=js1 joy_type:=logicool
 
 * To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
 
+## Mouse Operation
+If you want to move the robocar by mouse operation, do the following:  
+* Build package:  
+```
+make deps-teleop
+make teleop
+```  
+
+* Launch:  
+```
+cd ~/ros
+source devel/setup.bash
+roslaunch rc110_teleop mouse_teleop.launch
+```
+
 ## ROS configuration
 
 Default configuration is installed during packages installation.
