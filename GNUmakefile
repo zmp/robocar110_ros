@@ -57,7 +57,7 @@ version:
 	Tegra: $$(cat /etc/nv_tegra_release 2> /dev/null) \n\
 	Last JetPack: $$(apt-cache show nvidia-jetpack 2> /dev/null | grep Version | awk 'NR==1{print $$2}') \n\
 	Base Driver:  $$(dpkg -s rc-system 2> /dev/null | grep Version | awk '{print $$2}') \n\
-	Core Nodes:   $$(dpkg -s ros-${ROS_DISTRO}-rc110-msgs 2> /dev/null | grep Version | awk '{print $$2}') \n\
+	ROS Nodes:    $$(dpkg -s ros-${ROS_DISTRO}-rc110-common 2> /dev/null | grep Version | awk '{print $$2}') \n\
 	Source Code:  $$(grep -oPm1 '(?<=<version>)[^<]+' rc110_core/rc110_common/package.xml) "
 
 # Shortcut for ROS installation.
@@ -98,7 +98,7 @@ clean-deps:
 # Install core dependencies.
 deps: init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths rc110_core --skip-keys="rc110_master_hold rc110_laserscans_to_pointcloud"
+	rosdep install -iry --from-paths rc110_core rc110_robot
 
 # Init catkin workspace.
 init:
@@ -171,7 +171,7 @@ endif
 	mv *.deb stage/
 	cp $${root_dir}/scripts/install* stage/
 
-	makeself stage rc110_core_$${version}.run "package" ./install
+	makeself stage rc110_robot_$${version}.run "package" ./install
 
 # Clean all.
 clean:
@@ -188,7 +188,7 @@ endif
 init-run:
 ifeq (,$(wildcard ~/.config/rc110/service.conf))
 	mkdir -p ~/.config/rc110
-	cp rc110_core/rc110_system/deb/service_template.conf ~/.config/rc110/service.conf
+	cp rc110_robot/rc110_system/deb/service_template.conf ~/.config/rc110/service.conf
 endif
 
 # Run nodes built from source.

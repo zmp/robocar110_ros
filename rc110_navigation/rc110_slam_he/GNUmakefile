@@ -6,7 +6,7 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths . --skip-keys=rc110_laserscans_to_pointcloud
+	rosdep install -iry --from-paths .
 
 all:
 	$(MAKE) -C ../.. init

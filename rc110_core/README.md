@@ -1,40 +1,17 @@
 # RoboCar 1/10 Core Nodes
 
-It's a set of major ROS nodes for Robocar 1/10.
+It's a set of ROS nodes common for robot and simulation.
 
-They are preinstalled on robot and run with systemd service.
+| Name                                                                     | Description                                             |
+|:-------------------------------------------------------------------------|:--------------------------------------------------------|
+| [**common**](rc110_common/README.md)                                     | Common launch files                                     |
+| [**laserscans_to_pointcloud**](rc110_laserscans_to_pointcloud/README.md) | Conversion from two LaserScan to PointCloud2            |
+| [**master_hold**](rc110_master_hold/README.md)                           | Node that does reconnection to roscore when it restarts |
+| **msgs**                                                                 | Robot specific messages                                 |
+| **rviz**                                                                 | RViz control panel                                      |
+| [**teleop**](rc110_teleop/README.md)                                     | Joystick manipulation                                   |
+| [**twist_to_ackermann**](rc110_twist_to_ackermann/README.md)             | Conversion from special Twist to Ackermann              |
 
-This node group tends to have more support than others.
-
-| Name                                               | Description             |
-|:------------------                                 |:------------------------|
-| [**drive_control**](rc110_drive_control/README.md) | robot ros driver        |
-| [**launch**](rc110_launch/README.md)               | default launch files    |
-| **msgs**                                           | robot specific messages |
-| **rviz**                                           | rviz control panel      |
-| [**system**](rc110_system/README.md)               | systemd service package |
-| [**teleop**](rc110_teleop/README.md)               | joystick manipulation   |
-
-## Build
-
-```
-cd ~/ros/src/robocar110_ros
-
-make deps    # ros dependencies
-make         # build core packages
-```
-
-## Package
-Create deb files in the build directory:
-```
-make package
-```
-
-## Install
-Install those files with `sudo apt-get install`:
-```
-make install
-```
 
 ## Remote Configuration
 

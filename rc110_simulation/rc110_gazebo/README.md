@@ -16,7 +16,8 @@ make              # build
 make run          # run simulation  (If it's run on robot, from robocar110_ros/, please, run: make stop) 
 make show         # show rviz  (At first from robocar110_ros/, you need to run: make rviz)
 
-make run use_gui:=false    # run without gazebo gui
+make run use_gui:=false      # run without gazebo gui
+make run joy_type:=logicool  # run with different joystick
 ```
 
 ## Subscribed Topics

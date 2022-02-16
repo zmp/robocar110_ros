@@ -1,4 +1,4 @@
 [subtree "hokuyo_node"]
-	path = rc110_external/hokuyo_node
+	path = rc110_robot/hokuyo_node
 	url = https://github.com/ros-drivers/hokuyo_node.git
 	branch = indigo-devel
