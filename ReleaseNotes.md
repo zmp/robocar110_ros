@@ -1,3 +1,9 @@
+## v1.8.0
+* Basic model training documentation for pytorch ssd.
+* Simulation worlds: "Maze", imported worlds.
+* Mouse teleoperation.
+* Build improvements.
+
 ## v1.7.0 ~ .1
 
 * MATLAB support (requires [MATLAB Connection Option](https://www.zmp.co.jp/en/products/robocar/robocar-110X/support/matlab)).

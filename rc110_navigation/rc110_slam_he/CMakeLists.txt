@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_slam_he VERSION 1.7.1)
+project(rc110_slam_he VERSION 1.8.0)
 
 find_package(catkin REQUIRED)
 catkin_package()
