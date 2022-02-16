@@ -201,7 +201,7 @@ run: init-run
 # Run only joystick node on remote PC.
 remote-teleop: env
 	source ../../env.sh
-	$(MAKE) run -C rc110_core/rc110_teleop
+	$(MAKE) run -C rc110_core/rc110_teleop joy_topic:=joy_remote
 
 # == additional targets ==
 

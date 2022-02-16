@@ -2,9 +2,9 @@
     <arg name="config_dir" default="$(find rc110_teleop)/config"/>
     <arg name="device" default="js0"/>
     <arg name="devicePath" default="/dev/input/$(arg device)"/>
-    <arg name="drive_topic" default="drive_manual"/>
     <arg name="joy_topic" default="joy"/>
     <arg name="joy_type" default="elecom"/>
+    <arg name="drive_topic" default="drive_manual"/>
 
     <arg name="joy_name" value="$(anon joy)"/>
     <arg name="teleop_name" value="$(anon teleop)"/>
@@ -12,14 +12,14 @@
     <node pkg="rc110_master_hold" type="rc110_master_hold" name="$(anon hold_teleop)" args="$(arg teleop_name)"/>
 
     <node pkg="joy" type="joy_node" name="$(arg joy_name)" respawn="true">
-        <remap from="joy" to="joy_remote"/>
+        <remap from="joy" to="$(arg joy_topic)"/>
         <param name="dev" value="$(arg devicePath)"/>
         <param name="deadzone" value="0.02"/>
         <param name="autorepeat_rate" value="5"/>
     </node>
 
     <node pkg="rc110_teleop" type="rc110_joy_teleop" name="$(arg teleop_name)" respawn="true" output="screen">
-        <remap from="joy" to="joy_remote"/>
+        <remap from="joy" to="$(arg joy_topic)"/>
         <remap from="drive_manual" to="$(arg drive_topic)"/>
         <rosparam file="$(arg config_dir)/joy.yaml" subst_value="true"/>
         <rosparam file="$(arg config_dir)/joy_$(arg joy_type).yaml" subst_value="true"/>
