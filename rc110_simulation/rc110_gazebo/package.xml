@@ -15,10 +15,10 @@
   <exec_depend>rosmon</exec_depend>
 
   <depend>rc110_msgs</depend>
-  <exec_depend>rc110_common</exec_depend>
+  <exec_depend>rc110</exec_depend>
 
   <export>
-    <gazebo_ros gazebo_model_path="${prefix}/../../rc110_core/rc110_common/models"/>
+    <gazebo_ros gazebo_model_path="${prefix}/../../rc110_core/rc110/models"/>
     <gazebo_ros gazebo_media_path="${prefix}"/>
   </export>
 </package>

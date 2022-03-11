@@ -1,0 +1,17 @@
+<launch>
+    <arg name="ignore_nodes" default="$(env ROS_NAMESPACE)/*"/>
+
+    <!-- Roscore should be run from this launch file along with multimaster nodes. -->
+    <node pkg="master_discovery_fkie" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>
+
+    <node pkg="master_sync_fkie" type="master_sync" ns="/" name="master_sync" required="true">
+        <param name="sync_remote_nodes" value="true" />
+        <param name="ignore_nodes" value="[$(arg ignore_nodes)]" type="yaml"/>
+    </node>
+    <!--
+        Both nodes are ignored by synchronization automatically, if namespace is empty.
+        Ignoring ROS_NAMESPACE, which is robot name, prevents backward synchronization of own nodes.
+
+        More details: http://wiki.ros.org/master_sync_fkie
+    -->
+</launch>

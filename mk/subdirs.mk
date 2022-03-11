@@ -21,10 +21,5 @@ show_adv_nodes := $(addprefix show-,$(adv_nodes))
 $(show_adv_nodes):
 	$(MAKE) show -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))))
 
-monitor_adv_nodes := $(addprefix monitor-,$(adv_nodes))
-$(monitor_adv_nodes):
-	$(MAKE) monitor -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst monitor-,,$@))))
-
-
 # extra targets
 include $(wildcard rc110_*/rc110_*/mk/extra.mk)  # all extra.mk files

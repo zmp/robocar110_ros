@@ -10,15 +10,15 @@ cd ~/ros/src/robocar110_ros
 
 make deps-teleop
 make teleop
-make remote-teleop
+make run-teleop
 ```
 
 Connect other joystick to remote PC:
 ```
-make remote-teleop device:=js1 joy_type:=logicool
+make run-teleop device=js1 joy_type=logicool
 ```
 
-* To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110_common/config/`
+* To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110/config/`
 
 ## Mouse Remote Operation
 If you want to move the robocar from remote PC by mouse, do the following:
@@ -60,7 +60,7 @@ Be careful of putting high values, because the car is not designed for crashing.
 
 To know buttons and axes indexes, use `rostopic echo /joy`. Indexes start from 0.
 
-Buttons mapping is set in `rc110_core/rc110_common/config/joy_<type>.yaml`.
+Buttons mapping is set in `rc110_core/rc110/config/joy_<type>.yaml`.
 * `steering` and `accel` axes can have additional parameters:
     * `<axis>: [index, max, min]`
     * if they are not specified, default values are assigned

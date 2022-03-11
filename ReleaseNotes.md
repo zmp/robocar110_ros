@@ -1,3 +1,11 @@
+## v1.9.0
+* Multiple robots setup with ros master on each machine (FKIE).
+* Automatic network discovery (on top of [**avahi**](https://en.wikipedia.org/wiki/Avahi_(software))).
+* Merged `rc110_launch` into `rc110_system`, renamed `rc110_common` to `rc110`.
+* Removed `rc110_master_hold`, as multimaster does reconnection instead.
+* `make monitor` commands are fully replaced with `make show`.
+* Makefile parameters use `=` only, not `:=`.
+
 ## v1.8.0
 * Basic model training documentation for pytorch ssd.
 * Simulation worlds: "Maze", imported worlds.

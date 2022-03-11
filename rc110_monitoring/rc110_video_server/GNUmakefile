@@ -8,39 +8,31 @@ deps:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths .
 
-all:
+build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	$(call get_flags,flags)
-	source $$(catkin locate --devel)/setup.bash
-	roslaunch --screen rc110_video_server main.launch $${flags}
+	source $$(catkin locate rc110)/env/devel.bash
+	roslaunch --screen rc110_video_server main.launch $(ros_args)
 
 show:
-	gst-launch-1.0 rtspsrc latency=0 location=rtsp://127.0.0.1:8554/front \
+ifneq (,$(host))
+	# remote
+	$(eval sink := $(if $(fps),fpsdisplaysink sync=false async=false,xvimagesink))
+
+	gst-launch-1.0 rtspsrc latency=0 location=rtsp://$(host).local:8554/front \
+		! rtph265depay ! h265parse ! queue ! avdec_h265 ! $(sink)
+	# ------------------------------------------------------------------------------
+else
+	# local
+	gst-launch-1.0 rtspsrc latency=0 location=rtsp://localhost:8554/front \
 		! rtph265depay ! h265parse ! queue ! omxh265dec ! nvoverlaysink sync=false async=false
 	# ------------------------------------------------------------------------------
 	# Press Ctrl+C to exit full screen.
-
-monitor:
-	$(MAKE) -C ../.. env
-	source $$(catkin locate)/env.sh
-
-	if [[ $$ROS_MASTER_URI =~ http://(.*):[0-9]+ ]]; then
-		ip=$${BASH_REMATCH[1]}
-		if [[ -n "$(fps)" ]]; then
-			sink=fpsdisplaysink sync=false async=false
-		else
-			sink=xvimagesink
-		fi
-		gst-launch-1.0 rtspsrc latency=0 location=rtsp://$$ip:8554/front \
-			! rtph265depay ! h265parse ! queue ! avdec_h265 ! $${sink}
-	else
-		echo "Unable to parse ROS_MASTER_URI"
-	fi
-	# ------------------------------------------------------------------------------
+	#
+endif
 
 # Just for local testing without RTSP
 test-show:

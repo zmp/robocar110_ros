@@ -1,5 +1,0 @@
-base_frame_id: "base_link"
-imu_frame_id: "imu_link"
-rate: 30.0
-steering_angle_adjustment: 1.0
-steering_velocity: 90

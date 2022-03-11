@@ -2,8 +2,8 @@ map_name ?= map
 map_resolution ?= 0.025
 
 save-map-cg:
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosservice call /write_state cartographer.pbstream
+	source $$(catkin locate rc110)/env/devel.bash
+	rosservice call $${ROS_NAMESPACE}/write_state cartographer.pbstream
 	cd ~/.ros
 	cartographer_pbstream_to_ros_map \
 		-pbstream_filename cartographer.pbstream \

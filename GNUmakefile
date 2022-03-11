@@ -5,7 +5,8 @@
 include mk/common.mk
 
 cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
-main_nodes := rc110_system rc110_rviz
+deps_paths  := rc110_core rc110_robot   # dependencies for robot nodes
+build_nodes := rc110_rviz rc110_system  # robot nodes
 
 define help_text
 
@@ -20,7 +21,7 @@ GNUmakefile provides the following targets for make:
 	deps                      Install dependencies for rc110_core
 	deps-%                    Install dependencies for %
 
-	all (empty)               Build rc110_core
+	build (empty)             Build main robot nodes
 	%                         Build %
 	package                   Create deb packages in build/ directory
 	install                   Install the packages to system
@@ -29,16 +30,19 @@ GNUmakefile provides the following targets for make:
 
 	start                     Restart RoboCar nodes from system
 	stop                      Stop RoboCar nodes from system
-	run                       Run rc110_core from build (Don't forget to stop system nodes first!)
+	status                    Status of system RoboCar nodes
+	status-core               Status of system roscore
+	list-masters              List all ros masters in the network
+
+	run                       Run rc110_robot from build (Don't forget to stop system nodes first!)
 	run-%                     Run % node from build
 	show                      Show general RViz on robot
 	show-%                    Show % RViz on robot
 
-	env                       Create env.sh file for connection to remote PC (Needs to be edited!)
-	monitor                   Show general RViz on remote PC
-	monitor-%                 Show % RViz on remote PC
-	remote-teleop             Run joystick connected to remote PC [device:=js0 joy_type:=elecom|ps5|logicool]
-	mouse-teleop              Mouse instead of joystick on remote PC
+	sync                      Synchronize nodes of network in a separate terminal
+	node-manager              Show Node Manager
+	run-teleop                Run joystick [rc=zmp name=joy device=js0 joy_type=elecom|ps5|logicool]
+	mouse-teleop              Mouse instead of joystick [rc=zmp]
 
 	save-map-he               Save Hector SLAM map [map_name=map]
 	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
@@ -56,10 +60,10 @@ help:
 version:
 	@echo -e "\
 	Tegra: $$(cat /etc/nv_tegra_release 2> /dev/null) \n\
-	Last JetPack: $$(apt-cache show nvidia-jetpack 2> /dev/null | grep Version | awk 'NR==1{print $$2}') \n\
-	Base Driver:  $$(dpkg -s rc-system 2> /dev/null | grep Version | awk '{print $$2}') \n\
-	ROS Nodes:    $$(dpkg -s ros-${ROS_DISTRO}-rc110-common 2> /dev/null | grep Version | awk '{print $$2}') \n\
-	Source Code:  $$(grep -oPm1 '(?<=<version>)[^<]+' rc110_core/rc110_common/package.xml) "
+	JetPack (deb): $$(apt policy nvidia-jetpack 2>/dev/null | grep Installed | awk '{print $$2}') \n\
+	Base Driver:   $$(apt policy rc-system 2>/dev/null | grep Installed | awk '{print $$2}') \n\
+	ROS Nodes:     $$(apt policy ros-${ROS_DISTRO}-rc110 2>/dev/null | grep Installed | awk '{print $$2}') \n\
+	Source Code:   $$(grep -oPm1 '(?<=<version>)[^<]+' rc110_core/rc110/package.xml) "
 
 # Shortcut for ROS installation.
 ros-install:
@@ -96,10 +100,14 @@ init-deps-offline:
 clean-deps:
 	sudo rm -rf /etc/ros/rosdep
 
-# Install core dependencies.
+# Install robot dependencies.
 deps: init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths rc110_core rc110_robot
+	rosdep install -iry --from-paths ${deps_paths}
+
+# Install remote dependencies.
+deps-remote: deps_paths := rc110_core
+deps-remote: deps
 
 # Init catkin workspace.
 init:
@@ -121,18 +129,22 @@ else
   endif
 endif
 
-# Build core nodes.
-all: init
+# Build robot nodes.
+build: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
-	$(call build,${main_nodes},${cmake_flags})
+	$(call build,${build_nodes},${cmake_flags})
+
+# Build remote nodes
+remote: build_nodes := rc110_rviz rc110
+remote: build
 
 # Package core nodes in build directory.
 package: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
-	$(call build,${main_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=ON)
+	$(call build,${build_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=ON)
 
 	# find core nodes with dependencies
-	nodes=$$(catkin build -n ${main_nodes} | sed -n -e '/Packages to be built/,/Total packages/{//!p;}' | sed -e 's/- \(.*\)(catkin)/\1/')
+	nodes=$$(catkin build -n ${build_nodes} | sed -n -e '/Packages to be built/,/Total packages/{//!p;}' | sed -e 's/- \(.*\)(catkin)/\1/')
 
 	cd $$(catkin locate --build)
 	rm -f *.deb
@@ -154,6 +166,9 @@ install: package
 	cd $$(catkin locate --build)
 	sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
+	sudo apt-mark auto 'ros-melodic-rc110-*'  # single quoted, to avoid file expansion
+	sudo apt-mark manual ros-melodic-rc110-system
+	sudo apt-mark manual ros-melodic-rc110-rviz
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 # Self-extracting archive with core packages.
@@ -178,35 +193,21 @@ clean:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin clean -y
 
-# Environment variables for remote access.
-env:
-ifeq (,$(wildcard $(shell catkin locate)/env.sh))
-	cp mk/env_template.sh $$(catkin locate)/env.sh
-endif
-
-# Prepare variables for run-* targets.
-init-run:
-ifeq (,$(wildcard ~/.config/rc110/service.conf))
-	mkdir -p ~/.config/rc110
-	cp rc110_robot/rc110_system/deb/service_template.conf ~/.config/rc110/service.conf
-endif
-
 # Run nodes built from source.
-run: init-run
-	roscore &>/dev/null &
-	source $$(catkin locate --devel)/setup.bash
-	source ~/.config/rc110/service.conf
-	eval "$$RC110_LAUNCH_COMMAND"
+run:
+	source $$(catkin locate rc110)/env/devel.bash
+	source $$(catkin locate rc110)/env/config.bash
+	rosrun rc110 launch rc110_system robot.launch $${RC110_ARGS} $(ros_args)
 
-# Run only joystick node on remote PC.
-remote-teleop: env
-	source $$(catkin locate)/env.sh
-	$(MAKE) run -C rc110_core/rc110_teleop joy_topic:=joy_remote
+# Roscore multimaster nodes synchronization.
+sync:
+	source $$(catkin locate rc110)/env/devel.bash
+	roslaunch rc110 multimaster.launch $(ros_args)
 
-# Manipulation with mouse on remote PC.
-mouse-teleop: env
-	source $$(catkin locate)/env.sh
-	$(MAKE) mouse -C rc110_core/rc110_teleop
+# Run multimaster node manager.
+node-manager:
+	source $$(catkin locate rc110)/env/devel.bash
+	rosrun rc110 launch rc110 node_manager.launch
 
 # == additional targets ==
 
@@ -215,4 +216,3 @@ include mk/subdirs.mk
 # == shortcuts ==
 
 show: show-rviz
-monitor: monitor-rviz

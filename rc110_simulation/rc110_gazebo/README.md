@@ -16,8 +16,8 @@ make              # build
 make run          # run simulation  (If it's run on robot, from robocar110_ros/, please, run: make stop) 
 make show         # show rviz  (At first from robocar110_ros/, you need to run: make rviz)
 
-make run use_gui:=false      # run without gazebo gui
-make run joy_type:=logicool  # run with different joystick
+make run use_gui=false      # run without gazebo gui
+make run joy_type=logicool  # run with different joystick
 ```
 
 ## Subscribed Topics
@@ -37,8 +37,8 @@ make run joy_type:=logicool  # run with different joystick
 ## Custom World
 ### Building From Scratch
 * See the official tutorial: http://gazebosim.org/tutorials?cat=build_world&tut=building_editor
-* Roslaunch parameter for custom world: `make run world:=/absolute/path.world`
-* Or `make run root:=/world/root world:=relative/path.world`
+* Roslaunch parameter for custom world: `make run world=/absolute/path.world`
+* Or `make run root=/world/root world=relative/path.world`
     * Latter also adds models from `${root}/models`
 
 ### Using Ready-Made Worlds

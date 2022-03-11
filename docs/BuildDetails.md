@@ -1,11 +1,11 @@
-# More Details on Nodes Build
+# Details about Nodes Build
 
 RC110 `make` commands that build the samples use `catkin` under the hood. Here is how it works.
 
 ## Dependencies
 Before building source code, you need to install all the dependencies. The standard way to do it in ROS is [**rosdep**](http://wiki.ros.org/rosdep).
 ```
-make init  # to prepare rosdep
+make init-deps  # to prepare rosdep
 rosdep install -iry --from-paths .
 ```
 

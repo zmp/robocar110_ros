@@ -8,20 +8,15 @@ deps:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths . --skip-keys=rc110_msgs
 
-all:
+build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate --devel)/setup.bash
+	source $$(catkin locate rc110)/env/devel.bash
 	$$(catkin locate --devel)/lib/rc110_rviz/rc110_rviz_app
 
 show:
-	source $$(catkin locate --devel)/setup.bash
-	roslaunch rc110_rviz rviz.launch
-
-monitor:
-	$(MAKE) -C ../.. env
-	source $$(catkin locate)/env.sh
-	$(MAKE) show
+	source $$(catkin locate rc110)/env/devel.bash
+	rosrun rc110 launch rc110_rviz rviz.launch

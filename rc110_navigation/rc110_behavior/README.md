@@ -10,7 +10,6 @@ make deps         # check dependencies
 make              # build
 make run          # run the node
 make show         # show rviz
-make monitor      # show rviz on remote pc
 ```
 * After the node has been run, it's possible to enable/disable it using AD button in RViz plugin or AD button on gamepad.
 

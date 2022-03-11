@@ -11,7 +11,6 @@ make deps         # check dependencies
 make              # build
 make run          # run the node
 make show         # show rviz
-make monitor      # show rviz on remote pc
 ```
 
 * Use `2D Pose Estimate` button to position robot on map.

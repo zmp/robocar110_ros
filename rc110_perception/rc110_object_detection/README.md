@@ -32,7 +32,6 @@ make deps         # check dependencies
 make              # build
 make run          # roslaunch (see below)
 make show         # show overlay image in rviz
-make monitor      # same on remote pc
 ```
 
 **RosLaunch**

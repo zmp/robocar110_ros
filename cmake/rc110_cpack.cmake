@@ -44,7 +44,7 @@ function(ros_to_deb_name result dep)
     endif()
 
     # Additional dependencies started with rc110_, because they can appear in the same workspace.
-    if (dep MATCHES "^rc110_")
+    if (dep MATCHES "^rc110")
         to_deb_name(dep_local ros-$ENV{ROS_DISTRO}-${dep})
         set(${result} ${dep_local} PARENT_SCOPE)
         return()

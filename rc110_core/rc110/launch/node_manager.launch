@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="node_manager_fkie" type="node_manager" ns="/" name="node_manager" output="screen"/>
+</launch>

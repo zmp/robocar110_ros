@@ -24,12 +24,12 @@ Yet without motion compensation, so slow car movement is required.
 ## Parameters
 
 ```
-base_frame (string, default: base_link)
+base_frame_id (string, default: base_link)
     base frame id
 
-front_lidar_frame (string, default: front_lidar)
+front_lidar_frame_id (string, default: front_lidar)
     lidar 1 frame id
     
-rear_lidar_frame (string, default: rear_lidar)
+rear_lidar_frame_id (string, default: rear_lidar)
     lidar 2 frame id
 ```

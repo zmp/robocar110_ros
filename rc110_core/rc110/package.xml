@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rc110</name>
+  <version>1.8.0</version>
+  <description>RoboCar 1/10 Common Launch</description>
+  <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roslaunch</depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+  <exec_depend>multimaster_fkie</exec_depend>
+  <exec_depend>rc110_teleop</exec_depend>
+  <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
+</package>

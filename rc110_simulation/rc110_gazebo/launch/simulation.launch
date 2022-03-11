@@ -1,0 +1,21 @@
+<launch>
+    <arg name="joy_type" default="elecom"/>
+    <arg name="use_gui" default="true"/>
+    <arg name="root" default="$(find rc110_gazebo)"/>
+    <arg name="world" default="worlds/maze.world"/>
+
+    <env name="GAZEBO_RESOURCE_PATH" value="$(arg root)"/>
+    <env name="GAZEBO_MODEL_PATH" value="$(arg root)/models"/>
+
+    <!-- launch gazebo world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)" />
+        <arg name="gui" value="$(arg use_gui)" />
+        <arg name="verbose" value="true" />
+    </include>
+
+    <!-- launch robot model -->
+    <include file="$(find rc110_gazebo)/launch/model.launch">
+        <arg name="joy_type" value="$(arg joy_type)"/>
+    </include>
+</launch>

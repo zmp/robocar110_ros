@@ -39,15 +39,17 @@ public:
         int steeringAuxiliary = -1;  // auxiliary axis for better precision
         std::vector<double> accel = {1};
 
+        std::string rc;
         std::string frameId = "base_link";
         std::vector<double> gears = {0.3, 0.6, 1.0};
         double rate = 30.0;  // Hz
     };
 
 public:
-    Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh);
+    Rc110JoyTeleop(ros::NodeHandle& handle, ros::NodeHandle& privateHandle);
 
 private:
+    void setupRosConnections();
     void updateAxis(std::vector<double>& axis, double defaultMax);
     void publishDrive();
     void updateToggles(const sensor_msgs::Joy::ConstPtr& message);
@@ -62,9 +64,11 @@ private:
 
 private:
     Param m_param;
+    std::string m_ns;
+    ros::NodeHandle m_handle;
 
     std::vector<ros::Subscriber> m_subscribers;
-    ros::Publisher m_drivePub;
+    ros::Publisher m_drivePublisher;
     sensor_msgs::Joy::ConstPtr m_joyMessage;
     ackermann_msgs::AckermannDriveStamped m_driveMessage;
     ros::Timer m_timer;
@@ -73,7 +77,6 @@ private:
     std::map<int, bool> m_axisActivated;  /// joy_node workaround
     int m_gear = 0;
     bool m_stopMessagePublished = false;
-    bool m_publishingEnabled = false;
     bool m_boardEnabled = false;
     bool m_adEnabled = false;
 };

@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
-    <height>692</height>
+    <width>473</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>4</number>
+    <number>2</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -29,6 +29,20 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <item>
+    <layout class="QHBoxLayout" name="namespaceLayout">
+     <item>
+      <widget class="QLabel" name="namespaceLabel">
+       <property name="text">
+        <string>Robot Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="namespaceEdit"/>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -393,7 +407,7 @@ QPushButton:checked {
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="motorGroup"/>
   <buttongroup name="servoGroup"/>
+  <buttongroup name="motorGroup"/>
  </buttongroups>
 </ui>

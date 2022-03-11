@@ -17,8 +17,9 @@ odom_alpha2: 0.02
 odom_alpha3: 0.02
 odom_alpha4: 0.02
 odom_alpha5: 0.02
-odom_frame_id: odom
 odom_model_type: diff-corrected
+odom_frame_id: $(env RC110_NAME)/odom
+base_frame_id: $(env RC110_NAME)/base_link
 recovery_alpha_fast: 0.0
 recovery_alpha_slow: 0.0
 resample_interval: 2

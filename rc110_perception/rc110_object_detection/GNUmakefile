@@ -8,23 +8,16 @@ deps:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths . --skip-keys=rc110_msgs
 
-all:
+build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	$(MAKE) -C ../.. init-run
-	source $$(catkin locate --devel)/setup.bash
-	source ~/.config/rc110/service.conf
+	source $$(catkin locate rc110)/env/devel.bash
 	roslaunch rc110_object_detection rc110_object_detection_node.launch
 
 show:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosrun rviz rviz -d rviz/rc110_object_detection_node.rviz
 	# without roslaunch, so it worked also on remote host without building the package
-
-monitor:
-	$(MAKE) -C ../.. env
-	source $$(catkin locate)/env.sh
-	$(MAKE) show

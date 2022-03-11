@@ -25,20 +25,20 @@ systemctl --user restart rc110  # or from repo root: make start
 
 * Maybe you'll need to restart robot to reconnect video device.
 
-## Usage
+## Makefile
 ```
 make deps            # check dependencies
 make                 # build
-make run             # run streaming on robot
-make run r:=qhd      # same in QHD (other values: vga, hd, sxga, fhd)
-make show            # playback the stream on local pc
-make monitor         # playback the stream on remote pc
-make monitor fps=on  # same with FPS overlay (can crash with SIGSEGV)
+make run             # run streaming on robot in VGA resolution
+make run r=vga       # same (other values: hd, sxga, fhd, qhd)
+make show            # playback the stream
 ```
+`make show` has the following options:
 
-Also you can playback video stream with GUI application like VLC.
+* `host=zmp` - show camera on remote robot hosted as `zmp`
+* `fps=on` - FPS overlay (only remote) (can crash with SIGSEGV)
 
-* URL: `rtsp://192.168.110.5:8554/front`
+URL to playback video stream with GUI application like VLC: `rtsp://192.168.110.5:8554/front`
 
 ## Parameters
 

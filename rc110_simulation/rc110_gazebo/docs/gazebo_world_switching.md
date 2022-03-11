@@ -22,7 +22,7 @@ If the reflection was successful, you will see an image like this.
 To use the world with RoboCar 1/10, execute it as following:
 ```
 cd ~/ros/src/robocar110_ros/
-make run-gazebo root:=${HOME}/ros/src/aws-robomaker-small-house-world world:=worlds/small_house.world
+make run-gazebo root=${HOME}/ros/src/aws-robomaker-small-house-world world=worlds/small_house.world
 ```  
 If the operation is successful, it will look like the following image.  
 ![](images/robocar_in.png)  
@@ -30,5 +30,5 @@ If the operation is successful, it will look like the following image.
 To quickly check robocar model on a new world, you can add a model and reflect it in gazebo by doing the following:  
 1. Click Insert tab.  
 2. Select "Add Path.  
-3. Apply `home/zmp/ros/src/robocar110_ros/rc110_core/rc110_common/models`.  
+3. Apply `home/zmp/ros/src/robocar110_ros/rc110_core/rc110/models`.  
 4. Click "Robocar 1/10" row, then click on world to paste it.

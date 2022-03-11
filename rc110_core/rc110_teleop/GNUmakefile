@@ -6,19 +6,17 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths . --skip-keys="rc110_msgs rc110_master_hold"
+	rosdep install -iry --from-paths . --skip-keys="rc110_msgs"
 
-all:
+build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	$(call get_flags,flags)
-	source $$(catkin locate --devel)/setup.bash
-	roslaunch rc110_teleop teleop.launch $${flags}
+	source $$(catkin locate rc110)/env/devel.bash
+	rosrun rc110 launch rc110_teleop teleop.launch $(ros_args)
 
 mouse:
-	$(call get_flags,flags)
-	source $$(catkin locate --devel)/setup.bash
-	roslaunch rc110_teleop mouse_teleop.launch $${flags}
+	source $$(catkin locate rc110)/env/devel.bash
+	rosrun rc110 launch rc110_teleop mouse_teleop.launch $(ros_args)

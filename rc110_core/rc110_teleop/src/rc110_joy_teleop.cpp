@@ -28,18 +28,20 @@ bool isLeverAxis(const std::vector<double>& axis)
 }
 }  // namespace
 
-Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
-        m_drivePub(nh.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1))
+Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& handle, ros::NodeHandle& privateHandle) : m_handle(handle)
 {
-    pnh.param<int>("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
-    pnh.param<int>("gear_up_button", m_param.gearUpButton, m_param.gearUpButton);
-    pnh.param<int>("gear_down_button", m_param.gearDownButton, m_param.gearDownButton);
-    pnh.param<int>("board_button", m_param.boardButton, m_param.boardButton);
-    pnh.param<int>("ad_button", m_param.adButton, m_param.adButton);
-    pnh.param("steering", m_param.steering, m_param.steering);
-    pnh.param("steering_aux", m_param.steeringAuxiliary, m_param.steeringAuxiliary);
-    pnh.param("accel", m_param.accel, m_param.accel);
-    pnh.param<std::string>("base_frame_id", m_param.frameId, m_param.frameId);
+    privateHandle.param("base_dead_man_button", m_param.deadManButton, m_param.deadManButton);
+    privateHandle.param("gear_up_button", m_param.gearUpButton, m_param.gearUpButton);
+    privateHandle.param("gear_down_button", m_param.gearDownButton, m_param.gearDownButton);
+    privateHandle.param("board_button", m_param.boardButton, m_param.boardButton);
+    privateHandle.param("ad_button", m_param.adButton, m_param.adButton);
+    privateHandle.param("steering", m_param.steering, m_param.steering);
+    privateHandle.param("steering_aux", m_param.steeringAuxiliary, m_param.steeringAuxiliary);
+    privateHandle.param("accel", m_param.accel, m_param.accel);
+    privateHandle.param("rc", m_param.rc, m_param.rc);
+    privateHandle.param("base_frame_id", m_param.frameId, m_param.frameId);
+    std::vector<double> gears = privateHandle.param("gears", m_param.gears);
+    privateHandle.param("rate", m_param.rate, m_param.rate);
 
     updateAxis(m_param.steering, 28.0 * 1.3);  // by default, max value + 30% to being able to reach max easily
     updateAxis(m_param.accel, 1.0);
@@ -48,17 +50,25 @@ Rc110JoyTeleop::Rc110JoyTeleop(ros::NodeHandle& nh, ros::NodeHandle& pnh) :
         m_param.steeringAuxiliary = m_param.steering[AXIS_ID] - 1;
     }
 
-    std::vector<double> gears = pnh.param("gears", m_param.gears);
+    m_ns = "/" + m_param.rc;
+
     if (!gears.empty()) {
         m_param.gears = gears;
     }
+    m_timer = privateHandle.createTimer(ros::Duration(1 / m_param.rate),
+                                        [this](const ros::TimerEvent&) { publishDrive(); });
 
-    pnh.param("rate", m_param.rate, m_param.rate);
-    m_timer = pnh.createTimer(ros::Duration(1 / m_param.rate), [this](const ros::TimerEvent&) { publishDrive(); });
+    setupRosConnections();
+}
 
-    m_subscribers.push_back(nh.subscribe("joy", 1, &zmp::Rc110JoyTeleop::onJoy, this));
-    m_subscribers.push_back(nh.subscribe("robot_status", 1, &Rc110JoyTeleop::onRobotStatus, this));
-    m_subscribers.push_back(nh.subscribe("mux_drive/selected", 1, &Rc110JoyTeleop::onAdModeChanged, this));
+void Rc110JoyTeleop::setupRosConnections()
+{
+    m_subscribers.clear();
+    m_subscribers.push_back(m_handle.subscribe("joy", 1, &zmp::Rc110JoyTeleop::onJoy, this));  // node ns
+    m_subscribers.push_back(m_handle.subscribe(m_ns + "/robot_status", 1, &Rc110JoyTeleop::onRobotStatus, this));
+    m_subscribers.push_back(m_handle.subscribe(m_ns + "/mux_drive/selected", 1, &Rc110JoyTeleop::onAdModeChanged, this));
+
+    m_drivePublisher = m_handle.advertise<ackermann_msgs::AckermannDriveStamped>(m_ns + "/drive_manual", 1);
 }
 
 void Rc110JoyTeleop::updateAxis(std::vector<double>& axis, double defaultMax)
@@ -86,16 +96,16 @@ void Rc110JoyTeleop::publishDrive()
     if (m_param.deadManButton == -1) {
         // if dead man button deactivated, publish when there are motion commands in last 500 ms
         if ((ros::Time::now() - m_lastTime).toSec() < 0.5) {
-            m_drivePub.publish(m_driveMessage);
+            m_drivePublisher.publish(m_driveMessage);
         }
     } else if (m_joyMessage) {
         // if dead man button is activated, use it
         if (m_joyMessage->buttons[m_param.deadManButton]) {
-            m_drivePub.publish(m_driveMessage);
+            m_drivePublisher.publish(m_driveMessage);
             m_stopMessagePublished = false;
         } else if (!m_stopMessagePublished) {
             // and send additional stop message, immediately after button release
-            m_drivePub.publish(ackermann_msgs::AckermannDriveStamped());
+            m_drivePublisher.publish(ackermann_msgs::AckermannDriveStamped());
             m_stopMessagePublished = true;
         }
     }

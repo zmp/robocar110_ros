@@ -1,0 +1,20 @@
+<launch>
+    <arg name="joy_type" default="elecom"/>
+    <arg name="ns" default="$(env ROS_NAMESPACE)"/>
+
+    <include file="$(find rc110)/launch/common.launch">
+        <arg name="joy_type" value="$(arg joy_type)"/>
+    </include>
+
+    <!-- instantiate robot model in the world -->
+    <node pkg="gazebo_ros" type="spawn_model" name="robot_spawner"
+        args="-file $(find rc110)/models/rc110/model.sdf -sdf -model robocar110 -gazebo_namespace $(arg ns)/gazebo
+            -x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0" />
+
+    <!-- simulation of rc110_drive_control (more or less) -->
+    <node pkg="rc110_gazebo" type="rc110_gazebo" name="rc110_gazebo" required="true">
+        <param name="base_frame_id" value="$(env RC110_NAME)/base_link"/>
+        <param name="odom_frame_id" value="$(env RC110_NAME)/odom"/>
+        <param name="imu_frame_id" value="$(env RC110_NAME)/imu_link"/>
+    </node>
+</launch>

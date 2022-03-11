@@ -1,3 +1,7 @@
 <launch>
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find rc110_rviz)/rviz/main.rviz" />
+    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xml"/>
+    <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
+
+    <param name="robot_description" textfile="$(arg urdf_file)"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg config)"/>
 </launch>

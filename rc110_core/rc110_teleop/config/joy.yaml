@@ -1,3 +1,3 @@
-base_frame_id: base_link
+base_frame_id: $(env RC110_NAME)/base_link
 gears: [ 0.3, 0.6, 1.0 ]
 rate: 30.0

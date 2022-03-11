@@ -3,7 +3,7 @@ local_costmap:
     update_frequency: 1
     publish_frequency: 1
     global_frame: map
-    robot_base_frame: base_link
+    robot_base_frame: $(env RC110_NAME)/base_link
     width: 8.0
     height: 8.0
     resolution: 0.05
@@ -14,4 +14,4 @@ local_costmap:
 
     obstacle:
         observation_sources: scan
-        scan: {sensor_frame: front_lidar, data_type: LaserScan, topic: /front_lidar/scan, marking: true, clearing: true}
+        scan: {sensor_frame: $(env RC110_NAME)/front_lidar, data_type: LaserScan, topic: front_lidar/scan, marking: true, clearing: true}

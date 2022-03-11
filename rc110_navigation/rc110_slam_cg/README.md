@@ -18,7 +18,6 @@ make deps         # check dependencies
 make              # build
 make run          # run slam node
 make show         # show rviz
-make monitor      # show rviz on remote pc
 ```
 
 To save the map, while running SLAM node, execute:

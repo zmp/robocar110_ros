@@ -2,3 +2,6 @@
 
 # Enable services by default
 systemctl --global enable rc110
+
+# Deprecate rc110_launch in favor of rc110_system
+sed -i 's/rc110_launch/rc110_system/' ~/.config/rc110/service.conf

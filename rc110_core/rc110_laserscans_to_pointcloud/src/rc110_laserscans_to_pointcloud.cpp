@@ -46,12 +46,12 @@ void addUniquePoints(const sensor_msgs::PointCloud2& cloud,
 
 Rc110LaserScansToPointCloud::Rc110LaserScansToPointCloud()
 {
-    handlePrivate.param<std::string>("base_frame", baseFrame, BASE_FRAME_ID);
-    handlePrivate.param<std::string>("front_lidar_frame", frontLidarFrame, FRONT_LIDAR_FRAME_ID);
-    handlePrivate.param<std::string>("rear_lidar_frame", rearLidarFrame, REAR_LIDAR_FRAME_ID);
+    handlePrivate.param<std::string>("base_frame_id", baseFrameId, BASE_FRAME_ID);
+    handlePrivate.param<std::string>("front_lidar_frame_id", frontLidarFrameId, FRONT_LIDAR_FRAME_ID);
+    handlePrivate.param<std::string>("rear_lidar_frame_id", rearLidarFrameId, REAR_LIDAR_FRAME_ID);
 
-    frontTransformer.waitForTransform(baseFrame, frontLidarFrame, ros::Time(0), ros::Duration(5));
-    rearTransformer.waitForTransform(baseFrame, rearLidarFrame, ros::Time(0), ros::Duration(5));
+    frontTransformer.waitForTransform(baseFrameId, frontLidarFrameId, ros::Time(0), ros::Duration(5));
+    rearTransformer.waitForTransform(baseFrameId, rearLidarFrameId, ros::Time(0), ros::Duration(5));
 
     sync = std::make_unique<ApproxSync>(ApproxSyncPolicy(3), frontSubscriber, rearSubscriber);
     sync->registerCallback(&Rc110LaserScansToPointCloud::onScans, this);
@@ -78,15 +78,15 @@ void Rc110LaserScansToPointCloud::onConnect()
 void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::LaserScan::ConstPtr& front,
                                           const sensor_msgs::LaserScan::ConstPtr& rear)
 {
-    if (front->header.frame_id != frontLidarFrame || rear->header.frame_id != rearLidarFrame) {
+    if (front->header.frame_id != frontLidarFrameId || rear->header.frame_id != rearLidarFrameId) {
         ROS_ERROR_STREAM("Wrong scan frame id: " << front->header.frame_id << ", " << rear->header.frame_id);
         return;
     }
     float angleAllowance = front->angle_increment * 0.8;  // 80%
 
     sensor_msgs::PointCloud2 frontCloud, rearCloud;
-    projection.transformLaserScanToPointCloud(baseFrame, *front, frontCloud, frontTransformer);
-    projection.transformLaserScanToPointCloud(baseFrame, *rear, rearCloud, rearTransformer);
+    projection.transformLaserScanToPointCloud(baseFrameId, *front, frontCloud, frontTransformer);
+    projection.transformLaserScanToPointCloud(baseFrameId, *rear, rearCloud, rearTransformer);
 
     // unique and sorted by angle points (-pi, pi]
     std::map<float, std::vector<uint8_t>> points;

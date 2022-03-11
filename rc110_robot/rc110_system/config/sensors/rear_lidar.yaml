@@ -1,0 +1,12 @@
+port: "/dev/hokuyo_rear"
+frame_id: "$(env RC110_NAME)/rear_lidar"
+min_ang: -2.08
+max_ang: 2.08
+
+# hardware readonly specifications:
+# min_range: 0.02
+# max_range: 5.60
+# angle increment: 0.006283185307179587 [rad] ~ 0.36 [deg]
+# scan time: 0.1 [s]
+# number of samples: 678
+# ref: https://www.hokuyo-aut.jp/search/single.php?serial=166

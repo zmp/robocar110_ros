@@ -8,26 +8,18 @@ deps:
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	rosdep install -iry --from-paths .
 
-all:
+build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	$(MAKE) -C ../.. init-run
-	source $$(catkin locate --devel)/setup.bash
-	source ~/.config/rc110/service.conf
+	source $$(catkin locate rc110)/env/devel.bash
 	roslaunch rc110_slam_cg main.launch
 
 show:
-	source $$(catkin locate --devel)/setup.bash
-	rosrun rviz rviz -d rviz/rc110_slam_cg.rviz
-	# without roslaunch, so it worked also on remote host without building the package
-
-monitor:
-	$(MAKE) -C ../.. env
-	source $$(catkin locate)/env.sh
-	$(MAKE) show
+	source $$(catkin locate rc110)/env/devel.bash
+	rosrun rc110 launch rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_slam_cg.rviz
 
 # extra
 include mk/extra.mk

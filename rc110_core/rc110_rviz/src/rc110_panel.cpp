@@ -21,6 +21,8 @@ namespace zmp
 {
 namespace
 {
+constexpr char DEFAULT_NAME[] = "zmp";
+
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
 constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
 constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
@@ -51,6 +53,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 
     ui->splitter->setStretchFactor(0, 1);  // expand tree widget to maximum height
 
+    connect(ui->namespaceEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->boardButton, &QPushButton::clicked, this, &Rc110Panel::onEnableBoard);
     connect(ui->adButton, &QPushButton::clicked, this, &Rc110Panel::onEnableAd);
     connect(ui->motorGroup,
@@ -67,28 +70,6 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     connect(ui->calibrateButton, &QPushButton::clicked, this, &Rc110Panel::onCalibrate);
     connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
 
-    subscribers.push_back(handle.subscribe("mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
-
-    subscribers.push_back(handle.subscribe("motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
-    subscribers.push_back(handle.subscribe("steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
-
-    subscribers.push_back(handle.subscribe("baseboard_error", 1, &Rc110Panel::onError, this));
-    subscribers.push_back(handle.subscribe("robot_status", 1, &Rc110Panel::onRobotStatus, this));
-    subscribers.push_back(handle.subscribe("drive_status", 1, &Rc110Panel::onDriveStatus, this));
-    subscribers.push_back(handle.subscribe("offsets_status", 1, &Rc110Panel::onOffsets, this));
-
-    subscribers.push_back(handle.subscribe("odometry", 1, &Rc110Panel::onOdometry, this));
-    subscribers.push_back(handle.subscribe("servo_battery", 1, &Rc110Panel::onServoBattery, this));
-    subscribers.push_back(handle.subscribe("motor_battery", 1, &Rc110Panel::onMotorBattery, this));
-    subscribers.push_back(handle.subscribe("baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
-    subscribers.push_back(handle.subscribe("servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
-    subscribers.push_back(handle.subscribe("imu/data", 1, &Rc110Panel::onImu, this));
-    subscribers.push_back(handle.subscribe("motor_rate", 1, &Rc110Panel::onMotorRate, this));
-    subscribers.push_back(handle.subscribe("wheel_speeds", 1, &Rc110Panel::onWheelSpeeds, this));
-
-    publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_manual", 1);
-    publishers["offsets"] = handle.advertise<rc110_msgs::Offsets>("offsets", 1);
-
     statusBar->showMessage("");
 
     startTimer(100);  // ms
@@ -96,11 +77,59 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 
 Rc110Panel::~Rc110Panel() = default;
 
+void Rc110Panel::load(const rviz::Config& config)
+{
+    Panel::load(config);
+
+    QString name;
+    if (config.mapGetString("robot_name", &name)) {
+        ui->namespaceEdit->setText(name);
+        ns = "/" + name.toStdString();
+    } else {
+        ui->namespaceEdit->setText(DEFAULT_NAME);
+        ns = "/" + std::string(DEFAULT_NAME);
+    }
+    setupRosConnections();
+}
+
+void Rc110Panel::save(rviz::Config config) const
+{
+    Panel::save(config);
+
+    config.mapSetValue("robot_name", ui->namespaceEdit->text());
+}
+
 void Rc110Panel::timerEvent(QTimerEvent* event)
 {
     if (driveSpeed != 0) {
         publishDrive();  // prevent motor from stopping by timeout
     }
+}
+
+void Rc110Panel::setupRosConnections()
+{
+    subscribers.clear();
+    subscribers.push_back(handle.subscribe(ns + "/mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
+
+    subscribers.push_back(handle.subscribe(ns + "/motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
+    subscribers.push_back(handle.subscribe(ns + "/steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
+
+    subscribers.push_back(handle.subscribe(ns + "/baseboard_error", 1, &Rc110Panel::onError, this));
+    subscribers.push_back(handle.subscribe(ns + "/robot_status", 1, &Rc110Panel::onRobotStatus, this));
+    subscribers.push_back(handle.subscribe(ns + "/drive_status", 1, &Rc110Panel::onDriveStatus, this));
+    subscribers.push_back(handle.subscribe(ns + "/offsets_status", 1, &Rc110Panel::onOffsets, this));
+
+    subscribers.push_back(handle.subscribe(ns + "/odometry", 1, &Rc110Panel::onOdometry, this));
+    subscribers.push_back(handle.subscribe(ns + "/servo_battery", 1, &Rc110Panel::onServoBattery, this));
+    subscribers.push_back(handle.subscribe(ns + "/motor_battery", 1, &Rc110Panel::onMotorBattery, this));
+    subscribers.push_back(handle.subscribe(ns + "/baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
+    subscribers.push_back(handle.subscribe(ns + "/servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
+    subscribers.push_back(handle.subscribe(ns + "/imu/data", 1, &Rc110Panel::onImu, this));
+    subscribers.push_back(handle.subscribe(ns + "/motor_rate", 1, &Rc110Panel::onMotorRate, this));
+    subscribers.push_back(handle.subscribe(ns + "/wheel_speeds", 1, &Rc110Panel::onWheelSpeeds, this));
+
+    publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>(ns + "/drive_manual", 1);
+    publishers["offsets"] = handle.advertise<rc110_msgs::Offsets>(ns + "/offsets", 1);
 }
 
 QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) const
@@ -129,7 +158,7 @@ void Rc110Panel::onEnableBoard(bool on)
 {
     std_srvs::SetBool service;
     service.request.data = uint8_t(on);
-    ros::service::call("enable_board", service);
+    ros::service::call(ns + "/enable_board", service);
 
     statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(on ? "on" : "off")
                                                     : QString("Failed to set board state"),
@@ -141,7 +170,7 @@ void Rc110Panel::onEnableAd(bool on)
     topic_tools::MuxSelect service;
     service.request.topic = on ? "drive_ad" : "drive_manual";
 
-    if (ros::service::call("mux_drive/select", service)) {
+    if (ros::service::call(ns + "/mux_drive/select", service)) {
         statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", STATUS_MESSAGE_TIME);
     } else {
         statusBar->showMessage("Failed to switch AD mode", STATUS_MESSAGE_TIME);
@@ -155,7 +184,7 @@ void Rc110Panel::onSetMotorState(QAbstractButton* button)
                                                     : rc110_msgs::Status::MOTOR_OFF;
     rc110_msgs::SetInteger service;
     service.request.data = state;
-    ros::service::call("motor_state", service);
+    ros::service::call(ns + "/motor_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Drive motor was set to %1")
                                                               .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
@@ -172,7 +201,7 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
                                                     : rc110_msgs::Status::MOTOR_OFF;
     rc110_msgs::SetInteger service;
     service.request.data = state;
-    ros::service::call("servo_state", service);
+    ros::service::call(ns + "/servo_state", service);
 
     statusBar->showMessage(service.response.success ? QString("Servomotor was set to %1")
                                                               .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
@@ -185,14 +214,16 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
 void Rc110Panel::onEditingFinished()
 {
     if (auto edit = dynamic_cast<QLineEdit*>(sender())) {
-        float value = edit->text().toFloat();
-
         auto name = edit->objectName().toStdString();
-        if (name == "driveSpeedEdit") {
-            driveSpeed = value;
+
+        if (name == "namespaceEdit") {
+            ns = edit->text().toStdString();
+            setupRosConnections();
+        } else if (name == "driveSpeedEdit") {
+            driveSpeed = edit->text().toFloat();
             publishDrive();
         } else if (name == "steeringEdit") {
-            steeringAngle = value;
+            steeringAngle = edit->text().toFloat();
             publishDrive();
         } else if (name == "steeringOffsetEdit") {
             offsets.steering = ui->steeringOffsetEdit->text().toFloat();
@@ -271,10 +302,9 @@ void Rc110Panel::onSteeringAngle(const std_msgs::Float32& message)
 
 void Rc110Panel::showDriveGoalStatus()
 {
-    statusBar->showMessage(QString("Drive was updated. Speed: %1, Angle: %2")
-                                   .arg(ui->driveSpeedEdit->text())
-                                   .arg(ui->steeringEdit->text()),
-                           STATUS_MESSAGE_TIME);
+    statusBar->showMessage(
+            QString("Drive was updated. Speed: %1, Angle: %2").arg(ui->driveSpeedEdit->text(), ui->steeringEdit->text()),
+            STATUS_MESSAGE_TIME);
 }
 
 void Rc110Panel::onError(const rc110_msgs::BaseboardError& message)
@@ -342,11 +372,11 @@ void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
                    "Accel Y:\t\t %3\n"
                    "Accel Z:\t\t %4\n"
                    "Gyro Yaw:\t %5\n";
-    ui->offsetsLabel->setText(text.arg(printSensor(message.motor_current * 1000, "mA", 4))
-                                      .arg(printSensor(message.accel_x, "m/s²", 4))
-                                      .arg(printSensor(message.accel_y, "m/s²", 4))
-                                      .arg(printSensor(message.accel_z, "m/s²", 4))
-                                      .arg(printSensor(message.gyro * RAD_TO_DEG, "°/s", 4)));
+    ui->offsetsLabel->setText(text.arg(printSensor(message.motor_current * 1000, "mA", 4),
+                                       printSensor(message.accel_x, "m/s²", 4),
+                                       printSensor(message.accel_y, "m/s²", 4),
+                                       printSensor(message.accel_z, "m/s²", 4),
+                                       printSensor(message.gyro * RAD_TO_DEG, "°/s", 4)));
 
     ui->steeringOffsetEdit->setText(QString::number(message.steering));
 

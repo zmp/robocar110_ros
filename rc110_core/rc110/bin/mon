@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Run roscore with client, if it's not already running.
+if ! rosnode list &>/dev/null
+then
+	trap 'kill $(jobs -p); wait' EXIT  # kill background jobs on exit and wait for them to stop
+	roslaunch --log rc110 multimaster.launch &
+fi
+
+# Wrap mon call.
+rosrun rosmon rosmon "$@"

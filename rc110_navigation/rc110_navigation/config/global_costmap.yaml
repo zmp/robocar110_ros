@@ -3,7 +3,7 @@ global_costmap:
     update_frequency: 0.5
     publish_frequency: 0.5
     global_frame: map
-    robot_base_frame: base_link
+    robot_base_frame: $(env RC110_NAME)/base_link
     width: 20
     height: 20
     resolution: 0.1

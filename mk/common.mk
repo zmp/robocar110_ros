@@ -1,11 +1,29 @@
-.DEFAULT_GOAL := all
 .ONESHELL:
+.DEFAULT_GOAL := build
 .SHELLFLAGS := -ec
 SHELL := /bin/bash
 
 ROS_DISTRO ?= melodic
 
-# Faster build using all cores on tegra
+# Returns whether roscore is stopped.
+roscore_stopped = $(shell rosnode list &>/dev/null && echo false || echo true)
+
+# Convert makefile variables to roslaunch arguments.
+ros_args = $(shell \
+  with_vars=$$(grep ' \-- ' <<< "$(MAKEFLAGS)" || true); \
+  vars=$${with_vars\#* -- }; \
+  echo $${vars//'='/':='} \
+)
+# Explanation:
+# 1. get only flags containing --
+# 2. remove flags before --
+# 3. replace = with :=
+#
+# Same can be done by make only:
+# ros_args = $(and $(findstring $() -- $(),$(MAKEFLAGS)),$(subst =,:=,$(subst ?, ,$(lastword $(subst ?--?, ,$(subst $() $(),?,$(MAKEFLAGS)))))))
+#
+
+# Faster build using all cores on tegra.
 define build
 (
 	if [ -x "$$(command -v nvpmodel)" ]  # if there's nvpmodel command,
@@ -23,11 +41,4 @@ define build
 	fi
 	catkin build ${1} --cmake-args ${2}
 )
-endef
-
-# Get flags that follow target name
-#     param: 1 - variable to store flags
-define get_flags
-	$(1)=$$(grep '\--' <<< "$(MAKEFLAGS)" || true)  # get only flags containing --
-	$(1)=$${$(1)#* -- }                     # remove flags before --
 endef

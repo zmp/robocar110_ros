@@ -48,10 +48,14 @@ public:
     explicit Rc110Panel(QWidget* parent = nullptr);
     ~Rc110Panel() override;
 
+    void load(const rviz::Config& config) override;
+    void save(rviz::Config config) const override;
+
 protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
+    void setupRosConnections();
     QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
 
     void onEnableBoard(bool on);
@@ -92,6 +96,7 @@ private:
     QTimer* calibrationTimer;
     QMap<QString, QPair<int, float>> calibrationSums;
 
+    std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;
     float steeringAngle = 0;
     rc110_msgs::Offsets offsets = {};

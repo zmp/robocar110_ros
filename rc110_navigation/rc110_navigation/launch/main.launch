@@ -1,19 +1,19 @@
 <launch>
-    <node name="map_server" pkg="map_server" type="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
+    <node pkg="map_server" type="map_server" name="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
         <remap from="cloud_in" to="points2"/>
     </node>
 
     <node pkg="amcl" type="amcl" name="amcl" output="screen">
-        <rosparam file="$(find rc110_navigation)/config/amcl.yaml" subst_value="true" />
+        <rosparam file="$(find rc110_navigation)/config/amcl.yaml" subst_value="true"/>
     </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
-        <rosparam file="$(find rc110_navigation)/config/move_base.yaml" command="load" />
-        <rosparam file="$(find rc110_navigation)/config/local_costmap.yaml" command="load" />
-        <rosparam file="$(find rc110_navigation)/config/global_costmap.yaml" command="load" />
-        <rosparam file="$(find rc110_navigation)/config/planners.yaml" command="load" />
+        <rosparam file="$(find rc110_navigation)/config/move_base.yaml" subst_value="true"/>
+        <rosparam file="$(find rc110_navigation)/config/local_costmap.yaml" subst_value="true"/>
+        <rosparam file="$(find rc110_navigation)/config/global_costmap.yaml" subst_value="true"/>
+        <rosparam file="$(find rc110_navigation)/config/planners.yaml" subst_value="true"/>
     </node>
 
     <node pkg="rc110_twist_to_ackermann" type="rc110_twist_to_ackermann" name="twist_to_ackermann" />
