@@ -1,17 +1,10 @@
 <launch>
     <arg name="config_dir" default="$(find rc110)/config"/>
-    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xml"/>
-    <arg name="joy_type" default="elecom"/>
+    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
+    <arg name="tf_prefix" default="$(env RC110_NAME)"/>
 
-    <param name="robot_description" textfile="$(arg urdf_file)"/>
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
-        <param name="tf_prefix" value="$(env RC110_NAME)"/>
-    </node>
-
-    <include file="$(find rc110_teleop)/launch/teleop.launch">
-        <arg name="name" value="joy_main"/>
-        <arg name="joy_type" value="$(arg joy_type)"/>
-    </include>
+    <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg tf_prefix)/"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="tf_publisher"/>
 
     <!-- Switching between joystick and AD.
       By default drive_manual topic is mapped to drive.

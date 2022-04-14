@@ -44,12 +44,11 @@ void addUniquePoints(const sensor_msgs::PointCloud2& cloud,
 }
 }  // namespace
 
-Rc110LaserScansToPointCloud::Rc110LaserScansToPointCloud()
+Rc110LaserScansToPointCloud::Rc110LaserScansToPointCloud() :
+        baseFrameId(ros::param::param<std::string>("~base_frame_id", BASE_FRAME_ID)),
+        frontLidarFrameId(ros::param::param<std::string>("~front_lidar_frame_id", FRONT_LIDAR_FRAME_ID)),
+        rearLidarFrameId(ros::param::param<std::string>("~rear_lidar_frame_id", REAR_LIDAR_FRAME_ID))
 {
-    handlePrivate.param<std::string>("base_frame_id", baseFrameId, BASE_FRAME_ID);
-    handlePrivate.param<std::string>("front_lidar_frame_id", frontLidarFrameId, FRONT_LIDAR_FRAME_ID);
-    handlePrivate.param<std::string>("rear_lidar_frame_id", rearLidarFrameId, REAR_LIDAR_FRAME_ID);
-
     frontTransformer.waitForTransform(baseFrameId, frontLidarFrameId, ros::Time(0), ros::Duration(5));
     rearTransformer.waitForTransform(baseFrameId, rearLidarFrameId, ros::Time(0), ros::Duration(5));
 

@@ -14,10 +14,9 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	roslaunch rc110_object_detection rc110_object_detection_node.launch
+	source $$(catkin locate rc110)/auto_setup.bash
+	roslaunch --wait rc110_object_detection rc110_object_detection_node.launch
 
 show:
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosrun rviz rviz -d rviz/rc110_object_detection_node.rviz
-	# without roslaunch, so it worked also on remote host without building the package
+	source $$(catkin locate rc110)/auto_setup.bash
+	roslaunch --wait rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_object_detection_node.rviz

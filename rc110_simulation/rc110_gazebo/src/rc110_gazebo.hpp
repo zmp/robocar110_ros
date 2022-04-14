@@ -17,8 +17,6 @@ class Rc110Gazebo
 public:
     struct Parameters {
         std::string baseFrameId;
-        std::string odomFrameId;
-        std::string imuFrameId;
         double rate;  // Hz
     };
 
@@ -41,7 +39,6 @@ private:
 
 private:
     ros::NodeHandle handle;
-    ros::NodeHandle handlePrivate;
     Parameters parameters;
     std::vector<ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;

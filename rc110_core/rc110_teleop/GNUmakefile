@@ -14,9 +14,9 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	rosrun rc110 launch rc110_teleop teleop.launch $(ros_args)
+	source $$(catkin locate rc110)/host_setup.bash
+	roslaunch --wait rc110_teleop teleop.launch $(ros_args)
 
 mouse:
-	source $$(catkin locate rc110)/env/devel.bash
-	rosrun rc110 launch rc110_teleop mouse_teleop.launch $(ros_args)
+	source $$(catkin locate rc110)/auto_setup.bash
+	roslaunch --wait rc110_teleop mouse_teleop.launch $(ros_args)

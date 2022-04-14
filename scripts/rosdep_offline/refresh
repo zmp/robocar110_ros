@@ -1,6 +1,6 @@
 #!/bin/bash
 
-script_dir=$(dirname "$0")
+script_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 mkdir -p "${script_dir}/config/melodic"
 
 curl https://raw.githubusercontent.com/ros/rosdistro/master/index-v4.yaml -o "${script_dir}/config/index-v4.yaml"

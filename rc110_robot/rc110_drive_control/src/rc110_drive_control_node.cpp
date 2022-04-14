@@ -15,11 +15,8 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "rc110_drive_control");
 
-    ros::NodeHandle nh;
-    ros::NodeHandle nhPrivate("~");
-
     try {
-        Rc110DriveControl node(nh, nhPrivate);
+        Rc110DriveControl node;
 
         ros::spin();
     } catch (std::exception& ex) {

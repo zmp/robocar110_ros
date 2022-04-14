@@ -36,7 +36,6 @@ private:
 
 private:
     ros::NodeHandle handle;
-    ros::NodeHandle handlePrivate = ros::NodeHandle("~");
     std::string baseFrameId, frontLidarFrameId, rearLidarFrameId;
     laser_geometry::LaserProjection projection;
     std::unique_ptr<ApproxSync> sync;

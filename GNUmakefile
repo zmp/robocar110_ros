@@ -12,16 +12,19 @@ define help_text
 
 GNUmakefile provides the following targets for make:
 
+	help                      Show this messsage
 	version                   Show current versions of source and packages
 	ros-install               ROS installation
 	ros-source                Add ros environment to .bashrc (so commands like rostopic worked)
 
 	init-deps-offline         Offline deps initialization, if github files download gives error (apt still needed)
 	clean-deps                Clean any previous rosdep configuration in /etc/ros/rosdep/
-	deps                      Install dependencies for rc110_core
+	deps                      Install dependencies for robot
+	deps-remote               Install dependencies for remote PC
 	deps-%                    Install dependencies for %
 
-	build (empty)             Build main robot nodes
+	build (default)           Build main robot nodes
+	remote                    Build nodes for remote PC
 	%                         Build %
 	package                   Create deb packages in build/ directory
 	install                   Install the packages to system
@@ -36,13 +39,14 @@ GNUmakefile provides the following targets for make:
 
 	run                       Run rc110_robot from build (Don't forget to stop system nodes first!)
 	run-%                     Run % node from build
-	show                      Show general RViz on robot
-	show-%                    Show % RViz on robot
+	show                      Show general RViz
+	show-%                    Show % RViz
 
 	sync                      Synchronize nodes of network in a separate terminal
 	node-manager              Show Node Manager
 	run-teleop                Run joystick [rc=zmp name=joy device=js0 joy_type=elecom|ps5|logicool]
 	mouse-teleop              Mouse instead of joystick [rc=zmp]
+	run-model                 Run additional gazebo model [id=123abc]
 
 	save-map-he               Save Hector SLAM map [map_name=map]
 	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
@@ -166,9 +170,9 @@ install: package
 	cd $$(catkin locate --build)
 	sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
 	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
-	sudo apt-mark auto 'ros-melodic-rc110-*'  # single quoted, to avoid file expansion
-	sudo apt-mark manual ros-melodic-rc110-system
-	sudo apt-mark manual ros-melodic-rc110-rviz
+	sudo apt-mark auto ros-${ROS_DISTRO}-rc110-'*'  # single quoted, to avoid file expansion
+	sudo apt-mark manual ros-${ROS_DISTRO}-rc110-system
+	sudo apt-mark manual ros-${ROS_DISTRO}-rc110-rviz
 	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
 
 # Self-extracting archive with core packages.
@@ -195,19 +199,18 @@ clean:
 
 # Run nodes built from source.
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	source $$(catkin locate rc110)/env/config.bash
-	rosrun rc110 launch rc110_system robot.launch $${RC110_ARGS} $(ros_args)
+	source $$(catkin locate rc110)/host_setup.bash
+	roslaunch --wait rc110_system robot.launch $${RC110_ARGS} $(ros_args)
 
-# Roscore multimaster nodes synchronization.
+# Roscore multimaster nodes synchronization in a separate terminal (may reduce launch time).
 sync:
-	source $$(catkin locate rc110)/env/devel.bash
-	roslaunch rc110 multimaster.launch $(ros_args)
+	source $$(catkin locate rc110)/host_setup.bash
+	wait
 
 # Run multimaster node manager.
 node-manager:
-	source $$(catkin locate rc110)/env/devel.bash
-	rosrun rc110 launch rc110 node_manager.launch
+	source $$(catkin locate rc110)/host_setup.bash
+	roslaunch --wait rc110 node_manager.launch
 
 # == additional targets ==
 

@@ -13,12 +13,16 @@ This package contains components for simulation of RC 1/10 in Gazebo with drive 
 ```
 make deps         # check dependencies
 make              # build
-make run          # run simulation  (If it's run on robot, from robocar110_ros/, please, run: make stop) 
-make show         # show rviz  (At first from robocar110_ros/, you need to run: make rviz)
+make run          # run simulation 
+make show         # show rviz
 
-make run use_gui=false      # run without gazebo gui
 make run joy_type=logicool  # run with different joystick
+make run use_gui=false      # run without gazebo gui
+make run n=2                # number of models (0..5)
+make show n=2               # rviz for n models (1..2)
 ```
+
+The model names are **"grcN"**. Selecting name is described in [**this document**](../../docs/RuntimeDetails.md#Robot Selection).
 
 ## Subscribed Topics
 

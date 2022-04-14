@@ -9,11 +9,13 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>angles</build_depend>
 
+  <depend>yaml-cpp</depend>
   <depend>roscpp</depend>
   <depend>std_srvs</depend>
   <depend>topic_tools</depend>
   <depend>ackermann_msgs</depend>
   <depend>sensor_msgs</depend>
+  <depend>param_tools</depend>
   <depend>rc110_msgs</depend>
 
   <exec_depend>joy</exec_depend>

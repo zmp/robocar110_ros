@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /usr/lib/systemd/user/rc110-prepare.sh
+source /opt/ros/@ROS_DISTRO@/rc_setup.bash
 
 echo "Starting roscore with ROS_HOSTNAME=${ROS_HOSTNAME}"
 

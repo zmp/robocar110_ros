@@ -3,7 +3,7 @@
  *
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  *
- * Written by btran
+ * Written by btran, Andrei Pak
  */
 
 #pragma once
@@ -17,6 +17,7 @@
 
 #include <map>
 #include <mutex>
+#include <param_tools/subscriber.hpp>
 #include <string>
 #include <vector>
 
@@ -30,29 +31,40 @@ class Rc110JoyTeleop
 {
 public:
     struct Param {
+        std::string rc = "zmp";
+        std::string frameId = "base_link";
+        std::vector<double> gears = {0.3, 0.6, 1.0};
+        double rate = 30.0;  // Hz
+        std::string joyType;
+        std::map<std::string, std::string> joyTypes;
+
+        // dynamic
         int deadManButton = 4;
+        int nextRobotButton = 5;
         int gearUpButton = 6;
         int gearDownButton = 7;
         int boardButton = 10;
         int adButton = 11;
         std::vector<double> steering = {3};
-        int steeringAuxiliary = -1;  // auxiliary axis for better precision
+        int steeringAuxiliary = 2;  // auxiliary axis for better precision
         std::vector<double> accel = {1};
-
-        std::string rc;
-        std::string frameId = "base_link";
-        std::vector<double> gears = {0.3, 0.6, 1.0};
-        double rate = 30.0;  // Hz
     };
 
 public:
-    Rc110JoyTeleop(ros::NodeHandle& handle, ros::NodeHandle& privateHandle);
+    Rc110JoyTeleop();
 
 private:
+    void setupJoystick(const std::string& device);
+    std::string getJoyType(const std::string& device);
+    std::string joyNameToType(const std::string& joyName);
     void setupRosConnections();
     void updateAxis(std::vector<double>& axis, double defaultMax);
     void publishDrive();
     void updateToggles(const sensor_msgs::Joy::ConstPtr& message);
+    void onRobotNameTimer();
+    void incrementRobotName();
+    void setupRobotName(const std::string& name);
+    void publishRobotName();
     bool checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button);
     bool checkAxisChanged(const sensor_msgs::Joy::ConstPtr& message, int axis);
     float getAxisValue(const sensor_msgs::Joy::ConstPtr& message, int axis);
@@ -63,15 +75,15 @@ private:
     void onAdModeChanged(const std_msgs::String& message);
 
 private:
+    ros::NodeHandle handle;
     Param m_param;
-    std::string m_ns;
-    ros::NodeHandle m_handle;
 
-    std::vector<ros::Subscriber> m_subscribers;
-    ros::Publisher m_drivePublisher;
+    param_tools::Subscriber rcSubscriber;
+    std::map<std::string, ros::Subscriber> subscribers;
+    std::map<std::string, ros::Publisher> publishers;
     sensor_msgs::Joy::ConstPtr m_joyMessage;
     ackermann_msgs::AckermannDriveStamped m_driveMessage;
-    ros::Timer m_timer;
+    ros::Timer driveTimer, nextRobotTimer;
     ros::Time m_lastTime;
     std::map<int, int> m_axisDirection;   /// +1 or -1 for inverted axis
     std::map<int, bool> m_axisActivated;  /// joy_node workaround
@@ -79,5 +91,8 @@ private:
     bool m_stopMessagePublished = false;
     bool m_boardEnabled = false;
     bool m_adEnabled = false;
+    std::string joyDevice = "/dev/<unset>";
+    std::string selectedRobot;
+    ros::V_string robotNames;
 };
 }  // namespace zmp

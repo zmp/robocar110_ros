@@ -26,14 +26,12 @@ const Eigen::AlignedBox2f rightBox = {Eigen::Vector2f(0.5f, -0.35f), Eigen::Vect
 }  // namespace
 
 Rc110Behavior::Rc110Behavior() :
-        handle(),
         cloudSubscriber(handle.subscribe("points2", 1, &Rc110Behavior::onCloud, this)),
-        drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1))
+        drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1)),
+        forwardCommand(ros::param::param("~forward_command", forwardCommand)),
+        leftCommand(ros::param::param("~left_command", leftCommand)),
+        rightCommand(ros::param::param("~right_command", rightCommand))
 {
-    ros::NodeHandle privateHandle("~");
-    privateHandle.param("forward_command", forwardCommand, forwardCommand);
-    privateHandle.param("left_command", leftCommand, leftCommand);
-    privateHandle.param("right_command", rightCommand, rightCommand);
 }
 
 void Rc110Behavior::onCloud(const sensor_msgs::PointCloud2& cloud)

@@ -14,16 +14,16 @@
   <depend>topic_tools</depend>
   <depend>ackermann_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>param_tools</depend>
   <depend>rc110_msgs</depend>
   <depend>sensor_msgs</depend>
 
-  <!-- Needed for camera in rviz -->
-  <exec_depend>compressed_image_transport</exec_depend>
-
+  <exec_depend>compressed_image_transport</exec_depend>  <!-- Needed for camera in rviz -->
   <exec_depend>rviz_imu_plugin</exec_depend>
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
+  <exec_depend>multirelay</exec_depend>
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>

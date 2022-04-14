@@ -49,7 +49,7 @@
         <visualize>false</visualize>
         <topic>__default_topic__</topic>
         <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
-          <topicName>imu/data</topicName>
+          <topicName>imu/data_gz</topicName>
           <bodyName>imu_link</bodyName>
           <updateRateHZ>10.0</updateRateHZ>
           <gaussianNoise>0.0</gaussianNoise>

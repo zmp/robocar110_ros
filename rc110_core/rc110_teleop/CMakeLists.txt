@@ -2,14 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 project(rc110_teleop VERSION 1.8.0)
 
 find_package(catkin REQUIRED COMPONENTS
+        ackermann_msgs
         angles
+        param_tools
+        rc110_msgs
         roscpp
+        roslib
+        sensor_msgs
         std_srvs
         topic_tools
-        ackermann_msgs
-        rc110_msgs
-        sensor_msgs
 )
+find_package(yaml-cpp REQUIRED)
 
 catkin_package()
 
@@ -22,8 +25,8 @@ add_dependencies(rc110_joy_teleop
         ${catkin_EXPORTED_TARGETS}
 )
 target_compile_features(rc110_joy_teleop PUBLIC cxx_std_17)
-target_include_directories(rc110_joy_teleop SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
-target_link_libraries(rc110_joy_teleop ${catkin_LIBRARIES})
+target_include_directories(rc110_joy_teleop SYSTEM PUBLIC ${catkin_INCLUDE_DIRS} ${YAML_INCLUDE_DIRS})
+target_link_libraries(rc110_joy_teleop ${catkin_LIBRARIES} yaml-cpp)
 
 install(TARGETS rc110_joy_teleop
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -42,4 +45,5 @@ endforeach()
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
+set(RC110_DEP.param_tools ros-$ENV{ROS_DISTRO}-param-tools)
 include(../../cmake/rc110_cpack.cmake)

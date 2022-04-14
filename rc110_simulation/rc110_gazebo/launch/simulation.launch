@@ -1,21 +1,29 @@
 <launch>
-    <arg name="joy_type" default="elecom"/>
+    <arg name="joy_type" default=""/>
     <arg name="use_gui" default="true"/>
     <arg name="root" default="$(find rc110_gazebo)"/>
-    <arg name="world" default="worlds/maze.world"/>
+    <arg name="world" default="worlds/zmp.world"/>
+    <arg name="n" default="1"/>
 
-    <env name="GAZEBO_RESOURCE_PATH" value="$(arg root)"/>
-    <env name="GAZEBO_MODEL_PATH" value="$(arg root)/models"/>
+    <include file="$(dirname)/world.launch" pass_all_args="true"/>
 
-    <!-- launch gazebo world -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(arg world)" />
-        <arg name="gui" value="$(arg use_gui)" />
-        <arg name="verbose" value="true" />
+    <include if="$(eval arg('n') >= 1)" file="$(dirname)/model.launch">
+        <arg name="id" value="1"/>
     </include>
-
-    <!-- launch robot model -->
-    <include file="$(find rc110_gazebo)/launch/model.launch">
-        <arg name="joy_type" value="$(arg joy_type)"/>
+    <include if="$(eval arg('n') >= 2)" file="$(dirname)/model.launch">
+        <arg name="id" value="2"/>
+        <arg name="y" value="-0.3"/>
+    </include>
+    <include if="$(eval arg('n') >= 3)" file="$(dirname)/model.launch">
+        <arg name="id" value="3"/>
+        <arg name="y" value="0.3"/>
+    </include>
+    <include if="$(eval arg('n') >= 4)" file="$(dirname)/model.launch">
+        <arg name="id" value="4"/>
+        <arg name="y" value="-0.6"/>
+    </include>
+    <include if="$(eval arg('n') >= 5)" file="$(dirname)/model.launch">
+        <arg name="id" value="5"/>
+        <arg name="y" value="0.6"/>
     </include>
 </launch>

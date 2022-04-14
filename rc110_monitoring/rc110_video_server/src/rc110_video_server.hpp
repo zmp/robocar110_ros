@@ -46,8 +46,6 @@ private:
 
 private:
     ros::NodeHandle handle;
-    ros::NodeHandle handlePrivate;
-
     Parameters parameters;
     std::string portString;
     char* portPointer;  // valid pointer is needed for GOptionEntry

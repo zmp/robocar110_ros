@@ -14,6 +14,8 @@
 #include <QStatusBar>
 #include <QTimer>
 #include <boost/math/constants/constants.hpp>
+#include <param_tools/param_tools.hpp>
+#include <regex>
 
 #include "ui_rc110_panel.h"
 
@@ -21,18 +23,35 @@ namespace zmp
 {
 namespace
 {
-constexpr char DEFAULT_NAME[] = "zmp";
-
 constexpr float RAD_TO_DEG = boost::math::float_constants::radian;
 constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
 constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
 
 constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
 
+bool globalRobotSelected = false;
+
 QString printSensor(float value, const QString& suffix, int precision = 2)
 {
     return (value < 0 ? QString("%1 ").arg(value, -10, 'f', precision) : QString(" %1 ").arg(value, -9, 'f', precision)) +
            suffix;
+}
+
+QStringList getRobotNames()
+{
+    ros::V_string nodeNames;
+    ros::master::getNodes(nodeNames);
+
+    static const std::regex expression("/(.*)/tf_publisher$");
+
+    QStringList robotNames;
+    for (const auto& nodeName : nodeNames) {
+        std::smatch match;
+        if (std::regex_match(nodeName, match, expression); match.size()) {
+            robotNames << match[1].str().c_str();
+        }
+    }
+    return robotNames;
 }
 }  // namespace
 
@@ -53,7 +72,8 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
 
     ui->splitter->setStretchFactor(0, 1);  // expand tree widget to maximum height
 
-    connect(ui->namespaceEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->robotNameCombo, qOverload<int>(&QComboBox::activated), this, &Rc110Panel::onRobotNameChanged);
+    connect(ui->robotSelectedButton, &QPushButton::clicked, this, &Rc110Panel::onRobotSelectedButton);
     connect(ui->boardButton, &QPushButton::clicked, this, &Rc110Panel::onEnableBoard);
     connect(ui->adButton, &QPushButton::clicked, this, &Rc110Panel::onEnableAd);
     connect(ui->motorGroup,
@@ -71,8 +91,6 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
 
     statusBar->showMessage("");
-
-    startTimer(100);  // ms
 }
 
 Rc110Panel::~Rc110Panel() = default;
@@ -81,28 +99,68 @@ void Rc110Panel::load(const rviz::Config& config)
 {
     Panel::load(config);
 
+    // Fill robot names combobox, and load last name there.
     QString name;
-    if (config.mapGetString("robot_name", &name)) {
-        ui->namespaceEdit->setText(name);
-        ns = "/" + name.toStdString();
-    } else {
-        ui->namespaceEdit->setText(DEFAULT_NAME);
-        ns = "/" + std::string(DEFAULT_NAME);
+    config.mapGetString("robot_name", &name);
+    updateRobotNames(name);
+
+    // Subscribe to robot name parameter selection, and select it the first time if parameter was set.
+    rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
+        setupRobotName(value);
+    });
+
+    // If robot was not selected, then try to do it from one of the panels.
+    if (!globalRobotSelected) {
+        globalRobotSelected = true;
+
+        if (selectedRobot.isEmpty() && robotNames.size()) {
+            auto firstRc = robotNames.front().toStdString();
+            publishRobotName(firstRc);
+        }
     }
-    setupRosConnections();
+
+    startTimer(100);  // ms
 }
 
 void Rc110Panel::save(rviz::Config config) const
 {
     Panel::save(config);
 
-    config.mapSetValue("robot_name", ui->namespaceEdit->text());
+    config.mapSetValue("robot_name", ui->robotNameCombo->currentText());
 }
 
 void Rc110Panel::timerEvent(QTimerEvent* event)
 {
     if (driveSpeed != 0) {
         publishDrive();  // prevent motor from stopping by timeout
+    }
+
+    static int counter = 0;
+    if (++counter % 10 == 0) {
+        updateRobotNames(ui->robotNameCombo->currentText());
+    }
+}
+
+void Rc110Panel::updateRobotNames(const QString& currentName)
+{
+    auto newRobotNames = getRobotNames();
+    if (robotNames != newRobotNames) {
+        robotNames = newRobotNames;
+
+        ui->robotNameCombo->clear();
+        ui->robotNameCombo->addItems(robotNames);
+        ui->robotNameCombo->setCurrentText(currentName);
+
+        onRobotNameChanged();
+    }
+}
+
+void Rc110Panel::setupRobotName(const std::string& name)
+{
+    QString qName = name.c_str();
+    if (selectedRobot != qName) {
+        selectedRobot = qName;
+        ui->robotSelectedButton->setChecked(selectedRobot == ui->robotNameCombo->currentText());
     }
 }
 
@@ -152,6 +210,27 @@ QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) 
         treeItems[group]->setExpanded(true);
     }
     return item;
+}
+
+void Rc110Panel::onRobotSelectedButton(bool on)
+{
+    auto currentRobot = ui->robotNameCombo->currentText();
+    if (on) {
+        if (selectedRobot != currentRobot) {
+            selectedRobot = std::move(currentRobot);
+            publishRobotName(selectedRobot.toStdString());
+        }
+    } else {
+        if (selectedRobot == currentRobot) {
+            for (const auto& robot : robotNames) {
+                if (selectedRobot != robot) {
+                    selectedRobot = robot;
+                    publishRobotName(selectedRobot.toStdString());
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void Rc110Panel::onEnableBoard(bool on)
@@ -211,15 +290,23 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
                            STATUS_MESSAGE_TIME);
 }
 
+void Rc110Panel::onRobotNameChanged(int)
+{
+    auto robotName = ui->robotNameCombo->currentText();
+    auto newNs = robotName.isEmpty() ? "" : "/" + robotName.toStdString();
+    if (ns != newNs) {
+        ns = newNs;
+        setupRosConnections();
+    }
+    ui->robotSelectedButton->setChecked(selectedRobot == robotName);
+}
+
 void Rc110Panel::onEditingFinished()
 {
     if (auto edit = dynamic_cast<QLineEdit*>(sender())) {
         auto name = edit->objectName().toStdString();
 
-        if (name == "namespaceEdit") {
-            ns = edit->text().toStdString();
-            setupRosConnections();
-        } else if (name == "driveSpeedEdit") {
+        if (name == "driveSpeedEdit") {
             driveSpeed = edit->text().toFloat();
             publishDrive();
         } else if (name == "steeringEdit") {
@@ -267,6 +354,11 @@ void Rc110Panel::onFinishCalibration()
 
     ui->calibrateButton->setEnabled(true);
     QApplication::restoreOverrideCursor();
+}
+
+void Rc110Panel::publishRobotName(const std::string& name)
+{
+    param_tools::instance().publish("/selected_rc", name);
 }
 
 void Rc110Panel::publishDrive()
@@ -466,7 +558,6 @@ void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
     getTreeItem(OTHER, "wheel speed RL")->setText(1, printSensor(wheelSpeeds.speed_rl, "m/s"));
     getTreeItem(OTHER, "wheel speed RR")->setText(1, printSensor(wheelSpeeds.speed_rr, "m/s"));
 }
-
 }  // namespace zmp
 
 #include <pluginlib/class_list_macros.h>

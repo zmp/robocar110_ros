@@ -6,7 +6,7 @@ Systemd service files allow to start robot during system startup.
 
 ## Configuration
 
-You can find configuration in `~/.config/rc110/service.conf`
+You can find configuration in `~/.config/rc110/config.bash`
 
 * It's possible to chage roslaunch arguments with `RC110_ARGS` variable.
 * Also, you can change the default launch command through `RC110_LAUNCH_COMMAND` variable.

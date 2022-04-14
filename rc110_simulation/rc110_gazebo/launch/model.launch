@@ -1,20 +1,15 @@
 <launch>
-    <arg name="joy_type" default="elecom"/>
-    <arg name="ns" default="$(env ROS_NAMESPACE)"/>
+    <arg name="rc_prefix" default="$(optenv RC110_PREFIX grc)"/>
+    <arg name="id" default=""/>
+    <arg name="rc" default="$(arg rc_prefix)$(arg id)"/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
 
-    <include file="$(find rc110)/launch/common.launch">
-        <arg name="joy_type" value="$(arg joy_type)"/>
-    </include>
+    <env name="RC110_GAZEBO_NS" value="$(env ROS_NAMESPACE)"/>
+    <env name="RC110_NAME" value="$(arg rc)"/>
+    <env name="ROS_NAMESPACE" value="/$(arg rc)"/>
 
-    <!-- instantiate robot model in the world -->
-    <node pkg="gazebo_ros" type="spawn_model" name="robot_spawner"
-        args="-file $(find rc110)/models/rc110/model.sdf -sdf -model robocar110 -gazebo_namespace $(arg ns)/gazebo
-            -x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0" />
-
-    <!-- simulation of rc110_drive_control (more or less) -->
-    <node pkg="rc110_gazebo" type="rc110_gazebo" name="rc110_gazebo" required="true">
-        <param name="base_frame_id" value="$(env RC110_NAME)/base_link"/>
-        <param name="odom_frame_id" value="$(env RC110_NAME)/odom"/>
-        <param name="imu_frame_id" value="$(env RC110_NAME)/imu_link"/>
-    </node>
+    <!-- ROS_NAMESPACE can be applied only before calling roslaunch, so we need roslaunch in roslaunch. -->
+    <node pkg="rc110" type="launch" name="launch_$(arg rc)" output="screen"
+            args="$(dirname)/model_impl.launch rc:=$(arg rc) x:=$(arg x) y:=$(arg y)"/>
 </launch>

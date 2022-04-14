@@ -1,0 +1,46 @@
+<robot name="rc110" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:arg name="prefix" default=""/>
+
+    <link name="$(arg prefix)base_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://rc110/models/rc110/meshes/rc110.dae"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="$(arg prefix)imu_link"/>
+    <joint name="imu_joint" type="fixed">
+        <parent link="$(arg prefix)base_link"/>
+        <child link="$(arg prefix)imu_link"/>
+        <origin xyz="0.085 0.026 0.0631" rpy="0 0 0"/>
+    </joint>
+
+    <link name="$(arg prefix)front_camera"/>
+    <joint name="front_camera_joint" type="fixed">
+        <parent link="$(arg prefix)base_link"/>
+        <child link="$(arg prefix)front_camera"/>
+        <origin xyz="0.298 0 0.124" rpy="0 0 0"/>
+    </joint>
+
+    <link name="$(arg prefix)rear_camera"/>
+    <joint name="rear_camera_joint" type="fixed">
+        <parent link="$(arg prefix)base_link"/>
+        <child link="$(arg prefix)rear_camera"/>
+        <origin xyz="-0.037 0 0.124" rpy="0 0 3.1415926"/>
+    </joint>
+
+    <link name="$(arg prefix)front_lidar"/>
+    <joint name="front_lidar_joint" type="fixed">
+        <parent link="$(arg prefix)base_link"/>
+        <child link="$(arg prefix)front_lidar"/>
+        <origin xyz="0.256 0 0.0915" rpy="3.1415926 0 0"/>
+    </joint>
+
+    <link name="$(arg prefix)rear_lidar"/>
+    <joint name="rear_lidar_joint" type="fixed">
+        <parent link="$(arg prefix)base_link"/>
+        <child link="$(arg prefix)rear_lidar"/>
+        <origin xyz="0.004 0 0.0915" rpy="0 3.1415926 0"/>
+    </joint>
+</robot>

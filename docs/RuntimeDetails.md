@@ -1,15 +1,17 @@
 # Details about Runtime
 ## ROS Sourcing
-Basically there can be two types of ROS environment to source:
+Basically there two types of usual ROS environment:
 * System: `source /opt/ros/${ROS_DISTRO}/setup.bash`
 * Devel: `source $(catkin locate --devel)/setup.bash`
 
 The first one adds environment variables for packages installed to `/opt` folder.
 The other one is the same as first, but also with packages built in `devel` folder of ROS workspace.
 
-We add another level to Devel sourcing by adding network environment:
+We add another level of sourcing by starting **roscore** with synchronization in background task, adding network environment and providing ROS namespace:
 ```shell
-source $(catkin locate rc110)/env/devel.bash
+source $(catkin locate rc110)/host_setup.bash  # hostname namespace
+# or
+source $(catkin locate rc110)/auto_setup.bash  # robot name namespace
 ```
 
 The ROS environment can be checked with the following command:
@@ -17,20 +19,10 @@ The ROS environment can be checked with the following command:
 env | grep ROS
 ```
 
-## Multimaster Launch Files
-Usual command to call a launch script is:
-```shell
-roslaunch package script arg1:=x arg2:=y
-```
+To finish the roscore, just close the terminal.
 
-But for multimaster system we need to run also synchronization nodes. Thus the command above transforms into:
-```shell
-rosrun rc110 launch package script arg1:=x arg2:=y
+## Robot Selection
+If you are running multiple robots (real or simulation), by default the first robot is selected. It can be changed with `rc` variable:
 ```
-
-Similarly for `rosmon`:
-```shell
-rosrun rc110 mon package script arg1:=x arg2:=y
+make run-navigation rc=grc2
 ```
-
-If roscore is already running, the `rosrun rc110` commands won't run it again. They assume that roscore always starts with multimaster synchronization.

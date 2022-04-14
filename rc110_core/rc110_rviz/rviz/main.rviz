@@ -29,7 +29,7 @@ Panels:
     Name: RoboCar110
     robot_name: zmp
 Preferences:
-  PromptSaveOnExit: true
+  PromptSaveOnExit: false
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -55,7 +55,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /zmp/front_camera/image_raw
+      Image Topic: front_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -88,7 +88,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.029999999329447746
       Style: Points
-      Topic: /zmp/front_lidar/scan
+      Topic: front_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -118,7 +118,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.029999999329447746
       Style: Points
-      Topic: /zmp/rear_lidar/scan
+      Topic: rear_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -142,7 +142,7 @@ Visualization Manager:
       Class: rviz_imu_plugin/Imu
       Enabled: true
       Name: Imu
-      Topic: /zmp/imu/data
+      Topic: imu/data
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
@@ -183,7 +183,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
-      TF Prefix: zmp
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -191,7 +191,7 @@ Visualization Manager:
   Global Options:
     Background Color: 0; 0; 0
     Default Light: true
-    Fixed Frame: zmp/odom
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -203,14 +203,14 @@ Visualization Manager:
     - Class: rviz/Measure
     - Class: rviz/SetInitialPose
       Theta std deviation: 0.2617993950843811
-      Topic: /zmp/initialpose
+      Topic: initialpose
       X std deviation: 0.5
       Y std deviation: 0.5
     - Class: rviz/SetGoal
-      Topic: /zmp/move_base_simple/goal
+      Topic: move_base_simple/goal
     - Class: rviz/PublishPoint
       Single click: true
-      Topic: /zmp/clicked_point
+      Topic: clicked_point
   Value: true
   Views:
     Current:

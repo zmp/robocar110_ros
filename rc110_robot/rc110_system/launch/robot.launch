@@ -1,15 +1,14 @@
 <launch>
     <arg name="common_config_dir" default="$(find rc110)/config"/>
-    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xml"/>
+    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
     <arg name="config_dir" default="$(find rc110_system)/config"/>
     <arg name="use_front_camera" default="true"/>
     <arg name="use_rear_camera" default="false"/>
-    <arg name="joy_type" default="elecom"/>
+    <arg name="joy_type" default=""/>
 
     <include file="$(find rc110)/launch/common.launch">
         <arg name="config_dir" value="$(arg common_config_dir)"/>
         <arg name="urdf_file" value="$(arg urdf_file)"/>
-        <arg name="joy_type" value="$(arg joy_type)"/>
     </include>
 
     <include file="$(find rc110_system)/launch/sensors.launch">
@@ -21,4 +20,9 @@
     <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive_control" respawn="true" output="screen">
         <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
     </node>
+
+    <include file="$(find rc110_teleop)/launch/teleop.launch">
+        <arg name="rc" value="$(env RC110_NAME)"/>
+        <arg name="joy_type" value="$(arg joy_type)"/>
+    </include>
 </launch>

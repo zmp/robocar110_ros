@@ -38,7 +38,7 @@ public:
     };
 
 public:
-    Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate);
+    Rc110DriveControl();
     ~Rc110DriveControl();
 
 private:
@@ -64,6 +64,7 @@ private:
     static void publishBattery(ros::Publisher& publisher, float voltage, float current);
 
 private:
+    ros::NodeHandle handle;
     Parameters parameters;
     RcControl control;
     float wheelBase;

@@ -30,16 +30,47 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="namespaceLayout">
+    <layout class="QHBoxLayout" name="robotNameLayout">
      <item>
-      <widget class="QLabel" name="namespaceLabel">
+      <widget class="QLabel" name="robotNameLabel">
        <property name="text">
         <string>Robot Name:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="namespaceEdit"/>
+      <widget class="QComboBox" name="robotNameCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="robotSelectedButton">
+       <property name="toolTip">
+        <string>Tools and teleoperation on/off</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: red;
+}
+QPushButton:checked {
+    color: green;
+}</string>
+       </property>
+       <property name="text">
+        <string>Selected</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -407,7 +438,7 @@ QPushButton:checked {
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="servoGroup"/>
   <buttongroup name="motorGroup"/>
+  <buttongroup name="servoGroup"/>
  </buttongroups>
 </ui>

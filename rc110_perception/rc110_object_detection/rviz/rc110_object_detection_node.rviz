@@ -4,10 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Status1
         - /Image1
-        - /Image1/Status1
       Splitter Ratio: 0.5
     Tree Height: 718
   - Class: rviz/Selection
@@ -30,7 +27,7 @@ Panels:
     SyncMode: 0
     SyncSource: Image
 Preferences:
-  PromptSaveOnExit: true
+  PromptSaveOnExit: false
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -38,7 +35,7 @@ Visualization Manager:
   Displays:
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /rc110_object_detection_node/overlay
+      Image Topic: object_detection/overlay
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -52,7 +49,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: front_camera
+    Fixed Frame: rviz/base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -64,14 +61,14 @@ Visualization Manager:
     - Class: rviz/Measure
     - Class: rviz/SetInitialPose
       Theta std deviation: 0.2617993950843811
-      Topic: /initialpose
+      Topic: initialpose
       X std deviation: 0.5
       Y std deviation: 0.5
     - Class: rviz/SetGoal
-      Topic: /move_base_simple/goal
+      Topic: move_base_simple/goal
     - Class: rviz/PublishPoint
       Single click: true
-      Topic: /clicked_point
+      Topic: clicked_point
   Value: true
   Views:
     Current:

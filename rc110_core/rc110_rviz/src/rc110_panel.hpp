@@ -22,6 +22,8 @@
 #include <sensor_msgs/Temperature.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/String.h>
+
+#include <param_tools/subscriber.hpp>
 #endif
 
 namespace Ui
@@ -55,16 +57,21 @@ protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
+    void updateRobotNames(const QString& currentName);
+    void setupRobotName(const std::string& name);
     void setupRosConnections();
     QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
 
+    void onRobotSelectedButton(bool on);
     void onEnableBoard(bool on);
     void onEnableAd(bool on);
     void onSetMotorState(QAbstractButton* button);
     void onSetServoState(QAbstractButton* button);
+    void onRobotNameChanged(int id = 0);
     void onEditingFinished();
     void onCalibrate();
     void onFinishCalibration();
+    void publishRobotName(const std::string& name);
     void publishDrive();
     void publishOffsets();
 
@@ -89,12 +96,15 @@ private:
 private:
     std::unique_ptr<Ui::PanelWidget> ui;
     ros::NodeHandle handle;
+    param_tools::Subscriber rcSubscriber;
     QVector<ros::Subscriber> subscribers;
     QMap<QString, ros::Publisher> publishers;
     QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
     QStatusBar* statusBar;
     QTimer* calibrationTimer;
     QMap<QString, QPair<int, float>> calibrationSums;
+    QStringList robotNames;  // names in combo box at the top
+    QString selectedRobot;   // robot manipulated by rviz tools, can be different from robot in combobox
 
     std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;

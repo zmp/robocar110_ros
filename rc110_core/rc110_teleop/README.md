@@ -15,10 +15,16 @@ make run-teleop
 
 Connect other joystick to remote PC:
 ```
-make run-teleop device=js1 joy_type=logicool
+make run-teleop device=js1
 ```
 
-* To create new joystick configuration in zmp repository, see example configurations in `rc110_core/rc110/config/`
+Other arguments:
+```
+make run-teleop joy_type=logicool     # force joystick type
+make run-teleop rc=rc123              # set robot and disable switch
+
+rosparam get /$(hostname | tr - _)/joy_teleop/rc   # check current robot
+```
 
 ## Mouse Remote Operation
 If you want to move the robocar from remote PC by mouse, do the following:
@@ -36,6 +42,7 @@ make mouse-teleop
 ![Joystick Structure](./docs/images/joystick.jpg)
 
 - Button 5: press and hold it to drive
+- Button 6: switch to next robot (remote PC only)
 - Button 7: increases gear (gear 1 on start)
 - Button 8: decreases gear
 - Button 11: enable/disable baseboard
@@ -58,7 +65,7 @@ Be careful of putting high values, because the car is not designed for crashing.
 
 ## Remapping
 
-To know buttons and axes indexes, use `rostopic echo /joy`. Indexes start from 0.
+To know buttons and axes indexes, use `rostopic echo /$(hostname | tr - _)/joy`. Indexes start from 0.
 
 Buttons mapping is set in `rc110_core/rc110/config/joy_<type>.yaml`.
 * `steering` and `accel` axes can have additional parameters:
@@ -66,4 +73,4 @@ Buttons mapping is set in `rc110_core/rc110/config/joy_<type>.yaml`.
     * if they are not specified, default values are assigned
     * if `min` is not specified, it equals `-max`
     * if `min` is greater than `max`, axis is inverted
-* For lever type of joystick, `steering_aux` parameter is used which allows more precise control. By default, the axis index is steering index - 1.
+* For lever type of joystick, `steering_aux` parameter is used which allows more precise control.

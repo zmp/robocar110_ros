@@ -17,7 +17,7 @@ Depends on **gstreamer-rtsp-server** ( **GPL3** ).
 
 You need to stop camera node, before running this one.
 ```
-nano ~/.config/rc110/service.conf
+nano ~/.config/rc110/config.bash
 # Add one more parameter: 'roslaunch ... use_front_camera:=false'
 
 systemctl --user restart rc110  # or from repo root: make start
@@ -35,10 +35,10 @@ make show            # playback the stream
 ```
 `make show` has the following options:
 
-* `host=zmp` - show camera on remote robot hosted as `zmp`
+* `rc=zmp` - show camera from robot named `zmp`
 * `fps=on` - FPS overlay (only remote) (can crash with SIGSEGV)
 
-URL to playback video stream with GUI application like VLC: `rtsp://192.168.110.5:8554/front`
+URL to playback video stream with GUI application like VLC: `rtsp://zmp.local:8554/front`
 
 ## Parameters
 

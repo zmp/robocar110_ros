@@ -1,3 +1,9 @@
-base_frame_id: $(env RC110_NAME)/base_link
+rc: zmp
+frame_id: $(env RC110_NAME)/joy
 gears: [ 0.3, 0.6, 1.0 ]
 rate: 30.0
+joy_type: ""  # autodetect if empty
+joy_types:
+    elecom: "Generic X-Box pad"
+    logicool: "Driving Force GT"
+    ps5: "Sony Interactive Entertainment Wireless Controller"

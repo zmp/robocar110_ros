@@ -14,8 +14,8 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	mon launch rc110_behavior main.launch
+	source $$(catkin locate rc110)/auto_setup.bash
+	roslaunch rc110_behavior main.launch
 
 show:
 	$(MAKE) -C ../.. show

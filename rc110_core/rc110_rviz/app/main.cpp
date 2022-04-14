@@ -19,11 +19,8 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     Rc110Panel panel;
-    if (auto uri = std::getenv("ROS_MASTER_URI")) {
-        panel.setWindowTitle(QString("%1: %2").arg(APP_NAME).arg(QUrl(uri).host()));
-    } else {
-        panel.setWindowTitle(APP_NAME);
-    }
+    panel.setWindowTitle(APP_NAME);
+    panel.load({});
     panel.show();
 
     QTimer timer;

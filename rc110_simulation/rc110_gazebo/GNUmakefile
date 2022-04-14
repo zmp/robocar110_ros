@@ -14,10 +14,12 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	source $$(catkin locate rc110)/env/config.bash
-	export GAZEBO_MODEL_DATABASE_URI=" "   # See: https://github.com/osrf/gazebo/issues/2934
-	rosrun rc110 mon rc110_gazebo simulation.launch $${RC110_ARGS} $(ros_args)
+	export RC110_PREFIX="grc"  # exclude this prefix from sync
+	source $$(catkin locate rc110)/host_setup.bash
+	mon launch rc110_gazebo simulation.launch $(ros_args)
 
 show:
-	$(MAKE) -C ../.. show
+	source $$(catkin locate rc110)/host_setup.bash
+	$(eval ng0:=$(filter 1,$(shell expr "${n}" '>' 0)))
+	RC110_RVIZ_CONFIG=$(if ${ng0},"$(shell pwd)/rviz/gazebo${n}.rviz","$(shell catkin locate rc110_rviz)/rviz/main.rviz")
+	roslaunch --wait rc110_rviz rviz.launch config:=$${RC110_RVIZ_CONFIG}

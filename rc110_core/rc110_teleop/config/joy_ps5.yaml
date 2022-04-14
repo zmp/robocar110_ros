@@ -1,7 +1,9 @@
-base_dead_man_button: 4
+dead_man_button: 4
+next_robot_button: 5
 gear_up_button: 6
 gear_down_button: 7
 board_button: 8
 ad_button: 9
 steering: [2]
+steering_aux: 5
 accel: [1]

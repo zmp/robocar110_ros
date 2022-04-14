@@ -1,7 +1,6 @@
 #!/bin/bash
 
-source /usr/lib/systemd/user/rc110-prepare.sh
-source /opt/ros/@ROS_DISTRO@/share/rc110/env/config.bash
+source /opt/ros/@ROS_DISTRO@/rc_setup.bash
 
 # Disable ROS_IP in favor of avahi
 unset ROS_IP

@@ -1,5 +1,8 @@
 <launch>
-    <arg name="ignore_nodes" default="$(env ROS_NAMESPACE)/*"/>
+    <arg name="rc_prefix" default="$(optenv RC110_PREFIX)"/>
+    <arg name="ignore_one" default="/$(env RC110_NAME)/*"/>
+    <arg name="ignore_two" default="$(arg ignore_one), /$(arg rc_prefix)*"/>
+    <arg name="ignore_nodes" default="$(eval arg('ignore_one') if arg('rc_prefix') == '' else arg('ignore_two'))"/>
 
     <!-- Roscore should be run from this launch file along with multimaster nodes. -->
     <node pkg="master_discovery_fkie" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>

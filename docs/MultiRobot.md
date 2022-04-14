@@ -46,6 +46,9 @@ sudo nano /etc/avahi/avahi-daemon.conf
 sudo systemctl restart avahi-daemon
 ```
 
+**Known Issue:** [.local domain gets suffix "-2" sometimes](https://github.com/lathiat/avahi/issues/117).
+* It can happen when network changes from one router to another. To resolve it manually, please, restart the avahi-daemon as written above.
+
 ## Namespaces Setup
 Multiple robot setup requires names of nodes, topics, services and parameters to be prefixed with unique identifier to avoid names collision. Usually robot/machine name is used for this purpose (dashes changed to underscores).
 
@@ -58,11 +61,11 @@ In contrast to ros namespace, frame id **must not** start with slash (`/`). Also
 For example, instead of `base_link`, the frame id will be called `robot_name/base_link`.
 
 ## Synchronization Setup
-In order to synchronize nodes, we need to provide `ROS_HOSTNAME` and `ROS_MASTER_URI` variables. You can check the way it is done in [**the script**](../rc110_core/rc110/env/network.bash). Note, that `ROS_IP` is not needed anymore.
+In order to synchronize nodes, we need to provide `ROS_HOSTNAME` and `ROS_MASTER_URI` variables. You can check the way it is done in [**the script**](../rc110_core/rc110/devel/ns_hostname.bash). Note, that `ROS_IP` is not needed anymore.
 
 The configuration for namespaces and synchronization is applied automatically for `make` commands. But you can still run it manually from terminal:
 ```shell
-source $(catkin locate rc110)/env/network.bash
+source $(catkin locate --devel)/ns_hostname.bash
 ```
 
 ## Notes about Synchronization

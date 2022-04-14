@@ -30,7 +30,7 @@ Panels:
     Name: RoboCar110
     robot_name: zmp
 Preferences:
-  PromptSaveOnExit: true
+  PromptSaveOnExit: false
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -56,7 +56,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /zmp/front_camera/image_raw
+      Image Topic: front_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -89,7 +89,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.029999999329447746
       Style: Points
-      Topic: /zmp/scan
+      Topic: scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -113,7 +113,7 @@ Visualization Manager:
       Class: rviz_imu_plugin/Imu
       Enabled: true
       Name: Imu
-      Topic: /zmp/imu/data
+      Topic: imu/data
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
@@ -123,7 +123,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /zmp/map
+      Topic: map
       Unreliable: false
       Use Timestamp: false
       Value: true
@@ -150,7 +150,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /zmp/slam_cloud
+      Topic: slam_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -192,7 +192,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
-      TF Prefix: zmp
+      TF Prefix: rviz
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -212,19 +212,19 @@ Visualization Manager:
     - Class: rviz/Measure
     - Class: rviz/SetInitialPose
       Theta std deviation: 0.2617993950843811
-      Topic: /initialpose
+      Topic: initialpose
       X std deviation: 0.5
       Y std deviation: 0.5
     - Class: rviz/SetGoal
-      Topic: /move_base_simple/goal
+      Topic: move_base_simple/goal
     - Class: rviz/PublishPoint
       Single click: true
-      Topic: /clicked_point
+      Topic: clicked_point
   Value: true
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 9.687795639038086
+      Distance: 7.793552398681641
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

@@ -25,10 +25,8 @@ namespace zmp
 {
 Rc110Gazebo::Rc110Gazebo() :
         parameters({
-                .baseFrameId = handlePrivate.param<std::string>("base_frame_id", "base_link"),
-                .odomFrameId = handlePrivate.param<std::string>("odom_frame_id", "odom"),
-                .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
-                .rate = handlePrivate.param<double>("rate", 30),
+                .baseFrameId = ros::param::param<std::string>("~base_frame_id", "base_link"),
+                .rate = ros::param::param<double>("~rate", 30),
         })
 {
     subscribers.push_back(handle.subscribe("drive", 2, &Rc110Gazebo::onDrive, this));

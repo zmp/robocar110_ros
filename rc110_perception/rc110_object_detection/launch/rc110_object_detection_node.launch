@@ -1,9 +1,9 @@
 <launch>
   <arg name="object_detection_node_param_path" default="$(find rc110_object_detection)/config/rc110_object_detection_node.yaml"/>
-  <arg name="input_image" default="/front_camera/image_raw"/>
+  <arg name="input_image" default="front_camera/image_raw"/>
 
-  <node pkg="rc110_object_detection" type="rc110_object_detection_node" name="rc110_object_detection_node" output="screen">
+  <node pkg="rc110_object_detection" type="rc110_object_detection_node" name="object_detection" output="screen">
     <remap from="~input_image" to="$(arg input_image)" />
-    <rosparam command="load" subst_value="true" file="$(arg object_detection_node_param_path)" />
+    <rosparam file="$(arg object_detection_node_param_path)" subst_value="true"/>
   </node>
 </launch>

@@ -16,6 +16,7 @@
 
   <depend>rc110_msgs</depend>
   <exec_depend>rc110</exec_depend>
+  <exec_depend>rc110_teleop</exec_depend>
 
   <export>
     <gazebo_ros gazebo_model_path="${prefix}/../../rc110_core/rc110/models"/>

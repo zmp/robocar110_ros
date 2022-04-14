@@ -25,15 +25,14 @@
 namespace zmp
 {
 Rc110VideoServer::Rc110VideoServer() :
-        handlePrivate("~"),
         parameters({
-                .debugLevel = handlePrivate.param<int>("debug_level", 1),
-                .port = handlePrivate.param<int>("port", 8554),
-                .urlSuffix = handlePrivate.param<std::string>("url_suffix", "front"),
-                .videoDevice = handlePrivate.param<std::string>("video_device", "video0"),
-                .maxFrameRate = handlePrivate.param<int>("max_framerate", 60),
-                .width = handlePrivate.param<int>("width", 1920),
-                .height = handlePrivate.param<int>("height", 1080),
+                .debugLevel = ros::param::param<int>("~debug_level", 1),
+                .port = ros::param::param<int>("~port", 8554),
+                .urlSuffix = ros::param::param<std::string>("~url_suffix", "front"),
+                .videoDevice = ros::param::param<std::string>("~video_device", "video0"),
+                .maxFrameRate = ros::param::param<int>("~max_framerate", 60),
+                .width = ros::param::param<int>("~width", 1920),
+                .height = ros::param::param<int>("~height", 1080),
         }),
         portString(std::to_string(parameters.port)),
         portPointer(portString.data())

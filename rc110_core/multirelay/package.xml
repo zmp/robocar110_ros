@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>multirelay</name>
+  <version>1.8.0</version>
+  <description>RoboCar 1/10 multiple output topic relay</description>
+  <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>param_tools</depend>
+  <depend>topic_tools</depend>
+</package>

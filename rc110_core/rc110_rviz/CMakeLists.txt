@@ -9,11 +9,17 @@ find_package(catkin REQUIRED
         topic_tools
         ackermann_msgs
         nav_msgs
+        param_tools
         rc110_msgs
         sensor_msgs
 )
 
 catkin_package()
+
+if(NOT DEFINED ENV{ROS_DISTRO})
+    message(FATAL_ERROR "ROS_DISTRO is not defined. Please, source ros.")
+endif()
+set(ROS_DISTRO $ENV{ROS_DISTRO})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -31,8 +37,6 @@ target_link_libraries(${PROJECT_NAME}
         Qt5::Widgets
 )
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC nssv_CONFIG_SELECT_STRING_VIEW=1) # disable string view for behaviortree_cpp_v3
-
 install(DIRECTORY launch rviz DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -42,7 +46,9 @@ install(TARGETS ${PROJECT_NAME}
 install(FILES plugin_description.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 if (CATKIN_BUILD_BINARY_PACKAGE)
-    install(FILES install/rc110_rviz.desktop DESTINATION /usr/share/applications/)
+    configure_file(install/rc110_rviz.desktop ${PROJECT_BINARY_DIR}/rc110_rviz.desktop @ONLY)
+
+    install(FILES ${PROJECT_BINARY_DIR}/rc110_rviz.desktop DESTINATION /usr/share/applications/)
     install(FILES install/rc110_ros.png DESTINATION /usr/share/pixmaps/)
 endif()
 
@@ -51,4 +57,6 @@ add_executable(${PROJECT_NAME}_app app/main.cpp)
 target_link_libraries(${PROJECT_NAME}_app ${PROJECT_NAME})
 
 # package
+set(RC110_DEP.multirelay ros-$ENV{ROS_DISTRO}-multirelay)
+set(RC110_DEP.param_tools ros-$ENV{ROS_DISTRO}-param-tools)
 include(../../cmake/rc110_cpack.cmake)

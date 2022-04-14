@@ -37,14 +37,14 @@ constexpr float ACC_VARIANCE = ACC_SIGMA * ACC_SIGMA;
 constexpr float ACC_CROSS_AXIS = 0.01;  // 1%
 }  // namespace
 
-Rc110DriveControl::Rc110DriveControl(ros::NodeHandle& handle, ros::NodeHandle& handlePrivate) :
+Rc110DriveControl::Rc110DriveControl() :
         parameters({
-                .baseFrameId = handlePrivate.param<std::string>("base_frame_id", "base_link"),
-                .odomFrameId = handlePrivate.param<std::string>("odom_frame_id", "odom"),
-                .imuFrameId = handlePrivate.param<std::string>("imu_frame_id", "imu_link"),
-                .rate = handlePrivate.param<double>("rate", 30),
-                .odometryOnlyAngleOffset = handlePrivate.param<double>("odometry_only_angle_offset", 1),
-                .steeringVelocity = handlePrivate.param<double>("steering_velocity", 90),
+                .baseFrameId = ros::param::param<std::string>("~base_frame_id", "base_link"),
+                .odomFrameId = ros::param::param<std::string>("~odom_frame_id", "odom"),
+                .imuFrameId = ros::param::param<std::string>("~imu_frame_id", "imu_link"),
+                .rate = ros::param::param<double>("~rate", 30),
+                .odometryOnlyAngleOffset = ros::param::param<double>("~odometry_only_angle_offset", 1),
+                .steeringVelocity = ros::param::param<double>("~steering_velocity", 90),
         }),
         control([this](BaseboardError error) { baseboardError = error; }),
         wheelBase(control.GetWheelBase())

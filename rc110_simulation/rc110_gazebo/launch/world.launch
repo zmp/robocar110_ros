@@ -1,0 +1,22 @@
+<launch>
+    <arg name="joy_type" default=""/>
+    <arg name="use_gui" default="true"/>
+    <arg name="root" default="$(find rc110_gazebo)"/>
+    <arg name="world" default="worlds/zmp.world"/>
+
+    <env name="GAZEBO_RESOURCE_PATH" value="$(arg root)"/>
+    <env name="GAZEBO_MODEL_PATH" value="$(arg root)/models"/>
+    <env name="GAZEBO_MODEL_DATABASE_URI" value=" "/>  <!-- See: https://github.com/osrf/gazebo/issues/2934 -->
+
+    <!-- gazebo world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)" />
+        <arg name="gui" value="$(arg use_gui)" />
+        <arg name="verbose" value="true" />
+    </include>
+
+    <!-- common joystick for all models -->
+    <include file="$(find rc110_teleop)/launch/teleop.launch">
+        <arg name="joy_type" value="$(arg joy_type)"/>
+    </include>
+</launch>

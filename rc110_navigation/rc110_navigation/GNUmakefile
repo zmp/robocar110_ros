@@ -14,13 +14,13 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	source $$(catkin locate rc110)/env/devel.bash
-	source $$(catkin locate rc110)/env/config.bash
+	source $$(catkin locate rc110)/auto_setup.bash
+	export RC110_MAP_NAME
 	mon launch rc110_navigation main.launch
 
 show:
-	source $$(catkin locate rc110)/env/devel.bash
-	rosrun rc110 launch rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_navigation.rviz
+	source $$(catkin locate rc110)/auto_setup.bash
+	roslaunch --wait rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_navigation.rviz
 
 # extra
 include mk/extra.mk

@@ -1,0 +1,40 @@
+<launch>
+    <arg name="gns" default="$(env RC110_GAZEBO_NS)"/>
+    <arg name="rc" default="$(env RC110_NAME)"/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+
+    <include file="$(find rc110)/launch/common.launch">
+        <arg name="tf_prefix" value="$(arg rc)"/>
+    </include>
+
+    <!-- instantiate robot model in the world -->
+    <param name="tf_prefix" value="$(arg rc)"/>
+    <node pkg="gazebo_ros" type="spawn_model" name="robot_spawner"
+        args="-file $(find rc110)/models/rc110/model.sdf -sdf -model $(arg rc)
+            -gazebo_namespace $(arg gns)/gazebo
+            -x $(arg x) -y $(arg y) -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+
+    <!-- workaround for gazebo_ros_imu_sensor, which adds prefix to frame_id -->
+    <node pkg="topic_tools" type="transform" name="tf_fix_imu"
+            args="/$(arg rc)/imu/data_gz /$(arg rc)/imu/data sensor_msgs/Imu
+            sensor_msgs.msg.Imu(\
+header=std_msgs.msg.Header(seq=m.header.seq,stamp=m.header.stamp,frame_id=\&quot;$(arg rc)/imu_link\&quot;),\
+orientation=m.orientation,\
+orientation_covariance=m.orientation_covariance,\
+angular_velocity=m.angular_velocity,\
+angular_velocity_covariance=m.angular_velocity_covariance,\
+linear_acceleration=m.linear_acceleration,\
+linear_acceleration_covariance=m.linear_acceleration_covariance)
+            --wait-for-start --import std_msgs sensor_msgs geometry_msgs"/>
+
+    <!-- simulation of rc110_drive_control (more or less) -->
+    <node pkg="rc110_gazebo" type="rc110_gazebo" name="rc110_gazebo" required="true">
+        <param name="base_frame_id" value="$(arg rc)/base_link"/>
+    </node>
+
+    <!-- static transforms from map to odom, since there's no localization by default -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_map_to_odom"
+            args="0 0 0 0 0 0 map $(arg rc)/odom"
+    />
+</launch>

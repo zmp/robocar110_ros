@@ -3,28 +3,24 @@
  *
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  *
- * Written by btran
+ * Written by btran, Andrei Pak
  */
 
 #include "rc110_joy_teleop.hpp"
 
 int main(int argc, char* argv[])
-{
+try {
     ros::init(argc, argv, "rc110_joy_teleop");
 
-    ros::NodeHandle nh;
-    ros::NodeHandle pnh("~");
-
-    try {
-        zmp::Rc110JoyTeleop node(nh, pnh);
-        ros::spin();
-    } catch (std::exception& ex) {
-        ROS_ERROR_STREAM("Exception in main(): " << ex.what());
-        return EXIT_FAILURE;
-    } catch (...) {
-        ROS_ERROR_STREAM("Unknown exception in main()");
-        return EXIT_FAILURE;
-    }
+    zmp::Rc110JoyTeleop node;
+    ros::spin();
 
     return EXIT_SUCCESS;
+}  //
+catch (std::exception& ex) {
+    std::cerr << "Exception in main(): " << ex.what() << std::endl;
+    return EXIT_FAILURE;
+} catch (...) {
+    std::cerr << "Unknown exception in main()" << std::endl;
+    return EXIT_FAILURE;
 }
