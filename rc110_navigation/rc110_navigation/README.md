@@ -31,5 +31,6 @@ make select-map map_name=my_custom_map
 
 * Localization is performed only during drive, but not when repositioned.
 * Local scan obstacles are [not cleared](https://answers.ros.org/question/257286/obstacles-are-not-cleared-completely-in-costmap/).
-* Movement precision is not good (>10cm distance to obstacle).
 * Localization gets broken, if robot is stuck in obstacle.
+* Unable to avoid wide obstacles not marked on map.
+* Unable to avoid moving obstacles.

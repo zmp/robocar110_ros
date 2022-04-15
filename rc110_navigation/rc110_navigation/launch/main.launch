@@ -1,12 +1,19 @@
 <launch>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+
     <node pkg="map_server" type="map_server" name="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
         <remap from="cloud_in" to="points2"/>
+        <param name="min_height" value="-0.08"/>
+        <param name="max_height" value="0.07"/>
     </node>
 
     <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <rosparam file="$(find rc110_navigation)/config/amcl.yaml" subst_value="true"/>
+        <param name="initial_pose_x" value="$(arg x)"/>
+        <param name="initial_pose_y" value="$(arg y)"/>
     </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">

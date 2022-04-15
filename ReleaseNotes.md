@@ -8,6 +8,7 @@
 * `make monitor` commands are fully replaced with `make show`.
 * Makefile parameters use `=` only, not `:=`.
 * Renamed `~/.config/rc110/service.conf` to `config.bash`.
+* Navigation follows global path more precisely.
 
 ## v1.8.0
 * Basic model training documentation for pytorch ssd.

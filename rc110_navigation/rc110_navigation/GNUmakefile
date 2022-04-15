@@ -16,7 +16,7 @@ build:
 run:
 	source $$(catkin locate rc110)/auto_setup.bash
 	export RC110_MAP_NAME
-	mon launch rc110_navigation main.launch
+	mon launch rc110_navigation main.launch $(ros_args)
 
 show:
 	source $$(catkin locate rc110)/auto_setup.bash

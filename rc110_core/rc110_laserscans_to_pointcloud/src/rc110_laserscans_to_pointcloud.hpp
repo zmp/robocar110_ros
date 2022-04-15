@@ -36,7 +36,7 @@ private:
 
 private:
     ros::NodeHandle handle;
-    std::string baseFrameId, frontLidarFrameId, rearLidarFrameId;
+    std::string outputFrameId, frontLidarFrameId, rearLidarFrameId;
     laser_geometry::LaserProjection projection;
     std::unique_ptr<ApproxSync> sync;
     message_filters::Subscriber<sensor_msgs::LaserScan> frontSubscriber, rearSubscriber;

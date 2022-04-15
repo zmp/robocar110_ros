@@ -11,7 +11,6 @@
 
 namespace zmp
 {
-constexpr char BASE_FRAME_ID[] = "base_link";
 constexpr char FRONT_LIDAR_FRAME_ID[] = "front_lidar";
 constexpr char REAR_LIDAR_FRAME_ID[] = "rear_lidar";
 
@@ -45,12 +44,12 @@ void addUniquePoints(const sensor_msgs::PointCloud2& cloud,
 }  // namespace
 
 Rc110LaserScansToPointCloud::Rc110LaserScansToPointCloud() :
-        baseFrameId(ros::param::param<std::string>("~base_frame_id", BASE_FRAME_ID)),
+        outputFrameId(ros::param::param<std::string>("~output_frame_id", REAR_LIDAR_FRAME_ID)),
         frontLidarFrameId(ros::param::param<std::string>("~front_lidar_frame_id", FRONT_LIDAR_FRAME_ID)),
         rearLidarFrameId(ros::param::param<std::string>("~rear_lidar_frame_id", REAR_LIDAR_FRAME_ID))
 {
-    frontTransformer.waitForTransform(baseFrameId, frontLidarFrameId, ros::Time(0), ros::Duration(5));
-    rearTransformer.waitForTransform(baseFrameId, rearLidarFrameId, ros::Time(0), ros::Duration(5));
+    frontTransformer.waitForTransform(outputFrameId, frontLidarFrameId, ros::Time(0), ros::Duration(5));
+    rearTransformer.waitForTransform(outputFrameId, rearLidarFrameId, ros::Time(0), ros::Duration(5));
 
     sync = std::make_unique<ApproxSync>(ApproxSyncPolicy(3), frontSubscriber, rearSubscriber);
     sync->registerCallback(&Rc110LaserScansToPointCloud::onScans, this);
@@ -84,8 +83,8 @@ void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::LaserScan::ConstPtr
     float angleAllowance = front->angle_increment * 0.8;  // 80%
 
     sensor_msgs::PointCloud2 frontCloud, rearCloud;
-    projection.transformLaserScanToPointCloud(baseFrameId, *front, frontCloud, frontTransformer);
-    projection.transformLaserScanToPointCloud(baseFrameId, *rear, rearCloud, rearTransformer);
+    projection.transformLaserScanToPointCloud(outputFrameId, *front, frontCloud, frontTransformer);
+    projection.transformLaserScanToPointCloud(outputFrameId, *rear, rearCloud, rearTransformer);
 
     // unique and sorted by angle points (-pi, pi]
     std::map<float, std::vector<uint8_t>> points;

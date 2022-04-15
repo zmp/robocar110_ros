@@ -1,7 +1,7 @@
 local_costmap:
     footprint: [[-0.08, -0.09], [0.34, -0.09], [0.34, 0.09], [-0.08, 0.09]]
-    update_frequency: 1
-    publish_frequency: 1
+    update_frequency: 3
+    publish_frequency: 3
     global_frame: map
     robot_base_frame: $(env RC110_NAME)/base_link
     width: 8.0
@@ -14,4 +14,4 @@ local_costmap:
 
     obstacle:
         observation_sources: scan
-        scan: {sensor_frame: $(env RC110_NAME)/front_lidar, data_type: LaserScan, topic: front_lidar/scan, marking: true, clearing: true}
+        scan: {sensor_frame: $(env RC110_NAME)/rear_lidar, data_type: LaserScan, topic: scan, marking: true, clearing: true}
