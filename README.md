@@ -63,7 +63,9 @@ make version
 For this, you need a real RoboCar 1/10X. If you don't have one, try simulation described below.
 
 * [**ROS Installation**](docs/RosInstallation.md)
-* [**Robot Sources**](rc110_robot/README.md) 
+* [**Robot Sources**](rc110_robot/README.md)
+
+![](docs/images/rosgraph.png)
 
 ### Remote Connection
 Remote connection to the robot is possible from Ubuntu 18 system.
@@ -71,11 +73,15 @@ Remote connection to the robot is possible from Ubuntu 18 system.
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)
 
+![](docs/images/network.svg)
+
 ### Gazebo Simulation
 Without robot, there's no need to build driver and system service packages.
 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Simulation Sources**](rc110_simulation/rc110_gazebo/README.md)
+
+![](docs/images/gazebo2.gif)
 
 ### Other Samples
 When the driver is up and running, it's possible to start other ROS nodes that communicate with it.
@@ -84,12 +90,6 @@ When the driver is up and running, it's possible to start other ROS nodes that c
 * [**rc110_slam_he**](rc110_navigation/rc110_slam_he/README.md)
 * etc...
 
-
-## Contribution
-
-* For a completely different node, please, create and use a separate git repo on the same folder level as **robocar110_ros**. Please, tell us, if you developed an interesting application working with the robot!
-* For improvements and bugfixes, it's better to modify **robocar110_ros**. See: [**Contribution Process**](docs/Contribution.md). We are open to your feedback!
-
 ## Additional Information
 
 * [**Windows Support**](docs/Windows.md)
@@ -97,3 +97,4 @@ When the driver is up and running, it's possible to start other ROS nodes that c
 * [**Details about Nodes Build**](docs/BuildDetails.md)
 * [**Details about Runtime**](docs/RuntimeDetails.md)
 * [**Multiple Robot Setup**](docs/MultiRobot.md)
+* [**Contribution Guidelines**](docs/CONTRIBUTING.md)
