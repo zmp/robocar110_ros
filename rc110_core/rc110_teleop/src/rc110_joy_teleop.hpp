@@ -76,21 +76,21 @@ private:
 
 private:
     ros::NodeHandle handle;
-    Param m_param;
+    Param param;
 
     param_tools::Subscriber rcSubscriber;
     std::map<std::string, ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;
-    sensor_msgs::Joy::ConstPtr m_joyMessage;
-    ackermann_msgs::AckermannDriveStamped m_driveMessage;
+    sensor_msgs::Joy::ConstPtr joyMessage;
+    ackermann_msgs::AckermannDriveStamped driveMessage;
     ros::Timer driveTimer, nextRobotTimer;
-    ros::Time m_lastTime;
-    std::map<int, int> m_axisDirection;   /// +1 or -1 for inverted axis
-    std::map<int, bool> m_axisActivated;  /// joy_node workaround
-    int m_gear = 0;
-    bool m_stopMessagePublished = false;
-    bool m_boardEnabled = false;
-    bool m_adEnabled = false;
+    ros::Time lastTime;
+    std::map<int, int> axisDirection;   /// +1 or -1 for inverted axis
+    std::map<int, bool> axisActivated;  /// joy_node workaround
+    int gear = 0;
+    bool stopMessagePublished = false;
+    bool boardEnabled = false;
+    bool adEnabled = false;
     std::string joyDevice = "/dev/<unset>";
     std::string selectedRobot;
     ros::V_string robotNames;
