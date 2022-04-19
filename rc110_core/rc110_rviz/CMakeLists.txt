@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_rviz VERSION 1.8.0)
+project(rc110_rviz VERSION 1.9.0)
 
 find_package(Qt5 5.9 REQUIRED Core Widgets)
 
