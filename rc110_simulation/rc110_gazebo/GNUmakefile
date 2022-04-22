@@ -14,7 +14,7 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	export RC110_PREFIX="grc"  # exclude this prefix from sync
+	export RC110_PREFIX="grc_"  # exclude this prefix from sync
 	source $$(catkin locate rc110)/host_setup.bash
 	mon launch rc110_gazebo simulation.launch $(ros_args)
 

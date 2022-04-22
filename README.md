@@ -73,7 +73,7 @@ Remote connection to the robot is possible from Ubuntu 18 system.
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)
 
-![](docs/images/network.svg)
+![](docs/images/multimaster.svg)
 
 ### Gazebo Simulation
 Without robot, there's no need to build driver and system service packages.

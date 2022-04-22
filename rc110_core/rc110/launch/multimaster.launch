@@ -1,15 +1,25 @@
 <launch>
-    <arg name="rc_prefix" default="$(optenv RC110_PREFIX)"/>
-    <arg name="ignore_one" default="/$(env RC110_NAME)/*"/>
-    <arg name="ignore_two" default="$(arg ignore_one), /$(arg rc_prefix)*"/>
-    <arg name="ignore_nodes" default="$(eval arg('ignore_one') if arg('rc_prefix') == '' else arg('ignore_two'))"/>
+    <arg name="is_robot" default="$(optenv RC110_ROBOT false)"/>
+    <arg name="rc_prefix" default="$(optenv RC110_PREFIX rc_)"/>
+    <arg name="rc_host_prefix" default="$(optenv RC110_HOST_PREFIX rc-)"/>
+
+    <arg name="ignore_one" default="/$(env RC110_IGNORE)/*"/>
+    <arg name="ignore_two" default="/$(arg rc_prefix)*, $(arg ignore_one)"/>
+    <arg name="ignore_nodes" default="$(eval arg('ignore_two') if arg('is_robot') else arg('ignore_one'))"/>
+    <arg name="ignore_hosts" default="$(eval arg('rc_host_prefix') + '*' if arg('is_robot') else '')"/>
+
+    <arg name="sync_nodes" default="$(eval '' if arg('is_robot') else '/' + arg('rc_prefix') + '*')"/>
+    <arg name="sync_hosts" default="$(eval '' if arg('is_robot') else arg('rc_host_prefix') + '*')"/>
 
     <!-- Roscore should be run from this launch file along with multimaster nodes. -->
     <node pkg="master_discovery_fkie" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>
 
     <node pkg="master_sync_fkie" type="master_sync" ns="/" name="master_sync" required="true">
-        <param name="sync_remote_nodes" value="true" />
+        <param name="sync_remote_nodes" value="true"/>
         <param name="ignore_nodes" value="[$(arg ignore_nodes)]" type="yaml"/>
+        <param name="ignore_hosts" value="[$(arg ignore_hosts)]" type="yaml"/>
+        <param name="sync_nodes" value="[$(arg sync_nodes)]" type="yaml"/>
+        <param name="sync_hosts" value="[$(arg sync_hosts)]" type="yaml"/>
     </node>
     <!--
         Both nodes are ignored by synchronization automatically, if namespace is empty.

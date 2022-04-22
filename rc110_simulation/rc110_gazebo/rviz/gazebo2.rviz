@@ -27,10 +27,10 @@ Panels:
     SyncSource: Cloud1
   - Class: rc110_rviz/RoboCar110
     Name: RoboCar110
-    robot_name: grc1
+    robot_name: grc_1
   - Class: rc110_rviz/RoboCar110
     Name: RoboCar110_2
-    robot_name: grc2
+    robot_name: grc_2
 Preferences:
   PromptSaveOnExit: false
 Toolbars:
@@ -58,7 +58,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /grc1/front_camera/image_raw
+      Image Topic: /grc_1/front_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -70,7 +70,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /grc2/front_camera/image_raw
+      Image Topic: /grc_2/front_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -103,7 +103,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /grc1/points2
+      Topic: /grc_1/points2
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -131,7 +131,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /grc2/points2
+      Topic: /grc_2/points2
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -155,7 +155,7 @@ Visualization Manager:
       Class: rviz_imu_plugin/Imu
       Enabled: true
       Name: Imu1
-      Topic: /grc1/imu/data
+      Topic: /grc_1/imu/data
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
@@ -178,7 +178,7 @@ Visualization Manager:
       Class: rviz_imu_plugin/Imu
       Enabled: true
       Name: Imu2
-      Topic: /grc2/imu/data
+      Topic: /grc_2/imu/data
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
@@ -219,7 +219,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel1
       Robot Description: robot_description
-      TF Prefix: grc1
+      TF Prefix: grc_1
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -260,7 +260,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel2
       Robot Description: robot_description
-      TF Prefix: grc2
+      TF Prefix: grc_2
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -270,7 +270,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /grc1/map
+      Topic: /grc_1/map
       Unreliable: false
       Use Timestamp: false
       Value: true
@@ -294,7 +294,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /grc1/move_base/TebLocalPlannerROS/global_plan
+      Topic: /grc_1/move_base/TebLocalPlannerROS/global_plan
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -317,7 +317,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /grc2/move_base/TebLocalPlannerROS/global_plan
+      Topic: /grc_2/move_base/TebLocalPlannerROS/global_plan
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -340,7 +340,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /grc1/move_base/TebLocalPlannerROS/local_plan
+      Topic: /grc_1/move_base/TebLocalPlannerROS/local_plan
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -363,7 +363,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /grc2/move_base/TebLocalPlannerROS/local_plan
+      Topic: /grc_2/move_base/TebLocalPlannerROS/local_plan
       Unreliable: false
       Value: true
   Enabled: true

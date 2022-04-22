@@ -199,6 +199,7 @@ clean:
 
 # Run nodes built from source.
 run:
+	export RC110_ROBOT=true
 	source $$(catkin locate rc110)/host_setup.bash
 	roslaunch --wait rc110_system robot.launch $${RC110_ARGS} $(ros_args)
 

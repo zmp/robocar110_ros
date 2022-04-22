@@ -10,6 +10,9 @@
 * Renamed `~/.config/rc110/service.conf` to `config.bash`.
 * Navigation follows global path more precisely.
 
+### Actions
+* Change robot hostname as described [**here**](docs/MultiRobot.md).
+
 ## v1.8.0
 * Basic model training documentation for pytorch ssd.
 * Simulation worlds: "Maze", imported worlds.

@@ -29,16 +29,13 @@ It allows
 
 The zeroconf implementation for Linux is called [**Avahi**](https://en.wikipedia.org/wiki/Avahi_(software)).
 
-If you use only one robot, we recommend to leave `hostname` as `zmp`, because it's hardcoded in some configuration files.
-
-For other robots, it must me changed as follows (dashes are allowed, underscores are not):
+The default configuration assumes that robot hostname starts with `rc-` prefix. Please, change it as follows (dashes are allowed, underscores are not):
 ```shell
-sudo nano /etc/hostname # robot-name
-sudo nano /etc/hosts    # 127.0.1.1  robot-name
+sudo nano /etc/hostname # rc-<robot-name>
+sudo nano /etc/hosts    # 127.0.1.1  rc-<robot-name>
 sudo reboot
 ```
-
-After that, some configurations maybe need to be updated (RViz for example).
+Usually `<robot-name>` is filled with SERIAL NUMBER.
 
 Additionally, Avahi itself can be configured:
 ```shell
@@ -48,6 +45,12 @@ sudo systemctl restart avahi-daemon
 
 **Known Issue:** [.local domain gets suffix "-2" sometimes](https://github.com/lathiat/avahi/issues/117).
 * It can happen when network changes from one router to another. To resolve it manually, please, restart the avahi-daemon as written above.
+* Also it happens when there are multiple robots with the same name. Thus it's necessary to change hostname as described above.
+
+Current hostname can be checked as:
+```shell
+avahi-resolve -av 127.0.0.1
+```
 
 ## Namespaces Setup
 Multiple robot setup requires names of nodes, topics, services and parameters to be prefixed with unique identifier to avoid names collision. Usually robot/machine name is used for this purpose (dashes changed to underscores).
@@ -69,6 +72,14 @@ source $(catkin locate --devel)/ns_hostname.bash
 ```
 
 ## Notes about Synchronization
-ROS Master is synchronized for all nodes except synchronizer nodes themselves and nodes on local machine that start with `/<robot_name>` prefix.
+ROS Master is synchronized for all nodes except synchronizer nodes, nodes on local machine that start with `/<host_name>` prefix and nodes that do not follow node `sync / ignore` rules.
 
-![](images/network.svg)
+Unfortunately, the current method allow transitive synchronization, so without `sync / ignore` rules the same node can be taken from multiple hosts resulting in the error: `new node registered with same name`.
+
+It's necessary to have `sync / ignore` also by host name, because total synchronization between nodes of the same group should be prevented (between remote PCs or between RoboCars).
+
+![](images/multimaster.svg)
+
+Please, note that the default prefix is `rc_`. So, all RoboCar host names must start with `rc-`, and all non-RoboCar hosts - opposite. This behavior can be modified, though you need to be careful not to make synchronization cycle.
+
+By default robots do not communicate directly to each other. If you need this ability, it's necessary to modify `sync / ignore` rules case by case.

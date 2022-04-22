@@ -27,7 +27,7 @@ Panels:
     SyncSource: FrontScan1
   - Class: rc110_rviz/RoboCar110
     Name: RoboCar110
-    robot_name: grc1
+    robot_name: grc_1
 Preferences:
   PromptSaveOnExit: false
 Toolbars:
@@ -55,7 +55,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /grc1/front_camera/image_raw
+      Image Topic: /grc_1/front_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -88,7 +88,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.029999999329447746
       Style: Points
-      Topic: /grc1/front_lidar/scan
+      Topic: /grc_1/front_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -118,7 +118,7 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.029999999329447746
       Style: Points
-      Topic: /grc1/rear_lidar/scan
+      Topic: /grc_1/rear_lidar/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -142,7 +142,7 @@ Visualization Manager:
       Class: rviz_imu_plugin/Imu
       Enabled: true
       Name: Imu1
-      Topic: /grc1/imu/data
+      Topic: /grc_1/imu/data
       Unreliable: false
       Value: true
       fixed_frame_orientation: true
@@ -183,7 +183,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel1
       Robot Description: robot_description
-      TF Prefix: grc1
+      TF Prefix: grc_1
       Update Interval: 0
       Value: true
       Visual Enabled: true
