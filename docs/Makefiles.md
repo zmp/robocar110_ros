@@ -17,8 +17,7 @@ To know the content of each make target, either execute the command and check it
 ## Alternative
 Of course, you can use ros commands directly. For example, `make run` command is described in `run:` paragraph of `GNUmakefile` similar to:
 ```shell
-export RC110_ROBOT=true
-source $(catkin locate rc110)/host_setup.bash
+source $(catkin locate rc110)/host_setup.bash on_robot
 roslaunch --wait rc110_system robot.launch  # and args...
 ```
 

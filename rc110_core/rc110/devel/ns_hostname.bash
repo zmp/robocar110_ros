@@ -1,11 +1,11 @@
-# Nodes namespace to ignore from sync.
-export RC110_IGNORE=$(hostname | tr - _)  # hostname allows only hyphen, ros allows only underscore
+# RoboCar name used for tf prefix and simulation model ns.
+export RC110_NAME=${rc}
 
-# RoboCar name is taken either from "rc" variable or from the hostname.
-export RC110_NAME=${rc:-${RC110_IGNORE}}
+# Nodes namespace to ignore from sync. Also used on robot to initialize RC110_NAME.
+export RC110_HOST_ID=$(hostname | tr - _)  # hostname allows only hyphen, ros allows only underscore
 
-# ROS variable for default namespace. Leading slash prevents ambiguities.
-export ROS_NAMESPACE=/${RC110_NAME}
+# NS is taken either from "rc" or from the hostname. Leading slash prevents ambiguities.
+export ROS_NAMESPACE=/${RC110_NAME:-${RC110_HOST_ID}}
 
 # ROS hostname of current machine, used in zeroconf.
 export ROS_HOSTNAME=$(hostname).local

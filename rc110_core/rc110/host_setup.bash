@@ -1,4 +1,4 @@
-source $(catkin locate --devel)/rc_setup.bash
+source $(catkin locate --devel)/rc_setup.bash "$@"
 
 # Run roscore with client, if it's not already running.
 if ! rosnode list &>/dev/null

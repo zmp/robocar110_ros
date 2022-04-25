@@ -57,7 +57,8 @@ protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    void updateRobotNames(const QString& currentName);
+    void updateRobotNames();
+    void trySelectingRobot();
     void setupRobotName(const std::string& name);
     void setupRosConnections();
     QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
@@ -104,11 +105,14 @@ private:
     QTimer* calibrationTimer;
     QMap<QString, QPair<int, float>> calibrationSums;
     QStringList robotNames;  // names in combo box at the top
+    const QString rc;        // robot name from parameter (if any)
+    QString savedRobotName;  // variable to store name from config until it's loaded to combobox
     QString selectedRobot;   // robot manipulated by rviz tools, can be different from robot in combobox
 
     std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;
     float steeringAngle = 0;
     rc110_msgs::Offsets offsets = {};
+    int timerCounter = 0;
 };
 }  // namespace zmp

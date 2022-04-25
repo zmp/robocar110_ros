@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/ros/@ROS_DISTRO@/rc_setup.bash
+source /opt/ros/@ROS_DISTRO@/rc_setup.bash on_robot
 
 # Disable ROS_IP in favor of avahi
 unset ROS_IP

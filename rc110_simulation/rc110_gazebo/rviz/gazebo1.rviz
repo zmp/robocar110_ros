@@ -156,34 +156,34 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
+        grc_1/base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        front_camera:
+        grc_1/front_camera:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        front_lidar:
+        grc_1/front_lidar:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        imu_link:
+        grc_1/imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        rear_camera:
+        grc_1/rear_camera:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        rear_lidar:
+        grc_1/rear_lidar:
           Alpha: 1
           Show Axes: false
           Show Trail: false
       Name: RobotModel1
-      Robot Description: robot_description
-      TF Prefix: grc_1
+      Robot Description: grc_1/robot_description
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true

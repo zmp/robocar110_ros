@@ -4,7 +4,9 @@
     <arg name="tf_prefix" default="$(env RC110_NAME)"/>
 
     <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg tf_prefix)/"/>
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="tf_publisher"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="tf_publisher">
+        <param name="tf_prefix" value=""/>
+    </node>
 
     <!-- Switching between joystick and AD.
       By default drive_manual topic is mapped to drive.

@@ -1,15 +1,15 @@
 <launch>
-    <arg name="is_robot" default="$(optenv RC110_ROBOT false)"/>
+    <arg name="is_robot" default="$(eval env('RC110_NAME') == env('RC110_HOST_ID'))"/>
     <arg name="rc_prefix" default="$(optenv RC110_PREFIX rc_)"/>
     <arg name="rc_host_prefix" default="$(optenv RC110_HOST_PREFIX rc-)"/>
 
-    <arg name="ignore_one" default="/$(env RC110_IGNORE)/*"/>
+    <arg name="ignore_one" default="/$(env RC110_HOST_ID)/*"/>
     <arg name="ignore_two" default="/$(arg rc_prefix)*, $(arg ignore_one)"/>
-    <arg name="ignore_nodes" default="$(eval arg('ignore_two') if arg('is_robot') else arg('ignore_one'))"/>
-    <arg name="ignore_hosts" default="$(eval arg('rc_host_prefix') + '*' if arg('is_robot') else '')"/>
+    <arg name="ignore_nodes" default="$(eval ignore_two if is_robot else ignore_one)"/>
+    <arg name="ignore_hosts" default="$(eval rc_host_prefix + '*' if is_robot else '')"/>
 
-    <arg name="sync_nodes" default="$(eval '' if arg('is_robot') else '/' + arg('rc_prefix') + '*')"/>
-    <arg name="sync_hosts" default="$(eval '' if arg('is_robot') else arg('rc_host_prefix') + '*')"/>
+    <arg name="sync_nodes" default="$(eval '' if is_robot else '/' + rc_prefix + '*')"/>
+    <arg name="sync_hosts" default="$(eval '' if is_robot else rc_host_prefix + '*')"/>
 
     <!-- Roscore should be run from this launch file along with multimaster nodes. -->
     <node pkg="master_discovery_fkie" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>

@@ -1,5 +1,5 @@
 <launch>
-    <arg name="rc_prefix" default="$(optenv RC110_PREFIX grc_)"/>
+    <arg name="rc_prefix" default="grc_"/>
     <arg name="id" default=""/>
     <arg name="rc" default="$(arg rc_prefix)$(arg id)"/>
     <arg name="x" default="0.0"/>

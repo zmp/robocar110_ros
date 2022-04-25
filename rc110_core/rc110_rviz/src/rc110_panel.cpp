@@ -55,7 +55,11 @@ QStringList getRobotNames()
 }
 }  // namespace
 
-Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget), calibrationTimer(new QTimer(this))
+Rc110Panel::Rc110Panel(QWidget* parent) :
+        Panel(parent),
+        ui(new Ui::PanelWidget),
+        calibrationTimer(new QTimer(this)),
+        rc(QString::fromStdString(ros::param::param("~rc", std::string())))
 {
     ui->setupUi(this);
     calibrationTimer->setSingleShot(true);
@@ -98,26 +102,12 @@ Rc110Panel::~Rc110Panel() = default;
 void Rc110Panel::load(const rviz::Config& config)
 {
     Panel::load(config);
-
-    // Fill robot names combobox, and load last name there.
-    QString name;
-    config.mapGetString("robot_name", &name);
-    updateRobotNames(name);
+    config.mapGetString("robot_name", &savedRobotName);
 
     // Subscribe to robot name parameter selection, and select it the first time if parameter was set.
     rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
         setupRobotName(value);
     });
-
-    // If robot was not selected, then try to do it from one of the panels.
-    if (!globalRobotSelected) {
-        globalRobotSelected = true;
-
-        if (selectedRobot.isEmpty() && robotNames.size()) {
-            auto firstRc = robotNames.front().toStdString();
-            publishRobotName(firstRc);
-        }
-    }
 
     startTimer(100);  // ms
 }
@@ -125,8 +115,9 @@ void Rc110Panel::load(const rviz::Config& config)
 void Rc110Panel::save(rviz::Config config) const
 {
     Panel::save(config);
-
-    config.mapSetValue("robot_name", ui->robotNameCombo->currentText());
+    if (rc.isEmpty()) {
+        config.mapSetValue("robot_name", ui->robotNameCombo->currentText());
+    }
 }
 
 void Rc110Panel::timerEvent(QTimerEvent* event)
@@ -135,23 +126,53 @@ void Rc110Panel::timerEvent(QTimerEvent* event)
         publishDrive();  // prevent motor from stopping by timeout
     }
 
-    static int counter = 0;
-    if (++counter % 10 == 0) {
-        updateRobotNames(ui->robotNameCombo->currentText());
+    if (++timerCounter % 10 == 0) {
+        updateRobotNames();
     }
 }
 
-void Rc110Panel::updateRobotNames(const QString& currentName)
+void Rc110Panel::updateRobotNames()
 {
+    // Either multiple robots in one window.
     auto newRobotNames = getRobotNames();
     if (robotNames != newRobotNames) {
-        robotNames = newRobotNames;
+        robotNames = newRobotNames;  // used anyway to select other robot
+        trySelectingRobot();
 
-        ui->robotNameCombo->clear();
-        ui->robotNameCombo->addItems(robotNames);
-        ui->robotNameCombo->setCurrentText(currentName);
+        if (rc.isEmpty()) {
+            auto currentName = ui->robotNameCombo->currentText();
+            ui->robotNameCombo->clear();
+            ui->robotNameCombo->addItems(robotNames);
+            ui->robotNameCombo->setCurrentText(currentName);  // ignored if not in the list
 
+            if (savedRobotName.size()) {
+                ui->robotNameCombo->setCurrentText(savedRobotName);
+                if (savedRobotName == ui->robotNameCombo->currentText()) {
+                    savedRobotName.clear();
+                }
+            }
+            onRobotNameChanged();
+            return;
+        }
+    }
+    // Or just one constant robot selected on start.
+    if (!rc.isEmpty() && ui->robotNameCombo->count() == 0) {
+        ui->robotNameCombo->addItem(rc);
+        ui->robotNameCombo->setEnabled(false);
         onRobotNameChanged();
+    }
+}
+
+void Rc110Panel::trySelectingRobot()
+{
+    // If robot was not selected, then try doing it from one of the panels.
+    if (!globalRobotSelected) {
+        globalRobotSelected = true;
+
+        if (selectedRobot.isEmpty() && robotNames.size()) {
+            auto firstRc = robotNames.front().toStdString();
+            publishRobotName(firstRc);
+        }
     }
 }
 
@@ -292,13 +313,13 @@ void Rc110Panel::onSetServoState(QAbstractButton* button)
 
 void Rc110Panel::onRobotNameChanged(int)
 {
-    auto robotName = ui->robotNameCombo->currentText();
-    auto newNs = robotName.isEmpty() ? "" : "/" + robotName.toStdString();
+    auto name = ui->robotNameCombo->currentText();
+    auto newNs = name.isEmpty() ? "" : "/" + name.toStdString();
     if (ns != newNs) {
         ns = newNs;
         setupRosConnections();
     }
-    ui->robotSelectedButton->setChecked(selectedRobot == robotName);
+    ui->robotSelectedButton->setChecked(selectedRobot == name);
 }
 
 void Rc110Panel::onEditingFinished()

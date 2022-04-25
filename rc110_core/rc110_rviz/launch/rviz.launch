@@ -16,7 +16,9 @@
         </rosparam>
     </node>
 
-    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true"
-          args="-d $(arg config) -f $(arg rc)/base_link"
-    />
+    <arg if="$(eval rc == '')" name="rviz_args" value="-d $(arg config)"/>
+    <arg if="$(eval rc != '')" name="rviz_args" value="-d $(arg config) -f $(arg rc)/base_link"/>
+    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)">
+        <param name="rc" value="$(arg rc)"/>
+    </node>
 </launch>

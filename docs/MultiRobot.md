@@ -83,3 +83,7 @@ It's necessary to have `sync / ignore` also by host name, because total synchron
 Please, note that the default prefix is `rc_`. So, all RoboCar host names must start with `rc-`, and all non-RoboCar hosts - opposite. This behavior can be modified, though you need to be careful not to make synchronization cycle.
 
 By default robots do not communicate directly to each other. If you need this ability, it's necessary to modify `sync / ignore` rules case by case.
+
+### Known issues
+
+* Synchronization of `/tf` topic cannot be disabled. It does not cause critical issues now.
