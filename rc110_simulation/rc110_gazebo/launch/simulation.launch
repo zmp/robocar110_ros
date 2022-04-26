@@ -7,22 +7,22 @@
 
     <include file="$(dirname)/world.launch" pass_all_args="true"/>
 
-    <include if="$(eval arg('n') >= 1)" file="$(dirname)/model.launch">
+    <include if="$(eval n >= 1)" file="$(dirname)/model.launch">
         <arg name="id" value="1"/>
     </include>
-    <include if="$(eval arg('n') >= 2)" file="$(dirname)/model.launch">
+    <include if="$(eval n >= 2)" file="$(dirname)/model.launch">
         <arg name="id" value="2"/>
         <arg name="y" value="-0.3"/>
     </include>
-    <include if="$(eval arg('n') >= 3)" file="$(dirname)/model.launch">
+    <include if="$(eval n >= 3)" file="$(dirname)/model.launch">
         <arg name="id" value="3"/>
         <arg name="y" value="0.3"/>
     </include>
-    <include if="$(eval arg('n') >= 4)" file="$(dirname)/model.launch">
+    <include if="$(eval n >= 4)" file="$(dirname)/model.launch">
         <arg name="id" value="4"/>
         <arg name="y" value="-0.6"/>
     </include>
-    <include if="$(eval arg('n') >= 5)" file="$(dirname)/model.launch">
+    <include if="$(eval n >= 5)" file="$(dirname)/model.launch">
         <arg name="id" value="5"/>
         <arg name="y" value="0.6"/>
     </include>
