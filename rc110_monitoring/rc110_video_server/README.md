@@ -9,7 +9,7 @@ Depends on **gstreamer-rtsp-server** ( **GPL3** ).
 
 ## Pipeline Scheme
 
-![](docs/diagram.svg)
+![](docs/video_pipeline.svg)
 
 * [NVidia HW Encoder](https://developer.nvidia.com/nvidia-video-codec-sdk)
 
