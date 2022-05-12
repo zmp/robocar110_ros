@@ -192,7 +192,7 @@ Visualization Manager:
           Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
-      TF Prefix: rviz
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
