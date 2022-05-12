@@ -13,12 +13,6 @@ foreach(file ${config_files})
     file(APPEND ${PROJECT_BINARY_DIR}/deb/conffiles "${RC110_SHARE_PATH}/${file}\n")
 endforeach()
 
-# devel files that also installed to /opt/ros/<>/
-file(GLOB devel_files RELATIVE ${PROJECT_SOURCE_DIR}/devel devel/*.bash)
-foreach(file ${devel_files})
-    configure_file(${PROJECT_SOURCE_DIR}/devel/${file} ${CATKIN_DEVEL_PREFIX}/${file} COPYONLY)
-endforeach()
-
 # tests
 if (CATKIN_ENABLE_TESTING)
     find_package(roslaunch REQUIRED)
@@ -35,6 +29,9 @@ install(DIRECTORY config launch models urdf
 )
 install(DIRECTORY devel/
         DESTINATION /opt/ros/$ENV{ROS_DISTRO}
+        FILES_MATCHING
+        PATTERN *.bash
+        PATTERN setup.bash EXCLUDE
 )
 
 # package

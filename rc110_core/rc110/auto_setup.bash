@@ -24,4 +24,4 @@ do
 	(( i += 500 ))
 done
 
-source $(catkin locate --devel)/ns_hostname.bash
+source $(catkin locate rc110)/devel/ns_hostname.bash

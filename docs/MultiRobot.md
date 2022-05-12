@@ -68,7 +68,7 @@ In order to synchronize nodes, we need to provide `ROS_HOSTNAME` and `ROS_MASTER
 
 The configuration for namespaces and synchronization is applied automatically for `make` commands. But you can still run it manually from terminal:
 ```shell
-source $(catkin locate --devel)/ns_hostname.bash
+source $(catkin locate rc110)/devel/ns_hostname.bash
 ```
 
 ## Notes about Synchronization
