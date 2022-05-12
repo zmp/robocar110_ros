@@ -95,6 +95,13 @@ Rc110Panel::Rc110Panel(QWidget* parent) :
     connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
 
     statusBar->showMessage("");
+
+    // Subscribe to robot name parameter selection, and select it the first time if parameter was set.
+    rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
+        setupRobotName(value);
+    });
+
+    startTimer(100);  // ms
 }
 
 Rc110Panel::~Rc110Panel() = default;
@@ -103,13 +110,6 @@ void Rc110Panel::load(const rviz::Config& config)
 {
     Panel::load(config);
     config.mapGetString("robot_name", &savedRobotName);
-
-    // Subscribe to robot name parameter selection, and select it the first time if parameter was set.
-    rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
-        setupRobotName(value);
-    });
-
-    startTimer(100);  // ms
 }
 
 void Rc110Panel::save(rviz::Config config) const
