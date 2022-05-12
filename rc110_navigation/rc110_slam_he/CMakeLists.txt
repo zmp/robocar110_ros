@@ -13,5 +13,4 @@ install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_SOURCE_DIR}/deb/postinst;")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS ros-$ENV{ROS_DISTRO}-rc110-laserscans-to-pointcloud)
 include(../../cmake/rc110_cpack.cmake)
