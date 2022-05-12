@@ -1,0 +1,14 @@
+<launch>
+    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
+    <arg name="splash_image" default="$(find rc110_rviz)/images/splash.png"/>
+    <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
+    <arg name="rc" default="$(env RC110_NAME)"/>
+
+    <!-- RViz can be run on a remote PC, so it needs to have robot_description parameter. -->
+    <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg rc)/"/>
+
+    <arg name="rviz_args" value="-d $(arg config) -s $(arg splash_image) -f $(arg rc)/base_link"/>
+    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)">
+        <param name="rc" value="$(arg rc)"/>
+    </node>
+</launch>

@@ -1,10 +1,10 @@
 <launch>
     <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
+    <arg name="splash_image" default="$(find rc110_rviz)/images/splash.png"/>
     <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
-    <arg name="rc" default="$(env RC110_NAME)"/>
 
     <!-- RViz can be run on a remote PC, so it needs to have robot_description parameter. -->
-    <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg rc)/"/>
+    <param name="robot_description" command="xacro $(arg urdf_file)"/>
 
     <!-- The following mappings are convenient for manipulating multiple robots. -->
     <node pkg="multirelay" type="multirelay" name="output_relay_rviz" output="screen">
@@ -16,10 +16,6 @@
         </rosparam>
     </node>
 
-    <arg name="common_args" value="-d $(arg config) -s $(find rc110_rviz)/images/splash.png"/>
-    <arg if="$(eval rc == '')" name="rviz_args" value="$(arg common_args)"/>
-    <arg if="$(eval rc != '')" name="rviz_args" value="$(arg common_args) -f $(arg rc)/base_link"/>
-    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)">
-        <param name="rc" value="$(arg rc)"/>
-    </node>
+    <arg name="rviz_args" value="-d $(arg config) -s $(arg splash_image)"/>
+    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)"/>
 </launch>

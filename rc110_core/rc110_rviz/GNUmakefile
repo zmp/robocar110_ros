@@ -19,4 +19,8 @@ run:
 
 show:
 	source $$(catkin locate rc110)/auto_setup.bash
-	roslaunch --wait rc110_rviz rviz.launch
+	roslaunch --wait rc110_rviz uni.launch
+
+multi-show:
+	source $$(catkin locate rc110)/host_setup.bash
+	roslaunch --wait rc110_rviz multi.launch

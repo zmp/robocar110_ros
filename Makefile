@@ -9,7 +9,7 @@ rviz:
 
 show:
 	..\..\devel\setup.bat & \
-	roslaunch rc110_rviz rviz.launch
+	roslaunch rc110_rviz uni.launch
 
 show-slam-he:
 	..\..\devel\setup.bat & \

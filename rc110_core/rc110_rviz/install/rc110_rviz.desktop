@@ -2,6 +2,6 @@
 Name=RoboCar 1/10
 Version=1.0
 Type=Application
-Exec=bash -c "source /opt/ros/@ROS_DISTRO@/rc_setup.bash on_robot; roslaunch --wait rc110_rviz rviz.launch"
+Exec=bash -c "source /opt/ros/@ROS_DISTRO@/rc_setup.bash on_robot; roslaunch --wait rc110_rviz uni.launch"
 Icon=rc110_ros.png
 Categories=Development

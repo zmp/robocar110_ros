@@ -19,4 +19,4 @@ run:
 
 show:
 	source $$(catkin locate rc110)/auto_setup.bash
-	roslaunch --wait rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_object_detection_node.rviz
+	roslaunch --wait rc110_rviz uni.launch config:=$$(pwd)/rviz/rc110_object_detection_node.rviz

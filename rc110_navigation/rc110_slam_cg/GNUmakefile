@@ -19,7 +19,7 @@ run:
 
 show:
 	source $$(catkin locate rc110)/auto_setup.bash
-	roslaunch --wait rc110_rviz rviz.launch config:=$$(pwd)/rviz/rc110_slam_cg.rviz
+	roslaunch --wait rc110_rviz uni.launch config:=$$(pwd)/rviz/rc110_slam_cg.rviz
 
 # extra
 include mk/extra.mk

@@ -22,4 +22,4 @@ run:
 show:
 	source $$(catkin locate rc110)/host_setup.bash
 	$(eval n:=$(or ${n},1))
-	roslaunch --wait rc110_rviz rviz.launch config:=$(shell pwd)/rviz/gazebo${n}.rviz
+	roslaunch --wait rc110_rviz multi.launch config:=$(shell pwd)/rviz/gazebo${n}.rviz
