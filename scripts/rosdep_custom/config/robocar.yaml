@@ -1,0 +1,3 @@
+python-gobject:
+  debian: [python-gobject]
+  ubuntu: [python-gobject]

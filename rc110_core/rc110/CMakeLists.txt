@@ -39,6 +39,4 @@ install(DIRECTORY devel/
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS python-gobject)  # zeroconf dependency on Ubuntu 18
-
 include(../../cmake/rc110_cpack.cmake)

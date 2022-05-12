@@ -90,8 +90,14 @@ ifeq (,$(shell which rosdep))
 endif
 ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
-	rosdep update --rosdistro=${ROS_DISTRO}
+	$(eval lists_updated:=true)
 endif
+ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/11-robocar.list))
+	sudo cp -rf scripts/rosdep_custom/config /etc/ros/rosdep/
+	sudo cp scripts/rosdep_custom/11-robocar.list /etc/ros/rosdep/sources.list.d/
+	$(eval lists_updated:=true)
+endif
+	$(if ${lists_updated},rosdep update --rosdistro=${ROS_DISTRO})
 
 # Install rosdep offline
 init-deps-offline:
