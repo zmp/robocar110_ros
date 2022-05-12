@@ -4,6 +4,8 @@
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
         <remap from="cloud_in" to="points2"/>
+        <param name="min_height" value="-0.08"/>
+        <param name="max_height" value="0.07"/>
     </node>
 
     <node pkg="hector_mapping" type="hector_mapping" name="hector">
