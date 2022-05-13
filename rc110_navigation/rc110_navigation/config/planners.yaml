@@ -11,8 +11,8 @@ TebLocalPlannerROS:
 
     acc_lim_x: 0.5
     acc_lim_theta: 0.4
-    max_vel_x: 1.0
-    max_vel_x_backwards: 1.0
+    max_vel_x: 0.5
+    max_vel_x_backwards: 0.4
     max_vel_theta: 1.0
     min_turning_radius: 0.51
     wheelbase: 0.26
