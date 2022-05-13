@@ -34,11 +34,6 @@ linear_acceleration_covariance=m.linear_acceleration_covariance)
         <param name="base_frame_id" value="$(arg rc)/base_link"/>
     </node>
 
-    <!-- static transforms from map to odom, since there's no localization by default -->
-    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_map_to_odom"
-            args="0 0 0 0 0 0 map $(arg rc)/odom"
-    />
-
     <!-- initialize amcl with correct position -->
     <param name="amcl/initial_pose_x" value="$(arg x)"/>
     <param name="amcl/initial_pose_y" value="$(arg y)"/>

@@ -163,7 +163,7 @@ Visualization Manager:
           3.6: true
           Value: true
       Topic: submap_list
-      Tracking frame: rviz/base_link
+      Tracking frame: map
       Unreliable: false
       Value: true
     - Alpha: 1

@@ -17,4 +17,9 @@
 
     <!-- Getting /points2 topic from front and rear lidar scans. -->
     <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch"/>
+
+    <!-- static transforms from map to odom, since there's no localization by default -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_map_to_odom"
+          args="0 0 0 0 0 0 map $(arg tf_prefix)/odom"
+    />
 </launch>
