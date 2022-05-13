@@ -4,6 +4,7 @@
     <arg name="rc" default="$(arg rc_prefix)$(arg id)"/>
     <arg name="x" default="0.0"/>
     <arg name="y" default="0.0"/>
+    <arg name="a" default="0.0"/>
 
     <env name="RC110_GAZEBO_NS" value="$(env ROS_NAMESPACE)"/>
     <env name="RC110_NAME" value="$(arg rc)"/>
@@ -11,5 +12,5 @@
 
     <!-- ROS_NAMESPACE can be applied only before calling roslaunch, so we need roslaunch in roslaunch. -->
     <node pkg="rc110" type="launch" name="launch_$(arg rc)" output="screen"
-            args="$(dirname)/model_impl.launch rc:=$(arg rc) x:=$(arg x) y:=$(arg y)"/>
+            args="$(dirname)/model_impl.launch rc:=$(arg rc) x:=$(arg x) y:=$(arg y) a:=$(arg a)"/>
 </launch>
