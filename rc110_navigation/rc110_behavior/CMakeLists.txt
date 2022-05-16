@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_behavior VERSION 1.9.0)
+project(rc110_behavior VERSION 1.9.1)
 
 find_package(catkin REQUIRED
         ackermann_msgs

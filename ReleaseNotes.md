@@ -1,4 +1,4 @@
-## v1.9.0
+## v1.9.0 ~ .1
 * Multiple robots setup with ros master on each machine (FKIE).
 * Automatic network discovery (on top of [**avahi**](https://en.wikipedia.org/wiki/Avahi_(software))).
 * Joystick switching between robots.
