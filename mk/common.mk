@@ -3,7 +3,9 @@
 .SHELLFLAGS := -ec
 SHELL := /bin/bash
 
-ROS_DISTRO ?= melodic
+mk_path := $(dir $(lastword $(MAKEFILE_LIST)))
+ROS_DISTRO ?= $(shell ${mk_path}/../scripts/get_ros_distro)
+pythonN := $(if $(filter melodic,${ROS_DISTRO}),python,python3)
 
 # Returns whether roscore is stopped.
 roscore_stopped = $(shell rosnode list &>/dev/null && echo false || echo true)
@@ -28,13 +30,15 @@ define build
 (
 	if [ -x "$$(command -v nvpmodel)" ]  # if there's nvpmodel command,
 	then
-		last_nvpmode=$$(nvpmodel -q | sed -n 3p)   # get last mode
-		if [ 0 -ne $${last_nvpmode} ]              # if it's not MaxN,
+		eval $$(cat /var/lib/nvpmodel/status | tr : =)  # get last mode as "pmode"
+
+		if [ 0000 -ne $${pmode} ]           # if it's not MaxN,
 		then
 			echo -e "\033[1;31m\n Using all CPU cores during build. Requires entering sudo!\n\033[0m"
-			sudo nvpmodel -m 0                     # set MaxN
+
+			sudo nvpmodel -m 0              # set MaxN
 			function cleanup {
-				sudo nvpmodel -m $${last_nvpmode}  # on exit from build, revert to the last mode
+				sudo nvpmodel -m $${pmode}  # on exit from build, revert to the last mode
 			}
 			trap cleanup EXIT
 		fi

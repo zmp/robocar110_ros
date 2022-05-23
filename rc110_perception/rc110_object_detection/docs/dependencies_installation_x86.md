@@ -2,25 +2,32 @@
 
 JetPack provides the dependencies out of box, but if you want to build on remote PC as well, additional steps are needed **on the remote PC**.
 
-* The following steps are for **Ubuntu 18**.
-* Prepare nvidia repositories:
+### Prepare nvidia repositories
 ```
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-repo-ubuntu1804_10.1.243-1_amd64.deb
-sudo apt install ./cuda-repo-ubuntu1804_10.1.243-1_amd64.deb
-sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
+uver=1804  # 2004 for Ubuntu 20.04
 
-wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb
-sudo apt install ./nvidia-machine-learning-repo-ubuntu1804_1.0.0-1_amd64.deb
-sudo apt-get update
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${uver}/x86_64/7fa2af80.pub
+
+sudo tee -a /etc/apt/sources.list.d/nvidia.list > /dev/null <<EOT
+deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu${uver}/x86_64 /
+deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu${uver}/x86_64 /
+EOT
+
+sudo apt update
 ```
 
-* Install the dependencies:
+### Install the dependencies
 ```
-sudo apt-get install cuda-10-2 libnvinfer-dev=7.2.3-1+cuda10.2 libnvinfer-plugin-dev=7.2.3-1+cuda10.2 libnvparsers-dev=7.2.3-1+cuda10.2 libnvonnxparsers-dev=7.2.3-1+cuda10.2 libnvparsers7=7.2.3-1+cuda10.2 libnvinfer7=7.2.3-1+cuda10.2 libnvinfer-plugin7=7.2.3-1+cuda10.2 libnvonnxparsers7=7.2.3-1+cuda10.2
-```
-* Change 10-2 to the version shipped with your JetPack.
-* Here 7.2.3-1 can be changed to the latest version compatible with your cuda version.
+cver=10-2              # around 11-4             for Ubuntu 20
+nver=8.0.1-1+cuda10.2  # around 8.2.5-1+cuda11.4 for Ubuntu 20
 
-#### Notes
+sudo apt install cuda-${cver} libnvinfer-dev=${nver} libnvinfer-plugin-dev=${nver} libnvparsers-dev=${nver} libnvonnxparsers-dev=${nver} libnvparsers8=${nver} libnvinfer8=${nver} libnvinfer-plugin8=${nver} libnvonnxparsers8=${nver}
+```
+
+* Change `10-2` to the version shipped with your JetPack.
+* Here `8.0.1-1` can be changed to the latest version compatible with your cuda version.
+* Probably `nvidia-driver` needs to be upgraded in order to install `cuda`.
+
+### Notes
 * Make sure to set the correct version, because your build will fail otherwise.
 * If you had other CUDA versions, either remove them or configure the correct link: `/usr/local/cuda -> /usr/local/cuda-10.2`

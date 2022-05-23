@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. /etc/os-release
+
+if [ "$VERSION_CODENAME" == bionic ]
+then
+	echo melodic
+elif [ "$VERSION_CODENAME" == focal ]
+then
+	echo noetic
+else
+	echo _unknown_
+fi

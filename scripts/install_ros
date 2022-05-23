@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+# distro
+script_path=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+ROS_DISTRO=${ROS_DISTRO:-$(${script_path}/get_ros_distro)}
+
 # add apt list
 if [ ! -f /etc/apt/sources.list.d/ros-latest.list ]
 then
@@ -27,4 +31,4 @@ then
 fi
 
 sudo apt-get update
-sudo apt-get install -yq ros-melodic-desktop
+sudo apt-get install -yq ros-${ROS_DISTRO}-desktop

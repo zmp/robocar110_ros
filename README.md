@@ -68,7 +68,7 @@ For this, you need a real RoboCar 1/10X. If you don't have one, try simulation d
 ![](docs/images/rosgraph.png)
 
 ### Remote Connection
-Remote connection to the robot is possible from Ubuntu 18 system.
+Automatic remote connection to the robot is possible from Ubuntu OS.
 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)

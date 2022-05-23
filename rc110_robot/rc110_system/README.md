@@ -22,7 +22,7 @@ Similar effect can be acheived with `make start`, `make stop`, etc shortcuts.
 
 ## Sensors
 ### IMU
-* Current IMU in robocar110 consists of a single-axis gyroscope and an accelerometer. We use [imu_complementary_filter](https://github.com/ccny-ros-pkg/imu_tools/tree/melodic/imu_complementary_filter) to integrate the two sensors to estimate orientation.
+* Current IMU in robocar110 consists of a single-axis gyroscope and an accelerometer. We use [imu_complementary_filter](https://github.com/CCNYRoboticsLab/imu_tools) to integrate the two sensors to estimate orientation.
 
 #### Subscribed Topics
 ```

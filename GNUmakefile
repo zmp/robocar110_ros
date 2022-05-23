@@ -86,7 +86,7 @@ endif
 # Install rosdep and get packages list.
 init-deps:
 ifeq (,$(shell which rosdep))
-	sudo apt-get install -qq python-rosdep
+	sudo apt-get install -qq $(pythonN)-rosdep
 endif
 ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
@@ -122,7 +122,7 @@ deps-remote: deps
 # Init catkin workspace.
 init:
 ifeq (,$(shell which catkin))
-	sudo apt-get install -qq python-catkin-tools
+	sudo apt-get install -qq $(pythonN)-catkin-tools
 endif
 ifeq (src,$(notdir $(abspath ..)))
   ifeq (,$(wildcard ../../.catkin_tools))

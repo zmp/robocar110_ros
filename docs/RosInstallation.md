@@ -1,6 +1,6 @@
 # ROS Installation
 
-If ROS is not installed, please, install it following the instruction for **melodic**:
+If ROS is not installed, please, install it following the instruction:
 
 http://wiki.ros.org/Installation/Ubuntu
 
