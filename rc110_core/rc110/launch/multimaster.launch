@@ -12,9 +12,11 @@
     <arg name="sync_hosts" default="$(eval '' if is_robot else rc_host_prefix + '*')"/>
 
     <!-- Roscore should be run from this launch file along with multimaster nodes. -->
-    <node pkg="master_discovery_fkie" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>
+    <arg name="discovery_pkg" value="$(eval 'master_discovery_fkie' if env('ROS_DISTRO') == 'melodic' else 'rc110')"/>
+    <node pkg="$(arg discovery_pkg)" type="zeroconf" ns="/" name="master_discovery" output="screen" required="true"/>
 
-    <node pkg="master_sync_fkie" type="master_sync" ns="/" name="master_sync" required="true">
+    <arg name="sync_pkg" value="$(eval 'master_sync_fkie' if env('ROS_DISTRO') == 'melodic' else 'fkie_master_sync')"/>
+    <node pkg="$(arg sync_pkg)" type="master_sync" ns="/" name="master_sync" required="true">
         <param name="sync_remote_nodes" value="true"/>
         <param name="ignore_nodes" value="[$(arg ignore_nodes)]" type="yaml"/>
         <param name="ignore_hosts" value="[$(arg ignore_hosts)]" type="yaml"/>

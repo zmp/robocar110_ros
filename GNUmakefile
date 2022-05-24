@@ -19,7 +19,7 @@ GNUmakefile provides the following targets for make:
 
 	init-deps-offline         Offline deps initialization, if github files download gives error (apt still needed)
 	clean-deps                Clean any previous rosdep configuration in /etc/ros/rosdep/
-	deps                      Install dependencies for robot
+	deps                      Install dependencies for robot  [force=on]
 	deps-remote               Install dependencies for remote PC
 	deps-%                    Install dependencies for %
 
@@ -92,7 +92,7 @@ ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
 	$(eval lists_updated:=true)
 endif
-ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/11-robocar.list))
+ifeq (,$(if ${force},,$(wildcard /etc/ros/rosdep/sources.list.d/11-robocar.list)))
 	sudo cp -rf scripts/rosdep_custom/config /etc/ros/rosdep/
 	sudo cp scripts/rosdep_custom/11-robocar.list /etc/ros/rosdep/sources.list.d/
 	$(eval lists_updated:=true)

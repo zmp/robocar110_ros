@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+# It's a replacement for fkie_master_discovery zeroconf script with fixes for Ubuntu 20.
+
+import sys
+
+# Workaround for getting 'avahi' module from python2.
+# ~~~ I don't know why, but python3-avahi package released starting from Ubuntu 21.
+sys.path += ['/usr/lib/python2.7/dist-packages/']
+sys.modules['avahi'] = __import__('avahi')
+del sys.path[-1]
+
+# Workaround for replacing 'gobject' module with one from python3-gi.
+sys.modules['gobject'] = __import__('gi.repository.GObject', fromlist=[''])
+
+import fkie_master_discovery
+fkie_master_discovery.main_zeroconf()

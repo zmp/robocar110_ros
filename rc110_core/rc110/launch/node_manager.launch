@@ -1,3 +1,4 @@
 <launch>
-    <node pkg="node_manager_fkie" type="node_manager" ns="/" name="node_manager" output="screen"/>
+    <arg name="manager_pkg" value="$(eval 'node_manager_fkie' if env('ROS_DISTRO') == 'melodic' else 'fkie_node_manager')"/>
+    <node pkg="$(arg manager_pkg)" type="node_manager" ns="/" name="node_manager" output="screen"/>
 </launch>
