@@ -20,13 +20,3 @@ env | grep ROS
 ```
 
 To finish the roscore, just close the terminal.
-
-## Robot Selection
-If you are running multiple robots (real or simulation), by default the first robot is selected. It can be changed with `rc` variable:
-```
-cd ~/ros/src/robocar110_ros
-
-make show rc=grc_2
-make run-navigation rc=grc_2
-# etc...
-```

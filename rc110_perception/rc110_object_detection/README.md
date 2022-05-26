@@ -7,17 +7,17 @@
 - [x86 Specific Dependencies](docs/dependencies_installation_x86.md) (not needed on robot)
 - [Jetson Inference Library](https://github.com/dusty-nv/jetson-inference):
 
-```bash
-export JETSON_INFERENCE_DIR="$HOME/.cache/rc110"
-export JETSON_INFERENCE_COMMIT="19ed6215"
+## Jetson Inference Build ##
+***
+```shell
+cd ~
+```
 
-mkdir -p $JETSON_INFERENCE_DIR && cd $JETSON_INFERENCE_DIR
-git clone -o $JETSON_INFERENCE_COMMIT --recursive https://github.com/dusty-nv/jetson-inference
-cd jetson-inference
-mkdir build && cd build && cmake ../
-make -j
-sudo make install
-sudo ldconfig
+* Then follow [**the instruction**](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md).
+
+* If master branch does not work, it can be changed to branch for your jetpack version after `git clone`:
+```shell
+git checkout L4T-R32.7.1
 ```
 
 * During cmake step of installation, please, select model 15 and disable others, as on the following image:
@@ -118,12 +118,12 @@ input_width (int, default: 300)
 Models download can be started after build with a different command:
 
 ```bash
-cd $JETSON_INFERENCE_DIR/jetson-inference/tools
+cd ~/jetson-inference/tools
 ./download-models.sh
 ```
 
 * The models are saved in
-    - `$JETSON_INFERENCE_DIR/jetson-inference/data/networks/SSD-Inception-v2`
+    - `~/jetson-inference/data/networks/SSD-Inception-v2`
 * There are two files in the directory:
     1. `ssd_coco_labels.txt` (label file)
     2. `ssd_inception_v2_coco.uff` (weights file)

@@ -22,7 +22,7 @@ make run n=2                # number of models (0..5)
 make show n=2               # rviz for n models (1..2)
 ```
 
-The model names are **"grc_N"**. Selecting name is described in [**this document**](../../docs/RuntimeDetails.md#Robot Selection).
+The model names are **"grc_N"**. Selecting name is described in [**this document**](../../docs/RemoteConnection.md#Robot Selection).
 
 ## Subscribed Topics
 

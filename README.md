@@ -1,20 +1,11 @@
 # RoboCar 1/10 ROS
 
 Here you can find a RoboCar 1/10 ROS driver and sample nodes sources demonstrating its basic usage. 
-Releases also contain binary C++ Base Drivers which are used by the ROS nodes. 
+Releases also contain binary C++ Base Drivers which are used by the ROS nodes.
+
+The information about version changes can be found in [**ReleaseNotes**](ReleaseNotes.md).
 
 [![](docs/images/robocar110x_360p.png)](https://www.zmp.co.jp/en/products/robocar/robocar-110x)
-
-## Contents
-
-| Group                                              | Description                   |
-|:---------------------------------------------------|:------------------------------|
-| [**rc110_core**](rc110_core/README.md)             | Common Nodes                  |
-| [**rc110_monitoring**](rc110_monitoring/README.md) | Remote Monitoring and Control |
-| [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
-| [**rc110_perception**](rc110_perception/README.md) | Perception                    |
-| [**rc110_robot**](rc110_robot/README.md)           | Real Robot Nodes              |
-| [**rc110_simulation**](rc110_simulation/README.md) | Simulation                    |
 
 ## Binary Packages [Robot Only]
 Connect peripherals to the robot according to the User Manual. Boot, login, open browser, go to [**Releases**](https://github.com/zmp/robocar110_ros/releases) and download the latest `*.run` files.
@@ -36,7 +27,7 @@ Click on menu button and run "RoboCar 1/10" application.
 ![](docs/images/rviz.gif)
 
 ## Source Code
-If you already have `~/ros/src/robocar110_ros/` directory, read [**Sources Update**](docs/SourcesUpdate.md) instead.
+### Fresh Installation
 ```
 mkdir -p ~/ros/src
 cd ~/ros/src
@@ -47,6 +38,9 @@ cd ~/ros/src/robocar110_ros/  # make commands below are called from here!
 ```
 
 * It's possible to use other directory (for example `~/projects/robocar110_ros/`), but it's not ROS standard way, so we don't provide support for it. Do it on your own risk.
+
+### Version Update
+* Please, check [**Update Instructions**](docs/UpdateInstructions.md).
 
 ### Check Versions
 ```
@@ -86,9 +80,11 @@ Without robot, there's no need to build driver and system service packages.
 ### Other Samples
 When the driver is up and running, it's possible to start other ROS nodes that communicate with it.
 
-* [**rc110_behavior**](rc110_navigation/rc110_behavior/README.md)
-* [**rc110_slam_he**](rc110_navigation/rc110_slam_he/README.md)
-* etc...
+| Group                                              | Description                   |
+|:---------------------------------------------------|:------------------------------|
+| [**rc110_monitoring**](rc110_monitoring/README.md) | Remote Monitoring and Control |
+| [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
+| [**rc110_perception**](rc110_perception/README.md) | Object Detection, etc         |
 
 ## Additional Information
 
