@@ -49,11 +49,10 @@ std::string Rc110VideoServer::parseOptions()
     int len = snprintf(optionsString,
                        MAX_LEN,
                        "%s --gst-debug=%d \"("
-                       " nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
-                       //" v4l2src device=%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
-                       // , if nvv4l2camerasrc won't work
-                       " ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420"
-                       " ! omxh265enc ! video/x-h265, stream-format=(string)byte-stream"
+                       //" nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
+                       " v4l2src device=%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
+                       " ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)NV12"
+                       " ! nvv4l2h265enc ! video/x-h265, stream-format=(string)byte-stream"
                        " ! h265parse"
                        " ! rtph265pay name=pay0 pt=96 \")",
                        ros::this_node::getName().substr(1).c_str(),
