@@ -22,7 +22,7 @@ show:
 	host=$$(echo $${rc} | tr _ -)
 	if [ "$${host}" != "$$(hostname)" ]
 	then # remote
-		decoder_sync='avdec_h265 ! $(if $(fps),fpsdisplaysink sync=false async=false,xvimagesink)'
+		decoder_sync='avdec_h265 ! $(if $(overlay),fpsdisplaysink sync=false async=false,xvimagesink)'
 	else # local
 		decoder_sync='omxh265dec ! nvoverlaysink sync=false async=false'
 	fi

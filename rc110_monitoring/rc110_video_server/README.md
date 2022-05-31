@@ -36,9 +36,9 @@ make show            # playback the stream
 `make show` has the following options:
 
 * `rc=zmp` - show camera from robot named `zmp`
-* `fps=on` - FPS overlay (only remote) (can crash with SIGSEGV)
+* `overlay=on` - FPS overlay (only remote) (can crash with SIGSEGV)
 
-URL to playback video stream with GUI application like VLC: `rtsp://zmp.local:8554/front`
+URL to playback video stream with GUI application like VLC: `rtsp://rc-one.local:8554/front`
 
 ## Parameters
 
@@ -52,17 +52,17 @@ port (string, default: "8554")
 url_suffix (string, default: front)
     device specific url suffix: rtsp://<>/front
 
-video_device (string, default: video0)
-    device file name: /dev/video0
-
-max_framerate (int, default: 60)
-    max FPS - can be lower due to low lighting
+device (string, default: /dev/video0)
+    device file name
     
-width (int, default: 1920)
+width (int, default: 640)
     image width
     
-height (int, default: 1080)
+height (int, default: 480)
     image height
+    
+fps (int, default: 30)
+    max FPS - can be lower due to low lighting
 ```
 
 ## Additional Info

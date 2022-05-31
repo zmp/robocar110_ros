@@ -29,10 +29,10 @@ Rc110VideoServer::Rc110VideoServer() :
                 .debugLevel = ros::param::param<int>("~debug_level", 1),
                 .port = ros::param::param<int>("~port", 8554),
                 .urlSuffix = ros::param::param<std::string>("~url_suffix", "front"),
-                .videoDevice = ros::param::param<std::string>("~video_device", "video0"),
-                .maxFrameRate = ros::param::param<int>("~max_framerate", 60),
-                .width = ros::param::param<int>("~width", 1920),
-                .height = ros::param::param<int>("~height", 1080),
+                .videoDevice = ros::param::param<std::string>("~device", "/dev/video0"),
+                .width = ros::param::param<int>("~width", 640),
+                .height = ros::param::param<int>("~height", 480),
+                .maxFrameRate = ros::param::param<int>("~fps", 30),
         }),
         portString(std::to_string(parameters.port)),
         portPointer(portString.data())
@@ -49,8 +49,8 @@ std::string Rc110VideoServer::parseOptions()
     int len = snprintf(optionsString,
                        MAX_LEN,
                        "%s --gst-debug=%d \"("
-                       " nvv4l2camerasrc device=/dev/%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
-                       //" v4l2src device=/dev/%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
+                       " nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
+                       //" v4l2src device=%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
                        // , if nvv4l2camerasrc won't work
                        " ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420"
                        " ! omxh265enc ! video/x-h265, stream-format=(string)byte-stream"

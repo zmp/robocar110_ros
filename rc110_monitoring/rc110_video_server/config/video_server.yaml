@@ -1,7 +1,7 @@
 debug_level: 1
 port: "8554"
 url_suffix: "front"
-video_device: "video0"
-max_framerate: 30
+device: "/dev/video0"
 width: 640
 height: 480
+fps: 30

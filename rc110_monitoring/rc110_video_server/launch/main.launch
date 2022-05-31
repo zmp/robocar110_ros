@@ -1,13 +1,15 @@
 <launch>
     <arg name="r" default="vga"/>  <!-- vga, hd, sxga, fhd, qhd -->
+    <arg name="device" default="/dev/video0"/>
     <arg name="width" value="$(eval 2560 if r == 'qhd' else 1920 if r == 'fhd' else 1280 if r == 'sxga' else 1280 if r == 'hd' else 640)"/>
     <arg name="height" value="$(eval 1440 if r == 'qhd' else 1080 if r == 'fhd' else 960 if r == 'sxga' else 720 if r == 'hd' else 480)"/>
-    <arg name="rate" value="$(eval 32 if r == 'qhd' else 30)"/>
+    <arg name="fps" value="$(eval 32 if r == 'qhd' else 30)"/>
 
     <node pkg="rc110_video_server" type="rc110_video_server" name="video_server" respawn="true" output="screen">
         <rosparam file="$(find rc110_video_server)/config/video_server.yaml" subst_value="true"/>
+        <param name="device" value="$(arg device)"/>
         <param name="width" value="$(arg width)"/>
         <param name="height" value="$(arg height)"/>
-        <param name="max_framerate" value="$(arg rate)"/>
+        <param name="fps" value="$(arg fps)"/>
     </node>
 </launch>

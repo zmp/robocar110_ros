@@ -32,9 +32,9 @@ class Rc110VideoServer
         int port;
         std::string urlSuffix;
         std::string videoDevice;
-        int maxFrameRate;
         int width;
         int height;
+        int maxFrameRate;
     };
 
 public:
