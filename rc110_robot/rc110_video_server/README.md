@@ -13,18 +13,6 @@ Depends on **gstreamer-rtsp-server** ( **GPL3** ).
 
 * [NVidia HW Encoder](https://developer.nvidia.com/nvidia-video-codec-sdk)
 
-## Limitations
-
-You need to stop camera node, before running this one.
-```
-nano ~/.config/rc110/config.bash
-# Add one more parameter: 'roslaunch ... use_front_camera:=false'
-
-systemctl --user restart rc110  # or from repo root: make start
-```
-
-* Maybe you'll need to restart robot to reconnect video device.
-
 ## Makefile
 ```
 make deps            # check dependencies
@@ -52,17 +40,8 @@ port (string, default: "8554")
 url_suffix (string, default: front)
     device specific url suffix: rtsp://<>/front
 
-device (string, default: /dev/video0)
-    device file name
-    
-width (int, default: 640)
-    image width
-    
-height (int, default: 480)
-    image height
-    
-fps (int, default: 30)
-    max FPS - can be lower due to low lighting
+gst_args (string, default: "")
+    arguments for gst-launch (please, see the yaml for details)
 ```
 
 ## Additional Info

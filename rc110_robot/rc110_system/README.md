@@ -37,6 +37,13 @@ Similar effect can be acheived with `make start`, `make stop`, etc shortcuts.
 ```
 
 ### Camera
+#### Calibration
 * Please follow [**Camera Calibration**](docs/CameraCalibration.md) instruction to obtain calibration parameters. This calibration step is optional.
 * The default path of calibration params for front camera is set in *camera_info_url* inside the [**configuration file**](config/sensors/front_camera.yaml) (and optionally, [**here**](config/sensors/rear_camera.yaml) for rear camera).
 * ROS system will give a warning if the calibration files do not exist, which is an expected behavior and can be ignored.
+
+#### Limitations
+* Switching from video server to usual camera node can cause image become grayscale. So it's better to to use only one of them.
+    * If you need to fix grayscale image, either turn the camera off and on, or set the parameters to default values manually.
+    * `v4l2-ctl -d /dev/video_front --list-ctrls`
+    * `v4l2-ctl -d /dev/video_front --set-ctrl=brightness=0 --set-ctrl=contrast=10 --set-ctrl=saturation=16`

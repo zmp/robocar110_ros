@@ -1,7 +1,7 @@
 # RC110 service configuration file
 
 # Default arguments for roslaunch.
-RC110_ARGS="use_front_camera:=true joy_type:=elecom"
+RC110_ARGS="joy_type:=elecom"
 
 # Change to your launch command, if you created another one.
 RC110_LAUNCH_COMMAND="roslaunch --wait --skip-log-check rc110_system robot.launch ${RC110_ARGS}"

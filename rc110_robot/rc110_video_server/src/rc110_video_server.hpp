@@ -31,10 +31,7 @@ class Rc110VideoServer
         int debugLevel;
         int port;
         std::string urlSuffix;
-        std::string videoDevice;
-        int width;
-        int height;
-        int maxFrameRate;
+        std::string gstArgs;
     };
 
 public:

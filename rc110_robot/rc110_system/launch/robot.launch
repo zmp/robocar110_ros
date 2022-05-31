@@ -11,11 +11,7 @@
         <arg name="urdf_file" value="$(arg urdf_file)"/>
     </include>
 
-    <include file="$(find rc110_system)/launch/sensors.launch">
-        <arg name="config_dir" value="$(arg config_dir)"/>
-        <arg name="use_front_camera" value="$(arg use_front_camera)"/>
-        <arg name="use_rear_camera" value="$(arg use_rear_camera)"/>
-    </include>
+    <include file="$(find rc110_system)/launch/sensors.launch" pass_all_args="true"/>
 
     <node pkg="rc110_drive_control" type="rc110_drive_control" name="drive_control" respawn="true" output="screen">
         <rosparam file="$(arg config_dir)/drive_control.yaml" subst_value="true"/>
@@ -27,6 +23,7 @@
     </include>
 
     <include file="$(find rc110_video_server)/launch/main.launch">
+        <arg name="r" value="fhd"/>
         <arg name="device" value="/dev/video_front"/>
     </include>
 </launch>

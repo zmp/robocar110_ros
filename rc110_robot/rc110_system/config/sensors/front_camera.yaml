@@ -6,3 +6,4 @@ height: 480
 set_camera_fps: 30
 fps: 30
 camera_info_url: "file://$(env HOME)/.ros/camera_info/front_camera.yaml"
+buffer_queue_size: 3

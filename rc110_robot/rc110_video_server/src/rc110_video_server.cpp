@@ -29,10 +29,7 @@ Rc110VideoServer::Rc110VideoServer() :
                 .debugLevel = ros::param::param<int>("~debug_level", 1),
                 .port = ros::param::param<int>("~port", 8554),
                 .urlSuffix = ros::param::param<std::string>("~url_suffix", "front"),
-                .videoDevice = ros::param::param<std::string>("~device", "/dev/video0"),
-                .width = ros::param::param<int>("~width", 640),
-                .height = ros::param::param<int>("~height", 480),
-                .maxFrameRate = ros::param::param<int>("~fps", 30),
+                .gstArgs = ros::param::param<std::string>("~gst_args", ""),
         }),
         portString(std::to_string(parameters.port)),
         portPointer(portString.data())
@@ -48,19 +45,10 @@ std::string Rc110VideoServer::parseOptions()
     char optionsString[MAX_LEN];
     int len = snprintf(optionsString,
                        MAX_LEN,
-                       "%s --gst-debug=%d \"("
-                       //" nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), framerate=%d/1, width=(int)%d, height=(int)%d"
-                       " v4l2src device=%s ! video/x-raw, framerate=%d/1, width=(int)%d, height=(int)%d"
-                       " ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)NV12"
-                       " ! nvv4l2h265enc ! video/x-h265, stream-format=(string)byte-stream"
-                       " ! h265parse"
-                       " ! rtph265pay name=pay0 pt=96 \")",
+                       "%s --gst-debug=%d \"( %s \")",
                        ros::this_node::getName().substr(1).c_str(),
                        parameters.debugLevel,
-                       parameters.videoDevice.c_str(),
-                       parameters.maxFrameRate,
-                       parameters.width,
-                       parameters.height);
+                       parameters.gstArgs.c_str());
 
     if (len < 0 || len >= MAX_LEN) {
         ROS_ERROR("Options string creation failed. Size: %d", len);
