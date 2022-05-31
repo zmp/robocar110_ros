@@ -19,9 +19,9 @@ function(to_deb_name result name)
 endfunction()
 
 #
-# Convert ros dependency name to debian package name.
+# Convert ros dependency name to debian package names.
 #
-function(ros_to_deb_name result dep)
+function(ros_to_deb_names result dep)
     # Some packages can be found with rosdep resolve.
     execute_process(
             COMMAND rosdep resolve ${dep}
@@ -69,14 +69,18 @@ set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 set(CPACK_PACKAGING_INSTALL_PREFIX /opt/ros/$ENV{ROS_DISTRO})
 
 foreach(dependency IN LISTS ${PROJECT_NAME}_EXEC_DEPENDS)
-    ros_to_deb_name(deb ${dependency})
+    ros_to_deb_names(debs ${dependency})
+    if (NOT debs)
+        return()
+    endif()
 
-    if (NOT ${deb} STREQUAL "")
+    string(REPLACE " " ";" debs_list ${debs})
+    foreach(deb ${debs_list})
         if (CPACK_DEBIAN_PACKAGE_DEPENDS)
             set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, ")
         endif()
         set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}${deb}")
-    endif()
+    endforeach()
 endforeach()
 
 include(CPack)
