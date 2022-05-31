@@ -25,4 +25,8 @@
         <arg name="rc" value="$(env RC110_NAME)"/>
         <arg name="joy_type" value="$(arg joy_type)"/>
     </include>
+
+    <include file="$(find rc110_video_server)/launch/main.launch">
+        <arg name="device" value="/dev/video_front"/>
+    </include>
 </launch>

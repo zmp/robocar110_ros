@@ -4,14 +4,16 @@
     <arg name="use_rear_camera" default="false"/>
 
     <group if="$(arg use_front_camera)">
-        <node pkg="usb_cam" type="usb_cam_node" name="front_camera">
+        <node pkg="video_stream_opencv" type="video_stream" name="front_camera">
+            <remap from="image_raw" to="front_camera/image_raw" />
             <rosparam file="$(arg config_dir)/sensors/front_camera.yaml" subst_value="true"/>
         </node>
         <node pkg="image_proc" type="image_proc" ns="front_camera" name="image_proc"/>
     </group>
 
     <group if="$(arg use_rear_camera)">
-        <node pkg="usb_cam" type="usb_cam_node" name="rear_camera">
+        <node pkg="video_stream_opencv" type="video_stream" name="rear_camera">
+            <remap from="image_raw" to="rear_camera/image_raw" />
             <rosparam file="$(arg config_dir)/sensors/rear_camera.yaml" subst_value="true"/>
         </node>
         <node pkg="image_proc" type="image_proc" ns="rear_camera" name="image_proc"/>

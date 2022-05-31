@@ -1,9 +1,8 @@
 camera_name: "rear_camera"
-camera_frame_id: "$(env RC110_NAME)/rear_camera"
-video_device: "/dev/video_rear"
-pixel_format: "uyvy"
-framerate: 30.0
-image_width: 640
-image_height: 480
-io_method: "mmap"
+frame_id: "$(env RC110_NAME)/rear_camera"
+video_stream_provider: "/dev/video_rear"
+width: 640
+height: 480
+set_camera_fps: 30
+fps: 30
 camera_info_url: "file://$(env HOME)/.ros/camera_info/rear_camera.yaml"
