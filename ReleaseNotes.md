@@ -1,6 +1,7 @@
 ## v1.10.0
 * Ubuntu 20 support with **ROS noetic** (see the Actions section).
 * Video server node is included into the default robot installation. It is possible to use it without stopping camera node, but not simultaneously with it.
+* GUI robot selector now allows to omit option `rc=rc_12345`.
 * Cartographer package is not released on noetic repo for the time being. So it's necessary to compile the cartographer manually for `rc110_slam_cg`, or just use `rc110_slam_he` instead.
 
 ### Actions
