@@ -40,7 +40,8 @@ cd ~/ros/src/robocar110_ros/  # make commands below are called from here!
 * It's possible to use other directory (for example `~/projects/robocar110_ros/`), but it's not ROS standard way, so we don't provide support for it. Do it on your own risk.
 
 ### Version Update
-* Please, check [**Update Instructions**](docs/UpdateInstructions.md).
+* Please, check [**Update Instructions**](docs/UpdateInstructions.md). 
+* And don't forget to apply [**Release Notes Actions**](ReleaseNotes.md)!
 
 ### Check Versions
 ```
@@ -82,7 +83,6 @@ When the driver is up and running, it's possible to start other ROS nodes that c
 
 | Group                                              | Description                   |
 |:---------------------------------------------------|:------------------------------|
-| [**rc110_monitoring**](rc110_monitoring/README.md) | Remote Monitoring and Control |
 | [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
 | [**rc110_perception**](rc110_perception/README.md) | Object Detection, etc         |
 

@@ -28,6 +28,9 @@ git pull
 
 That's basic git usage. For more details, you can check [the book](https://git-scm.com/book/en/v2) for example, which is available on multiple languages.
 
+## Warning!
+Please, note that it's necessary to apply all **Actions** between current and new version from [**Release Notes**](../ReleaseNotes.md)!
+
 ## Binaries
 If you have problems with `rc110_robot_*.run` file or you want another version installed, it's possible to do it with the following commands:
 ```

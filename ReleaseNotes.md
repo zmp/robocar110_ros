@@ -1,3 +1,13 @@
+## v1.10.0
+* Ubuntu 20 support with **ROS noetic** (see the Actions section).
+* Video server node is included into the default robot installation. It is possible to use it without stopping camera node, but not simultaneously with it.
+* Cartographer package is not released on noetic repo for the time being. So it's necessary to compile the cartographer manually for `rc110_slam_cg`, or just use `rc110_slam_he` instead.
+
+### Actions
+* **[noetic]** JetPack >=5 is required on the robot. Installation details are listed in the User Manual.
+* **[noetic]** Camera driver config was updated. Please, install the latest `rc110_drivers.run` and launch `rc110-camera` again.
+* **[noetic]** Before compiling, please, install dependencies with `make deps force=on`.
+
 ## v1.9.0 ~ .1
 * Multiple robots setup with ros master on each machine (FKIE).
 * Automatic network discovery (on top of [**avahi**](https://en.wikipedia.org/wiki/Avahi_(software))).
