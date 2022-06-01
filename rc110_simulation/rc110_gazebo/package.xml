@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rc110_gazebo</name>
-  <version>1.9.1</version>
+  <version>1.10.0</version>
   <description>RoboCar 1/10 simulation using Gazebo.</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>

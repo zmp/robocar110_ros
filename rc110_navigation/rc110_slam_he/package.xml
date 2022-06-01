@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rc110_slam_he</name>
-  <version>1.9.1</version>
+  <version>1.10.0</version>
   <description>RoboCar 1/10 SLAM Using Hector Mapping</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
