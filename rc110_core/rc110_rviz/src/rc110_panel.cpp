@@ -7,17 +7,16 @@
  */
 #include "rc110_panel.hpp"
 
-#include <rc110_msgs/SetInteger.h>
-#include <std_srvs/SetBool.h>
-#include <std_srvs/Trigger.h>
-#include <topic_tools/MuxSelect.h>
-
 #include <QStatusBar>
 #include <QTimer>
 #include <boost/math/constants/constants.hpp>
+#include <iostream>
 #include <regex>
+#include <rviz_common/display_context.hpp>
 
 #include "ui_rc110_panel.h"
+
+using namespace std::chrono_literals;
 
 namespace zmp
 {
@@ -28,6 +27,7 @@ constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
 constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
 
 constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
+constexpr int SERVICE_WAIT_TIME = 500;     // ms
 constexpr int TIMER_PERIOD = 100;          // ms
 
 bool globalRobotSelected = false;
@@ -38,10 +38,10 @@ QString printSensor(float value, const QString& suffix, int precision = 2)
            suffix;
 }
 
-QStringList getRobotNames()
+QStringList getRobotNames(rclcpp::Node* node)
 {
     std::vector<std::string> nodeNames;
-    ros::master::getNodes(nodeNames);
+    nodeNames = node->get_node_names();
 
     static const std::regex expression("/(.*)/drive_control$");
 
@@ -54,6 +54,11 @@ QStringList getRobotNames()
     }
     return robotNames;
 }
+
+std::chrono::system_clock::time_point toTimePoint(const rclcpp::Time& time)
+{
+    return std::chrono::system_clock::time_point(std::chrono::nanoseconds(time.nanoseconds()));
+}
 }  // namespace
 
 Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget), calibrationTimer(new QTimer(this))
@@ -62,7 +67,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     calibrationTimer->setSingleShot(true);
 
     QList<QTreeWidgetItem*> items;
-    for (int i = 0; i < std::size(TREE_ITEM_GROUP_NAMES); ++i) {
+    for (size_t i = 0; i < std::size(TREE_ITEM_GROUP_NAMES); ++i) {
         items.push_back(new QTreeWidgetItem({TREE_ITEM_GROUP_NAMES[i]}));
         treeItems.insert((TreeItemGroup)i, items[i]);
     }
@@ -95,15 +100,18 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
     statusBar->showMessage("");
 }
 
-Rc110Panel::~Rc110Panel() = default;
+Rc110Panel::~Rc110Panel()
+{
+    node->undeclare_parameter("rc");
+}
 
-void Rc110Panel::load(const rviz::Config& config)
+void Rc110Panel::load(const rviz_common::Config& config)
 {
     Panel::load(config);
     config.mapGetString("robot_name", &savedRobotName);
 }
 
-void Rc110Panel::save(rviz::Config config) const
+void Rc110Panel::save(rviz_common::Config config) const
 {
     Panel::save(config);
     if (rc.isEmpty()) {
@@ -113,18 +121,23 @@ void Rc110Panel::save(rviz::Config config) const
 
 void Rc110Panel::onInitialize()
 {
-    rc = QString::fromStdString(ros::param::param("~rc", std::string()));
+    // display context available starting from this function
+    node = getDisplayContext()->getRosNodeAbstraction().lock()->get_raw_node();
+
+    rcl_interfaces::msg::ParameterDescriptor descriptor;
+    descriptor.dynamic_typing = true;  // needed for undeclare_parameter
+    rc = QString::fromStdString(node->declare_parameter("rc", std::string(), descriptor));
 
     // Receive and pass current RoboCar selected in RViz.
-    rcSubscriber = handle.subscribe<std_msgs::String>("rviz_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
-        setupRobotName(name->data);
-    });
-    publishers["rviz_rc"] = handle.advertise<std_msgs::String>("rviz_rc", 1, bool("latch"));
+    rcSubscriber = node->create_subscription<std_msgs::msg::String>(
+            "rviz_rc", 1, [this](const std_msgs::msg::String::ConstSharedPtr& name) { setupRobotName(name->data); });
+    publishers["rviz_rc"] = node->create_publisher<std_msgs::msg::String>(
+            "rviz_rc", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
 
     startTimer(TIMER_PERIOD);
 }
 
-void Rc110Panel::timerEvent(QTimerEvent* event)
+void Rc110Panel::timerEvent(QTimerEvent*)
 {
     if (driveSpeed != 0) {
         publishDrive();  // prevent motor from stopping by timeout
@@ -134,12 +147,30 @@ void Rc110Panel::timerEvent(QTimerEvent* event)
     if (++timerCounter % (1000 / TIMER_PERIOD) == 0) {  // 100 ms period
         updateRobotNames();
     }
+
+    auto waitingLimit = toTimePoint(node->now() - rclcpp::Duration::from_seconds(SERVICE_WAIT_TIME / 1000.0));
+    auto prunedRequests = std::vector<int64_t>();
+    if (teleopStatusService && teleopStatusService->prune_requests_older_than(waitingLimit, &prunedRequests)) {
+        statusBar->showMessage("Timeout on service /teleop_status", STATUS_MESSAGE_TIME);
+    }
+    if (enableBoardService && enableBoardService->prune_requests_older_than(waitingLimit, &prunedRequests)) {
+        statusBar->showMessage("Timeout on service /enable_board", STATUS_MESSAGE_TIME);
+    }
+    if (muxDriveService && muxDriveService->prune_requests_older_than(waitingLimit, &prunedRequests)) {
+        statusBar->showMessage("Timeout on service /mux_drive/select", STATUS_MESSAGE_TIME);
+    }
+    if (motorStateService && motorStateService->prune_requests_older_than(waitingLimit, &prunedRequests)) {
+        statusBar->showMessage("Timeout on service /motor_state", STATUS_MESSAGE_TIME);
+    }
+    if (servoStateService && servoStateService->prune_requests_older_than(waitingLimit, &prunedRequests)) {
+        statusBar->showMessage("Timeout on service /servo_state", STATUS_MESSAGE_TIME);
+    }
 }
 
 void Rc110Panel::updateRobotNames()
 {
     // Either multiple robots in one window.
-    auto newRobotNames = getRobotNames();
+    auto newRobotNames = getRobotNames(node.get());
     if (robotNames != newRobotNames) {
         robotNames = newRobotNames;  // used anyway to select other robot
         trySelectingRobot();
@@ -192,41 +223,67 @@ void Rc110Panel::setupRobotName(const std::string& name)
 
 void Rc110Panel::updateJoystickIcon()
 {
-    auto name = ui->robotNameCombo->currentText().toStdString();
-    std_srvs::Trigger service;
-    bool result = false;
-    if (ros::service::call("/" + name + "/teleop_status", service)) {
-        if (service.response.success) {
-            result = true;
-        }
-    }
-    ui->joyLabel->setVisible(result);
+    if (!teleopStatusService) return;
+
+    auto request = std::make_shared<std_srvs::srv::Trigger::Request>();
+    teleopStatusService->async_send_request(request,
+                                            [this](rclcpp::Client<std_srvs::srv::Trigger>::SharedFuture response) {
+                                                ui->joyLabel->setVisible(response.valid() && response.get()->success);
+                                            });
 }
 
 void Rc110Panel::setupRosConnections()
 {
+    using std::placeholders::_1;
+
     subscribers.clear();
-    subscribers.push_back(handle.subscribe(ns + "/mux_drive/selected", 1, &Rc110Panel::onAdModeChanged, this));
+    subscribers.push_back(node->create_subscription<std_msgs::msg::String>(
+            ns + "/mux_drive/selected", 1, std::bind(&Rc110Panel::onAdModeChanged, this, _1)));
 
-    subscribers.push_back(handle.subscribe(ns + "/motor_speed_goal", 1, &Rc110Panel::onMotorSpeed, this));
-    subscribers.push_back(handle.subscribe(ns + "/steering_angle_goal", 1, &Rc110Panel::onSteeringAngle, this));
+    subscribers.push_back(node->create_subscription<std_msgs::msg::Float32>(
+            ns + "/motor_speed_goal", 1, std::bind(&Rc110Panel::onMotorSpeed, this, _1)));
+    subscribers.push_back(node->create_subscription<std_msgs::msg::Float32>(
+            ns + "/steering_angle_goal", 1, std::bind(&Rc110Panel::onSteeringAngle, this, _1)));
 
-    subscribers.push_back(handle.subscribe(ns + "/baseboard_error", 1, &Rc110Panel::onError, this));
-    subscribers.push_back(handle.subscribe(ns + "/robot_status", 1, &Rc110Panel::onRobotStatus, this));
-    subscribers.push_back(handle.subscribe(ns + "/drive_status", 1, &Rc110Panel::onDriveStatus, this));
-    subscribers.push_back(handle.subscribe(ns + "/offsets_status", 1, &Rc110Panel::onOffsets, this));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::BaseboardError>(
+            ns + "/baseboard_error",
+            rclcpp::QoS(1).durability(rclcpp::DurabilityPolicy::TransientLocal),
+            std::bind(&Rc110Panel::onError, this, _1)));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::Status>(
+            ns + "/robot_status", 1, std::bind(&Rc110Panel::onRobotStatus, this, _1)));
+    subscribers.push_back(node->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
+            ns + "/drive_status", 1, std::bind(&Rc110Panel::onDriveStatus, this, _1)));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::Offsets>(
+            ns + "/offsets_status", 1, std::bind(&Rc110Panel::onOffsets, this, _1)));
 
-    subscribers.push_back(handle.subscribe(ns + "/odometry", 1, &Rc110Panel::onOdometry, this));
-    subscribers.push_back(handle.subscribe(ns + "/servo_battery", 1, &Rc110Panel::onServoBattery, this));
-    subscribers.push_back(handle.subscribe(ns + "/motor_battery", 1, &Rc110Panel::onMotorBattery, this));
-    subscribers.push_back(handle.subscribe(ns + "/baseboard_temperature", 1, &Rc110Panel::onBaseboardTemperature, this));
-    subscribers.push_back(handle.subscribe(ns + "/servo_temperature", 1, &Rc110Panel::onServoTemperature, this));
-    subscribers.push_back(handle.subscribe(ns + "/imu/data", 1, &Rc110Panel::onImu, this));
-    subscribers.push_back(handle.subscribe(ns + "/motor_rate", 1, &Rc110Panel::onMotorRate, this));
-    subscribers.push_back(handle.subscribe(ns + "/wheel_speeds", 1, &Rc110Panel::onWheelSpeeds, this));
+    subscribers.push_back(node->create_subscription<nav_msgs::msg::Odometry>(
+            ns + "/odometry", 1, std::bind(&Rc110Panel::onOdometry, this, _1)));
+    subscribers.push_back(node->create_subscription<sensor_msgs::msg::BatteryState>(
+            ns + "/servo_battery", 1, std::bind(&Rc110Panel::onServoBattery, this, _1)));
+    subscribers.push_back(node->create_subscription<sensor_msgs::msg::BatteryState>(
+            ns + "/motor_battery", 1, std::bind(&Rc110Panel::onMotorBattery, this, _1)));
+    subscribers.push_back(node->create_subscription<sensor_msgs::msg::Temperature>(
+            ns + "/baseboard_temperature", 1, std::bind(&Rc110Panel::onBaseboardTemperature, this, _1)));
+    subscribers.push_back(node->create_subscription<sensor_msgs::msg::Temperature>(
+            ns + "/servo_temperature", 1, std::bind(&Rc110Panel::onServoTemperature, this, _1)));
+    subscribers.push_back(node->create_subscription<sensor_msgs::msg::Imu>(ns + "/imu/data_raw",
+                                                                           1,
+                                                                           std::bind(&Rc110Panel::onImu, this, _1)));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::MotorRate>(
+            ns + "/motor_rate", 1, std::bind(&Rc110Panel::onMotorRate, this, _1)));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::WheelSpeeds>(
+            ns + "/wheel_speeds", 1, std::bind(&Rc110Panel::onWheelSpeeds, this, _1)));
 
-    publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>(ns + "/drive_manual", 1);
-    publishers["offsets"] = handle.advertise<rc110_msgs::Offsets>(ns + "/offsets", 1);
+    publishers["drive_manual"] = node->create_publisher<ackermann_msgs::msg::AckermannDriveStamped>(
+            ns + "/drive_manual", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+    publishers["offsets"] = node->create_publisher<rc110_msgs::msg::Offsets>(
+            ns + "/offsets", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+
+    teleopStatusService = node->create_client<std_srvs::srv::Trigger>(ns + "/teleop_status");
+    enableBoardService = node->create_client<std_srvs::srv::SetBool>(ns + "/enable_board");
+    muxDriveService = node->create_client<rc110_topic_tools::srv::MuxSelect>(ns + "/mux_drive/select");
+    motorStateService = node->create_client<rc110_msgs::srv::SetInteger>(ns + "/motor_state");
+    servoStateService = node->create_client<rc110_msgs::srv::SetInteger>(ns + "/servo_state");
 }
 
 QTreeWidgetItem* Rc110Panel::getTreeItem(TreeItemGroup group, const char* name) const
@@ -274,59 +331,76 @@ void Rc110Panel::onRobotSelectedButton(bool on)
 
 void Rc110Panel::onEnableBoard(bool on)
 {
-    std_srvs::SetBool service;
-    service.request.data = uint8_t(on);
-    ros::service::call(ns + "/enable_board", service);
+    if (!enableBoardService) return;
 
-    statusBar->showMessage(service.response.success ? QString("Board was set to %1").arg(on ? "on" : "off")
-                                                    : QString("Failed to set board state"),
-                           STATUS_MESSAGE_TIME);
+    auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+    request->data = uint8_t(on);  // toggle board
+    enableBoardService->async_send_request(
+            request, [this, on](rclcpp::Client<std_srvs::srv::SetBool>::SharedFuture response) {
+                statusBar->showMessage(response.valid() && response.get()->success
+                                               ? QString("Board was set to %1").arg(on ? "on" : "off")
+                                               : QString("Failed to set board state"),
+                                       STATUS_MESSAGE_TIME);
+            });
 }
 
 void Rc110Panel::onEnableAd(bool on)
 {
-    topic_tools::MuxSelect service;
-    service.request.topic = on ? "drive_ad" : "drive_manual";
+    if (!muxDriveService) return;
 
-    if (ros::service::call(ns + "/mux_drive/select", service)) {
-        statusBar->showMessage(on ? "AD enabled" : "Joystick enabled", STATUS_MESSAGE_TIME);
-    } else {
-        statusBar->showMessage("Failed to switch AD mode", STATUS_MESSAGE_TIME);
-    }
+    auto request = std::make_shared<rc110_topic_tools::srv::MuxSelect::Request>();
+    request->topic = on ? "drive_ad" : "drive_manual";
+    muxDriveService->async_send_request(
+            request, [this, on](rclcpp::Client<rc110_topic_tools::srv::MuxSelect>::SharedFuture response) {
+                statusBar->showMessage(response.valid() && response.get()->success
+                                               ? QString(on ? "AD enabled" : "Joystick enabled")
+                                               : QString("Failed to switch AD mode"),
+                                       STATUS_MESSAGE_TIME);
+            });
 }
 
 void Rc110Panel::onSetMotorState(QAbstractButton* button)
 {
-    int state = (button == ui->motorOnRadio)        ? rc110_msgs::Status::MOTOR_ON
-                : (button == ui->motorNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
-                                                    : rc110_msgs::Status::MOTOR_OFF;
-    rc110_msgs::SetInteger service;
-    service.request.data = state;
-    ros::service::call(ns + "/motor_state", service);
+    if (!motorStateService) return;
 
-    statusBar->showMessage(service.response.success ? QString("Drive motor was set to %1")
-                                                              .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
-                                                                   : state == rc110_msgs::Status::MOTOR_OFF ? "off"
+    int state = (button == ui->motorOnRadio)        ? rc110_msgs::msg::Status::MOTOR_ON
+                : (button == ui->motorNeutralRadio) ? rc110_msgs::msg::Status::MOTOR_NEUTRAL
+                                                    : rc110_msgs::msg::Status::MOTOR_OFF;
+
+    auto request = std::make_shared<rc110_msgs::srv::SetInteger::Request>();
+    request->data = state;
+    motorStateService->async_send_request(
+            request, [this, state](rclcpp::Client<rc110_msgs::srv::SetInteger>::SharedFuture response) {
+                statusBar->showMessage(response.valid() && response.get()->success
+                                               ? QString("Drive motor was set to %1")
+                                                         .arg(state == rc110_msgs::msg::Status::MOTOR_ON    ? "on"
+                                                              : state == rc110_msgs::msg::Status::MOTOR_OFF ? "off"
                                                                                                             : "neutral")
-                                                    : QString("Failed to set motor state"),
-                           STATUS_MESSAGE_TIME);
+                                               : QString("Failed to set motor state"),
+                                       STATUS_MESSAGE_TIME);
+            });
 }
 
 void Rc110Panel::onSetServoState(QAbstractButton* button)
 {
-    int state = (button == ui->servoOnRadio)        ? rc110_msgs::Status::MOTOR_ON
-                : (button == ui->servoNeutralRadio) ? rc110_msgs::Status::MOTOR_NEUTRAL
-                                                    : rc110_msgs::Status::MOTOR_OFF;
-    rc110_msgs::SetInteger service;
-    service.request.data = state;
-    ros::service::call(ns + "/servo_state", service);
+    if (!servoStateService) return;
 
-    statusBar->showMessage(service.response.success ? QString("Servomotor was set to %1")
-                                                              .arg(state == rc110_msgs::Status::MOTOR_ON    ? "on"
-                                                                   : state == rc110_msgs::Status::MOTOR_OFF ? "off"
+    int state = (button == ui->servoOnRadio)        ? rc110_msgs::msg::Status::MOTOR_ON
+                : (button == ui->servoNeutralRadio) ? rc110_msgs::msg::Status::MOTOR_NEUTRAL
+                                                    : rc110_msgs::msg::Status::MOTOR_OFF;
+
+    auto request = std::make_shared<rc110_msgs::srv::SetInteger::Request>();
+    request->data = state;
+    servoStateService->async_send_request(
+            request, [this, state](rclcpp::Client<rc110_msgs::srv::SetInteger>::SharedFuture response) {
+                statusBar->showMessage(response.valid() && response.get()->success
+                                               ? QString("Servomotor was set to %1")
+                                                         .arg(state == rc110_msgs::msg::Status::MOTOR_ON    ? "on"
+                                                              : state == rc110_msgs::msg::Status::MOTOR_OFF ? "off"
                                                                                                             : "neutral")
-                                                    : QString("Failed to set servo state"),
-                           STATUS_MESSAGE_TIME);
+                                               : QString("Failed to set servo state"),
+                                       STATUS_MESSAGE_TIME);
+            });
 }
 
 void Rc110Panel::onRobotNameChanged(int)
@@ -398,37 +472,37 @@ void Rc110Panel::onFinishCalibration()
 
 void Rc110Panel::publishRobotName(const std::string& name)
 {
-    std_msgs::String message;
+    std_msgs::msg::String message;
     message.data = name;
-    publishers["rviz_rc"].publish(message);
+    publish("rviz_rc", message);
 }
 
 void Rc110Panel::publishDrive()
 {
-    ackermann_msgs::AckermannDriveStamped message;
-    message.header.stamp = ros::Time::now();
+    ackermann_msgs::msg::AckermannDriveStamped message;
+    message.header.stamp = node->now();
     message.drive.speed = driveSpeed;
     message.drive.steering_angle = steeringAngle * DEG_TO_RAD;
-    publishers["drive_manual"].publish(message);
+    publish("drive_manual", message);
 }
 
 void Rc110Panel::publishOffsets()
 {
-    publishers["offsets"].publish(offsets);
+    publish("offsets", offsets);
 }
 
-void Rc110Panel::onAdModeChanged(const std_msgs::String& message)
+void Rc110Panel::onAdModeChanged(const std_msgs::msg::String& message)
 {
     ui->adButton->setChecked(message.data == "drive_ad");
 }
 
-void Rc110Panel::onMotorSpeed(const std_msgs::Float32& message)
+void Rc110Panel::onMotorSpeed(const std_msgs::msg::Float32& message)
 {
     ui->driveSpeedEdit->setText(QString::number(message.data));
     showDriveGoalStatus();
 }
 
-void Rc110Panel::onSteeringAngle(const std_msgs::Float32& message)
+void Rc110Panel::onSteeringAngle(const std_msgs::msg::Float32& message)
 {
     ui->steeringEdit->setText(QString::number(message.data * RAD_TO_DEG));
     showDriveGoalStatus();
@@ -441,37 +515,37 @@ void Rc110Panel::showDriveGoalStatus()
             STATUS_MESSAGE_TIME);
 }
 
-void Rc110Panel::onError(const rc110_msgs::BaseboardError& message)
+void Rc110Panel::onError(const rc110_msgs::msg::BaseboardError& message)
 {
     int error = message.data;
-    if (error == rc110_msgs::BaseboardError::NONE) {
+    if (error == rc110_msgs::msg::BaseboardError::NONE) {
         ui->errorLabel->setPixmap(QPixmap(":/ok.png"));
         ui->errorLabel->setToolTip("Baseboard is ok");
     } else {
         ui->errorLabel->setPixmap(QPixmap(":/error.png"));
 
         QString tooltip = "Please, restart baseboard: %1";
-        if (error == rc110_msgs::BaseboardError::BOARD_HEAT) {
+        if (error == rc110_msgs::msg::BaseboardError::BOARD_HEAT) {
             ui->errorLabel->setToolTip(tooltip.arg("board has too high temperature"));
-        } else if (error == rc110_msgs::BaseboardError::MOTOR_HEAT) {
+        } else if (error == rc110_msgs::msg::BaseboardError::MOTOR_HEAT) {
             ui->errorLabel->setToolTip(tooltip.arg("motor has too high temperature"));
-        } else if (error == rc110_msgs::BaseboardError::MOTOR_FAILURE) {
+        } else if (error == rc110_msgs::msg::BaseboardError::MOTOR_FAILURE) {
             ui->errorLabel->setToolTip(tooltip.arg("encoder feedback and polarity of the motor"));
-        } else if (error == rc110_msgs::BaseboardError::LOW_VOLTAGE) {
+        } else if (error == rc110_msgs::msg::BaseboardError::LOW_VOLTAGE) {
             ui->errorLabel->setToolTip(tooltip.arg("voltage dropped less than 6V for around 1s"));
         }
     }
 }
 
-void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
+void Rc110Panel::onRobotStatus(const rc110_msgs::msg::Status& message)
 {
     ui->boardButton->setChecked(message.board_enabled);
 
     switch (message.motor_state) {
-        case rc110_msgs::Status::MOTOR_NEUTRAL:
+        case rc110_msgs::msg::Status::MOTOR_NEUTRAL:
             ui->motorNeutralRadio->setChecked(true);
             break;
-        case rc110_msgs::Status::MOTOR_ON:
+        case rc110_msgs::msg::Status::MOTOR_ON:
             ui->motorOnRadio->setChecked(true);
             break;
         default:
@@ -479,10 +553,10 @@ void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
     }
 
     switch (message.servo_state) {
-        case rc110_msgs::Status::MOTOR_NEUTRAL:
+        case rc110_msgs::msg::Status::MOTOR_NEUTRAL:
             ui->servoNeutralRadio->setChecked(true);
             break;
-        case rc110_msgs::Status::MOTOR_ON:
+        case rc110_msgs::msg::Status::MOTOR_ON:
             ui->servoOnRadio->setChecked(true);
             break;
         default:
@@ -490,7 +564,7 @@ void Rc110Panel::onRobotStatus(const rc110_msgs::Status& message)
     }
 }
 
-void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driveStatus)
+void Rc110Panel::onDriveStatus(const ackermann_msgs::msg::AckermannDriveStamped& driveStatus)
 {
     getTreeItem(DRIVE, "speed")->setText(1, printSensor(driveStatus.drive.speed, "m/s"));
     getTreeItem(DRIVE, "steering angle")->setText(1, printSensor(driveStatus.drive.steering_angle * RAD_TO_DEG, "°"));
@@ -498,7 +572,7 @@ void Rc110Panel::onDriveStatus(const ackermann_msgs::AckermannDriveStamped& driv
             ->setText(1, printSensor(driveStatus.drive.steering_angle_velocity * RAD_TO_DEG, "°"));
 }
 
-void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
+void Rc110Panel::onOffsets(const rc110_msgs::msg::Offsets& message)
 {
     offsets = message;
     QString text = "Motor Current:\t %1\n"
@@ -517,19 +591,19 @@ void Rc110Panel::onOffsets(const rc110_msgs::Offsets& message)
     statusBar->showMessage(QString("Offsets updated."), STATUS_MESSAGE_TIME);
 }
 
-void Rc110Panel::onOdometry(const nav_msgs::Odometry& odometry)
+void Rc110Panel::onOdometry(const nav_msgs::msg::Odometry& odometry)
 {
     getTreeItem(DRIVE, "angular velocity")
             ->setText(1, printSensor(float(odometry.twist.twist.angular.z * RAD_TO_DEG), "°/s"));
 }
 
-void Rc110Panel::onServoBattery(const sensor_msgs::BatteryState& batteryState)
+void Rc110Panel::onServoBattery(const sensor_msgs::msg::BatteryState& batteryState)
 {
     getTreeItem(BATTERY, "servo voltage")->setText(1, printSensor(batteryState.voltage, "V"));
     getTreeItem(BATTERY, "servo current")->setText(1, printSensor(batteryState.current * 1000, "mA", 0));
 }
 
-void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
+void Rc110Panel::onMotorBattery(const sensor_msgs::msg::BatteryState& batteryState)
 {
     getTreeItem(BATTERY, "motor voltage")->setText(1, printSensor(batteryState.voltage, "V"));
     getTreeItem(BATTERY, "motor current")->setText(1, printSensor(batteryState.current * 1000, "mA", 0));
@@ -554,17 +628,17 @@ void Rc110Panel::onMotorBattery(const sensor_msgs::BatteryState& batteryState)
     }
 }
 
-void Rc110Panel::onBaseboardTemperature(const sensor_msgs::Temperature& temperature)
+void Rc110Panel::onBaseboardTemperature(const sensor_msgs::msg::Temperature& temperature)
 {
     getTreeItem(TEMPERATURE, "baseboard")->setText(1, printSensor(temperature.temperature, "°C", 1));
 }
 
-void Rc110Panel::onServoTemperature(const sensor_msgs::Temperature& temperature)
+void Rc110Panel::onServoTemperature(const sensor_msgs::msg::Temperature& temperature)
 {
     getTreeItem(TEMPERATURE, "servo")->setText(1, printSensor(temperature.temperature, "°C", 1));
 }
 
-void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
+void Rc110Panel::onImu(const sensor_msgs::msg::Imu& imu)
 {
     getTreeItem(IMU, "accel x")->setText(1, printSensor(imu.linear_acceleration.x, "m/s²"));
     getTreeItem(IMU, "accel y")->setText(1, printSensor(imu.linear_acceleration.y, "m/s²"));
@@ -587,13 +661,13 @@ void Rc110Panel::onImu(const sensor_msgs::Imu& imu)
     }
 }
 
-void Rc110Panel::onMotorRate(const rc110_msgs::MotorRate& motorRate)
+void Rc110Panel::onMotorRate(const rc110_msgs::msg::MotorRate& motorRate)
 {
     getTreeItem(OTHER, "motor rate")->setText(1, printSensor(motorRate.motor_rate, "cycles/s"));
     getTreeItem(OTHER, "estimated speed")->setText(1, printSensor(motorRate.estimated_speed, "m/s"));
 }
 
-void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
+void Rc110Panel::onWheelSpeeds(const rc110_msgs::msg::WheelSpeeds& wheelSpeeds)
 {
     getTreeItem(OTHER, "wheel speed FL")->setText(1, printSensor(wheelSpeeds.speed_fl, "m/s"));
     getTreeItem(OTHER, "wheel speed FR")->setText(1, printSensor(wheelSpeeds.speed_fr, "m/s"));
@@ -602,5 +676,5 @@ void Rc110Panel::onWheelSpeeds(const rc110_msgs::WheelSpeeds& wheelSpeeds)
 }
 }  // namespace zmp
 
-#include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(zmp::Rc110Panel, rviz::Panel)
+#include <pluginlib/class_list_macros.hpp>
+PLUGINLIB_EXPORT_CLASS(zmp::Rc110Panel, rviz_common::Panel)

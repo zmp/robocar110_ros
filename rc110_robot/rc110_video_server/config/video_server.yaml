@@ -1,12 +1,14 @@
-debug_level: 1
-port: "8554"
-url_suffix: "front"
+/**:
+  ros__parameters:
+    debug_level: 1
+    port: 8554
+    url_suffix: "front"
 
-gst_args: "v4l2src device=$(arg device) extra-controls=c,brightness=0,contrast=10,saturation=16
- ! video/x-raw, width=$(arg width), height=$(arg height), framerate=$(arg fps)/1
+    gst_args: "v4l2src device=$(var device) extra-controls=c,brightness=0,contrast=10,saturation=16
+ ! video/x-raw, width=$(var width), height=$(var height), framerate=$(var fps)/1
  ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)NV12
  ! nvv4l2h265enc ! video/x-h265, stream-format=(string)byte-stream
  ! h265parse ! rtph265pay name=pay0 pt=96"
 
 # Nvidia source can fail sometimes. Maybe it will be fixed in future.
-# nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), width=$(arg width), height=$(arg height), framerate=$(arg fps)/1
+# nvv4l2camerasrc device=%s ! video/x-raw(memory:NVMM), width=$(var width), height=$(var height), framerate=$(var fps)/1

@@ -7,13 +7,15 @@
  */
 
 #include "rc110_joy_teleop.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char* argv[])
 try {
-    ros::init(argc, argv, "rc110_joy_teleop");
+    rclcpp::init(argc, argv);
 
-    zmp::Rc110JoyTeleop node;
-    ros::spin();
+    auto node = std::make_shared<zmp::Rc110JoyTeleop>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
 
     return EXIT_SUCCESS;
 }  //

@@ -7,18 +7,18 @@
  */
 #include "rc110_drive_control.hpp"
 
-#include <ackermann_msgs/AckermannDriveStamped.h>
-#include <nav_msgs/Odometry.h>
-#include <rc110_msgs/BaseboardError.h>
-#include <rc110_msgs/MotorRate.h>
-#include <rc110_msgs/Status.h>
-#include <rc110_msgs/WheelSpeeds.h>
-#include <ros/callback_queue.h>
-#include <sensor_msgs/BatteryState.h>
-#include <sensor_msgs/Imu.h>
-#include <sensor_msgs/Temperature.h>
+#include <nav_msgs/msg/odometry.hpp>
+#include <rc110_msgs/msg/baseboard_error.hpp>
+#include <rc110_msgs/msg/motor_rate.hpp>
+#include <rc110_msgs/msg/status.hpp>
+#include <rc110_msgs/msg/wheel_speeds.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <sensor_msgs/msg/temperature.hpp>
+#include <sensor_msgs/msg/battery_state.hpp>
+#include <std_msgs/msg/u_int8.hpp>
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <rclcpp/time.hpp>
 
 namespace zmp
 {
@@ -40,54 +40,83 @@ constexpr double TELEOP_PING_TIMEOUT = 0.4;  // sec
 }  // namespace
 
 Rc110DriveControl::Rc110DriveControl() :
+        Node("rc110_drive_control"),
         parameters({
-                .baseFrameId = ros::param::param<std::string>("~base_frame_id", "base_link"),
-                .odomFrameId = ros::param::param<std::string>("~odom_frame_id", "odom"),
-                .imuFrameId = ros::param::param<std::string>("~imu_frame_id", "imu_link"),
-                .rate = ros::param::param<double>("~rate", 30),
-                .odometryOnlyAngleOffset = ros::param::param<double>("~odometry_only_angle_offset", 1),
-                .steeringVelocity = ros::param::param<double>("~steering_velocity", 90),
+                declare_parameter("base_frame_id", "base_link"),
+                declare_parameter("odom_frame_id", "odom"),
+                declare_parameter("imu_frame_id", "imu_link"),
+                declare_parameter("rate", 30.0),
+                declare_parameter("odometry_only_angle_offset", 1.0),
+                declare_parameter("steering_velocity", 90.0),
         }),
         control([this](BaseboardError error) { baseboardError = error; }),
-        wheelBase(control.GetWheelBase())
+        wheelBase(control.GetWheelBase()),
+        odometryBroadcaster(this)
 {
     control.Start();
     control.SetSteeringVelocity(float(parameters.steeringVelocity));
 
-    services.push_back(handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this));
-    services.push_back(handle.advertiseService("teleop_ping", &Rc110DriveControl::onTeleopPing, this));
-    services.push_back(handle.advertiseService("teleop_status", &Rc110DriveControl::onTeleopStatus, this));
-    services.push_back(handle.advertiseService("motor_state", &Rc110DriveControl::onMotorState, this));
-    services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
+    using namespace std_srvs::srv;
+    services.push_back(
+            create_service<std_srvs::srv::SetBool>("enable_board",
+                                    [this](std::shared_ptr<std_srvs::srv::SetBool::Request> request, std::shared_ptr<std_srvs::srv::SetBool::Response> response) {
+                                        onEnableBoard(*request, *response);
+                                    }));
+    services.push_back(create_service<std_srvs::srv::SetBool>("teleop_ping", 
+                                    [this](std::shared_ptr<std_srvs::srv::SetBool::Request> request, std::shared_ptr<std_srvs::srv::SetBool::Response> response) {
+                                        onTeleopPing(*request, *response);
+                                    }));
+    services.push_back(create_service<std_srvs::srv::Trigger>("teleop_status", 
+                                    [this](std::shared_ptr<std_srvs::srv::Trigger::Request> request, std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
+                                        onTeleopStatus(*request, *response);
+                                    }));
+    services.push_back(
+            create_service<rc110_msgs::srv::SetInteger>("motor_state",
+                                    [this](std::shared_ptr<rc110_msgs::srv::SetInteger::Request> request, std::shared_ptr<rc110_msgs::srv::SetInteger::Response> response) {
+                                        onMotorState(*request, *response);
+                                    }));
+    services.push_back(
+            create_service<rc110_msgs::srv::SetInteger>("servo_state",
+                                    [this](std::shared_ptr<rc110_msgs::srv::SetInteger::Request> request, std::shared_ptr<rc110_msgs::srv::SetInteger::Response> response) {
+                                        onServoState(*request, *response);
+                                    }));
 
-    subscribers.push_back(handle.subscribe("drive", 10, &Rc110DriveControl::onDrive, this));
-    subscribers.push_back(handle.subscribe("offsets", 10, &Rc110DriveControl::onOffsets, this));
+    subscribers.push_back(create_subscription<ackermann_msgs::msg::AckermannDriveStamped>("drive", 10,[this](const ackermann_msgs::msg::AckermannDriveStamped::ConstSharedPtr& message){
+                                        onDrive(message);
+                                    }));
+    subscribers.push_back(create_subscription<rc110_msgs::msg::Offsets>("offsets", 10,  [this](const rc110_msgs::msg::Offsets::ConstSharedPtr& message) {
+                                        onOffsets(message);
+                                    }));
 
-    publishers["motor_speed_goal"] = handle.advertise<std_msgs::Float32>("motor_speed_goal", 10, true);
-    publishers["steering_angle_goal"] = handle.advertise<std_msgs::Float32>("steering_angle_goal", 10, true);
+    publishers["motor_speed_goal"] =
+            create_publisher<std_msgs::msg::Float32>("motor_speed_goal", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+    publishers["steering_angle_goal"] =
+            create_publisher<std_msgs::msg::Float32>("steering_angle_goal", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
 
-    publishers["baseboard_error"] = handle.advertise<rc110_msgs::BaseboardError>("baseboard_error", 10, true);
-    publishers["robot_status"] = handle.advertise<rc110_msgs::Status>("robot_status", 10, true);
-    publishers["drive_status"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_status", 10);
-    publishers["offsets_status"] = handle.advertise<rc110_msgs::Offsets>("offsets_status", 10, true);
+    publishers["baseboard_error"] =
+            create_publisher<rc110_msgs::msg::BaseboardError>("baseboard_error", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+    publishers["robot_status"] = create_publisher<rc110_msgs::msg::Status>("robot_status", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+    publishers["drive_status"] = create_publisher<ackermann_msgs::msg::AckermannDriveStamped>("drive_status", 10);
+    publishers["offsets_status"] =
+            create_publisher<rc110_msgs::msg::Offsets>("offsets_status", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
 
-    publishers["imu"] = handle.advertise<sensor_msgs::Imu>("imu/data_raw", 10);
-    publishers["servo_temperature"] = handle.advertise<sensor_msgs::Temperature>("servo_temperature", 10);
-    publishers["baseboard_temperature"] = handle.advertise<sensor_msgs::Temperature>("baseboard_temperature", 10);
-    publishers["servo_battery"] = handle.advertise<sensor_msgs::BatteryState>("servo_battery", 10);
-    publishers["motor_battery"] = handle.advertise<sensor_msgs::BatteryState>("motor_battery", 10);
-    publishers["odometry"] = handle.advertise<nav_msgs::Odometry>("odometry", 10);
-    publishers["motor_rate"] = handle.advertise<rc110_msgs::MotorRate>("motor_rate", 10);
-    publishers["wheel_speeds"] = handle.advertise<rc110_msgs::WheelSpeeds>("wheel_speeds", 10);
+    publishers["imu"] = create_publisher<sensor_msgs::msg::Imu>("imu/data_raw", 10);
+    publishers["servo_temperature"] = create_publisher<sensor_msgs::msg::Temperature>("servo_temperature", 10);
+    publishers["baseboard_temperature"] = create_publisher<sensor_msgs::msg::Temperature>("baseboard_temperature", 10);
+    publishers["servo_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("servo_battery", 10);
+    publishers["motor_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("motor_battery", 10);
+    publishers["odometry"] = create_publisher<nav_msgs::msg::Odometry>("odometry", 10);
+    publishers["motor_rate"] = create_publisher<rc110_msgs::msg::MotorRate>("motor_rate", 10);
+    publishers["wheel_speeds"] = create_publisher<rc110_msgs::msg::WheelSpeeds>("wheel_speeds", 10);
 
-    statusUpdateTimer = handle.createTimer(ros::Duration(1 / parameters.rate),
-                                           [this](const ros::TimerEvent& event) { onStatusUpdateTimer(event); });
+    statusUpdateTimer = create_wall_timer(std::chrono::milliseconds(int(1000.0 / parameters.rate)),
+                                          [this]() { onStatusUpdateTimer(); });
 
     // publish no error
-    publishers["baseboard_error"].publish(rc110_msgs::BaseboardError());
+    publish("baseboard_error", rc110_msgs::msg::BaseboardError());
 
     // publish offsets
-    rc110_msgs::Offsets offsetsMessage;
+    rc110_msgs::msg::Offsets offsetsMessage;
     auto offsets = control.GetOffsets();
     offsetsMessage.gyro = offsets.gyro;
     offsetsMessage.accel_x = offsets.accelX;
@@ -95,9 +124,9 @@ Rc110DriveControl::Rc110DriveControl() :
     offsetsMessage.accel_z = offsets.accelZ;
     offsetsMessage.motor_current = offsets.motorCurrent;
     offsetsMessage.steering = offsets.steeringAngle;
-    publishers["offsets_status"].publish(offsetsMessage);
+    publish("offsets_status", offsetsMessage);
 
-    ROS_INFO("RC 1/10 drive control started");
+    RCLCPP_INFO(get_logger(), "RC 1/10 drive control started");
 }
 
 Rc110DriveControl::~Rc110DriveControl()
@@ -105,75 +134,76 @@ Rc110DriveControl::~Rc110DriveControl()
     control.Stop();
 }
 
-bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+bool Rc110DriveControl::onEnableBoard(std_srvs::srv::SetBool::Request& request, std_srvs::srv::SetBool::Response& response)
 {
     response.success = control.EnableBaseboard(request.data);
     return true;
 }
 
-bool Rc110DriveControl::onTeleopPing(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+bool Rc110DriveControl::onTeleopPing(std_srvs::srv::SetBool::Request& request, std_srvs::srv::SetBool::Response& response)
 {
     if (request.data) {
         // allow new connection, if time from the last ping is long enough
-        response.success = ros::Time::now() - lastTeleopPing > ros::Duration(TELEOP_PING_TIMEOUT);
+        response.success = now() - lastTeleopPing > rclcpp::Duration::from_seconds(TELEOP_PING_TIMEOUT);
         if (!response.success) {
             return false;
         }
     }
-    lastTeleopPing = ros::Time::now();
+    lastTeleopPing = now();
     return true;
 }
 
-bool Rc110DriveControl::onTeleopStatus(std_srvs::Trigger::Request& request, std_srvs::Trigger::Response& response)
+bool Rc110DriveControl::onTeleopStatus(std_srvs::srv::Trigger::Request& request, std_srvs::srv::Trigger::Response& response)
 {
-    response.success = ros::Time::now() - lastTeleopPing <= ros::Duration(TELEOP_PING_TIMEOUT);
+    (void)request;
+    response.success = now() - lastTeleopPing <= rclcpp::Duration::from_seconds(TELEOP_PING_TIMEOUT);
     return true;
 }
 
-bool Rc110DriveControl::onMotorState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response)
+bool Rc110DriveControl::onMotorState(rc110_msgs::srv::SetInteger::Request& request, rc110_msgs::srv::SetInteger::Response& response)
 {
     auto state = MotorState(request.data);
     response.success = control.EnableMotor(state);
     return true;
 }
 
-bool Rc110DriveControl::onServoState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response)
+bool Rc110DriveControl::onServoState(rc110_msgs::srv::SetInteger::Request& request, rc110_msgs::srv::SetInteger::Response& response)
 {
     auto state = MotorState(request.data);
     response.success = control.EnableServo(state);
     return true;
 }
 
-void Rc110DriveControl::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message)
+void Rc110DriveControl::onDrive(const ackermann_msgs::msg::AckermannDriveStamped::ConstSharedPtr& message)
 {
     float limitedSpeed;
     if (control.ChangeDriveSpeed(message->drive.speed, &limitedSpeed)) {
-        std_msgs::Float32 speedMessage;
+        std_msgs::msg::Float32 speedMessage;
         speedMessage.data = limitedSpeed;
-        publishers["motor_speed_goal"].publish(speedMessage);
+        publish("motor_speed_goal", speedMessage);
     }
     float limitedAngle;
     if (control.ChangeSteeringAngle(message->drive.steering_angle, &limitedAngle)) {
-        std_msgs::Float32 angleMessage;
+        std_msgs::msg::Float32 angleMessage;
         angleMessage.data = limitedAngle;
-        publishers["steering_angle_goal"].publish(angleMessage);
+        publish("steering_angle_goal", angleMessage);
     }
 }
 
-void Rc110DriveControl::onOffsets(const rc110_msgs::Offsets::ConstPtr& message)
+void Rc110DriveControl::onOffsets(const rc110_msgs::msg::Offsets::ConstSharedPtr& message)
 {
     control.SetOffsets({
-            .gyro = message->gyro,
-            .accelX = message->accel_x,
-            .accelY = message->accel_y,
-            .accelZ = message->accel_z,
-            .motorCurrent = message->motor_current,
-            .steeringAngle = message->steering,
+            message->gyro,
+            message->accel_x,
+            message->accel_y,
+            message->accel_z,
+            message->motor_current,
+            message->steering,
     });
-    publishers["offsets_status"].publish(message);
+    publish("offsets_status", *message);
 }
 
-void Rc110DriveControl::onStatusUpdateTimer(const ros::TimerEvent&)
+void Rc110DriveControl::onStatusUpdateTimer()
 {
     publishErrors();
     getAndPublishRobotStatus();
@@ -192,20 +222,20 @@ void Rc110DriveControl::publishErrors()
     }
     lastBaseboardError = baseboardError;
 
-    rc110_msgs::BaseboardError message;
+    rc110_msgs::msg::BaseboardError message;
     message.data = uint8_t(baseboardError.load());
 
-    publishers["baseboard_error"].publish(message);
+    publish("baseboard_error", message);
 }
 
 void Rc110DriveControl::getAndPublishRobotStatus()
 {
-    rc110_msgs::Status message;
+    rc110_msgs::msg::Status message;
     message.board_enabled = control.IsBaseboardEnabled();
     message.motor_state = uint8_t(control.GetMotorState());
     message.servo_state = uint8_t(control.GetServoState());
 
-    publishers["robot_status"].publish(message);
+    publish("robot_status", message);
 }
 
 void Rc110DriveControl::getAndPublishDriveInfo()
@@ -218,16 +248,16 @@ void Rc110DriveControl::getAndPublishDriveInfo()
 void Rc110DriveControl::getAndPublishServoInfo()
 {
     auto servoInfo = control.GetServoInfo();
-    publishTemperature(publishers["servo_temperature"], servoInfo.temperature);
-    publishBattery(publishers["servo_battery"], servoInfo.voltage, servoInfo.current);
+    publishTemperature("servo_temperature", servoInfo.temperature);
+    publishBattery("servo_battery", servoInfo.voltage, servoInfo.current);
 }
 
 void Rc110DriveControl::getAndPublishImu()
 {
     SensorInfo sensor = control.GetSensorInfo();
 
-    sensor_msgs::Imu message;
-    message.header.stamp = ros::Time::now();
+    sensor_msgs::msg::Imu message;
+    message.header.stamp = now();
     message.header.frame_id = parameters.imuFrameId;
 
     message.angular_velocity.x = 0;
@@ -257,41 +287,41 @@ void Rc110DriveControl::getAndPublishImu()
     };  // clang-format on
 
     // data not available
-    message.orientation = {};
+    message.orientation = geometry_msgs::msg::Quaternion();
     message.orientation_covariance.fill(-1);
 
-    publishers["imu"].publish(message);
+    publish("imu", message);
 }
 
 void Rc110DriveControl::getAndPublishBaseboardTemperature()
 {
     ThermoInfo thermo = control.GetThermoInfo();
     float baseboardTemperature = std::max(thermo.board_1, thermo.board_2);
-    publishTemperature(publishers["baseboard_temperature"], baseboardTemperature);
+    publishTemperature("baseboard_temperature", baseboardTemperature);
 }
 
 void Rc110DriveControl::getAndPublishMotorBattery()
 {
     PowerInfo power = control.GetPowerInfo();
-    publishBattery(publishers["motor_battery"], power.motorVoltage, power.motorCurrent);
+    publishBattery("motor_battery", power.motorVoltage, power.motorCurrent);
 }
 
 void Rc110DriveControl::getAndPublishOtherSensors()
 {
     SensorInfo sensor = control.GetSensorInfo();
     {
-        rc110_msgs::MotorRate message;
-        message.header.stamp = ros::Time::now();
+        rc110_msgs::msg::MotorRate message;
+        message.header.stamp = now();
         message.header.frame_id = parameters.baseFrameId;
 
         message.motor_rate = sensor.motorRate;
         message.estimated_speed = sensor.estimatedSpeed;
 
-        publishers["motor_rate"].publish(message);
+        publish("motor_rate", message);
     }
     {
-        rc110_msgs::WheelSpeeds message;
-        message.header.stamp = ros::Time::now();
+        rc110_msgs::msg::WheelSpeeds message;
+        message.header.stamp = now();
         message.header.frame_id = parameters.baseFrameId;
 
         message.speed_fl = sensor.speedFL;
@@ -299,27 +329,28 @@ void Rc110DriveControl::getAndPublishOtherSensors()
         message.speed_rl = sensor.speedRL;
         message.speed_rr = sensor.speedRR;
 
-        publishers["wheel_speeds"].publish(message);
+        publish("wheel_speeds", message);
     }
 }
 
 void Rc110DriveControl::publishDriveStatus(const DriveInfo& drive)
 {
-    ackermann_msgs::AckermannDriveStamped message;
-    message.header.stamp = ros::Time::now();
+    ackermann_msgs::msg::AckermannDriveStamped message;
+    message.header.stamp = now();
     message.header.frame_id = parameters.baseFrameId;
 
     message.drive.speed = drive.speed;
     message.drive.steering_angle = drive.steeringAngle;
     message.drive.steering_angle_velocity = drive.steeringAngularSpeed;
 
-    publishers["drive_status"].publish(message);
+    publish("drive_status", message);
 }
 
 void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
 {
-    double lastTimestamp = odometry.header.stamp.toSec();
+    double lastTimestamp = rclcpp::Time(odometry.header.stamp).seconds();
     double t = lastTimestamp == 0 ? 0 : drive.timestamp - lastTimestamp;
+    auto currentTime = rclcpp::Time(int64_t(drive.timestamp * 1e9), RCL_ROS_TIME);
 
     float adjustment = float(parameters.odometryOnlyAngleOffset) * DEG_TO_RAD;
     float adjustedAngle = drive.steeringAngle + (drive.steeringAngle < 0 ? adjustment : -adjustment);
@@ -329,7 +360,7 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
     tfYaw.setRPY(0, 0, estimatedYaw);
 
     // odometry
-    odometry.header.stamp = ros::Time().fromSec(drive.timestamp);
+    odometry.header.stamp = currentTime;
     odometry.header.frame_id = parameters.odomFrameId;
     odometry.child_frame_id = parameters.baseFrameId;
     odometry.twist.twist.linear.x = drive.speed;
@@ -342,11 +373,11 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
     odometry.pose.pose.position.z = 0;
     odometry.pose.pose.orientation = tf2::toMsg(tfYaw);
 
-    publishers["odometry"].publish(odometry);
+    publish("odometry", odometry);
 
     // transform
-    geometry_msgs::TransformStamped tf;
-    tf.header.stamp = t == 0 ? ros::Time::now() : ros::Time().fromSec(drive.timestamp);  // avoid TF_OLD_DATA flood
+    geometry_msgs::msg::TransformStamped tf;
+    tf.header.stamp = t == 0 ? now() : currentTime;  // avoid TF_OLD_DATA flood
     tf.header.frame_id = parameters.odomFrameId;
     tf.child_frame_id = parameters.baseFrameId;
     tf.transform.translation.x = odometry.pose.pose.position.x;
@@ -356,27 +387,27 @@ void Rc110DriveControl::publishOdometry(const DriveInfo& drive)
     odometryBroadcaster.sendTransform(tf);
 }
 
-void Rc110DriveControl::publishTemperature(ros::Publisher& publisher, float temperature)
+void Rc110DriveControl::publishTemperature(const std::string& topic, float temperature)
 {
-    sensor_msgs::Temperature message;
-    message.header.stamp = ros::Time::now();
+    sensor_msgs::msg::Temperature message;
+    message.header.stamp = now();
 
     message.variance = 0;
     message.temperature = temperature;
 
-    publisher.publish(message);
+    publish(topic, message);
 }
 
-void Rc110DriveControl::publishBattery(ros::Publisher& publisher, float voltage, float current)
+void Rc110DriveControl::publishBattery(const std::string& topic, float voltage, float current)
 {
-    sensor_msgs::BatteryState message;
-    message.header.stamp = ros::Time::now();
+    sensor_msgs::msg::BatteryState message;
+    message.header.stamp = now();
 
     message.voltage = voltage;
     message.current = current;
     message.present = true;
 
-    publisher.publish(message);
+    publish(topic, message);
 }
 
 }  // namespace zmp

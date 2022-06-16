@@ -1,9 +1,0 @@
-[Unit]
-Description=Roscore Multimaster
-
-[Service]
-Type=simple
-ExecStart=/usr/lib/systemd/user/rc110-roscore.sh
-
-[Install]
-WantedBy=default.target

@@ -6,10 +6,10 @@ export UBUNTU_CODENAME=$(. /etc/os-release; echo ${UBUNTU_CODENAME})
 export ROS_DISTRO=${ROS_DISTRO:-$(${script_path}/get_ros_distro)}
 
 # add apt list
-if [ ! -f /etc/apt/sources.list.d/ros-latest.list ]
+if [ ! -f /etc/apt/sources.list.d/ros2.list ]
 then
-	sudo -E sh -c 'echo "deb http://packages.ros.org/ros/ubuntu ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/ros-latest.list'
-	sudo chmod 644 /etc/apt/sources.list.d/ros-latest.list
+	sudo -E sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/ros2.list'
+	sudo chmod 644 /etc/apt/sources.list.d/ros2.list
 fi
 
 # add apt key

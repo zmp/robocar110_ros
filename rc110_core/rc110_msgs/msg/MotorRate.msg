@@ -1,3 +1,3 @@
-Header header
+std_msgs/Header header
 float32 motor_rate
 float32 estimated_speed

@@ -6,10 +6,8 @@
  * Written by Andrei Pak
  */
 
-#include <ros/master.h>
-#include <ros/ros.h>
-#include <std_msgs/String.h>
-#include <topic_tools/shape_shifter.h>
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 
 namespace topic_tools
 {
@@ -19,7 +17,7 @@ namespace topic_tools
  * @note
  * Subscription happens when input ns != output ns.
  */
-class MultiDemux
+class MultiDemux : public rclcpp::Node
 {
 public:
     MultiDemux();
@@ -27,27 +25,30 @@ public:
 private:
     bool hasSameNs();
     void subscribe();
-    void onInputNs(const std_msgs::String& name);
-    void onOutputNs(const std_msgs::String& name);
-    void onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event);
+    void onInputNs(const std_msgs::msg::String& name);
+    void onOutputNs(const std_msgs::msg::String& name);
+    void onMessage(const std::string& topic, const std::shared_ptr<rclcpp::SerializedMessage>& message);
 
 private:
-    ros::NodeHandle handle;
-    ros::Subscriber inputNsSubscriber, outputNsSubscriber;
+    rclcpp::Subscription<std_msgs::msg::String>::ConstSharedPtr inputNsSubscriber, outputNsSubscriber;
     std::string inputNs, outputNs;
     std::vector<std::string> topics;
-    std::vector<ros::Subscriber> subscribers;
-    std::map<std::string, ros::Publisher> publishers;
-    std::vector<ros::Timer> timers;
+    std::vector<rclcpp::GenericSubscription::SharedPtr> subscribers;
+    std::map<std::string, rclcpp::GenericPublisher::SharedPtr> publishers;
+    rclcpp::TimerBase::SharedPtr timer;
 };
 
-MultiDemux::MultiDemux()
+MultiDemux::MultiDemux() : Node("rc110_multi_demux")
 {
-    topics = ros::param::param("~topics", topics);
+    using std::placeholders::_1;
+    topics = declare_parameter("topics", topics);
 
-    ros::NodeHandle privateHandle("~");
-    inputNsSubscriber = privateHandle.subscribe("input_ns", 1, &MultiDemux::onInputNs, this);
-    outputNsSubscriber = privateHandle.subscribe("output_ns", 1, &MultiDemux::onOutputNs, this);
+    inputNsSubscriber =
+            create_subscription<std_msgs::msg::String>("input_ns", 1, std::bind(&MultiDemux::onInputNs, this, _1));
+    outputNsSubscriber =
+            create_subscription<std_msgs::msg::String>("output_ns", 1, std::bind(&MultiDemux::onOutputNs, this, _1));
+
+    timer = create_wall_timer(std::chrono::milliseconds(500), std::bind(&MultiDemux::subscribe, this));
 }
 
 bool MultiDemux::hasSameNs()
@@ -55,7 +56,7 @@ bool MultiDemux::hasSameNs()
     if (inputNs == outputNs) {
         return true;
     }
-    auto ns = ros::this_node::getNamespace();
+    std::string ns = get_namespace();
     ns = ns[0] != '/' ? ns : ns.substr(1);
 
     return (inputNs.empty() && ns == outputNs) || (outputNs.empty() && ns == inputNs);
@@ -63,78 +64,65 @@ bool MultiDemux::hasSameNs()
 
 void MultiDemux::subscribe()
 {
-    if (subscribers.size()) return;
+    if (!subscribers.empty() || hasSameNs()) return;
 
-    for (auto topic : topics) {
-        using EventType = ros::MessageEvent<topic_tools::ShapeShifter>;
-        boost::function<void(const EventType&)> callback = [this, topic](const EventType& event) {
-            onMessage(topic, event);
-        };
+    for (auto& topic : topics) {
         auto fullTopic = inputNs.empty() ? topic : "/" + inputNs + "/" + topic;
-        subscribers.push_back(handle.subscribe<topic_tools::ShapeShifter>(fullTopic, 2, callback));
-    }
-}
 
-void MultiDemux::onInputNs(const std_msgs::String& name)
-{
-    if (inputNs != name.data) {
-        inputNs = name.data;
-        subscribers.clear();
+        std::vector<rclcpp::TopicEndpointInfo> publisherInfos = get_publishers_info_by_topic(fullTopic);
+        if (!publisherInfos.empty()) {
+            rclcpp::TopicEndpointInfo info = publisherInfos.front();
+            auto topicType = info.topic_type();
 
-        if (hasSameNs()) {
-            publishers.clear();
-            timers.clear();
-        } else {
-            subscribe();
+            auto outTopic = outputNs.empty() ? topic : "/" + outputNs + "/" + topic;
+            publishers[topic] = create_generic_publisher(outTopic, topicType, info.qos_profile());
+
+            subscribers.push_back(
+                    create_generic_subscription(fullTopic,
+                                                topicType,
+                                                info.qos_profile(),
+                                                [this, topic](const std::shared_ptr<rclcpp::SerializedMessage>& message) {
+                                                    onMessage(topic, message);
+                                                }));
         }
     }
 }
 
-void MultiDemux::onOutputNs(const std_msgs::String& name)
+void MultiDemux::onInputNs(const std_msgs::msg::String& name)
+{
+    if (inputNs != name.data) {
+        inputNs = name.data;
+        publishers.clear();
+        subscribers.clear();
+        subscribe();
+    }
+}
+
+void MultiDemux::onOutputNs(const std_msgs::msg::String& name)
 {
     if (outputNs != name.data) {
         outputNs = name.data;
         publishers.clear();
-        timers.clear();
-
-        if (hasSameNs()) {
-            subscribers.clear();
-        } else {
-            subscribe();
-        }
+        subscribers.clear();
+        subscribe();
     }
 }
 
-void MultiDemux::onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event)
+void MultiDemux::onMessage(const std::string& topic, const std::shared_ptr<rclcpp::SerializedMessage>& message)
 {
-    auto message = event.getConstMessage();
     if (publishers.count(topic)) {
-        publishers[topic].publish(message);
-        return;
+        publishers[topic]->publish(*message);
     }
-
-    auto outTopic = outputNs.empty() ? topic : "/" + outputNs + "/" + topic;
-    const auto& connectionHeader = event.getConnectionHeaderPtr();
-    auto it = connectionHeader->find("latching");
-    bool latch = it != connectionHeader->end() && it->second == "1";
-
-    publishers[topic] = message->advertise(handle, outTopic, 1, latch);
-
-    // Make sure that publish happens after subscription on output topic.
-    // Timer is the simplest solution, callback on connection needs to check total number of subscribers.
-    timers.push_back(handle.createTimer(
-            ros::Duration(0.5),
-            [=, topic = topic](const ros::TimerEvent&) { publishers[topic].publish(message); },
-            bool("oneshot")));
 }
 }  // namespace topic_tools
 
 int main(int argc, char* argv[])
 try {
-    ros::init(argc, argv, "multi_demux");
+    rclcpp::init(argc, argv);
 
-    topic_tools::MultiDemux node;
-    ros::spin();
+    auto node = std::make_shared<topic_tools::MultiDemux>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
 
     return EXIT_SUCCESS;
 }  //

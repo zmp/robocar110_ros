@@ -7,9 +7,12 @@
  */
 #pragma once
 
-#include <ros/ros.h>
-#include <sensor_msgs/PointCloud2.h>
+#include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
+
+#include <ackermann_msgs/msg/ackermann_drive_stamped.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
 
 namespace zmp
 {
@@ -29,22 +32,21 @@ namespace zmp
  * if in right box, move left.
  * if neither, move forward.
  */
-class Rc110Behavior
+class Rc110Behavior : public rclcpp::Node
 {
 public:
     Rc110Behavior();
 
 private:
-    void onCloud(const sensor_msgs::PointCloud2& cloud);
+    void onCloud(const sensor_msgs::msg::PointCloud2& cloud);
     void publishCommand(float speed, float steering);
 
 private:
-    ros::NodeHandle handle;
-    ros::Subscriber cloudSubscriber;
-    ros::Publisher drivePublisher;
+    rclcpp::SubscriptionBase::SharedPtr cloudSubscriber;
+    rclcpp::Publisher<ackermann_msgs::msg::AckermannDriveStamped>::SharedPtr drivePublisher;
     tf2_ros::Buffer tfBuffer;
     tf2_ros::TransformListener tfListener;
-    geometry_msgs::TransformStamped baseTransform;
+    geometry_msgs::msg::TransformStamped baseTransform;
 
     std::vector<double> stopCommand = {0, 0};
     std::vector<double> forwardCommand = {0.4, 0};

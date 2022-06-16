@@ -1,7 +1,9 @@
-serial_port: "/dev/hokuyo_rear"
-frame_id: "$(env RC110_NAME)/rear_lidar"
-angle_min: -2.08
-angle_max: 2.08
+/**:
+  ros__parameters:
+    serial_port: "/dev/hokuyo_rear"
+    laser_frame_id: "$(var rc)/rear_lidar"
+    angle_min: -2.08
+    angle_max: 2.08
 
 # hardware readonly specifications:
 # min_range: 0.02

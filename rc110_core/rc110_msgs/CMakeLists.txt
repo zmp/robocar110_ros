@@ -1,18 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_msgs VERSION 1.12.0)
 
-find_package(catkin REQUIRED COMPONENTS
-        message_generation
-        roscpp
-        std_msgs
-)
+find_package(ament_cmake REQUIRED message_package)
+find_package(rosidl_default_generators REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
-add_message_files(DIRECTORY msg)
-add_service_files(DIRECTORY srv)
-generate_messages(DEPENDENCIES std_msgs)
+file(GLOB msg_files RELATIVE ${PROJECT_SOURCE_DIR} msg/*.msg srv/*.srv)
+rosidl_generate_interfaces(${PROJECT_NAME} ${msg_files} DEPENDENCIES std_msgs)
 
-catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
-
+ament_export_dependencies(std_msgs)
+ament_package()
 
 # package
 include(../../cmake/rc110_cpack.cmake)

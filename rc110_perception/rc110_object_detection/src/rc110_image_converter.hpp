@@ -10,9 +10,9 @@
 
 #include <jetson-utils/cudaUtility.h>
 #include <jetson-utils/imageFormat.h>
-#include <sensor_msgs/Image.h>
-#include <sensor_msgs/image_encodings.h>
-
+#include <sensor_msgs/msg/image.hpp>
+#include <sensor_msgs/image_encodings.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <cstdlib>
 #include <string>
 
@@ -31,10 +31,10 @@ public:
     static constexpr imageFormat INTERNAL_IMAGE_FORMAT = IMAGE_RGB8;
 
     // image format used for outputting ROS image messages
-    static constexpr imageFormat ROS_OUTPUT_IMAGE_FORMAT = IMAGE_BGR8;
+    static constexpr imageFormat RCLCPP_OUTPUT_IMAGE_FORMAT = IMAGE_BGR8;
 
 public:
-    Rc110ImageConverter();
+    Rc110ImageConverter(rclcpp::Node& node);
 
     ~Rc110ImageConverter();
 
@@ -68,7 +68,7 @@ public:
      *  @param inputImageMsg input image message
      *  @return true if successful; false otherwise
      */
-    bool toDevice(const sensor_msgs::ImageConstPtr& inputImageMsg);
+    bool toDevice(const sensor_msgs::msg::Image& inputImageMsg);
 
     /**
      *  @brief allocate pinned-memory resources needed for inference process, or storing overlaid image after inference
@@ -87,6 +87,7 @@ private:
     void freeMemory();
 
 private:
+    rclcpp::Node& node;
     std::size_t m_imageWidth;
     std::size_t m_imageHeight;
     imageFormat m_inputImageFormat;

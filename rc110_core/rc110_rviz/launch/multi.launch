@@ -1,22 +1,12 @@
 <launch>
-    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
-    <arg name="splash_image" default="$(find rc110_rviz)/images/splash.png"/>
-    <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
-    <arg name="rviz_args" default="-s $(arg splash_image) -d $(arg config)"/>
+    <arg name="splash_image" default="$(find-pkg-share rc110_rviz)/images/splash.png"/>
+    <arg name="config" default="$(find-pkg-share rc110_rviz)/rviz/main.rviz"/>
 
-    <!-- RViz can be run on a remote PC, so it needs to have robot_description parameter. -->
-    <param name="robot_description" command="xacro $(arg urdf_file)"/>
-
-    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)"/>
+    <node pkg="rviz2" exec="rviz2" name="rviz" args="-s $(var splash_image) -d $(var config)"/>
 
     <!-- The following mappings are convenient for manipulating multiple robots. -->
-    <node pkg="rc110_topic_tools" type="multi_demux" name="output_demux_rviz" output="screen">
-        <remap from="~output_ns" to="rviz_rc"/>
-        <rosparam param="topics">
-            - initialpose
-            - move_base_simple/goal
-            - goal_queue/goal
-            - clicked_point
-        </rosparam>
+    <node pkg="rc110_topic_tools" exec="multi_demux" name="output_demux_rviz">
+        <remap from="~/output_ns" to="rviz_rc"/>
+        <param name="topics" value="initialpose move_base_simple/goal goal_queue/goal clicked_point" value-sep=" "/>
     </node>
 </launch>

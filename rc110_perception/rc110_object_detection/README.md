@@ -9,16 +9,14 @@
 
 ## Jetson Inference Build ##
 ***
+* Clone. 
+    * If master branch does not work, it can be changed to branch for your jetpack version like this:
 ```shell
 cd ~
+git clone --recursive -b L4T-R34.1.1 https://github.com/dusty-nv/jetson-inference.git
 ```
 
-* Then follow [**the instruction**](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md).
-
-* If master branch does not work, it can be changed to branch for your jetpack version after `git clone`:
-```shell
-git checkout L4T-R32.7.1
-```
+* Then follow [**the instruction**](https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo-2.md) for your version.
 
 * During cmake step of installation, please, select model 15 and disable others, as on the following image:
 

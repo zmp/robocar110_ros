@@ -1,5 +1,5 @@
-<library path="librc110_rviz">
-  <class name="rc110_rviz/RoboCar110" type="zmp::Rc110Panel" base_class_type="rviz::Panel">
+<library path="rc110_rviz">
+  <class name="rc110_rviz/RoboCar110" type="zmp::Rc110Panel" base_class_type="rviz_common::Panel">
     <description>
       Robocar 1/10 sensors and simple controls.
     </description>

@@ -6,13 +6,15 @@
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <depend>roslaunch</depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>fkie_multimaster</exec_depend>
   <exec_depend>rc110_laserscans_to_pointcloud</exec_depend>
   <exec_depend>rc110_selector</exec_depend>
+  <exec_depend>rc110_topic_tools</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
-  <exec_depend>topic_tools</exec_depend>
   <exec_depend>xacro</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

@@ -1,3 +1,5 @@
-frame_id: $(env RC110_NAME)/joy
-gears: [ 0.3, 0.6, 1.0 ]
-rate: 30.0
+$(var name)_teleop:
+  ros__parameters:
+    frame_id: $(var rc)/joy
+    gears: [ 0.3, 0.6, 1.0 ]
+    rate: 30.0

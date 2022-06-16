@@ -1,9 +1,11 @@
 <launch>
-    <arg name="rc" default="$(env RC110_NAME)"/>
+    <arg name="rc" default=""/>
 
-    <node pkg="mouse_teleop" type="mouse_teleop.py" ns="/$(arg rc)" name="mouse_teleop" output="screen" required="true"/>
+    <node pkg="mouse_teleop" exec="mouse_teleop" namespace="/$(var rc)" name="mouse_teleop" output="screen">
+        <param name="frequency" value="10.0"/> <!--does not work-->
+    </node>
 
-    <node pkg="rc110_twist_to_ackermann" type="rc110_twist_to_ackermann" ns="/$(arg rc)" name="twist_to_ackermann_mouse">
+    <node pkg="rc110_twist_to_ackermann" exec="rc110_twist_to_ackermann" namespace="/$(var rc)" name="twist_to_ackermann_mouse">
         <remap from="cmd_vel" to="mouse_vel" />
         <remap from="drive_ad" to="drive_manual" />
     </node>

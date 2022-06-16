@@ -1,11 +1,14 @@
 <launch>
-    <arg name="r" default="vga"/>  <!-- vga, hd, sxga, fhd, qhd -->
-    <arg name="device" default="/dev/video0"/>
-    <arg name="width" default="$(eval 2560 if r == 'qhd' else 1920 if r == 'fhd' else 1280 if r == 'sxga' else 1280 if r == 'hd' else 640)"/>
-    <arg name="height" default="$(eval 1440 if r == 'qhd' else 1080 if r == 'fhd' else 960 if r == 'sxga' else 720 if r == 'hd' else 480)"/>
-    <arg name="fps" default="$(eval 32 if r == 'qhd' else 30)"/>
+    <group>
+        <arg name="rc" default="$(command 'sh -c \'echo -n `hostname | tr - _`\'')"/>
+        <arg name="r" default="vga"/>  <!-- vga, hd, sxga, fhd, qhd -->
+        <arg name="device" default="/dev/video0"/>
+        <arg name="width" default="$(eval '2560 if \'$(var r)\' == \'qhd\' else 1920 if \'$(var r)\' == \'fhd\' else 1280 if \'$(var r)\' == \'sxga\' else 1280 if \'$(var r)\' == \'hd\' else 640')"/>
+        <arg name="height" default="$(eval '1440 if \'$(var r)\' == \'qhd\' else 1080 if \'$(var r)\' == \'fhd\' else 960 if \'$(var r)\' == \'sxga\' else 720 if \'$(var r)\' == \'hd\' else 480')"/>
+        <arg name="fps" default="$(eval '32 if \'$(var r)\' == \'qhd\' else 30')"/>
 
-    <node pkg="rc110_video_server" type="rc110_video_server" name="video_server" respawn="true" output="screen">
-        <rosparam file="$(find rc110_video_server)/config/video_server.yaml" subst_value="true"/>
-    </node>
+        <node pkg="rc110_video_server" exec="rc110_video_server" namespace="/$(var rc)" name="video_server" output="screen">
+            <param from="$(find-pkg-share rc110_video_server)/config/video_server.yaml" allow_substs="true"/>
+        </node>
+    </group>
 </launch>

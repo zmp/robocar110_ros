@@ -1,25 +1,23 @@
 <launch>
-    <arg name="config_dir" default="$(find rc110)/config"/>
-    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
-    <arg name="tf_prefix" default="$(env RC110_NAME)"/>
+    <arg name="config_dir" default="$(find-pkg-share rc110)/config"/>
+    <arg name="urdf_file" default="$(find-pkg-share rc110)/urdf/robot.xacro"/>
+    <arg name="tf_prefix" default="$(var rc)"/>
 
-    <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg tf_prefix)/"/>
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="tf_publisher">
-        <param name="tf_prefix" value=""/>
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" name="tf_publisher">
+        <param name="robot_description" value="$(command 'sh -c \'xacro $(var urdf_file) prefix:=$(var tf_prefix)/\'')"/>
     </node>
 
     <!-- Switching between joystick and AD.
       By default drive_manual topic is mapped to drive.
-      To switch run: rosservice call mux_drive/select drive_ad
-      Or use joystick or rviz.
+      To switch run use joystick or rviz.
     -->
-    <node pkg="topic_tools" type="mux" name="mux_drive" args="drive drive_manual drive_ad mux:=mux_drive"/>
+    <node pkg="rc110_topic_tools" exec="mux" name="mux_drive" args="drive drive_manual drive_ad"/>
 
     <!-- Getting /points2 topic from front and rear lidar scans. -->
-    <include file="$(find rc110_laserscans_to_pointcloud)/launch/main.launch"/>
+    <include file="$(find-pkg-share rc110_laserscans_to_pointcloud)/launch/main.launch"/>
 
     <!-- static transforms from map to odom, since there's no localization by default -->
-    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_map_to_odom"
-          args="0 0 0 0 0 0 map $(arg tf_prefix)/odom"
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="tf_map_to_odom"
+          args="--frame-id map --child-frame-id $(var tf_prefix)/odom"
     />
 </launch>
