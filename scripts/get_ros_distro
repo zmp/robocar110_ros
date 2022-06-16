@@ -2,10 +2,10 @@
 
 . /etc/os-release
 
-if [ "$VERSION_CODENAME" == bionic ]
+if [ "$UBUNTU_CODENAME" == bionic ]
 then
 	echo melodic
-elif [ "$VERSION_CODENAME" == focal ]
+elif [ "$UBUNTU_CODENAME" == focal ]
 then
 	echo noetic
 else
