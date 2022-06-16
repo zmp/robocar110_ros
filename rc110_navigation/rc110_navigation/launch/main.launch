@@ -1,4 +1,6 @@
 <launch>
+    <arg name="loop" default="true"/>
+
     <node pkg="map_server" type="map_server" name="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
@@ -27,4 +29,9 @@
     </node>
 
     <node pkg="rc110_twist_to_ackermann" type="rc110_twist_to_ackermann" name="twist_to_ackermann" />
+
+    <node name="goal_queue" pkg="goal_queue" type="goal_queue">
+        <remap from="~reset" to="clicked_point"/>
+        <param name="loop" value="$(arg loop)"/>
+    </node>
 </launch>

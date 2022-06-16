@@ -44,8 +44,8 @@ GNUmakefile provides the following targets for make:
 
 	sync                      Synchronize nodes of network in a separate terminal
 	node-manager              Show Node Manager
-	run-teleop                Run joystick [rc=zmp name=joy device=js0 joy_type=elecom|ps5|logicool]
-	mouse-teleop              Mouse instead of joystick [rc=zmp]
+	run-teleop                Run joystick [rc=rc_SN name=joy device=js0 joy_type=elecom|ps5|logicool]
+	mouse-teleop              Mouse instead of joystick [rc=rc_SN]
 	run-model                 Run additional gazebo model [id=123abc]
 
 	save-map-he               Save Hector SLAM map [map_name=map]

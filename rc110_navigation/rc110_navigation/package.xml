@@ -12,4 +12,5 @@
   <exec_depend>rc110_twist_to_ackermann</exec_depend>
   <exec_depend>rosmon</exec_depend>
   <exec_depend>teb_local_planner</exec_depend>
+  <exec_depend>goal_queue</exec_depend>
 </package>

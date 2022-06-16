@@ -15,6 +15,7 @@
         <rosparam param="topics">
             - initialpose
             - move_base_simple/goal
+            - goal_queue/goal
             - clicked_point
         </rosparam>
     </node>

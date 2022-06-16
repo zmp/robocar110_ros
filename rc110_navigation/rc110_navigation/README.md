@@ -13,8 +13,8 @@ make run          # run the node
 make show         # show rviz
 ```
 
-* Use `2D Pose Estimate` button to position robot on map.
-* Use `2D Nav Goal` button to specify goal position.
+* Use `2D Pose Estimate` button to position robot on map (hotkey: P).
+* Use `2D Nav Goal` button to specify goal position (hotkey: G).
 * Use `AD` button to switch between joystick and autonomous driving.
 
 ## Another Map
@@ -24,6 +24,16 @@ make select-map map_name=my_custom_map
 ```
 
 * The map should be saved first with `save-map-he` or `save-map-cg`.
+
+## Goals Sequence
+It's possible to assign multiple goal points which will be looping endlessly.
+
+To disable this behavior, run with parameter:
+```
+make run loop=false
+```
+
+To reset the goal list, use rviz `Publish Point` tool anywhere on the map (hotkey: C).
 
 ## Known Issues
 
