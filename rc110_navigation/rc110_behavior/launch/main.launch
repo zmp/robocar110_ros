@@ -1,5 +1,7 @@
 <launch>
-    <node pkg="rc110_behavior" type="rc110_behavior" name="behavior" respawn="true">
-        <rosparam file="$(find rc110_behavior)/config/behavior.yaml" subst_value="true"/>
+    <arg name="rc" default="$(command 'sh -c \'echo -n `hostname | tr - _`\'')"/>
+
+    <node pkg="rc110_behavior" exec="rc110_behavior" namespace="/$(var rc)" name="behavior">
+        <param from="$(find-pkg-share rc110_behavior)/config/behavior.yaml" allow_substs="true"/>
     </node>
 </launch>

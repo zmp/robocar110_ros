@@ -7,19 +7,19 @@
  */
 #pragma once
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
+#include <visualization_msgs/msg/marker.hpp>
 
 namespace zmp
 {
-class RC110Marker
+class RC110Marker : public rclcpp::Node
 {
 public:
     RC110Marker();
 
 private:
-    ros::NodeHandle handle;
     std::string meshFile;
-    ros::Publisher publisher;
+    rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr publisher;
 };
 
 }  // namespace zmp

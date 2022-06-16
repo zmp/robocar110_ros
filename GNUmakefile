@@ -4,8 +4,8 @@
 #
 include mk/common.mk
 
-deps_paths  := rc110_core rc110_robot   # dependencies for robot nodes
-build_nodes := rc110_rviz rc110_system  # robot nodes
+deps_paths  := rc110_core rc110_robot
+build_nodes := rc110_rviz rc110_system
 
 define help_text
 
@@ -33,23 +33,14 @@ GNUmakefile provides the following targets for make:
 	start                     Restart RoboCar nodes from system
 	stop                      Stop RoboCar nodes from system
 	status                    Status of system RoboCar nodes
-	status-core               Status of system roscore
-	list-masters              List all ros masters in the network
 
 	run                       Run rc110_robot from build (Don't forget to stop system nodes first!)
 	run-%                     Run % node from build
 	show                      Show general RViz
 	show-%                    Show % RViz
 
-	sync                      Synchronize nodes of network in a separate terminal
-	node-manager              Show Node Manager
 	run-teleop                Run joystick [rc=rc_SN name=joy device=js0 joy_type=elecom|ps5|logicool]
 	mouse-teleop              Mouse instead of joystick [rc=rc_SN]
-	run-model                 Run additional gazebo model [id=123abc]
-
-	save-map-he               Save Hector SLAM map [map_name=map]
-	save-map-cg               Save Cartographer SLAM map [map_name=map map_resolution=0.025]
-	select-map                Select map for navigation [map_name=map]
 
 endef
 
@@ -84,16 +75,11 @@ endif
 
 # Install rosdep and get packages list.
 init-deps:
-ifeq (,$(shell which rosdep))
-	sudo apt-get install -qq $(pythonN)-rosdep
+ifeq (,$(shell command -v rosdep))
+	sudo apt-get install -qq python3-rosdep
 endif
 ifeq (,$(wildcard /etc/ros/rosdep/sources.list.d/20-default.list))
 	sudo rosdep init
-	$(eval lists_updated:=true)
-endif
-ifeq (,$(if ${force},,$(wildcard /etc/ros/rosdep/sources.list.d/11-robocar.list)))
-	sudo cp -rf scripts/rosdep_custom/config /etc/ros/rosdep/
-	sudo cp scripts/rosdep_custom/11-robocar.list /etc/ros/rosdep/sources.list.d/
 	$(eval lists_updated:=true)
 endif
 	$(if ${lists_updated},rosdep update --rosdistro=${ROS_DISTRO})
@@ -112,36 +98,27 @@ clean-deps:
 # Install robot dependencies.
 deps: init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths ${deps_paths}
+	rosdep install -iry --os ${ROS_OS} --from-paths ${deps_paths}
 
 # Install remote dependencies.
 deps-remote: deps_paths := rc110_core
 deps-remote: deps
 
-# Init catkin workspace.
+# Init workspace.
 init:
-ifeq (,$(shell which catkin))
-	sudo apt-get install -qq $(pythonN)-catkin-tools
+ifeq (,$(shell command -v colcon))
+	sudo apt-get install -qq python3-colcon-common-extensions
 endif
-ifeq (src,$(notdir $(abspath ..)))
-  ifeq (,$(wildcard ../../.catkin_tools))
-	cd ../..
-	catkin config --init --log-space .catkin_tools/logs
-  endif
-else
-  ifeq (,$(wildcard .catkin_tools))
+ifneq (src,$(notdir $(abspath ..)))
 	@echo -e "\033[1;31m\
-	    \nWarning: Catkin workspace will be created in the current directory!\
-	    \nIf you want to have usual workspace, please, put robocar110_ros to src/\
-	    \n\033[0m"
-	catkin config --init --source-space . --log-space .catkin_tools/logs
-  endif
+		\nWarning: Project needs to be inside ros workspace in src directory!\
+		\n\033[0m"
 endif
 
 # Build robot nodes.
 build: init
-	@source /opt/ros/${ROS_DISTRO}/setup.bash
-	$(call build,${build_nodes},${cmake_flags})
+	source /opt/ros/${ROS_DISTRO}/setup.bash
+	$(call build,${build_nodes},,${cmake_flags})
 
 # Build remote nodes
 remote: build_nodes := rc110_rviz rc110_teleop
@@ -150,12 +127,11 @@ remote: build
 # Package robot nodes in build directory.
 package: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
-	$(call build,${build_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=ON)
+	$(call build,${build_nodes},--merge-install --build-base build/pkg --install-base install/pkg,${cmake_flags})
 
-	# find core nodes with dependencies
-	nodes=$$(catkin build -n ${build_nodes} | sed -n -e '/Packages to be built/,/Total packages/{//!p;}' | sed -e 's/- \(.*\)(catkin)/\1/')
+	nodes=$$(cd "${ws_path}"; colcon list -n --packages-up-to ${build_nodes})
 
-	cd $$(catkin locate --build)
+	cd "${ws_path}/build/pkg"
 	rm -f *.deb
 	for node in $$nodes
 	do
@@ -173,18 +149,18 @@ package: init
 install: package
 	root_dir=$$(pwd)
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	cd $$(catkin locate --build)
+	cd "${ws_path}/build/pkg"
 	$${root_dir}/scripts/install_rc110
 
 # Self-extracting archive with core packages.
 self: package
-ifeq (,$(shell which makeself))
+ifeq (,$(shell command -v makeself))
 	sudo apt-get install -qq makeself
 endif
 
 	root_dir=$$(pwd)
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	cd $$(catkin locate --build)
+	cd "${ws_path}/build/pkg"
 
 	file=$$(ls *rc110*.deb | head -1)
 	version=$$(dpkg -f $${file} Version)
@@ -200,23 +176,13 @@ endif
 
 # Clean all.
 clean:
-	source /opt/ros/${ROS_DISTRO}/setup.bash
-	catkin clean -y
+	cd ${ws_path}
+	rm -rf build install log
 
 # Run nodes built from source.
 run:
-	source $$(catkin locate rc110)/host_setup.bash
-	roslaunch --wait rc110_system robot.launch $${RC110_ARGS} $(ros_args)
-
-# Roscore multimaster nodes synchronization in a separate terminal (may reduce launch time).
-sync:
-	source $$(catkin locate rc110)/host_setup.bash
-	wait
-
-# Run multimaster node manager.
-node-manager:
-	source $$(catkin locate rc110)/host_setup.bash
-	roslaunch --wait rc110 node_manager.launch
+	source ${ws_path}/install/setup.bash
+	ros2 launch rc110_system robot.launch $(ros_args)
 
 # == additional targets ==
 

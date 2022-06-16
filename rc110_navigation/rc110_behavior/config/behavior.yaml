@@ -1,3 +1,5 @@
-forward_command: [0.4, 0]
-left_command: [0.25, 28]
-right_command: [0.25, -28]
+/**:
+  ros__parameters:
+    forward_command: [0.4, 0.0]
+    left_command: [0.25, 28.0]
+    right_command: [0.25, -28.0]

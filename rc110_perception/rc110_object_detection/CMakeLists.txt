@@ -6,16 +6,13 @@ find_package(jetson-utils REQUIRED)
 find_package(jetson-inference REQUIRED)
 find_package(OpenCV REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  sensor_msgs
-  vision_msgs
-  rc110_msgs
-)
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(vision_msgs REQUIRED)
+find_package(rc110_msgs REQUIRED)
 
 link_directories(/usr/lib/aarch64-linux-gnu/tegra/)  # https://forums.developer.nvidia.com/t/cannot-link-usr-bin-ld-cannot-find-lnvbuf-utils/190973/13
-
-catkin_package()
 
 add_executable(rc110_object_detection_node
   src/rc110_object_detection_node.cpp
@@ -23,10 +20,7 @@ add_executable(rc110_object_detection_node
   src/rc110_image_converter.cpp
   src/rc110_custom_detect_net.cpp
 )
-add_dependencies(rc110_object_detection_node
-  ${${PROJECT_NAME}_EXPORTED_TARGETS}
-  ${catkin_EXPORTED_TARGETS}
-)
+
 target_compile_features(rc110_object_detection_node
   PUBLIC
     cxx_std_17
@@ -34,21 +28,28 @@ target_compile_features(rc110_object_detection_node
 target_include_directories(rc110_object_detection_node
   SYSTEM PUBLIC
     ${CUDA_INCLUDE_DIRS}
-    ${catkin_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )
 target_link_libraries(rc110_object_detection_node
-  jetson-inference
-  jetson-utils
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
+    jetson-inference
+    jetson-utils
+    ${CUDA_LIBRARIES}
+    ${OpenCV_LIBRARIES}
 )
+ament_target_dependencies(rc110_object_detection_node
+    rclcpp
+    rc110_msgs
+    sensor_msgs
+    vision_msgs
+)
+ament_package()
 
 install(TARGETS rc110_object_detection_node
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+install(DIRECTORY config launch rviz DESTINATION share/${PROJECT_NAME})
 
 # package
 include(../../cmake/rc110_cpack.cmake)

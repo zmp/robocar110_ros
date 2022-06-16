@@ -25,11 +25,12 @@
 namespace zmp
 {
 Rc110VideoServer::Rc110VideoServer() :
+        Node("rc110_video_server"),
         parameters({
-                .debugLevel = ros::param::param<int>("~debug_level", 1),
-                .port = ros::param::param<int>("~port", 8554),
-                .urlSuffix = ros::param::param<std::string>("~url_suffix", "front"),
-                .gstArgs = ros::param::param<std::string>("~gst_args", ""),
+                (int)declare_parameter("debug_level", 1),
+                (int)declare_parameter("port", 8554),
+                declare_parameter("url_suffix", "front"),
+                declare_parameter("gst_args", ""),
         }),
         portString(std::to_string(parameters.port)),
         portPointer(portString.data())
@@ -46,16 +47,16 @@ std::string Rc110VideoServer::parseOptions()
     int len = snprintf(optionsString,
                        MAX_LEN,
                        "%s --gst-debug=%d \"( %s \")",
-                       ros::this_node::getName().substr(1).c_str(),
+                       &get_fully_qualified_name()[1],
                        parameters.debugLevel,
                        parameters.gstArgs.c_str());
 
     if (len < 0 || len >= MAX_LEN) {
-        ROS_ERROR("Options string creation failed. Size: %d", len);
+        RCLCPP_ERROR(get_logger(), "Options string creation failed. Size: %d", len);
         return "";
     }
 
-    ROS_INFO("Generated args:\n\t%s\n", optionsString);
+    RCLCPP_INFO(get_logger(), "Generated args: %s", optionsString);
 
     GOptionContext* options = g_option_context_new("");
     GOptionEntry entries[2] = {
@@ -70,13 +71,13 @@ std::string Rc110VideoServer::parseOptions()
     char** argv;
     GError* error = nullptr;
     if (!g_shell_parse_argv(optionsString, &argc, &argv, &error)) {
-        ROS_ERROR("Unable to parse options");
+        RCLCPP_ERROR(get_logger(), "Unable to parse options");
         g_clear_error(&error);
         return "";
     }
 
     if (!g_option_context_parse(options, &argc, &argv, &error)) {
-        ROS_ERROR("Error parsing options: %s\n", error->message);
+        RCLCPP_ERROR(get_logger(), "Error parsing options: %s", error->message);
         g_option_context_free(options);
         g_clear_error(&error);
         return "";
@@ -84,7 +85,7 @@ std::string Rc110VideoServer::parseOptions()
     g_option_context_free(options);
 
     if (argc < 2) {
-        ROS_ERROR("No pipeline options");
+        RCLCPP_ERROR(get_logger(), "No pipeline options");
         return "";
     }
 
@@ -96,7 +97,7 @@ std::string Rc110VideoServer::parseOptions()
 static void clientConnected(GstRTSPServer*, GstRTSPClient* client)
 {
     GstRTSPConnection* connection = gst_rtsp_client_get_connection(client);
-    ROS_INFO("Client connected: %s", gst_rtsp_connection_get_ip(connection));
+    RCLCPP_INFO(rclcpp::get_logger("gst"), "Client connected: %s", gst_rtsp_connection_get_ip(connection));
 }
 
 bool Rc110VideoServer::gstreamerInit()
@@ -123,7 +124,7 @@ bool Rc110VideoServer::gstreamerInit()
     gst_rtsp_server_attach(server, nullptr);
     g_signal_connect(server, "client-connected", (GCallback)clientConnected, nullptr);
 
-    ROS_INFO("Stream ready at rtsp://<robot_ip>:%s/%s\n", portPointer, parameters.urlSuffix.c_str());
+    RCLCPP_INFO(get_logger(), "Stream ready at rtsp://<robot_ip>:%s/%s", portPointer, parameters.urlSuffix.c_str());
     return true;
 }
 }  // namespace zmp

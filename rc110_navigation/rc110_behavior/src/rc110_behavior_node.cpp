@@ -5,19 +5,17 @@
  *
  * Written by Andrei Pak
  */
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include "rc110_behavior.hpp"
 
-using namespace zmp;
-
 int main(int argc, char** argv)
 try {
-    ros::init(argc, argv, "rc110_behavior");
+    rclcpp::init(argc, argv);
 
-    Rc110Behavior node;
-
-    ros::spin();
+    auto node = std::make_shared<zmp::Rc110Behavior>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
 
     return EXIT_SUCCESS;
 }  //

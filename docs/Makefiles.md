@@ -17,14 +17,14 @@ To know the content of each make target, either execute the command and check it
 ## Alternative
 Of course, you can use ros commands directly. For example, `make run` command is described in `run:` paragraph of `GNUmakefile` similar to:
 ```shell
-source $(catkin locate rc110)/host_setup.bash
-roslaunch --wait rc110_system robot.launch  # and args...
+source install/setup.bash
+ros2 launch rc110_system robot.launch
 ```
 
 Then you can check the meaning of those commands in public documentation.
 
 * `source`: https://ss64.com/bash/source.html
-* `roslaunch`: http://wiki.ros.org/roslaunch
+* `launch`: https://docs.ros.org/en/rolling/How-To-Guides/Launch-file-different-formats.html
 
 ## Specifics of RC110 Makefiles
 ### Arguments
@@ -33,9 +33,9 @@ It's possible to pass variables to `make` as following:
 make my_target var1=a var2=b
 ```
 
-Internally some targets use `ros_args` macros which provides roslaunch arguments out of those variables, so `roslaunch <...> $(ros_args)` becomes:
+Internally some targets use `ros_args` macros which provides roslaunch arguments out of those variables, so `ros2 launch <...> $(ros_args)` becomes:
 ```shell
-roslaunch <...> var1:=a var2:=b
+ros2 launch <...> var1:=a var2:=b
 ```
 
 Roslaunch discards unused arguments, so it's probably ok to mix makefile and roslaunch names.

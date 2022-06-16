@@ -7,24 +7,28 @@
  */
 #include "rc110_laserscans_to_pointcloud.hpp"
 
-#include <sensor_msgs/point_cloud2_iterator.h>
+#include <builtin_interfaces/msg/time.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
 
 namespace zmp
 {
 constexpr char FRONT_LIDAR_FRAME_ID[] = "front_lidar";
 constexpr char REAR_LIDAR_FRAME_ID[] = "rear_lidar";
 
+using namespace std::chrono_literals;
+
 namespace
 {
 /*
  * Add points to map sorted by distance.
  */
-void addPointsByDistance(const sensor_msgs::PointCloud2& cloud, std::map<float, std::vector<float>>& pointsByDistance)
+void addPointsByDistance(const sensor_msgs::msg::PointCloud2& cloud, std::map<float, std::vector<float>>& pointsByDistance)
 {
     int pointSize = cloud.point_step / sizeof(float);
-    using Iter = sensor_msgs::PointCloud2ConstIterator<float>;
+    int cloudSize = cloud.row_step * cloud.height / sizeof(float);
+    auto data = reinterpret_cast<const float*>(cloud.data.data());
 
-    for (Iter it = {cloud, "x"}; it != it.end(); ++it) {
+    for (auto it = data; it < data + cloudSize; it += pointSize) {
         float x = it[0], y = it[1];
         float distance = hypot(y, x);
         const float* pointBegin = &it[0];
@@ -56,28 +60,28 @@ void addPointsByAngle(const std::map<float, std::vector<float>>& pointsByDistanc
 }  // namespace
 
 Rc110LaserScansToPointCloud::Rc110LaserScansToPointCloud() :
-        outputFrameId(ros::param::param<std::string>("~output_frame_id", REAR_LIDAR_FRAME_ID)),
-        frontLidarFrameId(ros::param::param<std::string>("~front_lidar_frame_id", FRONT_LIDAR_FRAME_ID)),
-        rearLidarFrameId(ros::param::param<std::string>("~rear_lidar_frame_id", REAR_LIDAR_FRAME_ID)),
-        angleThreshold(ros::param::param("~angle_threshold", 0.9f))  // +90% / -90% of angle_increment
+        Node("laserscans_to_pointcloud"),
+        outputFrameId(declare_parameter("output_frame_id", REAR_LIDAR_FRAME_ID)),
+        frontLidarFrameId(declare_parameter("front_lidar_frame_id", FRONT_LIDAR_FRAME_ID)),
+        rearLidarFrameId(declare_parameter("rear_lidar_frame_id", REAR_LIDAR_FRAME_ID)),
+        angleThreshold(declare_parameter("angle_threshold", 0.9)),  // +90% / -90% of angle_increment
+        tfBuffer(get_clock()),
+        tfListener(tfBuffer)
 {
-    frontTransformer.waitForTransform(outputFrameId, frontLidarFrameId, ros::Time(0), ros::Duration(5));
-    rearTransformer.waitForTransform(outputFrameId, rearLidarFrameId, ros::Time(0), ros::Duration(5));
-
     sync = std::make_unique<ApproxSync>(ApproxSyncPolicy(3), frontSubscriber, rearSubscriber);
     sync->registerCallback(&Rc110LaserScansToPointCloud::onScans, this);
 
-    auto onConnectCallback = [this](const ros::SingleSubscriberPublisher&) { onConnect(); };
-    cloudPublisher = handle.advertise<sensor_msgs::PointCloud2>("points2", 1, onConnectCallback, onConnectCallback);
+    cloudPublisher = create_publisher<sensor_msgs::msg::PointCloud2>("points2", 1);
+    timer = create_wall_timer(500ms, [this] { onTimer(); });
 }
 
-void Rc110LaserScansToPointCloud::onConnect()
+void Rc110LaserScansToPointCloud::onTimer()
 {
-    if (cloudPublisher.getNumSubscribers()) {
+    if (cloudPublisher->get_subscription_count()) {
         if (!subscribed) {
             subscribed = true;
-            frontSubscriber.subscribe(handle, "front_scan", 1);
-            rearSubscriber.subscribe(handle, "rear_scan", 1);
+            frontSubscriber.subscribe(this, "front_scan");
+            rearSubscriber.subscribe(this, "rear_scan");
         }
     } else {
         subscribed = false;
@@ -86,17 +90,18 @@ void Rc110LaserScansToPointCloud::onConnect()
     }
 }
 
-void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::LaserScan::ConstPtr& front,
-                                          const sensor_msgs::LaserScan::ConstPtr& rear)
+void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::msg::LaserScan::ConstSharedPtr& front,
+                                          const sensor_msgs::msg::LaserScan::ConstSharedPtr& rear)
 {
     if (front->header.frame_id != frontLidarFrameId || rear->header.frame_id != rearLidarFrameId) {
-        ROS_ERROR_STREAM("Wrong scan frame id: " << front->header.frame_id << ", " << rear->header.frame_id);
+        RCLCPP_ERROR_STREAM(get_logger(),
+                            "Wrong scan frame id: " << front->header.frame_id << ", " << rear->header.frame_id);
         return;
     }
 
-    sensor_msgs::PointCloud2 frontCloud, rearCloud;
-    projection.transformLaserScanToPointCloud(outputFrameId, *front, frontCloud, frontTransformer);
-    projection.transformLaserScanToPointCloud(outputFrameId, *rear, rearCloud, rearTransformer);
+    sensor_msgs::msg::PointCloud2 frontCloud, rearCloud;
+    projection.transformLaserScanToPointCloud(outputFrameId, *front, frontCloud, tfBuffer);
+    projection.transformLaserScanToPointCloud(outputFrameId, *rear, rearCloud, tfBuffer);
 
     // points sorted by distance from rear lidar
     // rear lidar as main gives a bit better result as coordinates origin is near it
@@ -107,7 +112,7 @@ void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::LaserScan::ConstPtr
     // unique and sorted by angle points (-pi, pi]
     // all points behind other points relative to rear lidar are discarded
     std::map<float, std::vector<float>> points;
-    float angleAllowance = rear->angle_increment * angleThreshold;
+    auto angleAllowance = float(rear->angle_increment * angleThreshold);
     addPointsByAngle(pointsByDistance, points, angleAllowance);
 
     std::vector<uint8_t> data;
@@ -120,6 +125,6 @@ void Rc110LaserScansToPointCloud::onScans(const sensor_msgs::LaserScan::ConstPtr
     rearCloud.width = points.size();
     rearCloud.row_step = points.size() * rearCloud.point_step;
     rearCloud.data = data;
-    cloudPublisher.publish(rearCloud);
+    cloudPublisher->publish(rearCloud);
 }
 }  // namespace zmp

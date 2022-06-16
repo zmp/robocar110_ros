@@ -1,5 +1,5 @@
 camera_name: "front_camera"
-frame_id: "$(env RC110_NAME)/front_camera"
+frame_id: "$(var rc)/front_camera"
 video_stream_provider: "/dev/video_front"
 width: 640
 height: 480

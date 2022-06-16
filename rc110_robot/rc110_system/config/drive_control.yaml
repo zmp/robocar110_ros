@@ -1,6 +1,8 @@
-base_frame_id: "$(env RC110_NAME)/base_link"
-odom_frame_id: "$(env RC110_NAME)/odom"
-imu_frame_id: "$(env RC110_NAME)/imu_link"
-rate: 30.0
-steering_angle_adjustment: 1.0
-steering_velocity: 90.0
+/**:
+  ros__parameters:
+    base_frame_id: "$(var rc)/base_link"
+    odom_frame_id: "$(var rc)/odom"
+    imu_frame_id: "$(var rc)/imu_link"
+    rate: 30.0
+    steering_angle_adjustment: 1.0
+    steering_velocity: 90.0

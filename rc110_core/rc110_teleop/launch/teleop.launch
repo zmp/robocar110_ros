@@ -1,25 +1,27 @@
 <launch>
-    <arg name="teleop_config_dir" default="$(find rc110_teleop)/config"/>
-    <arg name="rc" default=""/>
-    <arg name="device" default="0"/>
-    <arg name="joy_path" default="/dev/input/js$(arg device)"/>
-    <arg name="joy_type" default=""/>
-    <arg name="name" default="joy$(arg device)"/>
-    <arg name="drive_topic" default="drive_manual"/>
+    <group>
+        <arg name="teleop_config_dir" default="$(find-pkg-share rc110_teleop)/config"/>
+        <arg name="rc" default=""/>
+        <arg name="device" default="0"/>
+        <arg name="joy_path" default="/dev/input/js$(var device)"/>
+        <arg name="joy_type" default=""/>
+        <arg name="name" default="joy$(var device)"/>
+        <arg name="drive_topic" default="drive_manual"/>
 
-    <node pkg="joy" type="joy_node" name="$(arg name)" respawn="true">
-        <remap from="joy" to="$(arg name)"/>
-        <param name="dev" value="$(arg joy_path)"/>
-        <param name="deadzone" value="0.02"/>
-        <param name="autorepeat_rate" value="10"/>
-    </node>
+        <node pkg="joy" exec="joy_node" name="$(var name)">
+            <remap from="joy" to="$(var name)"/>
+            <param name="device_id" value="$(var device)"/>
+            <param name="deadzone" value="0.02"/>
+            <param name="autorepeat_rate" value="10.0"/>
+        </node>
 
-    <node pkg="rc110_teleop" type="rc110_joy_teleop" name="$(arg name)_teleop" respawn="true" output="screen">
-        <remap from="joy" to="$(arg name)"/>
-        <remap from="drive_manual" to="$(arg drive_topic)"/>
-        <rosparam file="$(arg teleop_config_dir)/joy.yaml" subst_value="true"/>
-        <param name="rc" value="$(arg rc)"/>
-        <param name="joy_path" value="$(arg joy_path)"/>
-        <param name="joy_type" value="$(arg joy_type)"/>
-    </node>
+        <node pkg="rc110_teleop" exec="rc110_joy_teleop" name="$(var name)_teleop" output="screen">
+            <remap from="joy" to="$(var name)"/>
+            <remap from="drive_manual" to="$(var drive_topic)"/>
+            <param from="$(var teleop_config_dir)/joy.yaml" allow_substs="true"/>
+            <param name="rc" value="$(var rc)"/>
+            <param name="joy_path" value="$(var joy_path)"/>
+            <param name="joy_type" value="$(var joy_type)"/>
+        </node>
+    </group>
 </launch>

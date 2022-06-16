@@ -1,9 +1,14 @@
 <launch>
-  <arg name="object_detection_node_param_path" default="$(find rc110_object_detection)/config/rc110_object_detection_node.yaml"/>
-  <arg name="input_image" default="front_camera/image_raw"/>
+    <arg name="camera_param_path" default="$(find-pkg-share rc110_object_detection)/config/front_camera.yaml"/>
+    <arg name="object_detection_node_param_path" default="$(find-pkg-share rc110_object_detection)/config/rc110_object_detection_node.yaml"/>
 
-  <node pkg="rc110_object_detection" type="rc110_object_detection_node" name="object_detection" output="screen">
-    <remap from="~input_image" to="$(arg input_image)" />
-    <rosparam file="$(arg object_detection_node_param_path)" subst_value="true"/>
-  </node>
+    <node pkg="usb_cam" exec="usb_cam_node_exe" name="front_camera">
+        <remap from="image_raw" to="~/image_raw"/>
+        <param from="$(var camera_param_path)" allow_substs="true"/>
+    </node>
+
+    <node pkg="rc110_object_detection" exec="rc110_object_detection_node" name="object_detection" output="screen">
+        <remap from="~/input_image" to="front_camera/image_raw"/>
+        <param from="$(var object_detection_node_param_path)" allow_substs="true"/>
+    </node>
 </launch>

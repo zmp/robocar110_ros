@@ -10,14 +10,15 @@
 
 #include <jetson-utils/cudaColorspace.h>
 #include <jetson-utils/cudaMappedMemory.h>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 namespace zmp
 {
-Rc110ImageConverter::Rc110ImageConverter() :
+Rc110ImageConverter::Rc110ImageConverter(rclcpp::Node& node) :
+        node(node),
         m_imageWidth(0),
         m_imageHeight(0),
-        m_inputImageFormat(ROS_OUTPUT_IMAGE_FORMAT),
+        m_inputImageFormat(RCLCPP_OUTPUT_IMAGE_FORMAT),
         m_hostInput(nullptr),
         m_deviceInput(nullptr),
         m_hostOutput(nullptr),
@@ -85,30 +86,30 @@ std::string Rc110ImageConverter::toImageEncoding(const imageFormat iFormat)
     }
 }
 
-bool Rc110ImageConverter::toDevice(const sensor_msgs::ImageConstPtr& inputImageMsg)
+bool Rc110ImageConverter::toDevice(const sensor_msgs::msg::Image& inputImageMsg)
 {
-    ROS_DEBUG("converting %ux%u %s image", inputImageMsg->width, inputImageMsg->height, inputImageMsg->encoding.c_str());
-    const imageFormat inputImageFormat = Rc110ImageConverter::toImageFormat(inputImageMsg->encoding);
+    RCLCPP_DEBUG(node.get_logger(), "converting %ux%u %s image", inputImageMsg.width, inputImageMsg.height, inputImageMsg.encoding.c_str());
+    const imageFormat inputImageFormat = Rc110ImageConverter::toImageFormat(inputImageMsg.encoding);
     if (inputImageFormat == IMAGE_UNKNOWN) {
-        ROS_ERROR("image encoding %s is not a compatible format", inputImageMsg->encoding.c_str());
+        RCLCPP_ERROR(node.get_logger(), "image encoding %s is not a compatible format", inputImageMsg.encoding.c_str());
         return false;
     }
 
-    if (!this->allocateMemory(inputImageMsg->width, inputImageMsg->height, inputImageFormat)) {
+    if (!allocateMemory(inputImageMsg.width, inputImageMsg.height, inputImageFormat)) {
         return false;
     };
     memcpy(m_hostInput,
-           inputImageMsg->data.data(),
-           imageFormatSize(inputImageFormat, inputImageMsg->width, inputImageMsg->height));
+           inputImageMsg.data.data(),
+           imageFormatSize(inputImageFormat, inputImageMsg.width, inputImageMsg.height));
 
     // convert inputImageMsg's data to device output pointer of INTERNAL_IMAGE_FORMAT
     if (CUDA_FAILED(cudaConvertColor(m_deviceInput,
                                      inputImageFormat,
                                      m_deviceOutput,
                                      INTERNAL_IMAGE_FORMAT,
-                                     inputImageMsg->width,
-                                     inputImageMsg->height))) {
-        ROS_ERROR("failed to convert %ldx%ld image (from %s to %s) with CUDA",
+                                     inputImageMsg.width,
+                                     inputImageMsg.height))) {
+        RCLCPP_ERROR(node.get_logger(), "failed to convert %ldx%ld image (from %s to %s) with CUDA",
                   m_imageWidth,
                   m_imageHeight,
                   imageFormatToStr(inputImageFormat),
@@ -136,11 +137,11 @@ bool Rc110ImageConverter::allocateMemory(const std::size_t imageWidth,
         // m_hostOutput, m_deviceOutput both resolve to the same physical memory.
         if (!cudaAllocMapped((void**)&m_hostInput, (void**)&m_deviceInput, inputSize) ||
             !cudaAllocMapped((void**)&m_hostOutput, (void**)&m_deviceOutput, outputSize)) {
-            ROS_ERROR("failed to allocate memory for %ldx%ld image conversion", imageWidth, imageHeight);
+            RCLCPP_ERROR(node.get_logger(), "failed to allocate memory for %ldx%ld image conversion", imageWidth, imageHeight);
             return false;
         }
 
-        ROS_INFO("allocated CUDA memory for %ldx%ld image conversion", imageWidth, imageHeight);
+        RCLCPP_INFO(node.get_logger(), "allocated CUDA memory for %ldx%ld image conversion", imageWidth, imageHeight);
 
         m_imageWidth = imageWidth;
         m_imageHeight = imageHeight;

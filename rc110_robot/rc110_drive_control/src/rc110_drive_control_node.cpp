@@ -5,25 +5,25 @@
  *
  * Written by Andrei Pak
  */
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 #include "rc110_drive_control.hpp"
 
-using namespace zmp;
-
 int main(int argc, char** argv)
 try {
-    ros::init(argc, argv, "rc110_drive_control");
+    rclcpp::init(argc, argv);
 
-    Rc110DriveControl node;
-    ros::spin();
+    auto node = std::make_shared<zmp::Rc110DriveControl>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
 
     return EXIT_SUCCESS;
 }  //
 catch (std::exception& ex) {
     std::cerr << "Exception in main(): " << ex.what() << std::endl;
     return EXIT_FAILURE;
-} catch (...) {
+}  //
+catch (...) {
     std::cerr << "Unknown exception in main()" << std::endl;
     return EXIT_FAILURE;
 }

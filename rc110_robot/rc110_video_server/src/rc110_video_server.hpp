@@ -18,14 +18,13 @@
  */
 #pragma once
 
-#include <ros/ros.h>
-
 #include <memory>
+#include <rclcpp/rclcpp.hpp>
 #include <string>
 
 namespace zmp
 {
-class Rc110VideoServer
+class Rc110VideoServer : public rclcpp::Node
 {
     struct Parameters {
         int debugLevel;
@@ -42,7 +41,6 @@ private:
     bool gstreamerInit();
 
 private:
-    ros::NodeHandle handle;
     Parameters parameters;
     std::string portString;
     char* portPointer;  // valid pointer is needed for GOptionEntry

@@ -6,23 +6,22 @@
  * Written by Andrei Pak
  */
 
-#include <ros/console.h>
-#include <ros/ros.h>
-
 #include <QApplication>
 #include <QComboBox>
+#include <QHostInfo>
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
 #include <QTextStream>
 #include <QTimer>
 #include <QWidget>
+#include <rclcpp/rclcpp.hpp>
 #include <regex>
 
-QStringList getRobotNames()
+QStringList getRobotNames(rclcpp::Node* node)
 {
     std::vector<std::string> nodeNames;
-    ros::master::getNodes(nodeNames);
+    nodeNames = node->get_node_names();
 
     static const std::regex expression("/(.*)/drive_control$");
 
@@ -38,20 +37,34 @@ QStringList getRobotNames()
 
 void noOutput(QtMsgType, const QMessageLogContext&, const QString&) {}
 
+bool tryUsingHostname(const std::string& prefix)
+{
+    auto hostname = QHostInfo::localHostName();
+    if (0 == hostname.indexOf(prefix.c_str())) {
+        QTextStream(stdout) << hostname.replace('-', '_');
+        return true;
+    }
+    return false;
+}
+
 constexpr int tick = 500;
 int timeout;
 QStringList lastNames;
 
 int main(int argc, char** argv)
 {
-    // suppress all output except application result
-    if( ros::console::set_logger_level("ros", ros::console::levels::Fatal) ) {
-        ros::console::notifyLoggerLevelsChanged();
-    }
     qInstallMessageHandler(noOutput);
 
-    ros::init(argc, argv, "rc110_selector");
-    timeout = ros::param::param("~timeout", 5000);
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<rclcpp::Node>("rc110_selector");
+    node->get_logger().set_level(rclcpp::Logger::Level::Fatal);
+
+    timeout = (int)node->declare_parameter("timeout", 5000);
+    auto prefix = node->declare_parameter("prefix", "rc-");
+
+    if (tryUsingHostname(prefix)) {
+        return EXIT_SUCCESS;
+    }
 
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
@@ -78,10 +91,10 @@ int main(int argc, char** argv)
     window.show();
 
     QTimer timer;
-    QObject::connect(&timer, &QTimer::timeout, [&combo, &label] {
-        ros::spinOnce();
+    QObject::connect(&timer, &QTimer::timeout, [&combo, &label, &node] {
+        rclcpp::spin_some(node);
 
-        QStringList names = getRobotNames();
+        QStringList names = getRobotNames(node.get());
 
         // For 2 or more robots, wait for user selection.
         // Otherwise do countdown resulting in "a robot selected" or "no robots".
@@ -110,5 +123,5 @@ int main(int argc, char** argv)
         QTextStream(stdout) << combo.currentText();
         QApplication::quit();
     });
-    return app.exec();
+    return QApplication::exec();
 }

@@ -8,6 +8,7 @@
 if(NOT DEFINED ENV{ROS_DISTRO})
     message(FATAL_ERROR "ROS_DISTRO is not defined. Please, source ros.")
 endif()
+set(ROS_OS ubuntu:jammy CACHE STRING "")  # workaround for rolling on focal
 
 #
 # project name to debian package name
@@ -24,7 +25,7 @@ endfunction()
 function(ros_to_deb_names result dep)
     # Some packages can be found with rosdep resolve.
     execute_process(
-            COMMAND rosdep resolve ${dep}
+            COMMAND rosdep resolve --os "${ROS_OS}" ${dep}
             COMMAND sed -n 2p  # 2nd line
             OUTPUT_VARIABLE dep_ros
             ERROR_QUIET

@@ -1,5 +1,5 @@
 camera_name: "rear_camera"
-frame_id: "$(env RC110_NAME)/rear_camera"
+frame_id: "$(var rc)/rear_camera"
 video_stream_provider: "/dev/video_rear"
 width: 640
 height: 480

@@ -1,16 +1,16 @@
 <launch>
-    <arg name="urdf_file" default="$(find rc110)/urdf/robot.xacro"/>
-    <arg name="splash_image" default="$(find rc110_rviz)/images/splash.png"/>
-    <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
-    <arg name="rviz_args" default="-s $(arg splash_image) -d $(arg config)"/>
-    <arg name="rc" default="$(env RC110_NAME)"/>
-    <arg name="rc_host" default="$(eval rc.replace('_', '-'))"/>
+    <group>
+        <arg name="splash_image" default="$(find-pkg-share rc110_rviz)/images/splash.png"/>
+        <arg name="config" default="$(find-pkg-share rc110_rviz)/rviz/main.rviz"/>
+        <arg name="rc" default="$(command rc110_selector)"/>
+        <arg name="rc_host" default="$(eval '\'$(var rc)\'.replace(\'_\', \'-\')')"/>
 
-    <!-- RViz can be run on a remote PC, so it needs to have robot_description parameter. -->
-    <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg rc)/"/>
+        <push_ros_namespace namespace="/$(var rc)"/>
 
-    <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)">
-        <param name="rc" value="$(arg rc)"/>
-        <param name="video_url" value="rtsp://$(arg rc_host).local:8554/front"/>
-    </node>
+        <node pkg="rviz2" exec="rviz2" name="rviz" args="-s $(var splash_image) -d $(var config)">
+            <param name="rc" value="$(var rc)"/>
+            <param name="video_url" value="rtsp://$(var rc_host).local:8554/front"/>
+            <param name="pipeline" value="rtspsrc latency=0 location=%1 ! rtph265depay ! h265parse ! queue ! nvv4l2decoder ! nvvidconv ! video/x-raw,format=YUY2 ! xvimagesink name=qtvideosink sync=false"/>
+        </node>
+    </group>
 </launch>

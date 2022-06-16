@@ -3,25 +3,25 @@ include ../../mk/common.mk
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths .
+	rosdep install -iry --os ${ROS_OS} --from-paths .
 
 build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	catkin build --this --cmake-args ${cmake_flags}
+	$(call build,rc110_video_server,,${cmake_flags})
 
 run:
-	source $$(catkin locate rc110)/auto_setup.bash
-	roslaunch --wait rc110_video_server main.launch $(ros_args)
+	source ${ws_path}/install/setup.bash
+	ros2 launch rc110_video_server main.launch $(ros_args)
 
 show:
-	source $$(catkin locate rc110)/auto_setup.bash
-	host=$$(echo $${rc} | tr _ -)
+	source ${ws_path}/install/setup.bash
+	host=$$(rc110_selector | tr _ -)
 	if [ "$${host}" != "$$(hostname)" ]
 	then # remote
 		decoder_sync='avdec_h265 ! $(if $(overlay),fpsdisplaysink sync=false async=false,xvimagesink)'
 	else # local
-		decoder_sync='omxh265dec ! nvoverlaysink sync=false async=false'
+		decoder_sync='nvv4l2decoder ! nv3dsink -e'
 	fi
 	gst-launch-1.0 rtspsrc latency=0 location=rtsp://$${host}.local:8554/front \
 			! rtph265depay ! h265parse ! queue ! $${decoder_sync}

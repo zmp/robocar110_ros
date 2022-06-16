@@ -1,12 +1,11 @@
 [Unit]
-Description=Robocar 1/10 ROS nodes
-After=rc110-roscore.service network-online.target
-BindsTo=rc110-roscore.service
+Description=Robocar 1/10 ROS2 nodes
+After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/lib/systemd/user/rc110.sh
+ExecStart=/opt/ros/@ROS_DISTRO@/systemd/rc110.sh
 
 [Install]
 WantedBy=default.target

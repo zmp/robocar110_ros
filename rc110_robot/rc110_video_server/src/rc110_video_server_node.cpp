@@ -17,27 +17,26 @@
  * Written by Andrei Pak
  */
 #include <gst/gst.h>
-#include <ros/ros.h>
 
 #include <cstdlib>
 #include <exception>
 #include <iostream>
+#include <rclcpp/rclcpp.hpp>
 
 #include "rc110_video_server.hpp"
 
 int main(int argc, char** argv)
 try {
-    ros::init(argc, argv, "rc110_video_server");
+    rclcpp::init(argc, argv);
 
-    zmp::Rc110VideoServer server;
+    auto node = std::make_shared<zmp::Rc110VideoServer>();
 
-    ros::Rate spinRate(30);
-    while (ros::ok()) {
+    rclcpp::Rate spinRate(30);
+    while (rclcpp::ok()) {
         g_main_context_iteration(nullptr, false);  // does not block
-        ros::spinOnce();
+        rclcpp::spin_some(node);
         spinRate.sleep();
     }
-
     return EXIT_SUCCESS;
 }  //
 catch (const std::exception& ex) {

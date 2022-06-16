@@ -1,5 +1,5 @@
-<library path="librviz_video_panel">
-  <class name="rviz_video_panel/Video Stream" type="zmp::RVizVideoPanel" base_class_type="rviz::Panel">
+<library path="rviz_video_panel">
+  <class name="rviz_video_panel/Video Stream" type="zmp::RVizVideoPanel" base_class_type="rviz_common::Panel">
     <description>
       Stream URL is taken either from "video_url" parameter or from "Panel Name".
       Example: rtsp://rc-12345.local:8554/front

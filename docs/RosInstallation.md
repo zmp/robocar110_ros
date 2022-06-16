@@ -2,7 +2,7 @@
 
 If ROS is not installed, please, install it following the instruction:
 
-http://wiki.ros.org/Installation/Ubuntu
+http://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html
 
 Alternatively you can use the following command, but we cannot guarantee it will always work.
 ```

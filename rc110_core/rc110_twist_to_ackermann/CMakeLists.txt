@@ -1,30 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
 project(rc110_twist_to_ackermann VERSION 1.12.0)
 
-find_package(catkin REQUIRED
-        roscpp
-        geometry_msgs
-        ackermann_msgs
-)
-
-catkin_package()
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(ackermann_msgs REQUIRED)
 
 file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC})
 
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME}
-        ${catkin_LIBRARIES}
+ament_target_dependencies(${PROJECT_NAME}
+    rclcpp
+    geometry_msgs
+    ackermann_msgs
 )
 
-install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION lib/${PROJECT_NAME})
+
+ament_package()
 
 # package
 include(../../cmake/rc110_cpack.cmake)

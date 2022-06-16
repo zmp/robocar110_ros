@@ -14,13 +14,14 @@
 #include <unistd.h>
 #endif
 
-#include <ros/package.h>
-#include <std_srvs/SetBool.h>
-#include <topic_tools/MuxSelect.h>
 #include <yaml-cpp/yaml.h>
 
+#include <ament_index_cpp/get_package_share_directory.hpp>
 #include <boost/filesystem.hpp>
+#include <chrono>
 #include <regex>
+
+using namespace std::chrono_literals;
 
 namespace zmp
 {
@@ -46,10 +47,10 @@ void updateParam(T& param, const YAML::Node& node)
     param = node ? node.as<T>() : param;
 }
 
-std::vector<std::string> getRobotNames()
+std::vector<std::string> getRobotNames(rclcpp::Node* node)
 {
     std::vector<std::string> nodeNames;
-    ros::master::getNodes(nodeNames);
+    nodeNames = node->get_node_names();
 
     static const std::regex expression("/(.*)/drive_control$");
 
@@ -65,22 +66,25 @@ std::vector<std::string> getRobotNames()
 }  // namespace
 
 Rc110JoyTeleop::Rc110JoyTeleop() :
+        Node("rc110_joy_teleop"),
         param({
-                ros::param::param("~rc", std::string("zmp")),
-                ros::param::param("~frame_id", std::string("joy")),
-                ros::param::param("~gears", std::vector<double>{0.3, 0.6, 1.0}),
-                ros::param::param("~rate", 30.0),
-                ros::param::param("~joy_path", std::string("")),
-                ros::param::param("~joy_type", std::string("")),  // autodetect if empty
+                declare_parameter("rc", "zmp"),
+                declare_parameter("frame_id", "joy"),
+                declare_parameter("gears", std::vector<double>{0.3, 0.6, 1.0}),
+                declare_parameter("rate", 30.0),
+                declare_parameter("joy_path", ""),
+                declare_parameter("joy_type", ""),  // autodetect if empty
         }),
-        configPath(ros::package::getPath("rc110_teleop") + "/config")
+        configPath(ament_index_cpp::get_package_share_directory("rc110_teleop") + "/config")
 {
+    using std::placeholders::_1;
     if (param.gears.empty()) param.gears = {0.3};
 
-    driveTimer = handle.createTimer(ros::Duration(1 / param.rate), [this](const auto&) { publishDrive(); });
-    nextRobotTimer = handle.createTimer(ros::Duration(1), [this](const auto&) { onRobotNameTimer(); });
+    driveTimer = create_wall_timer(std::chrono::milliseconds(int(1000.0 / param.rate)), [this]() { publishDrive(); });
+    nextRobotTimer = create_wall_timer(std::chrono::seconds(1), [this]() { onRobotNameTimer(); });
 
-    subscribers["joy"] = handle.subscribe("joy", 1, &Rc110JoyTeleop::onJoy, this);
+    subscribers["joy"] =
+            create_subscription<sensor_msgs::msg::Joy>("joy", 1, std::bind(&Rc110JoyTeleop::onJoy, this, _1));
 
     selectedRobot = param.rc;
 
@@ -130,7 +134,7 @@ std::string Rc110JoyTeleop::getJoyType(const std::string& joyPath) const
             }
         }
     }
-    ROS_INFO_STREAM("Joystick type: " << joyType << ", basing on path: " << joyPath);
+    RCLCPP_INFO_STREAM(get_logger(), "Joystick type: " << joyType << ", basing on path: " << joyPath);
     return joyType;
 }
 
@@ -169,7 +173,7 @@ int Rc110JoyTeleop::matchDescription(const std::string& description, const std::
         auto yamlDescription = descriptionNode.as<std::string>();
 
         // check either whole name match
-        if (int pos = yamlDescription.find(description); pos != std::string::npos) {
+        if (size_t pos = yamlDescription.find(description); pos != std::string::npos) {
             return description.size();
         }
         // or just partial match from the name start
@@ -182,11 +186,22 @@ int Rc110JoyTeleop::matchDescription(const std::string& description, const std::
 
 void Rc110JoyTeleop::setupRosConnections()
 {
-    auto ns = selectedRobot.empty() ? "" : "/" + selectedRobot;
+    using std::placeholders::_1;
+    std::string ns = selectedRobot.empty() ? "" : "/" + selectedRobot;
 
-    subscribers["robot_status"] = handle.subscribe(ns + "/robot_status", 1, &Rc110JoyTeleop::onRobotStatus, this);
-    subscribers["mux_drive"] = handle.subscribe(ns + "/mux_drive/selected", 1, &Rc110JoyTeleop::onAdModeChanged, this);
-    publishers["drive_manual"] = handle.advertise<ackermann_msgs::AckermannDriveStamped>(ns + "/drive_manual", 1);
+    subscribers["robot_status"] =
+            create_subscription<rc110_msgs::msg::Status>(ns + "/robot_status",
+                                                         1,
+                                                         std::bind(&Rc110JoyTeleop::onRobotStatus, this, _1));
+    subscribers["mux_drive"] =
+            create_subscription<std_msgs::msg::String>(ns + "/mux_drive/selected",
+                                                       1,
+                                                       std::bind(&Rc110JoyTeleop::onAdModeChanged, this, _1));
+    publishers["drive_manual"] = create_publisher<ackermann_msgs::msg::AckermannDriveStamped>(
+            ns + "/drive_manual", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+
+    enableBoardService = create_client<std_srvs::srv::SetBool>(ns + "/enable_board");
+    muxDriveService = create_client<rc110_topic_tools::srv::MuxSelect>(ns + "/mux_drive/select");
 }
 
 void Rc110JoyTeleop::updateAxis(std::vector<double>& axis, double defaultMax)
@@ -213,8 +228,8 @@ void Rc110JoyTeleop::publishDrive()
 {
     if (param.deadManButton == -1) {
         // if dead man button deactivated, publish when there are motion commands in last 500 ms
-        if ((ros::Time::now() - lastTime).toSec() < 0.5) {
-            publishers["drive_manual"].publish(driveMessage);
+        if ((now() - lastTime).seconds() < 0.5) {
+            publish("drive_manual", driveMessage);
         }
         return;
     }
@@ -222,47 +237,41 @@ void Rc110JoyTeleop::publishDrive()
     if (joyMessage) {
         if (joyMessage->buttons[param.deadManButton]) {
             // if dead man button is pressed, send message
-            publishers["drive_manual"].publish(driveMessage);
+            publish("drive_manual", driveMessage);
             stopMessagePublished = false;
         } else if (!stopMessagePublished) {
             // send additional stop message, immediately after button release
-            publishers["drive_manual"].publish(ackermann_msgs::AckermannDriveStamped());
+            publish("drive_manual", ackermann_msgs::msg::AckermannDriveStamped());
             stopMessagePublished = true;
         }
     }
 }
 
-void Rc110JoyTeleop::updateToggles(const sensor_msgs::Joy::ConstPtr& message)
+void Rc110JoyTeleop::updateToggles(const sensor_msgs::msg::Joy::ConstSharedPtr& message)
 {
     if (param.rc.empty() && checkButtonClicked(message, param.nextRobotButton)) {
         incrementRobotName();
     }
-    auto ns = selectedRobot.empty() ? "" : "/" + selectedRobot;
 
-    if (checkButtonClicked(message, param.boardButton)) {
-        std_srvs::SetBool service;
-        service.request.data = uint8_t(!boardEnabled);  // toggle board
-        ros::service::call(ns + "/enable_board", service);
+    if (enableBoardService && checkButtonClicked(message, param.boardButton)) {
+        auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+        request->data = uint8_t(!boardEnabled);  // toggle board
+        enableBoardService->async_send_request(request);
     }
 
-    if (checkButtonClicked(message, param.adButton)) {
-        topic_tools::MuxSelect service;
-        service.request.topic = adEnabled ? "drive_manual" : "drive_ad";  // toggle AD
-        ros::service::call(ns + "/mux_drive/select", service);
+    if (muxDriveService && checkButtonClicked(message, param.adButton)) {
+        auto request = std::make_shared<rc110_topic_tools::srv::MuxSelect::Request>();
+        request->topic = adEnabled ? "drive_manual" : "drive_ad";  // toggle AD
+        muxDriveService->async_send_request(request);
     }
 }
 
 void Rc110JoyTeleop::onRobotNameTimer()
 {
-    robotNames = getRobotNames();
+    robotNames = getRobotNames(this);
 
     if (!std::count(robotNames.begin(), robotNames.end(), selectedRobot)) {
-        for (int i = 0; i != robotNames.size(); ++i) {
-            if (connectRobot(robotNames[i])) {
-                setupRobotName(robotNames[i]);
-                return;
-            }
-        }
+        connectRobot(robotNames);
     }
 }
 
@@ -275,61 +284,68 @@ void Rc110JoyTeleop::incrementRobotName()
     auto it = std::find(robotNames.begin(), robotNames.end(), selectedRobot);
     int iStart = (int(it - robotNames.begin())) % size;
 
-    // check other robots and connect to the first robot that accept the connection
+    // connect to the next robot accepting connection
+    std::vector<std::string> names;
     for (int i = (iStart + 1) % size; i != iStart; i = (i + 1) % size) {
-        if (connectRobot(robotNames[i])) {
-            setupRobotName(robotNames[i]);
-            return;
-        }
+        names.push_back(robotNames[i]);
     }
+    connectRobot(names);
 }
 
 void Rc110JoyTeleop::setupRobotName(const std::string& name)
 {
-    ROS_INFO_STREAM(selectedRobot << " -> " << name);
+    RCLCPP_INFO_STREAM(get_logger(), selectedRobot << " -> " << name);
     if (selectedRobot != name) {
         selectedRobot = name;
 
         // send stop message before switching robot
         if (publishers.count("drive_manual")) {
-            publishers["drive_manual"].publish(ackermann_msgs::AckermannDriveStamped());
+            publish("drive_manual", ackermann_msgs::msg::AckermannDriveStamped());
         }
         setupRosConnections();
     }
 }
 
-bool Rc110JoyTeleop::connectRobot(const std::string& name)
+void Rc110JoyTeleop::connectRobot(const std::vector<std::string>& names)
 {
-    std_srvs::SetBool service;
-    service.request.data = true;
-    if (ros::service::call("/" + name + "/teleop_ping", service)) {
-        if (service.response.success) {
-            return true;
+    if (names.empty()) return;
+
+    auto& name = names.front();
+    teleopPingService = create_client<std_srvs::srv::SetBool>("/" + name + "/teleop_ping");
+    auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+    request->data = true;
+
+    auto callback = [this, names](rclcpp::Client<std_srvs::srv::SetBool>::SharedFuture response) {
+        if (response.valid() && response.get()->success) {
+            setupRobotName(names.front());
+        } else {
+            auto nextNames = std::vector<std::string>(names.begin() + 1, names.end());
+            connectRobot(nextNames);
         }
-    }
-    return false;
+    };
+    teleopPingService->async_send_request(request, callback);
 }
 
 void Rc110JoyTeleop::pingRobot()
 {
-    if (!selectedRobot.empty()) {
-        std_srvs::SetBool service;
-        service.request.data = false;  // already connected
-        ros::service::call("/" + selectedRobot + "/teleop_ping", service);
+    if (teleopPingService) {
+        auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+        request->data = false;  // already connected
+        teleopPingService->async_send_request(request);
     }
 }
 
-bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button)
+bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int button)
 {
     return joyMessage && message->buttons[button] && !joyMessage->buttons[button];
 }
 
-bool Rc110JoyTeleop::checkAxisChanged(const sensor_msgs::Joy::ConstPtr& message, int axis)
+bool Rc110JoyTeleop::checkAxisChanged(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int axis)
 {
     return joyMessage && message->axes[axis] != joyMessage->axes[axis];
 }
 
-float Rc110JoyTeleop::getAxisValue(const sensor_msgs::Joy::ConstPtr& message, int axis)
+float Rc110JoyTeleop::getAxisValue(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int axis)
 {
     return axis == -1 ? 0.f : message->axes[axis];
 }
@@ -353,7 +369,7 @@ float Rc110JoyTeleop::mapAxisValue(const std::vector<double>& axis, float value)
     return axisDirection[axis[AXIS_ID]] * value;
 }
 
-void Rc110JoyTeleop::onJoy(const sensor_msgs::Joy::ConstPtr& message)
+void Rc110JoyTeleop::onJoy(const sensor_msgs::msg::Joy::ConstSharedPtr& message)
 {
     auto minGear = -1;  // reverse gear, 1st gear, 2nd gear, and so on
     auto maxGear = int(param.gears.size()) - 1;
@@ -380,22 +396,22 @@ void Rc110JoyTeleop::onJoy(const sensor_msgs::Joy::ConstPtr& message)
 
     driveMessage.drive.steering_angle = angles::from_degrees(steeringValue);
     driveMessage.drive.speed = std::fabs(accelValue) * gearFactor;
-    driveMessage.header.stamp = ros::Time::now();
+    driveMessage.header.stamp = now();
     driveMessage.header.frame_id = param.frameId;
 
     updateToggles(message);
     joyMessage = message;
-    lastTime = ros::Time::now();
+    lastTime = now();
 
     pingRobot();
 }
 
-void Rc110JoyTeleop::onRobotStatus(const rc110_msgs::Status& message)
+void Rc110JoyTeleop::onRobotStatus(const rc110_msgs::msg::Status& message)
 {
     boardEnabled = message.board_enabled;
 }
 
-void Rc110JoyTeleop::onAdModeChanged(const std_msgs::String& message)
+void Rc110JoyTeleop::onAdModeChanged(const std_msgs::msg::String& message)
 {
     adEnabled = message.data == "drive_ad";
 }

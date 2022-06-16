@@ -7,22 +7,22 @@
  */
 #include "rc110_marker.hpp"
 
-#include <visualization_msgs/Marker.h>
-
 namespace zmp
 {
-RC110Marker::RC110Marker()
+RC110Marker::RC110Marker() : rclcpp::Node("rc110_marker")
 {
-    meshFile = ros::param::param("~mesh_file", std::string()),
-    publisher = handle.advertise<visualization_msgs::Marker>("rviz_marker", 1, bool("latch"));
+    meshFile = declare_parameter("mesh_file", std::string()),
+    publisher = create_publisher<visualization_msgs::msg::Marker>("rviz_marker",
+                                                                  rclcpp::QoS(10).durability(
+                                                                          rclcpp::DurabilityPolicy::TransientLocal));
 
-    visualization_msgs::Marker marker;
+    visualization_msgs::msg::Marker marker;
     marker.header.frame_id = "map";
-    marker.header.stamp = ros::Time();
+    marker.header.stamp = now();
     marker.ns = "";
     marker.id = 0;
-    marker.type = visualization_msgs::Marker::MESH_RESOURCE;
-    marker.action = visualization_msgs::Marker::ADD;
+    marker.type = visualization_msgs::msg::Marker::MESH_RESOURCE;
+    marker.action = visualization_msgs::msg::Marker::ADD;
     marker.pose.position.x = 0;
     marker.pose.position.y = 0;
     marker.pose.position.z = 0;
@@ -39,16 +39,17 @@ RC110Marker::RC110Marker()
     marker.color.b = 0.0;
     marker.mesh_resource = meshFile;
     marker.mesh_use_embedded_materials = true;
-    publisher.publish(marker);
+    publisher->publish(marker);
 }
 }  // namespace zmp
 
 int main(int argc, char* argv[])
 try {
-    ros::init(argc, argv, "rc110_marker");
+    rclcpp::init(argc, argv);
 
-    zmp::RC110Marker node;
-    ros::spin();
+    auto node = std::make_shared<zmp::RC110Marker>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
 
     return EXIT_SUCCESS;
 }  //

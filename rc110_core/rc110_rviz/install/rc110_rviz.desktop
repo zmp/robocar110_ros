@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=RoboCar 1/10
+Name=RoboCar 1/10 ROS2
 Version=1.0
 Type=Application
-Exec=bash -c "source /opt/ros/@ROS_DISTRO@/rc_setup.bash; roslaunch --wait rc110_rviz uni.launch"
+Exec=bash -c "source /opt/ros/@ROS_DISTRO@/setup.bash; ros2 launch rc110_rviz uni.launch"
 Icon=rc110_ros.png
 Categories=Development

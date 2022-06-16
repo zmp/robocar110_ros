@@ -1,41 +1,44 @@
 <launch>
-    <arg name="config_dir" default="$(find rc110_system)/config"/>
-    <arg name="use_front_camera" default="true"/>
-    <arg name="use_rear_camera" default="false"/>
+    <group>
+        <arg name="system_config_dir" default="$(find-pkg-share rc110_system)/config"/>
+        <arg name="use_front_camera" default="true"/>
+        <arg name="use_rear_camera" default="false"/>
 
-    <group if="$(arg use_front_camera)">
-        <node pkg="video_stream_opencv" type="video_stream" name="front_camera">
-            <remap from="image_raw" to="front_camera/image_raw" />
-            <rosparam file="$(arg config_dir)/sensors/front_camera.yaml" subst_value="true"/>
+        <!-- The only camera node that does not lock the device, but not yet ported to ROS2 -->
+        <!-- <group if="$(var use_front_camera)">
+            <node pkg="video_stream_opencv" exec="video_stream" name="front_camera">
+                <remap from="image_raw" to="front_camera/image_raw"/>
+                <param from="$(var system_config_dir)/sensors/front_camera.yaml" allow_substs="true"/>
+            </node>
+            <node pkg="image_proc" exec="image_proc" namespace="front_camera" name="image_proc"/>
+        </group>
+
+        <group if="$(var use_rear_camera)">
+            <node pkg="video_stream_opencv" exec="video_stream" name="rear_camera">
+                <remap from="image_raw" to="rear_camera/image_raw"/>
+                <param from="$(var system_config_dir)/sensors/rear_camera.yaml" allow_substs="true"/>
+            </node>
+            <node pkg="image_proc" exec="image_proc" namespace="rear_camera" name="image_proc"/>
+        </group> -->
+
+        <include file="$(find-pkg-share rc110_video_server)/launch/main.launch">
+            <arg name="r" value="fhd"/>
+            <arg name="device" value="/dev/video_front"/>
+        </include>
+
+        <node pkg="urg_node" exec="urg_node_driver" name="front_lidar">
+            <param from="$(var system_config_dir)/sensors/front_lidar.yaml" allow_substs="true"/>
+            <remap from="scan" to="~/scan"/>
         </node>
-        <node pkg="image_proc" type="image_proc" ns="front_camera" name="image_proc"/>
-    </group>
 
-    <group if="$(arg use_rear_camera)">
-        <node pkg="video_stream_opencv" type="video_stream" name="rear_camera">
-            <remap from="image_raw" to="rear_camera/image_raw" />
-            <rosparam file="$(arg config_dir)/sensors/rear_camera.yaml" subst_value="true"/>
+        <node pkg="urg_node" exec="urg_node_driver" name="rear_lidar">
+            <param from="$(var system_config_dir)/sensors/rear_lidar.yaml" allow_substs="true"/>
+            <remap from="scan" to="~/scan"/>
         </node>
-        <node pkg="image_proc" type="image_proc" ns="rear_camera" name="image_proc"/>
+
+        <!-- Filling orientation based on velocity and acceleration -->
+        <!-- <node pkg="imu_complementary_filter" exec="complementary_filter_node" name="imu_complementary_filter" output="screen">
+            <param from="$(var system_config_dir)/sensors/imu_complementary_filter.yaml"/>
+        </node> -->
     </group>
-
-    <include file="$(find rc110_video_server)/launch/main.launch">
-        <arg name="r" value="fhd"/>
-        <arg name="device" value="/dev/video_front"/>
-    </include>
-
-    <node pkg="urg_node" type="urg_node" name="front_lidar">
-        <rosparam file="$(arg config_dir)/sensors/front_lidar.yaml" subst_value="true"/>
-        <remap from="scan" to="~scan"/>
-    </node>
-
-    <node pkg="urg_node" type="urg_node" name="rear_lidar">
-        <rosparam file="$(arg config_dir)/sensors/rear_lidar.yaml" subst_value="true"/>
-        <remap from="scan" to="~scan"/>
-    </node>
-
-    <!-- Filling orientation based on velocity and acceleration -->
-    <node pkg="imu_complementary_filter" type="complementary_filter_node" name="imu_complementary_filter" output="screen">
-        <rosparam file="$(arg config_dir)/sensors/imu_complementary_filter.yaml" subst_value="true"/>
-    </node>
 </launch>

@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <rc110_msgs/StringArray.h>
-#include <ros/ros.h>
-#include <vision_msgs/Detection2DArray.h>
+#include <rc110_msgs/msg/string_array.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <vision_msgs/msg/detection2_d_array.hpp>
 
 #include <opencv2/opencv.hpp>
 
@@ -26,7 +26,7 @@ namespace zmp
 /**
  * Node that uses jetson-inference library for 2d object detection.
  */
-class Rc110ObjectDetection
+class Rc110ObjectDetection:public rclcpp::Node
 {
 public:
     struct Param {
@@ -49,25 +49,25 @@ public:
     };
 
 public:
-    Rc110ObjectDetection(ros::NodeHandle& nh, ros::NodeHandle& pnh);
+    Rc110ObjectDetection();
 
 private:
     /**
      *  @brief callback function to call detection network inference on new input images
      */
-    void onImage(const sensor_msgs::ImageConstPtr& message);
+    void onImage(const sensor_msgs::msg::Image& message);
 
     /**
      *  @brief create and publish overlaid result image message
      */
-    void publishOverlay(const vision_msgs::Detection2DArray& detectionsMsg,
-                        const rc110_msgs::StringArray& classesMsg,
+    void publishOverlay(const vision_msgs::msg::Detection2DArray& detectionsMsg,
+                        const rc110_msgs::msg::StringArray& classesMsg,
                         const std::vector<cv::Scalar>& colors,
-                        const ros::Time& timeStamp = ros::Time::now());
+                        const rclcpp::Time& timeStamp);
 
     cv::Mat drawBoundingBox(const cv::Mat& image,
-                            const vision_msgs::Detection2DArray& detectionsMsg,
-                            const rc110_msgs::StringArray& classesMsg,
+                            const vision_msgs::msg::Detection2DArray& detectionsMsg,
+                            const rc110_msgs::msg::StringArray& classesMsg,
                             const std::vector<cv::Scalar>& colors) const;
 
     void publishClassesInfo();
@@ -75,21 +75,21 @@ private:
 private:
     Param m_param;
     std::uint32_t m_overlayFlags;
-    rc110_msgs::StringArray m_classesMsg;
+    rc110_msgs::msg::StringArray m_classesMsg;
     std::vector<cv::Scalar> m_classColors;
 
     Rc110CustomDetectNet::Ptr m_inferenceNet;
     Rc110ImageConverter m_inputConverter;
 
-    ros::Subscriber m_inputImageSub;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr m_inputImageSub;
 
     // publisher for detected bounding boxes
-    ros::Publisher m_detectionPub;
+    rclcpp::Publisher<vision_msgs::msg::Detection2DArray>::SharedPtr m_detectionPub;
 
     // publisher for images overlaid with detected bounding boxes
-    ros::Publisher m_overlayPub;
+    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr m_overlayPub;
 
     // publisher for info of classes
-    ros::Publisher m_classesInfoPub;
+    rclcpp::Publisher<rc110_msgs::msg::StringArray>::SharedPtr m_classesInfoPub;
 };
 }  // namespace zmp

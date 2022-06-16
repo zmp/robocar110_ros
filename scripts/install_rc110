@@ -7,8 +7,8 @@ sudo apt-mark manual ros-${ROS_DISTRO}-rc110-system
 sudo apt-mark manual ros-${ROS_DISTRO}-rc110-rviz
 sudo apt-get autoremove -yq
 
-sudo systemctl --global disable rc110  # fix multiple starts from different users (was part of package before)
+sudo systemctl --global disable rc110 2>/dev/null  # fix multiple starts from different users (was part of package before)
 
 loginctl enable-linger          # user login is not required for services to start (should be run from one user)
-systemctl --user enable rc110
+systemctl --user enable /opt/ros/${ROS_DISTRO}/systemd/rc110.service
 systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst

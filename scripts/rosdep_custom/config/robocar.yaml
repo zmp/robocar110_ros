@@ -1,9 +1,0 @@
-fkie_multimaster:
-  debian:
-    buster: [ros-melodic-multimaster-fkie, python-gobject]
-    bullseye: [ros-noetic-fkie-multimaster, python-avahi]
-    '*': [ros-noetic-fkie-multimaster]
-  ubuntu:
-    bionic: [ros-melodic-multimaster-fkie, python-gobject]
-    focal: [ros-noetic-fkie-multimaster, python-avahi]
-    '*': [ros-noetic-fkie-multimaster]

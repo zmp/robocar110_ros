@@ -8,15 +8,17 @@
 
 #pragma once
 
-#include <ackermann_msgs/AckermannDriveStamped.h>
 #include <angles/angles.h>
-#include <rc110_msgs/Status.h>
-#include <ros/ros.h>
-#include <sensor_msgs/Joy.h>
-#include <std_msgs/String.h>
 
+#include <ackermann_msgs/msg/ackermann_drive_stamped.hpp>
 #include <map>
 #include <mutex>
+#include <rc110_msgs/msg/status.hpp>
+#include <rc110_topic_tools/srv/mux_select.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/joy.hpp>
+#include <std_msgs/msg/string.hpp>
+#include <std_srvs/srv/set_bool.hpp>
 #include <string>
 #include <vector>
 
@@ -26,10 +28,10 @@ namespace zmp
  * A node that handles joystick message and provides drive message based on it.
  * Also it can enable/disable baseboard and AD mode.
  */
-class Rc110JoyTeleop
+class Rc110JoyTeleop : public rclcpp::Node
 {
 public:
-    struct Param {
+    struct Parameters {
         std::string rc;
         std::string frameId;
         std::vector<double> gears;
@@ -61,32 +63,40 @@ private:
     void setupRosConnections();
     void updateAxis(std::vector<double>& axis, double defaultMax);
     void publishDrive();
-    void updateToggles(const sensor_msgs::Joy::ConstPtr& message);
+    void updateToggles(const sensor_msgs::msg::Joy::ConstSharedPtr& message);
     void onRobotNameTimer();
     void incrementRobotName();
     void setupRobotName(const std::string& name);
-    bool connectRobot(const std::string& name);
+    void connectRobot(const std::vector<std::string>& names);
     void pingRobot();
-    bool checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button);
-    bool checkAxisChanged(const sensor_msgs::Joy::ConstPtr& message, int axis);
-    float getAxisValue(const sensor_msgs::Joy::ConstPtr& message, int axis);
+    bool checkButtonClicked(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int button);
+    bool checkAxisChanged(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int axis);
+    float getAxisValue(const sensor_msgs::msg::Joy::ConstSharedPtr& message, int axis);
     float mapAxisValue(const std::vector<double>& axis, float value);
 
-    void onJoy(const sensor_msgs::Joy::ConstPtr& message);
-    void onRobotStatus(const rc110_msgs::Status& message);
-    void onAdModeChanged(const std_msgs::String& message);
+    void onJoy(const sensor_msgs::msg::Joy::ConstSharedPtr& message);
+    void onRobotStatus(const rc110_msgs::msg::Status& message);
+    void onAdModeChanged(const std_msgs::msg::String& message);
+
+    template <typename T>
+    void publish(const std::string& topic, const T& value)
+    {
+        std::static_pointer_cast<rclcpp::Publisher<T>>(publishers[topic])->publish(value);
+    }
 
 private:
-    ros::NodeHandle handle;
-    Param param;
+    Parameters param;
     const std::string configPath;
 
-    std::map<std::string, ros::Subscriber> subscribers;
-    std::map<std::string, ros::Publisher> publishers;
-    sensor_msgs::Joy::ConstPtr joyMessage;
-    ackermann_msgs::AckermannDriveStamped driveMessage;
-    ros::Timer driveTimer, nextRobotTimer;
-    ros::Time lastTime;
+    std::map<std::string, rclcpp::SubscriptionBase::SharedPtr> subscribers;
+    std::map<std::string, rclcpp::PublisherBase::SharedPtr> publishers;
+    std::shared_ptr<rclcpp::Client<std_srvs::srv::SetBool>> enableBoardService;
+    std::shared_ptr<rclcpp::Client<rc110_topic_tools::srv::MuxSelect>> muxDriveService;
+    std::shared_ptr<rclcpp::Client<std_srvs::srv::SetBool>> teleopPingService;
+    sensor_msgs::msg::Joy::ConstSharedPtr joyMessage;
+    ackermann_msgs::msg::AckermannDriveStamped driveMessage;
+    rclcpp::TimerBase::SharedPtr driveTimer, nextRobotTimer;
+    rclcpp::Time lastTime = {0, 0, RCL_ROS_TIME};
     std::map<int, int> axisDirection;   /// +1 or -1 for inverted axis
     std::map<int, bool> axisActivated;  /// joy_node workaround
     int gear = 0;
@@ -95,5 +105,6 @@ private:
     bool adEnabled = false;
     std::string selectedRobot;
     std::vector<std::string> robotNames;
+    std::map<std::string, std::string> joyTypes;
 };
 }  // namespace zmp

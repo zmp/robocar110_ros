@@ -1,0 +1,11 @@
+/**:
+  ros__parameters:
+    camera_name: "front_camera"
+    frame_id: "$(var rc)/front_camera"
+    video_device: "/dev/video_front"
+    pixel_format: "uyvy"
+    framerate: 30.0
+    image_width: 640
+    image_height: 480
+    io_method: "mmap"
+    camera_info_url: "file://$(env HOME)/.ros/camera_info/front_camera.yaml"

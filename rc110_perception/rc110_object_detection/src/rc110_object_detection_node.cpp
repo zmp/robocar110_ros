@@ -10,19 +10,17 @@
 
 int main(int argc, char* argv[])
 {
-    ros::init(argc, argv, "rc110_object_detection");
-
-    ros::NodeHandle nh;
-    ros::NodeHandle pnh("~");
+    rclcpp::init(argc, argv);
 
     try {
-        zmp::Rc110ObjectDetection node(nh, pnh);
-        ros::spin();
+        auto node = std::make_shared<zmp::Rc110ObjectDetection>();
+        rclcpp::spin(node);
+        rclcpp::shutdown();
     } catch (const std::exception& ex) {
-        ROS_ERROR_STREAM("Exception in main(): " << ex.what());
+        std::cerr << "Exception in main(): " << ex.what() << std::endl;
         return EXIT_FAILURE;
     } catch (...) {
-        ROS_ERROR_STREAM("Unknown exception in main()");
+        std::cerr << "Unknown exception in main()" << std::endl;
         return EXIT_FAILURE;
     }
 

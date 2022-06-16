@@ -6,11 +6,11 @@
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>qtbase5-dev</build_depend>
   <build_depend>qtmultimedia5-dev</build_depend>
 
-  <depend>rviz</depend>
+  <depend>rviz2</depend>
 
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
@@ -19,5 +19,6 @@
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

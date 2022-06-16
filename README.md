@@ -1,7 +1,9 @@
-# RoboCar 1/10 X ROS
+# RoboCar 1/10 X ROS2
 
-Here you can find a RoboCar 1/10 X ROS driver and sample nodes sources demonstrating its basic usage. 
+Here you can find a RoboCar 1/10 X ROS2 driver and sample nodes sources demonstrating its basic usage. 
 Releases also contain binary C++ Base Drivers which are used by the ROS nodes.
+
+ROS2 was tested only with Ubuntu 20. Other versions are not supported yet.
 
 The information about version changes can be found in [**ReleaseNotes**](ReleaseNotes.md).
 
@@ -39,8 +41,6 @@ git clone https://github.com/zmp/robocar110_ros.git
 cd ~/ros/src/robocar110_ros/  # make commands below are called from here!
 ```
 
-* It's possible to use other directory (for example `~/projects/robocar110_ros/`), but it's not ROS standard way, so we don't provide support for it. Do it on your own risk.
-
 ### Version Update
 * Please, check [**Update Instructions**](docs/UpdateInstructions.md). 
 * And don't forget to apply [**Release Notes Actions**](ReleaseNotes.md)!
@@ -63,30 +63,26 @@ For this, you need a real RoboCar 1/10X. If you don't have one, try simulation d
 * [**Robot Sources**](rc110_robot/README.md)
 
 ![](docs/images/rosgraph.png)
+(The graph can be a bit different.)
 
 ### Remote Connection
-Automatic remote connection to the robot is possible from Ubuntu OS. The ROS version should be the same as on robot. Tested architectures: amd64, arm64.
+Automatic remote connection to the robot is possible. The ROS version should be the same as on robot. Tested architectures: amd64, arm64.
 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)
 
-![](docs/images/multimaster.svg)
-
 ### Gazebo Simulation
-It's possible to do simple tests without robot in simulated environment. There's no need to build driver and system service packages. Tested architectures: amd64, arm64.
-
-* [**ROS Installation**](docs/RosInstallation.md)
-* [**Simulation Sources**](rc110_simulation/rc110_gazebo/README.md)
+**Not yet ported.**
 
 ![](docs/images/gazebo2.gif)
 
 ### Other Samples
 When the driver is up and running, it's possible to start other ROS nodes that communicate with it.
 
-| Group                                              | Description                   |
-|:---------------------------------------------------|:------------------------------|
-| [**rc110_navigation**](rc110_navigation/README.md) | SLAM and Navigation           |
-| [**rc110_perception**](rc110_perception/README.md) | Object Detection, etc         |
+| Group                                              | Description           |
+|:---------------------------------------------------|:----------------------|
+| [**rc110_navigation**](rc110_navigation/README.md) | **Not yet ported.**   |
+| [**rc110_perception**](rc110_perception/README.md) | Object Detection, etc |
 
 ## Additional Information
 

@@ -3,16 +3,16 @@ include ../../mk/common.mk
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths .
+	rosdep install --os ${ROS_OS} -iry --from-paths .
 
 build:
 	$(MAKE) -C ../.. init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	catkin build --this --cmake-args ${cmake_flags}
+	$(call build,rc110_behavior,,${cmake_flags})
 
 run:
-	source $$(catkin locate rc110)/auto_setup.bash
-	roslaunch rc110_behavior main.launch $(ros_args)
+	source ${ws_path}/install/setup.bash
+	ros2 launch rc110_behavior main.launch $(ros_args)
 
 show:
 	$(MAKE) -C ../.. show
