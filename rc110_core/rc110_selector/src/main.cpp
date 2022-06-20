@@ -78,7 +78,7 @@ int main(int argc, char** argv)
     window.show();
 
     QTimer timer;
-    timer.callOnTimeout([&combo, &label] {
+    QObject::connect(&timer, &QTimer::timeout, [&combo, &label] {
         ros::spinOnce();
 
         QStringList names = getRobotNames();

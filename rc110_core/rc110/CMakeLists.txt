@@ -36,4 +36,5 @@ install(DIRECTORY devel/
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
+set(RC110_DEP.fkie_multimaster ros-$ENV{ROS_DISTRO}-multimaster-fkie)
 include(../../cmake/rc110_cpack.cmake)
