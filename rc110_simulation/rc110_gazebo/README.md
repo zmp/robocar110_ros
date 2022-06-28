@@ -2,9 +2,6 @@
 
 This package contains components for simulation of RC 1/10 in Gazebo with drive control functionality and sensors output using open-source Gazebo ROS plugins.
 
-* Conversion of RC 1/10 AckermannDrive message to Twist message that is supported by the Gazebo Model plugin.
-* Publishing information similar to **rc110_drive_control**.
-
 ## UI
 ![](docs/gazebo.gif)
 
@@ -23,6 +20,8 @@ make show n=2               # rviz for n models (1..2)
 ```
 
 The model names are **"grc_N"**. Selecting name is described in [**this document**](../../docs/RemoteConnection.md#Robot Selection).
+
+Please, note that running simulation on robot is not recommended and some features can not work with it (like automatic robot selection). For this purpose, it's better to use more powerful PC with hostname prefix different from robot.
 
 ## Subscribed Topics
 

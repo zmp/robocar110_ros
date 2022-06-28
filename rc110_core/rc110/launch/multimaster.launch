@@ -1,7 +1,7 @@
 <launch>
-    <arg name="is_robot" default="$(eval env('RC110_NAME') == env('RC110_HOST_ID'))"/>
-    <arg name="rc_prefix" default="$(optenv RC110_PREFIX rc_)"/>
-    <arg name="rc_host_prefix" default="$(optenv RC110_HOST_PREFIX rc-)"/>
+    <arg name="rc_prefix" default="$(env RC110_PREFIX)"/>
+    <arg name="rc_host_prefix" default="$(env RC110_HOST_PREFIX)"/>
+    <arg name="is_robot" default="$(eval env('RC110_HOST_ID').startswith(rc_prefix))"/>
 
     <arg name="ignore_one" default="/$(env RC110_HOST_ID)/*"/>
     <arg name="ignore_two" default="/$(arg rc_prefix)*, $(arg ignore_one)"/>

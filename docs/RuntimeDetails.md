@@ -7,12 +7,11 @@ Basically there two types of usual ROS environment:
 The first one adds environment variables for packages installed to `/opt` folder.
 The other one is the same as first, but also with packages built in `devel` folder of ROS workspace.
 
-We add another level of sourcing by starting **roscore** with synchronization in background task, adding network environment and providing ROS namespace:
-```shell
-source $(catkin locate rc110)/host_setup.bash  # hostname namespace
-# or
-source $(catkin locate rc110)/auto_setup.bash  # automatic robot namespace
-```
+We add more levels of sourcing, each of them include previous level.
+
+* With RC110 environment: `source /opt/ros/${ROS_DISTRO}/rc_setup.bash`
+* With multimastered roscore: `source $(catkin locate rc110)/host_setup.bash`
+* With automatic robot selection: `source $(catkin locate rc110)/auto_setup.bash`
 
 The ROS environment can be checked with the following command:
 ```shell

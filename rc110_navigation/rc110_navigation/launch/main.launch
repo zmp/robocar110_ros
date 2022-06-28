@@ -9,12 +9,14 @@
 
     <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <rosparam file="$(find rc110_navigation)/config/amcl.yaml" subst_value="true"/>
-        <param name="initial_pose_x" type="double" command="(rosparam get amcl/initial_pose_x || echo 0) | tr -d '\n'"/>
-        <param name="initial_pose_y" type="double" command="(rosparam get amcl/initial_pose_y || echo 0) | tr -d '\n'"/>
-        <param name="initial_pose_a" type="double" command="(rosparam get amcl/initial_pose_a || echo 0) | tr -d '\n'"/>
-        <param name="initial_cov_xx" type="double" command="(rosparam get amcl/initial_cov_xx || echo 0) | tr -d '\n'"/>
-        <param name="initial_cov_yy" type="double" command="(rosparam get amcl/initial_cov_yy || echo 0) | tr -d '\n'"/>
-        <param name="initial_cov_aa" type="double" command="(rosparam get amcl/initial_cov_aa || echo 0) | tr -d '\n'"/>
+        <param name="initial_pose_x" type="double" command="printf %g `rosparam get amcl/initial_pose_x` 2>/dev/null"/>
+        <param name="initial_pose_y" type="double" command="printf %g `rosparam get amcl/initial_pose_y` 2>/dev/null"/>
+        <param name="initial_pose_a" type="double" command="printf %g `rosparam get amcl/initial_pose_a` 2>/dev/null"/>
+        <param name="initial_cov_xx" type="double" command="printf %g `rosparam get amcl/initial_cov_xx` 2>/dev/null"/>
+        <param name="initial_cov_yy" type="double" command="printf %g `rosparam get amcl/initial_cov_yy` 2>/dev/null"/>
+        <param name="initial_cov_aa" type="double" command="printf %g `rosparam get amcl/initial_cov_aa` 2>/dev/null"/>
+
+        <!-- printf is needed, because rosparam can fail, return .nan, etc... -->
     </node>
 
     <node pkg="move_base" type="move_base" name="move_base" output="screen">

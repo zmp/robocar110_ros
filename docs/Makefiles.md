@@ -17,7 +17,7 @@ To know the content of each make target, either execute the command and check it
 ## Alternative
 Of course, you can use ros commands directly. For example, `make run` command is described in `run:` paragraph of `GNUmakefile` similar to:
 ```shell
-source $(catkin locate rc110)/host_setup.bash on_robot
+source $(catkin locate rc110)/host_setup.bash
 roslaunch --wait rc110_system robot.launch  # and args...
 ```
 
@@ -25,7 +25,6 @@ Then you can check the meaning of those commands in public documentation.
 
 * `source`: https://ss64.com/bash/source.html
 * `roslaunch`: http://wiki.ros.org/roslaunch
-* `systemctl`: https://www.freedesktop.org/software/systemd/man/systemctl.html
 
 ## Specifics of RC110 Makefiles
 ### Arguments

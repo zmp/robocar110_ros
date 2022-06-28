@@ -14,8 +14,7 @@ build:
 	catkin build --this --cmake-args ${cmake_flags}
 
 run:
-	export RC110_PREFIX="_disabled_"       # no sync
-	export RC110_HOST_PREFIX="_disabled_"  # no sync
+	export RC110_HOST_PREFIX="-disabled-"  # no sync
 	source $$(catkin locate rc110)/host_setup.bash
 	mon launch rc110_gazebo simulation.launch $(ros_args)
 

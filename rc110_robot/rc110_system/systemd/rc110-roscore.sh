@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/ros/@ROS_DISTRO@/rc_setup.bash on_robot
+source /opt/ros/@ROS_DISTRO@/rc_setup.bash
 
 echo "Starting roscore with ROS_HOSTNAME=${ROS_HOSTNAME}"
 
