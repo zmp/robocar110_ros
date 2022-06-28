@@ -9,6 +9,7 @@
 
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <tf2_ros/transform_listener.h>
 
 namespace zmp
 {
@@ -41,6 +42,9 @@ private:
     ros::NodeHandle handle;
     ros::Subscriber cloudSubscriber;
     ros::Publisher drivePublisher;
+    tf2_ros::Buffer tfBuffer;
+    tf2_ros::TransformListener tfListener;
+    geometry_msgs::TransformStamped baseTransform;
 
     std::vector<float> stopCommand = {0, 0};
     std::vector<float> forwardCommand = {0.4f, 0};

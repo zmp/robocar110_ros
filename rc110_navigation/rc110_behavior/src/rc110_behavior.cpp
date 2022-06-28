@@ -9,6 +9,7 @@
 
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
+#include <tf2_sensor_msgs/tf2_sensor_msgs.h>
 
 #include <Eigen/Geometry>
 
@@ -28,6 +29,7 @@ const Eigen::AlignedBox2f rightBox = {Eigen::Vector2f(0.5f, -0.35f), Eigen::Vect
 Rc110Behavior::Rc110Behavior() :
         cloudSubscriber(handle.subscribe("points2", 1, &Rc110Behavior::onCloud, this)),
         drivePublisher(handle.advertise<ackermann_msgs::AckermannDriveStamped>("drive_ad", 1)),
+        tfListener(tfBuffer),
         forwardCommand(ros::param::param("~forward_command", forwardCommand)),
         leftCommand(ros::param::param("~left_command", leftCommand)),
         rightCommand(ros::param::param("~right_command", rightCommand))
@@ -36,12 +38,25 @@ Rc110Behavior::Rc110Behavior() :
 
 void Rc110Behavior::onCloud(const sensor_msgs::PointCloud2& cloud)
 {
+    if (baseTransform.child_frame_id.empty()) {
+        auto frameId = cloud.header.frame_id;
+        auto prefix = frameId.substr(0, frameId.find('/'));
+        try {
+            baseTransform = tfBuffer.lookupTransform(frameId, prefix + "/base_link", ros::Time(0), ros::Duration(5));
+        } catch (tf2::TransformException& ex) {
+            ROS_WARN("%s", ex.what());
+            return;
+        }
+    }
+    sensor_msgs::PointCloud2 baseCloud;
+    tf2::doTransform(cloud, baseCloud, baseTransform);
+
     float closestLeftX = INF;
     float closestRightX = INF;
     auto result = forwardCommand;
 
     using Iter = sensor_msgs::PointCloud2ConstIterator<float>;
-    for (Iter it = {cloud, "x"}; it != it.end(); ++it) {
+    for (Iter it = {baseCloud, "x"}; it != it.end(); ++it) {
         float x = it[0], y = it[1];
         Eigen::Vector2f point = {x, y};
 
