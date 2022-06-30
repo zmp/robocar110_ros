@@ -14,5 +14,5 @@ then
 		exit 1
 	fi
 
-	source $(catkin locate rc110)/devel/ns_hostname.bash
+	source $(catkin locate rc110)/devel/rc_env.bash
 fi
