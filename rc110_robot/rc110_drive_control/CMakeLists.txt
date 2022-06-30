@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_drive_control VERSION 1.10.0)
+project(rc110_drive_control VERSION 1.10.1)
 
 set(RC110_COMPONENTS control CACHE STRING "")
 find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
