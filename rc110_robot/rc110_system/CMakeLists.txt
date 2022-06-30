@@ -39,7 +39,6 @@ endif()
 # package
 list(APPEND CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
         "${PROJECT_BINARY_DIR}/deb/conffiles"
-        "${PROJECT_SOURCE_DIR}/deb/postinst"
 )
 set(RC110_DEP.hokuyo_node ros-$ENV{ROS_DISTRO}-hokuyo-node)
 

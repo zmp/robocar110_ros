@@ -101,7 +101,7 @@ endif
 
 # Install rosdep offline
 init-deps-offline:
-	sudo scripts/rosdep_offline/install
+	sudo ./scripts/rosdep_offline/install
 	export ROSDISTRO_INDEX_URL=file:///etc/ros/rosdep/config/index-v4.yaml
 
 	rosdep update --rosdistro=${ROS_DISTRO}
@@ -172,14 +172,10 @@ package: init
 
 # Install core packages to system folder.
 install: package
+	root_dir=$$(pwd)
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	cd $$(catkin locate --build)
-	sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
-	sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
-	sudo apt-mark auto ros-${ROS_DISTRO}-rc110-'*'  # single quoted, to avoid file expansion
-	sudo apt-mark manual ros-${ROS_DISTRO}-rc110-system
-	sudo apt-mark manual ros-${ROS_DISTRO}-rc110-rviz
-	systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
+	$${root_dir}/scripts/install_rc110
 
 # Self-extracting archive with core packages.
 self: package

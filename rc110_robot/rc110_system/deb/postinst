@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Enable services by default
-systemctl --global enable rc110

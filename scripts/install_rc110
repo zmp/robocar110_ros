@@ -1,4 +1,14 @@
 #!/bin/bash -e
 
-sudo apt install -yq --allow-downgrades ./*.deb
-sudo apt autoremove -yq
+sudo dpkg --configure -a  # resolves "Internal Error, No file name for"
+sudo apt-get install -qq --allow-downgrades --reinstall ./*.deb
+sudo apt-mark auto ros-${ROS_DISTRO}-rc110-'*'  # single quoted, to avoid file expansion
+sudo apt-mark manual ros-${ROS_DISTRO}-rc110-system
+sudo apt-mark manual ros-${ROS_DISTRO}-rc110-rviz
+sudo apt-get autoremove -yq
+
+sudo systemctl --global disable rc110  # fix multiple starts from different users (was part of package before)
+
+loginctl enable-linger          # user login is not required for services to start (should be run from one user)
+systemctl --user enable rc110
+systemctl --user daemon-reload  # automatic files reload - it does not work from postinst, as root runs postinst
