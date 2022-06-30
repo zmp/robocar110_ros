@@ -16,3 +16,6 @@ export ROS_MASTER_URI=http://${ROS_HOSTNAME}:11311
 # default prefixes
 export RC110_HOST_PREFIX=${RC110_HOST_PREFIX:-rc-}
 export RC110_PREFIX=$(echo ${RC110_HOST_PREFIX} | tr - _)
+
+# default log format (time is written by systemd)
+export ROSCONSOLE_FORMAT='[${severity}] [${node}]: ${message}'
