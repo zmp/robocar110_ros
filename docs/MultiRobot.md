@@ -43,13 +43,36 @@ sudo nano /etc/avahi/avahi-daemon.conf
 sudo systemctl restart avahi-daemon
 ```
 
-**Known Issue:** [.local domain gets suffix "-2" sometimes](https://github.com/lathiat/avahi/issues/117).
-* It can happen when network changes from one router to another. To resolve it manually, please, restart the avahi-daemon as written above.
-* Also it happens when there are multiple robots with the same name. Thus it's necessary to change hostname as described above.
-
 Current hostname can be checked as:
 ```shell
 avahi-resolve -av 127.0.0.1
+```
+
+### Known Issues
+#### .local domain gets suffix "-2" sometimes
+https://github.com/lathiat/avahi/issues/117
+* It can happen when network changes from one router to another. To resolve it manually, please, restart the avahi-daemon as written above.
+* Also it happens when there are multiple robots with the same name. Thus it's necessary to change hostname as described above.
+
+#### Hostname cannot be resolved, while avahi works
+I.e.
+```shell
+$ ping somename.local
+ping: somename.local: Name or service not known
+
+# but
+$ avahi-resolve -n4 somename.local
+somename.local  192.168.110.7
+```
+
+* The solution: https://github.com/lathiat/nss-mdns
+```shell
+sudo sh -c 'echo .local > /etc/mdns.allow'
+sudo nano /etc/nsswitch.conf
+```
+* And change hosts line to:
+```
+hosts:          files mdns4 [NOTFOUND=return] dns
 ```
 
 ## Namespaces Setup
