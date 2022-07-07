@@ -117,7 +117,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>1024</samples>
+              <samples>683</samples>  <!-- 1024 * 240 / 360 -->
               <resolution>1</resolution>
               <!--+/- 120 degrees -->
               <min_angle>-2.09</min_angle>
@@ -155,7 +155,7 @@
         <ray>
           <scan>
             <horizontal>
-              <samples>1024</samples>
+              <samples>683</samples>  <!-- 1024 * 240 / 360 -->
               <resolution>1</resolution>
               <!--+/- 120 degrees -->
               <min_angle>-2.09</min_angle>
