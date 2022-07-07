@@ -37,6 +37,7 @@ private:
 private:
     ros::NodeHandle handle;
     std::string outputFrameId, frontLidarFrameId, rearLidarFrameId;
+    float angleThreshold;
     laser_geometry::LaserProjection projection;
     std::unique_ptr<ApproxSync> sync;
     message_filters::Subscriber<sensor_msgs::LaserScan> frontSubscriber, rearSubscriber;

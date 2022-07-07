@@ -32,4 +32,8 @@ front_lidar_frame_id (string, default: front_lidar)
     
 rear_lidar_frame_id (string, default: rear_lidar)
     lidar 2 frame id
+    
+angle_threshold (float, default: 0.9)
+    Point angle to nearest point is at least angle_threshold * LaserScan::angle_increment.
+    You can try to reduce number of resulting points by increasing this value.
 ```
