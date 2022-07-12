@@ -12,6 +12,7 @@ find_package(catkin REQUIRED
         param_tools
         rc110_msgs
         sensor_msgs
+        visualization_msgs
 )
 
 catkin_package()
@@ -20,6 +21,12 @@ if(NOT DEFINED ENV{ROS_DISTRO})
     message(FATAL_ERROR "ROS_DISTRO is not defined. Please, source ros.")
 endif()
 set(ROS_DISTRO $ENV{ROS_DISTRO})
+
+# marker
+add_executable(rc110_marker src/rc110_marker.cpp)
+target_compile_features(rc110_marker PUBLIC cxx_std_17)
+target_include_directories(rc110_marker SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
+target_link_libraries(rc110_marker ${catkin_LIBRARIES})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
