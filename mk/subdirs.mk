@@ -22,4 +22,4 @@ $(show_adv_nodes):
 	$(MAKE) show -C $(wildcard rc110_*/$(subst -,_,$(addprefix rc110_,$(subst show-,,$@))))
 
 # extra targets
-include $(wildcard rc110_*/rc110_*/mk/extra.mk)  # all extra.mk files
+include $(wildcard rc110_*/*/mk/extra.mk)  # all extra.mk files
