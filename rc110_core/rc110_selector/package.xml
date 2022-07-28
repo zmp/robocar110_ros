@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rc110_selector</name>
-  <version>1.10.1</version>
+  <version>1.10.2</version>
   <description>RoboCar 1/10 robot selector</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>

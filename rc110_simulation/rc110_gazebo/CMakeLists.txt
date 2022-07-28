@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_gazebo VERSION 1.10.1)
+project(rc110_gazebo VERSION 1.10.2)
 
 find_package(catkin REQUIRED
         roscpp
