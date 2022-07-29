@@ -1,7 +1,7 @@
-port: "/dev/hokuyo_front"
+serial_port: "/dev/hokuyo_front"
 frame_id: "$(env RC110_NAME)/front_lidar"
-min_ang: -2.08
-max_ang: 2.08
+angle_min: -2.08
+angle_max: 2.08
 
 # hardware readonly specifications:
 # min_range: 0.02

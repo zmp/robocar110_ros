@@ -7,7 +7,6 @@ They are preinstalled on robot and run with systemd service.
 | [**drive_control**](rc110_drive_control/README.md)  | Robot ros driver              |
 | [**system**](rc110_system/README.md)                | Systemd service package       |
 | [**video_server**](rc110_video_server/README.md)    | RTSP Video Server             |
-| [**hokuyo_node**](http://wiki.ros.org/hokuyo_node)  | Hokuyo 2D Laser Driver        |
 
 ## Makefile
 ```

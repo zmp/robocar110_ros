@@ -19,12 +19,12 @@
         <node pkg="image_proc" type="image_proc" ns="rear_camera" name="image_proc"/>
     </group>
 
-    <node pkg="hokuyo_node" type="hokuyo_node" name="front_lidar">
+    <node pkg="urg_node" type="urg_node" name="front_lidar">
         <rosparam file="$(arg config_dir)/sensors/front_lidar.yaml" subst_value="true"/>
         <remap from="scan" to="~scan"/>
     </node>
 
-    <node pkg="hokuyo_node" type="hokuyo_node" name="rear_lidar">
+    <node pkg="urg_node" type="urg_node" name="rear_lidar">
         <rosparam file="$(arg config_dir)/sensors/rear_lidar.yaml" subst_value="true"/>
         <remap from="scan" to="~scan"/>
     </node>

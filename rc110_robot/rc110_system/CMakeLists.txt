@@ -40,7 +40,6 @@ endif()
 list(APPEND CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
         "${PROJECT_BINARY_DIR}/deb/conffiles"
 )
-set(RC110_DEP.hokuyo_node ros-$ENV{ROS_DISTRO}-hokuyo-node)
 
 set(CPACK_DEBIAN_PACKAGE_CONFLICTS ros-$ENV{ROS_DISTRO}-rc110-service)
 set(CPACK_DEBIAN_PACKAGE_PROVIDES ros-$ENV{ROS_DISTRO}-rc110-service)
