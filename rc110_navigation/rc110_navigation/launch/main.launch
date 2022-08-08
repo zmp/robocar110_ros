@@ -1,7 +1,8 @@
 <launch>
     <arg name="loop" default="true"/>
+    <arg name="map_path" default="$(env HOME)/.ros/$(optenv RC110_MAP_NAME map).yaml"/>
 
-    <node pkg="map_server" type="map_server" name="map_server" args="$(env HOME)/.ros/$(env RC110_MAP_NAME).yaml" />
+    <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_path)"/>
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
         <remap from="cloud_in" to="points2"/>

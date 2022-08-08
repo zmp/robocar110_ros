@@ -17,6 +17,8 @@ make run joy_type=logicool  # run with different joystick
 make run use_gui=false      # run without gazebo gui
 make run n=2                # number of models (0..5)
 make show n=2               # rviz for n models (1..2)
+
+make run-navigation-zmp     # a shortcut for navigation on premade map
 ```
 
 The model names are **"grc_N"**. Selecting name is described in [**this document**](../../docs/RemoteConnection.md#Robot Selection).
