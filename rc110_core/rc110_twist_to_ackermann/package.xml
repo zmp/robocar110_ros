@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rc110_twist_to_ackermann</name>
-  <version>1.10.2</version>
+  <version>1.11.0</version>
   <description>RoboCar 1/10 Conversion from Twist to AckermannDrive</description>
 
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>

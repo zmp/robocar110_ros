@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(param_tools VERSION 1.10.2)
+project(param_tools VERSION 1.11.0)
 
 find_package(catkin REQUIRED roscpp)
 
