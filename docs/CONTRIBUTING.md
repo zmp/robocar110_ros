@@ -17,6 +17,3 @@ Please, don't upload content that infringes any proprietary right of any party, 
 * Check that all dependencies are mentioned in `package.xml`.
 * Follow existing naming conventions.
 * Apply `.clang-format` file and test your code before commit.
-
-## Other questions
-* Let's use [**discussions**](https://github.com/zmp/robocar110_ros/discussions) page to ask questions or suggest ideas.

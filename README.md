@@ -1,6 +1,6 @@
-# RoboCar 1/10 ROS
+# RoboCar 1/10 X ROS
 
-Here you can find a RoboCar 1/10 ROS driver and sample nodes sources demonstrating its basic usage. 
+Here you can find a RoboCar 1/10 X ROS driver and sample nodes sources demonstrating its basic usage. 
 Releases also contain binary C++ Base Drivers which are used by the ROS nodes.
 
 The information about version changes can be found in [**ReleaseNotes**](ReleaseNotes.md).
@@ -9,6 +9,8 @@ The information about version changes can be found in [**ReleaseNotes**](Release
 
 ## Binary Packages [Robot Only]
 Connect peripherals to the robot according to the User Manual. Boot, login, open browser, go to [**Releases**](https://github.com/zmp/robocar110_ros/releases) and download the latest `*.run` files.
+
+Please, note that robot code works only on Nvidia AGX Xavier (arm64), Ubuntu 18.
 
 ### Base Drivers Installation
 ```
@@ -63,7 +65,7 @@ For this, you need a real RoboCar 1/10X. If you don't have one, try simulation d
 ![](docs/images/rosgraph.png)
 
 ### Remote Connection
-Automatic remote connection to the robot is possible from Ubuntu OS.
+Automatic remote connection to the robot is possible from Ubuntu OS. The ROS version should be the same as on robot. Tested architectures: amd64, arm64.
 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)
@@ -71,7 +73,7 @@ Automatic remote connection to the robot is possible from Ubuntu OS.
 ![](docs/images/multimaster.svg)
 
 ### Gazebo Simulation
-Without robot, there's no need to build driver and system service packages.
+It's possible to do simple tests without robot in simulated environment. There's no need to build driver and system service packages. Tested architectures: amd64, arm64.
 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Simulation Sources**](rc110_simulation/rc110_gazebo/README.md)
@@ -94,3 +96,8 @@ When the driver is up and running, it's possible to start other ROS nodes that c
 * [**Details about Runtime**](docs/RuntimeDetails.md)
 * [**Multiple Robot Setup**](docs/MultiRobot.md)
 * [**Contribution Guidelines**](docs/CONTRIBUTING.md)
+
+## Discussions
+It's possible to ask a question, propose an idea or just show your work at [**Discussions**](https://github.com/zmp/robocar110_ros/discussions). Please, feel free to use japanese language, we will add translation to your message, if we consider it helpful for the community.
+
+The benefit of Discussions is that you can get a feedback not only from the company stuff, but also from robot users who might give even better ideas.
