@@ -186,13 +186,17 @@ endif
 	root_dir=$$(pwd)
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	cd $$(catkin locate --build)
-	
-	version=$$(dpkg-deb -f $$(ls *rc110*.deb | head -1) Version)
+
+	file=$$(ls *rc110*.deb | head -1)
+	version=$$(dpkg -f $${file} Version)
+	arch=$$(dpkg -f $${file} Architecture)
+	codename=$$(. /etc/os-release; echo $${UBUNTU_CODENAME})
+
 	rm -rf stage; mkdir stage
 	mv *.deb stage/
 	cp $${root_dir}/scripts/install* stage/
 
-	makeself stage rc110_robot_$${version}.run "package" ./install
+	makeself stage rc110_robot_$${version}_$${arch}~$${codename}.run "package" ./install
 
 # Clean all.
 clean:
