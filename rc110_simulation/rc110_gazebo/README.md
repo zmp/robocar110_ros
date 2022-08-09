@@ -2,6 +2,8 @@
 
 This package contains components for simulation of RC 1/10 in Gazebo with drive control functionality and sensors output using open-source Gazebo ROS plugins.
 
+Please, note that simulation is quite heavy, so you would better use a PC with dedicated GPU.
+
 ## UI
 ![](docs/gazebo.gif)
 
