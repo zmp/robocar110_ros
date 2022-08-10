@@ -344,6 +344,25 @@ QPushButton:checked {
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="joyLabel">
+       <property name="maximumSize">
+        <size>
+         <width>32</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../res/main.qrc">:/joystick.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -438,7 +457,7 @@ QPushButton:checked {
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="motorGroup"/>
   <buttongroup name="servoGroup"/>
+  <buttongroup name="motorGroup"/>
  </buttongroups>
 </ui>

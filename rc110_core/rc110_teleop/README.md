@@ -67,7 +67,7 @@ Be careful of putting high values, because the car is not designed for crashing.
 
 To know buttons and axes indexes, use `rostopic echo /$(hostname | tr - _)/joy`. Indexes start from 0.
 
-Buttons mapping is set in `rc110_core/rc110/config/joy_<type>.yaml`.
+Buttons mapping is set in `rc110_core/rc110_teleop/config/joy_<type>.yaml`.
 * `steering` and `accel` axes can have additional parameters:
     * `<axis>: [index, max, min]`
     * if they are not specified, default values are assigned

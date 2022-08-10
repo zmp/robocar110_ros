@@ -9,7 +9,6 @@ find_package(catkin REQUIRED
         topic_tools
         ackermann_msgs
         nav_msgs
-        param_tools
         rc110_msgs
         sensor_msgs
         visualization_msgs
@@ -65,5 +64,4 @@ target_link_libraries(${PROJECT_NAME}_app ${PROJECT_NAME})
 
 # package
 set(RC110_DEP.multirelay ros-$ENV{ROS_DISTRO}-multirelay)
-set(RC110_DEP.param_tools ros-$ENV{ROS_DISTRO}-param-tools)
 include(../../cmake/rc110_cpack.cmake)

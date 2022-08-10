@@ -15,10 +15,10 @@
   <depend>topic_tools</depend>
   <depend>ackermann_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>param_tools</depend>
   <depend>rc110_msgs</depend>
 
   <exec_depend>joy</exec_depend>
   <exec_depend>mouse_teleop</exec_depend>
+  <exec_depend>rc110</exec_depend>
   <exec_depend>rc110_twist_to_ackermann</exec_depend>
 </package>

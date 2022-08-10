@@ -18,7 +18,6 @@
 #include <topic_tools/MuxSelect.h>
 #include <yaml-cpp/yaml.h>
 
-#include <param_tools/param_tools.hpp>
 #include <regex>
 
 namespace zmp
@@ -73,14 +72,11 @@ Rc110JoyTeleop::Rc110JoyTeleop() :
 {
     if (param.gears.empty()) param.gears = {0.3};
 
-    rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
-        setupRobotName(value);
-    });
-
     driveTimer = handle.createTimer(ros::Duration(1 / param.rate), [this](const auto&) { publishDrive(); });
     nextRobotTimer = handle.createTimer(ros::Duration(1), [this](const auto&) { onRobotNameTimer(); });
 
     subscribers["joy"] = handle.subscribe("joy", 1, &Rc110JoyTeleop::onJoy, this);
+    publishers["teleop_rc"] = handle.advertise<std_msgs::String>("teleop_rc", 1, bool("latch"));
 
     selectedRobot = param.rc;
     setupRosConnections();
@@ -267,7 +263,9 @@ void Rc110JoyTeleop::setupRobotName(const std::string& name)
 
 void Rc110JoyTeleop::publishRobotName()
 {
-    param_tools::instance().publish("/selected_rc", selectedRobot);
+    std_msgs::String message;
+    message.data = selectedRobot;
+    publishers["teleop_rc"].publish(message);
 }
 
 bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button)

@@ -17,7 +17,6 @@
 
 #include <map>
 #include <mutex>
-#include <param_tools/subscriber.hpp>
 #include <string>
 #include <vector>
 
@@ -78,7 +77,6 @@ private:
     ros::NodeHandle handle;
     Param param;
 
-    param_tools::Subscriber rcSubscriber;
     std::map<std::string, ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;
     sensor_msgs::Joy::ConstPtr joyMessage;

@@ -145,7 +145,7 @@ build: init
 	$(call build,${build_nodes},${cmake_flags})
 
 # Build remote nodes
-remote: build_nodes := rc110_rviz rc110
+remote: build_nodes := rc110_rviz rc110_teleop
 remote: build
 
 # Package core nodes in build directory.

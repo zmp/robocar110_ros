@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 project(multirelay VERSION 1.11.0)
 
 find_package(catkin REQUIRED
-        param_tools
         topic_tools
+        std_msgs
 )
 
 catkin_package()
@@ -20,5 +20,4 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 # package
-set(RC110_DEP.param_tools ros-$ENV{ROS_DISTRO}-param-tools)
 include(../../cmake/rc110_cpack.cmake)

@@ -14,7 +14,6 @@
   <depend>topic_tools</depend>
   <depend>ackermann_msgs</depend>
   <depend>nav_msgs</depend>
-  <depend>param_tools</depend>
   <depend>rc110_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>visualization_msgs</depend>
@@ -25,6 +24,7 @@
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
   <exec_depend>multirelay</exec_depend>
+  <exec_depend>rc110</exec_depend>
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>

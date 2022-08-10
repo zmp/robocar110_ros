@@ -22,8 +22,6 @@
 #include <sensor_msgs/Temperature.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/String.h>
-
-#include <param_tools/subscriber.hpp>
 #endif
 
 namespace Ui
@@ -60,6 +58,7 @@ private:
     void updateRobotNames();
     void trySelectingRobot();
     void setupRobotName(const std::string& name);
+    void updateJoystickIcon();
     void setupRosConnections();
     QTreeWidgetItem* getTreeItem(TreeItemGroup group, const char* name) const;
 
@@ -97,7 +96,7 @@ private:
 private:
     std::unique_ptr<Ui::PanelWidget> ui;
     ros::NodeHandle handle;
-    param_tools::Subscriber rcSubscriber;
+    ros::Subscriber rcSubscriber, teleopRcSubscriber;
     QVector<ros::Subscriber> subscribers;
     QMap<QString, ros::Publisher> publishers;
     QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
@@ -108,6 +107,7 @@ private:
     const QString rc;        // robot name from parameter (if any)
     QString savedRobotName;  // variable to store name from config until it's loaded to combobox
     QString selectedRobot;   // robot manipulated by rviz tools, can be different from robot in combobox
+    QString teleopRobot;     // robot selected in joystick
 
     std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;

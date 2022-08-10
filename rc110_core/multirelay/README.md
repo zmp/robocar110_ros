@@ -3,25 +3,25 @@
 The node allows to change the current ros namespace to a custom one for a set of topics.
 
 ## Subscribed Topics
-```   
-{/input_ns_param/}<topicN> [<any>::<any>]
+```
+~input_ns [std_msgs::String]
+    input namespace (empty by default)
+    
+~output_ns [std_msgs::String]
+    output namespace (empty by default)
+    
+{/input_ns/}<topicN> [<any>::<any>]
     input topics
 ```
 
 ## Published Topics
 ```
-{/output_ns_param/}<topicN> [<any>::<any>]
+{/output_ns/}<topicN> [<any>::<any>]
     relayed topics
 ```
 
 ## Parameters
-```
-input_ns_param [string, default: ""]
-    parameter which contains input namespace
-    
-output_ns_param [string, default: ""]
-    parameter which contains output namespace
-    
-topics (vector, default: [])
+```    
+~topics (vector, default: [])
     input topic names
 ```

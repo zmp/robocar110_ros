@@ -9,19 +9,15 @@
 
 #include <ros/master.h>
 
-#include <param_tools/param_tools.hpp>
-
 namespace topic_tools
 {
 MultyRelay::MultyRelay()
 {
-    auto inputNsParam = ros::param::param("~input_ns_param", std::string());
-    auto outputNsParam = ros::param::param("~output_ns_param", std::string());
     topics = ros::param::param("~topics", topics);
 
-    auto& paramTools = param_tools::instance();
-    inputNsSubscriber = paramTools.subscribe(inputNsParam, [this](const auto& value) { onInputNs(value); });
-    outputNsSubscriber = paramTools.subscribe(outputNsParam, [this](const auto& value) { onOutputNs(value); });
+    ros::NodeHandle privateHandle("~");
+    inputNsSubscriber = privateHandle.subscribe("input_ns", 1, &MultyRelay::onInputNs, this);
+    outputNsSubscriber = privateHandle.subscribe("output_ns", 1, &MultyRelay::onOutputNs, this);
 }
 
 bool MultyRelay::hasSameNs()
@@ -49,10 +45,10 @@ void MultyRelay::subscribe()
     }
 }
 
-void MultyRelay::onInputNs(const std::string& name)
+void MultyRelay::onInputNs(const std_msgs::String& name)
 {
-    if (inputNs != name) {
-        inputNs = name;
+    if (inputNs != name.data) {
+        inputNs = name.data;
         subscribers.clear();
 
         if (hasSameNs()) {
@@ -64,10 +60,10 @@ void MultyRelay::onInputNs(const std::string& name)
     }
 }
 
-void MultyRelay::onOutputNs(const std::string& name)
+void MultyRelay::onOutputNs(const std_msgs::String& name)
 {
-    if (outputNs != name) {
-        outputNs = name;
+    if (outputNs != name.data) {
+        outputNs = name.data;
         publishers.clear();
         timers.clear();
 

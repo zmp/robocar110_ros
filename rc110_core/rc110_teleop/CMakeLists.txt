@@ -4,7 +4,6 @@ project(rc110_teleop VERSION 1.11.0)
 find_package(catkin REQUIRED COMPONENTS
         ackermann_msgs
         angles
-        param_tools
         rc110_msgs
         roscpp
         roslib
@@ -45,5 +44,4 @@ endforeach()
 
 # package
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${PROJECT_BINARY_DIR}/deb/conffiles;")
-set(RC110_DEP.param_tools ros-$ENV{ROS_DISTRO}-param-tools)
 include(../../cmake/rc110_cpack.cmake)

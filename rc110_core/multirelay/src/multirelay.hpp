@@ -11,7 +11,6 @@
 #include <std_msgs/String.h>
 #include <topic_tools/shape_shifter.h>
 
-#include <param_tools/subscriber.hpp>
 
 namespace topic_tools
 {
@@ -29,13 +28,13 @@ public:
 private:
     bool hasSameNs();
     void subscribe();
-    void onInputNs(const std::string& name);
-    void onOutputNs(const std::string& name);
+    void onInputNs(const std_msgs::String& name);
+    void onOutputNs(const std_msgs::String& name);
     void onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event);
 
 private:
     ros::NodeHandle handle;
-    param_tools::Subscriber inputNsSubscriber, outputNsSubscriber;
+    ros::Subscriber inputNsSubscriber, outputNsSubscriber;
     std::string inputNs, outputNs;
     std::vector<std::string> topics;
     std::vector<ros::Subscriber> subscribers;

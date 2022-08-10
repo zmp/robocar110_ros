@@ -11,7 +11,7 @@
 
     <!-- The following mappings are convenient for manipulating multiple robots. -->
     <node pkg="multirelay" type="multirelay" name="output_relay_rviz" output="screen">
-        <param name="output_ns_param" value="/selected_rc"/>
+        <remap from="~output_ns" to="rviz_rc"/>
         <rosparam param="topics">
             - initialpose
             - move_base_simple/goal

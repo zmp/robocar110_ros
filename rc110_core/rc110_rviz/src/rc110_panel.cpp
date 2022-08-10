@@ -14,7 +14,6 @@
 #include <QStatusBar>
 #include <QTimer>
 #include <boost/math/constants/constants.hpp>
-#include <param_tools/param_tools.hpp>
 #include <regex>
 
 #include "ui_rc110_panel.h"
@@ -74,6 +73,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) :
     statusBar = new QStatusBar(this);
     layout()->addWidget(statusBar);
 
+    ui->joyLabel->setVisible(false);
     ui->splitter->setStretchFactor(0, 1);  // expand tree widget to maximum height
 
     connect(ui->robotNameCombo, qOverload<int>(&QComboBox::activated), this, &Rc110Panel::onRobotNameChanged);
@@ -96,10 +96,17 @@ Rc110Panel::Rc110Panel(QWidget* parent) :
 
     statusBar->showMessage("");
 
-    // Subscribe to robot name parameter selection, and select it the first time if parameter was set.
-    rcSubscriber = param_tools::instance().subscribe("/selected_rc", [this](const XmlRpc::XmlRpcValue& value) {
-        setupRobotName(value);
+    // Subscribe to robot name selected in teleop.
+    teleopRcSubscriber = handle.subscribe<std_msgs::String>("teleop_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
+        this->teleopRobot = QString::fromStdString(name->data);
+        updateJoystickIcon();
     });
+
+    // Receive and pass current RoboCar selected in RViz.
+    rcSubscriber = handle.subscribe<std_msgs::String>("rviz_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
+        setupRobotName(name->data);
+    });
+    publishers["rviz_rc"] = handle.advertise<std_msgs::String>("rviz_rc", 1, bool("latch"));
 
     startTimer(100);  // ms
 }
@@ -183,6 +190,11 @@ void Rc110Panel::setupRobotName(const std::string& name)
         selectedRobot = qName;
         ui->robotSelectedButton->setChecked(selectedRobot == ui->robotNameCombo->currentText());
     }
+}
+
+void Rc110Panel::updateJoystickIcon()
+{
+    ui->joyLabel->setVisible(teleopRobot == ui->robotNameCombo->currentText());
 }
 
 void Rc110Panel::setupRosConnections()
@@ -320,6 +332,7 @@ void Rc110Panel::onRobotNameChanged(int)
         setupRosConnections();
     }
     ui->robotSelectedButton->setChecked(selectedRobot == name);
+    updateJoystickIcon();
 }
 
 void Rc110Panel::onEditingFinished()
@@ -379,7 +392,9 @@ void Rc110Panel::onFinishCalibration()
 
 void Rc110Panel::publishRobotName(const std::string& name)
 {
-    param_tools::instance().publish("/selected_rc", name);
+    std_msgs::String message;
+    message.data = name;
+    publishers["rviz_rc"].publish(message);
 }
 
 void Rc110Panel::publishDrive()
