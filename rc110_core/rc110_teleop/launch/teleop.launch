@@ -1,15 +1,15 @@
 <launch>
-    <arg name="config_dir" default="$(find rc110_teleop)/config"/>
-    <arg name="device" default="js0"/>
-    <arg name="devicePath" default="/dev/input/$(arg device)"/>
+    <arg name="teleop_config_dir" default="$(find rc110_teleop)/config"/>
     <arg name="rc" default=""/>
-    <arg name="name" default="joy"/>
+    <arg name="device" default="0"/>
+    <arg name="joy_path" default="/dev/input/js$(arg device)"/>
     <arg name="joy_type" default=""/>
+    <arg name="name" default="joy"/>
     <arg name="drive_topic" default="drive_manual"/>
 
     <node pkg="joy" type="joy_node" name="$(arg name)" respawn="true">
         <remap from="joy" to="$(arg name)"/>
-        <param name="dev" value="$(arg devicePath)"/>
+        <param name="dev" value="$(arg joy_path)"/>
         <param name="deadzone" value="0.02"/>
         <param name="autorepeat_rate" value="5"/>
     </node>
@@ -17,8 +17,9 @@
     <node pkg="rc110_teleop" type="rc110_joy_teleop" name="$(arg name)_teleop" respawn="true" output="screen">
         <remap from="joy" to="$(arg name)"/>
         <remap from="drive_manual" to="$(arg drive_topic)"/>
-        <rosparam file="$(arg config_dir)/joy.yaml" subst_value="true"/>
+        <rosparam file="$(arg teleop_config_dir)/joy.yaml" subst_value="true"/>
         <param name="rc" value="$(arg rc)"/>
+        <param name="joy_path" value="$(arg joy_path)"/>
         <param name="joy_type" value="$(arg joy_type)"/>
     </node>
 </launch>

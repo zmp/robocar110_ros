@@ -30,12 +30,12 @@ class Rc110JoyTeleop
 {
 public:
     struct Param {
-        std::string rc = "zmp";
-        std::string frameId = "base_link";
-        std::vector<double> gears = {0.3, 0.6, 1.0};
-        double rate = 30.0;  // Hz
+        std::string rc;
+        std::string frameId;
+        std::vector<double> gears;
+        double rate;
+        std::string joyPath;
         std::string joyType;
-        std::map<std::string, std::string> joyTypes;
 
         // dynamic
         int deadManButton = 4;
@@ -53,9 +53,11 @@ public:
     Rc110JoyTeleop();
 
 private:
-    void setupJoystick(const std::string& device);
-    std::string getJoyType(const std::string& device);
-    std::string joyNameToType(const std::string& joyName);
+    void setupJoystick(const std::string& joyPath);
+    std::string getJoyType(const std::string& joyPath) const;
+    std::string getJoyDescription(const std::string& joyPath) const;
+    std::map<std::string, std::string> getTypeConfigs() const;
+    int matchDescription(const std::string& description, const std::string& config) const;
     void setupRosConnections();
     void updateAxis(std::vector<double>& axis, double defaultMax);
     void publishDrive();
@@ -76,6 +78,7 @@ private:
 private:
     ros::NodeHandle handle;
     Param param;
+    const std::string configPath;
 
     std::map<std::string, ros::Subscriber> subscribers;
     std::map<std::string, ros::Publisher> publishers;
@@ -89,7 +92,6 @@ private:
     bool stopMessagePublished = false;
     bool boardEnabled = false;
     bool adEnabled = false;
-    std::string joyDevice = "/dev/<unset>";
     std::string selectedRobot;
     ros::V_string robotNames;
 };

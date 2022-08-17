@@ -11,6 +11,7 @@
 #ifdef __linux__
 #include <fcntl.h>
 #include <linux/joystick.h>
+#include <unistd.h>
 #endif
 
 #include <ros/package.h>
@@ -18,6 +19,7 @@
 #include <topic_tools/MuxSelect.h>
 #include <yaml-cpp/yaml.h>
 
+#include <boost/filesystem.hpp>
 #include <regex>
 
 namespace zmp
@@ -63,12 +65,15 @@ ros::V_string getRobotNames()
 }  // namespace
 
 Rc110JoyTeleop::Rc110JoyTeleop() :
-        param({.rc = ros::param::param("~rc", param.rc),
-               .frameId = ros::param::param("~frame_id", param.frameId),
-               .gears = ros::param::param("~gears", param.gears),
-               .rate = ros::param::param("~rate", param.rate),
-               .joyType = ros::param::param("~joy_type", param.joyType),
-               .joyTypes = ros::param::param("~joy_types", param.joyTypes)})
+        param({
+                ros::param::param("~rc", std::string("zmp")),
+                ros::param::param("~frame_id", std::string("joy")),
+                ros::param::param("~gears", std::vector<double>{0.3, 0.6, 1.0}),
+                ros::param::param("~rate", 30.0),
+                ros::param::param("~joy_path", std::string("")),
+                ros::param::param("~joy_type", std::string("")),  // autodetect if empty
+        }),
+        configPath(ros::package::getPath("rc110_teleop") + "/config")
 {
     if (param.gears.empty()) param.gears = {0.3};
 
@@ -79,75 +84,101 @@ Rc110JoyTeleop::Rc110JoyTeleop() :
     publishers["teleop_rc"] = handle.advertise<std_msgs::String>("teleop_rc", 1, bool("latch"));
 
     selectedRobot = param.rc;
+
+    setupJoystick(param.joyPath);
     setupRosConnections();
 }
 
-void Rc110JoyTeleop::setupJoystick(const std::string& device)
+void Rc110JoyTeleop::setupJoystick(const std::string& joyPath)
 {
-    if (joyDevice == device) {
+    auto joyType = getJoyType(joyPath);
+    if (joyType.empty()) {
         return;
     }
-    joyDevice = device;
+    YAML::Node configNode = YAML::LoadFile(configPath + "/joy_" + joyType + ".yaml");
 
-    auto joyType = getJoyType(device);
-    auto path = ros::package::getPath("rc110_teleop") + "/config/joy_" + joyType + ".yaml";
-    YAML::Node config = YAML::LoadFile(path);
-
-    updateParam(param.deadManButton, config["dead_man_button"]);
-    updateParam(param.nextRobotButton, config["next_robot_button"]);
-    updateParam(param.gearUpButton, config["gear_up_button"]);
-    updateParam(param.gearDownButton, config["gear_down_button"]);
-    updateParam(param.boardButton, config["board_button"]);
-    updateParam(param.adButton, config["ad_button"]);
-    updateParam(param.steering, config["steering"]);
-    updateParam(param.steeringAuxiliary, config["steering_aux"]);
-    updateParam(param.accel, config["accel"]);
+    updateParam(param.deadManButton, configNode["dead_man_button"]);
+    updateParam(param.nextRobotButton, configNode["next_robot_button"]);
+    updateParam(param.gearUpButton, configNode["gear_up_button"]);
+    updateParam(param.gearDownButton, configNode["gear_down_button"]);
+    updateParam(param.boardButton, configNode["board_button"]);
+    updateParam(param.adButton, configNode["ad_button"]);
+    updateParam(param.steering, configNode["steering"]);
+    updateParam(param.steeringAuxiliary, configNode["steering_aux"]);
+    updateParam(param.accel, configNode["accel"]);
 
     updateAxis(param.steering, 28.0 * 1.3);  // by default, max value + 30% to being able to reach max easily
     updateAxis(param.accel, 1.0);
-
-    ROS_INFO_STREAM("Joystick type: " << joyType);
 }
 
-std::string Rc110JoyTeleop::getJoyType(const std::string& device)
+std::string Rc110JoyTeleop::getJoyType(const std::string& joyPath) const
 {
+    // Either get type directly from parameter,
     if (param.joyType.size()) {
         return param.joyType;
     }
+    std::string joyType = DEFAULT_JOY_TYPE;
+
+    // Or try to guess the type basing on device description.
+    auto description = getJoyDescription(joyPath);
+    if (!description.empty()) {
+        int maxMatch = 0;
+        for (auto& typeConfig : getTypeConfigs()) {
+            int match = matchDescription(description, typeConfig.second);
+            if (maxMatch < match) {
+                maxMatch = match;
+                joyType = typeConfig.first;
+            }
+        }
+    }
+    ROS_INFO_STREAM("Joystick type: " << joyType << ", basing on path: " << joyPath);
+    return joyType;
+}
+
+std::string Rc110JoyTeleop::getJoyDescription(const std::string& joyPath) const
+{
 #ifdef __linux__
-    int fd = open(device.c_str(), O_RDONLY);
+    int fd = open(joyPath.c_str(), O_RDONLY);
     if (fd != -1) {
         char joyNameBuffer[1024];
         ioctl(fd, JSIOCGNAME(sizeof joyNameBuffer), joyNameBuffer);
         close(fd);
-
-        auto joyType = joyNameToType(joyNameBuffer);
-        if (joyType.size()) {
-            return joyType;
-        }
+        return joyNameBuffer;
     }
 #endif
-    return DEFAULT_JOY_TYPE;
+    return "";
 }
 
-std::string Rc110JoyTeleop::joyNameToType(const std::string& joyName)
+std::map<std::string, std::string> Rc110JoyTeleop::getTypeConfigs() const
 {
-    int maxMatch = 0;
-    std::string joyType;
-    for (const auto& [type, name] : param.joyTypes) {
-        // check either whole name match
-        if (int pos = name.find(joyName); pos != std::string::npos) {
-            return type;
-        }
-        // or just partial match from the name start
-        auto result = std::mismatch(name.begin(), name.end(), joyName.begin(), joyName.end());
-        int iMis = result.first - name.begin();
-        if (maxMatch < iMis) {
-            maxMatch = iMis;
-            joyType = type;
+    std::regex expression(".*/joy_(.*)\\.yaml$");
+
+    std::map<std::string, std::string> typeConfigs;
+    for (auto& entry : boost::filesystem::directory_iterator(configPath)) {
+        std::smatch match;
+        if (std::regex_match(entry.path().string(), match, expression); match.size()) {
+            typeConfigs.emplace(match[1].str(), match[0].str());
         }
     }
-    return joyType;
+    return typeConfigs;
+}
+
+int Rc110JoyTeleop::matchDescription(const std::string& description, const std::string& config) const
+{
+    YAML::Node configNode = YAML::LoadFile(config);
+    if (auto descriptionNode = configNode["description"]) {
+        auto yamlDescription = descriptionNode.as<std::string>();
+
+        // check either whole name match
+        if (int pos = yamlDescription.find(description); pos != std::string::npos) {
+            return description.size();
+        }
+        // or just partial match from the name start
+        auto result =
+                std::mismatch(yamlDescription.begin(), yamlDescription.end(), description.begin(), description.end());
+        return result.first - yamlDescription.begin();
+    }
+    return 0;
 }
 
 void Rc110JoyTeleop::setupRosConnections()
@@ -304,8 +335,6 @@ float Rc110JoyTeleop::mapAxisValue(const std::vector<double>& axis, float value)
 
 void Rc110JoyTeleop::onJoy(const sensor_msgs::Joy::ConstPtr& message)
 {
-    setupJoystick(message->header.frame_id);
-
     auto minGear = -1;  // reverse gear, 1st gear, 2nd gear, and so on
     auto maxGear = int(param.gears.size()) - 1;
     auto steeringValue = getAxisValue(message, param.steering[AXIS_ID]);
