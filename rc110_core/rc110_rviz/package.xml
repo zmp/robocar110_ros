@@ -23,7 +23,7 @@
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
-  <exec_depend>multirelay</exec_depend>
+  <exec_depend>rc110_topic_tools</exec_depend>
   <exec_depend>rc110</exec_depend>
 
   <export>

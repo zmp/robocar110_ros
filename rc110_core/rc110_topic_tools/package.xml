@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>multirelay</name>
+  <name>rc110_topic_tools</name>
   <version>1.11.0</version>
-  <description>RoboCar 1/10 multiple output topic relay</description>
+  <description>RoboCar 1/10 topic tools</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
 

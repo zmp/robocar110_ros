@@ -63,5 +63,4 @@ add_executable(${PROJECT_NAME}_app app/main.cpp)
 target_link_libraries(${PROJECT_NAME}_app ${PROJECT_NAME})
 
 # package
-set(RC110_DEP.multirelay ros-$ENV{ROS_DISTRO}-multirelay)
 include(../../cmake/rc110_cpack.cmake)

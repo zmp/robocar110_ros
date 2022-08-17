@@ -10,7 +10,7 @@
     <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)"/>
 
     <!-- The following mappings are convenient for manipulating multiple robots. -->
-    <node pkg="multirelay" type="multirelay" name="output_relay_rviz" output="screen">
+    <node pkg="rc110_topic_tools" type="multi_demux" name="output_demux_rviz" output="screen">
         <remap from="~output_ns" to="rviz_rc"/>
         <rosparam param="topics">
             - initialpose

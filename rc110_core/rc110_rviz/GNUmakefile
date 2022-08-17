@@ -6,7 +6,7 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths . --skip-keys="rc110_msgs multirelay"
+	rosdep install -iry --from-paths . --skip-keys="rc110_msgs rc110_topic_tools"
 
 build:
 	$(MAKE) -C ../.. init

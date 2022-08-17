@@ -5,22 +5,52 @@
  *
  * Written by Andrei Pak
  */
-#include "multirelay.hpp"
 
 #include <ros/master.h>
+#include <ros/ros.h>
+#include <std_msgs/String.h>
+#include <topic_tools/shape_shifter.h>
 
 namespace topic_tools
 {
-MultyRelay::MultyRelay()
+/**
+ * Multiple topics namespace demultiplexer.
+ *
+ * @note
+ * Subscription happens when input ns != output ns.
+ */
+class MultiDemux
+{
+public:
+    MultiDemux();
+
+private:
+    bool hasSameNs();
+    void subscribe();
+    void onInputNs(const std_msgs::String& name);
+    void onOutputNs(const std_msgs::String& name);
+    void onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event);
+
+private:
+    ros::NodeHandle handle;
+    ros::Subscriber inputNsSubscriber, outputNsSubscriber;
+    std::string inputNs, outputNs;
+    std::vector<std::string> topics;
+    std::vector<ros::Subscriber> subscribers;
+    std::map<std::string, ros::Publisher> publishers;
+    std::vector<ros::Timer> timers;
+};
+
+MultiDemux::MultiDemux()
 {
     topics = ros::param::param("~topics", topics);
 
     ros::NodeHandle privateHandle("~");
-    inputNsSubscriber = privateHandle.subscribe("input_ns", 1, &MultyRelay::onInputNs, this);
-    outputNsSubscriber = privateHandle.subscribe("output_ns", 1, &MultyRelay::onOutputNs, this);
+    inputNsSubscriber = privateHandle.subscribe("input_ns", 1, &MultiDemux::onInputNs, this);
+    outputNsSubscriber = privateHandle.subscribe("output_ns", 1, &MultiDemux::onOutputNs, this);
 }
 
-bool MultyRelay::hasSameNs()
+bool MultiDemux::hasSameNs()
 {
     if (inputNs == outputNs) {
         return true;
@@ -31,7 +61,7 @@ bool MultyRelay::hasSameNs()
     return (inputNs.empty() && ns == outputNs) || (outputNs.empty() && ns == inputNs);
 }
 
-void MultyRelay::subscribe()
+void MultiDemux::subscribe()
 {
     if (subscribers.size()) return;
 
@@ -45,7 +75,7 @@ void MultyRelay::subscribe()
     }
 }
 
-void MultyRelay::onInputNs(const std_msgs::String& name)
+void MultiDemux::onInputNs(const std_msgs::String& name)
 {
     if (inputNs != name.data) {
         inputNs = name.data;
@@ -60,7 +90,7 @@ void MultyRelay::onInputNs(const std_msgs::String& name)
     }
 }
 
-void MultyRelay::onOutputNs(const std_msgs::String& name)
+void MultiDemux::onOutputNs(const std_msgs::String& name)
 {
     if (outputNs != name.data) {
         outputNs = name.data;
@@ -75,7 +105,7 @@ void MultyRelay::onOutputNs(const std_msgs::String& name)
     }
 }
 
-void MultyRelay::onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event)
+void MultiDemux::onMessage(const std::string& topic, const ros::MessageEvent<topic_tools::ShapeShifter>& event)
 {
     auto message = event.getConstMessage();
     if (publishers.count(topic)) {
@@ -98,3 +128,20 @@ void MultyRelay::onMessage(const std::string& topic, const ros::MessageEvent<top
             bool("oneshot")));
 }
 }  // namespace topic_tools
+
+int main(int argc, char* argv[])
+try {
+    ros::init(argc, argv, "multi_demux");
+
+    topic_tools::MultiDemux node;
+    ros::spin();
+
+    return EXIT_SUCCESS;
+}  //
+catch (std::exception& ex) {
+    std::cerr << "Exception in main(): " << ex.what() << std::endl;
+    return EXIT_FAILURE;
+} catch (...) {
+    std::cerr << "Unknown exception in main()" << std::endl;
+    return EXIT_FAILURE;
+}
