@@ -54,11 +54,7 @@ QStringList getRobotNames()
 }
 }  // namespace
 
-Rc110Panel::Rc110Panel(QWidget* parent) :
-        Panel(parent),
-        ui(new Ui::PanelWidget),
-        calibrationTimer(new QTimer(this)),
-        rc(QString::fromStdString(ros::param::param("~rc", std::string())))
+Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget), calibrationTimer(new QTimer(this))
 {
     ui->setupUi(this);
     calibrationTimer->setSingleShot(true);
@@ -95,20 +91,6 @@ Rc110Panel::Rc110Panel(QWidget* parent) :
     connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
 
     statusBar->showMessage("");
-
-    // Subscribe to robot name selected in teleop.
-    teleopRcSubscriber = handle.subscribe<std_msgs::String>("teleop_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
-        this->teleopRobot = QString::fromStdString(name->data);
-        updateJoystickIcon();
-    });
-
-    // Receive and pass current RoboCar selected in RViz.
-    rcSubscriber = handle.subscribe<std_msgs::String>("rviz_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
-        setupRobotName(name->data);
-    });
-    publishers["rviz_rc"] = handle.advertise<std_msgs::String>("rviz_rc", 1, bool("latch"));
-
-    startTimer(100);  // ms
 }
 
 Rc110Panel::~Rc110Panel() = default;
@@ -125,6 +107,26 @@ void Rc110Panel::save(rviz::Config config) const
     if (rc.isEmpty()) {
         config.mapSetValue("robot_name", ui->robotNameCombo->currentText());
     }
+}
+
+void Rc110Panel::onInitialize()
+{
+    rc = QString::fromStdString(ros::param::param("~rc", std::string()));
+
+    // Subscribe to robot name selected in teleop.
+    teleopRcSubscriber =
+            handle.subscribe<std_msgs::String>("teleop_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
+                this->teleopRobot = QString::fromStdString(name->data);
+                updateJoystickIcon();
+            });
+
+    // Receive and pass current RoboCar selected in RViz.
+    rcSubscriber = handle.subscribe<std_msgs::String>("rviz_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
+        setupRobotName(name->data);
+    });
+    publishers["rviz_rc"] = handle.advertise<std_msgs::String>("rviz_rc", 1, bool("latch"));
+
+    startTimer(100);  // ms
 }
 
 void Rc110Panel::timerEvent(QTimerEvent* event)

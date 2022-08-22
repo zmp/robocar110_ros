@@ -52,6 +52,7 @@ public:
     void save(rviz::Config config) const override;
 
 protected:
+    void onInitialize() override;
     void timerEvent(QTimerEvent* event) override;
 
 private:
@@ -104,7 +105,7 @@ private:
     QTimer* calibrationTimer;
     QMap<QString, QPair<int, float>> calibrationSums;
     QStringList robotNames;  // names in combo box at the top
-    const QString rc;        // robot name from parameter (if any)
+    QString rc;              // robot name from parameter (if any)
     QString savedRobotName;  // variable to store name from config until it's loaded to combobox
     QString selectedRobot;   // robot manipulated by rviz tools, can be different from robot in combobox
     QString teleopRobot;     // robot selected in joystick
