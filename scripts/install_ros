@@ -2,13 +2,13 @@
 
 # distro
 script_path=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
-UBUNTU_CODENAME=$(. /etc/os-release; echo ${UBUNTU_CODENAME})
-ROS_DISTRO=${ROS_DISTRO:-$(${script_path}/get_ros_distro)}
+export UBUNTU_CODENAME=$(. /etc/os-release; echo ${UBUNTU_CODENAME})
+export ROS_DISTRO=${ROS_DISTRO:-$(${script_path}/get_ros_distro)}
 
 # add apt list
 if [ ! -f /etc/apt/sources.list.d/ros-latest.list ]
 then
-	sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/ros-latest.list'
+	sudo -E sh -c 'echo "deb http://packages.ros.org/ros/ubuntu ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/ros-latest.list'
 	sudo chmod 644 /etc/apt/sources.list.d/ros-latest.list
 fi
 
