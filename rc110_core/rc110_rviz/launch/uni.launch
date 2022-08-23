@@ -4,11 +4,13 @@
     <arg name="config" default="$(find rc110_rviz)/rviz/main.rviz"/>
     <arg name="rviz_args" default="-s $(arg splash_image) -d $(arg config)"/>
     <arg name="rc" default="$(env RC110_NAME)"/>
+    <arg name="rc_host" default="$(eval rc.replace('_', '-'))"/>
 
     <!-- RViz can be run on a remote PC, so it needs to have robot_description parameter. -->
     <param name="robot_description" command="xacro $(arg urdf_file) prefix:=$(arg rc)/"/>
 
     <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="$(arg rviz_args)">
         <param name="rc" value="$(arg rc)"/>
+        <param name="video_url" value="rtsp://$(arg rc_host).local:8554/front"/>
     </node>
 </launch>

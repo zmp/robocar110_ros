@@ -6,7 +6,7 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths . --skip-keys="rc110_msgs rc110_topic_tools"
+	rosdep install -iry --from-paths . ../rc110_msgs ../rc110_topic_tools ../rviz_video_panel
 
 build:
 	$(MAKE) -C ../.. init

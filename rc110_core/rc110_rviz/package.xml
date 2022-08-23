@@ -19,12 +19,13 @@
   <depend>visualization_msgs</depend>
 
   <exec_depend>compressed_image_transport</exec_depend>  <!-- Needed for camera in rviz -->
-  <exec_depend>rviz_imu_plugin</exec_depend>
   <exec_depend>libqt5-core</exec_depend>
   <exec_depend>libqt5-gui</exec_depend>
   <exec_depend>libqt5-widgets</exec_depend>
-  <exec_depend>rc110_topic_tools</exec_depend>
   <exec_depend>rc110</exec_depend>
+  <exec_depend>rc110_topic_tools</exec_depend>
+  <exec_depend>rviz_imu_plugin</exec_depend>
+  <exec_depend>rviz_video_panel</exec_depend>
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>
