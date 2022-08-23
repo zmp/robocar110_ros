@@ -6,7 +6,7 @@ cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps:
 	$(MAKE) -C ../.. init-deps
 	source /opt/ros/${ROS_DISTRO}/setup.bash
-	rosdep install -iry --from-paths . --skip-keys="rc110_twist_to_ackermann goal_queue"
+	rosdep install -iry --from-paths . ../goal_queue ../../rc110_core/rc110_twist_to_ackermann
 
 build:
 	$(MAKE) -C ../.. init
