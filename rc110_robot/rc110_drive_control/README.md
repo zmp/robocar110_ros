@@ -89,4 +89,7 @@ odometry_only_angle_offset (double, default: 1.0)
     steering angle absolute value is reduced by this number when odometry is calculated (Deg)
     change the value basing on the experimental data of your environment
     http://wiki.ros.org/navigation/Tutorials/Navigation%20Tuning%20Guide#Odometry
+    
+steering_velocity (double, default: 90.0)
+    streering angle change velocity (deg/s)
 ```

@@ -15,15 +15,13 @@ make run-teleop
 
 Connect other joystick to remote PC:
 ```
-make run-teleop device=js1
+make run-teleop device=1  # ls /dev/input/js*
 ```
 
 Other arguments:
 ```
 make run-teleop joy_type=logicool     # force joystick type
-make run-teleop rc=rc123              # set robot and disable switch
-
-rosparam get /$(hostname | tr - _)/joy_teleop/rc   # check current robot
+make run-teleop rc=rc_12345           # set robot and disable switch
 ```
 
 ## Mouse Remote Operation
@@ -74,3 +72,43 @@ Buttons mapping is set in `rc110_core/rc110_teleop/config/joy_<type>.yaml`.
     * if `min` is not specified, it equals `-max`
     * if `min` is greater than `max`, axis is inverted
 * For lever type of joystick, `steering_aux` parameter is used which allows more precise control.
+
+## Joy Teleop Subscribed Topics
+```
+joy [sensor_msgs::Joy]
+    topic from joy node
+    
+robot_status [rc110_msgs::Status]
+    Status of baseboard, drive and steering motors
+
+mux_drive/selected [std_msgs::String]
+    selected drive topic (AD / Manual)
+```
+
+## Joy Teleop Published Topic
+```
+teleop_rc [std_msgs::String]
+    current robot operated by the joystick
+```
+
+## Joy Teleop Parameters
+```
+~/rc (string, default: zmp)
+    fixed robot name (if any)
+    
+~/frame_id (string, default: joy)
+    output frame id
+
+~/gears (double[], default: [0.3, 0.6, 1.0])
+    gears speed (m/s)
+    Please, be careful with high speed!
+
+~/rate (double, default: 30.0)
+    output update rate
+
+~/joy_path (string, default: "")
+    path of the device (used for joystick autodetection)
+
+~/joy_type (string, default: "")
+    joystick type (available types can be found in config/)
+```

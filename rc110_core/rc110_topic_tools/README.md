@@ -1,27 +1,28 @@
-# Namespace Relay Node
+# RC 1/10 Topic Tools
 
-The node allows to change the current ros namespace to a custom one for a set of topics.
+Set of nodes to supplement standard topic_tools.
 
-## Subscribed Topics
+## Multi Demux
+### Subscribed Topics
 ```
-~input_ns [std_msgs::String]
+~/input_ns [std_msgs::String]
     input namespace (empty by default)
     
-~output_ns [std_msgs::String]
+~/output_ns [std_msgs::String]
     output namespace (empty by default)
     
 {/input_ns/}<topicN> [<any>::<any>]
     input topics
 ```
 
-## Published Topics
+### Published Topics
 ```
 {/output_ns/}<topicN> [<any>::<any>]
     relayed topics
 ```
 
-## Parameters
+### Parameters
 ```    
-~topics (vector, default: [])
+~/topics (string[], default: [])
     input topic names
 ```
