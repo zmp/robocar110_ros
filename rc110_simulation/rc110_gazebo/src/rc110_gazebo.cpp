@@ -19,6 +19,7 @@
 namespace
 {
 constexpr double WHEEL_BASE = 0.26;
+constexpr double TELEOP_PING_TIMEOUT = 0.4;  // sec
 }  // namespace
 
 namespace zmp
@@ -29,6 +30,9 @@ Rc110Gazebo::Rc110Gazebo() :
                 .rate = ros::param::param<double>("~rate", 30),
         })
 {
+    services.push_back(handle.advertiseService("teleop_ping", &Rc110Gazebo::onTeleopPing, this));
+    services.push_back(handle.advertiseService("teleop_status", &Rc110Gazebo::onTeleopStatus, this));
+
     subscribers.push_back(handle.subscribe("drive", 2, &Rc110Gazebo::onDrive, this));
 
     publishers["drive_twist"] = handle.advertise<geometry_msgs::Twist>("drive_twist", 1);
@@ -52,10 +56,29 @@ Rc110Gazebo::Rc110Gazebo() :
     publishers["baseboard_error"].publish(rc110_msgs::BaseboardError());
 }
 
+bool Rc110Gazebo::onTeleopPing(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+{
+    if (request.data) {
+        // allow new connection, if time from the last ping is long enough
+        response.success = ros::Time::now() - lastTeleopPing > ros::Duration(TELEOP_PING_TIMEOUT);
+        if (!response.success) {
+            return false;
+        }
+    }
+    lastTeleopPing = ros::Time::now();
+    return true;
+}
+
+bool Rc110Gazebo::onTeleopStatus(std_srvs::Trigger::Request& request, std_srvs::Trigger::Response& response)
+{
+    response.success = ros::Time::now() - lastTeleopPing <= ros::Duration(TELEOP_PING_TIMEOUT);
+    return true;
+}
+
 void Rc110Gazebo::onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& drive)
 {
-    double timeDiff = drive->header.stamp.toSec() - lastDriveTime;
-    lastDriveTime = drive->header.stamp.toSec();
+    double timeDiff = (drive->header.stamp - lastDriveTime).toSec();
+    lastDriveTime = drive->header.stamp;
 
     speed = drive->drive.speed;
     steeringAngleVelocity = timeDiff == 0 ? 0.f : float((drive->drive.steering_angle - steeringAngle) / timeDiff);

@@ -97,7 +97,7 @@ private:
 private:
     std::unique_ptr<Ui::PanelWidget> ui;
     ros::NodeHandle handle;
-    ros::Subscriber rcSubscriber, teleopRcSubscriber;
+    ros::Subscriber rcSubscriber;
     QVector<ros::Subscriber> subscribers;
     QMap<QString, ros::Publisher> publishers;
     QHash<TreeItemGroup, QTreeWidgetItem*> treeItems;
@@ -108,7 +108,6 @@ private:
     QString rc;              // robot name from parameter (if any)
     QString savedRobotName;  // variable to store name from config until it's loaded to combobox
     QString selectedRobot;   // robot manipulated by rviz tools, can be different from robot in combobox
-    QString teleopRobot;     // robot selected in joystick
 
     std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;

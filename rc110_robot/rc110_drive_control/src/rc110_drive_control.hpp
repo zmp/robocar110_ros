@@ -14,6 +14,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <std_srvs/SetBool.h>
+#include <std_srvs/Trigger.h>
 #include <tf2_ros/transform_broadcaster.h>
 
 #include <string>
@@ -43,6 +44,8 @@ public:
 
 private:
     bool onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+    bool onTeleopPing(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+    bool onTeleopStatus(std_srvs::Trigger::Request& request, std_srvs::Trigger::Response& response);
     bool onMotorState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response);
     bool onServoState(rc110_msgs::SetInteger::Request& request, rc110_msgs::SetInteger::Response& response);
     void onDrive(const ackermann_msgs::AckermannDriveStamped::ConstPtr& message);
@@ -77,5 +80,6 @@ private:
     BaseboardError lastBaseboardError = BaseboardError::NONE;
     nav_msgs::Odometry odometry;
     double estimatedYaw = 0;
+    ros::Time lastTeleopPing = {};
 };
 }  // namespace zmp

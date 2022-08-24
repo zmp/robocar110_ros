@@ -30,7 +30,7 @@ linear_acceleration_covariance=m.linear_acceleration_covariance)
             --wait-for-start --import std_msgs sensor_msgs geometry_msgs"/>
 
     <!-- simulation of rc110_drive_control (more or less) -->
-    <node pkg="rc110_gazebo" type="rc110_gazebo" name="rc110_gazebo" required="true">
+    <node pkg="rc110_gazebo" type="rc110_gazebo" name="drive_control" required="true">
         <param name="base_frame_id" value="$(arg rc)/base_link"/>
     </node>
 

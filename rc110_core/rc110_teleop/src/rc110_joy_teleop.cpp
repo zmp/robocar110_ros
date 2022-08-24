@@ -51,7 +51,7 @@ ros::V_string getRobotNames()
     ros::V_string nodeNames;
     ros::master::getNodes(nodeNames);
 
-    static const std::regex expression("/(.*)/mux_drive$");
+    static const std::regex expression("/(.*)/drive_control$");
 
     ros::V_string robotNames;
     for (const auto& nodeName : nodeNames) {
@@ -81,7 +81,6 @@ Rc110JoyTeleop::Rc110JoyTeleop() :
     nextRobotTimer = handle.createTimer(ros::Duration(1), [this](const auto&) { onRobotNameTimer(); });
 
     subscribers["joy"] = handle.subscribe("joy", 1, &Rc110JoyTeleop::onJoy, this);
-    publishers["teleop_rc"] = handle.advertise<std_msgs::String>("teleop_rc", 1, bool("latch"));
 
     selectedRobot = param.rc;
 
@@ -255,14 +254,13 @@ void Rc110JoyTeleop::updateToggles(const sensor_msgs::Joy::ConstPtr& message)
 
 void Rc110JoyTeleop::onRobotNameTimer()
 {
-    auto names = getRobotNames();
-    if (robotNames != names) {
-        robotNames = names;
+    robotNames = getRobotNames();
 
-        if (std::find(robotNames.begin(), robotNames.end(), selectedRobot) == robotNames.end()) {
-            if (robotNames.size()) {
-                setupRobotName(robotNames.front());
-                publishRobotName();
+    if (!std::count(robotNames.begin(), robotNames.end(), selectedRobot)) {
+        for (int i = 0; i != robotNames.size(); ++i) {
+            if (connectRobot(robotNames[i])) {
+                setupRobotName(robotNames[i]);
+                return;
             }
         }
     }
@@ -270,17 +268,25 @@ void Rc110JoyTeleop::onRobotNameTimer()
 
 void Rc110JoyTeleop::incrementRobotName()
 {
-    if (robotNames.size() > 1) {
-        auto it = std::find(robotNames.begin(), robotNames.end(), selectedRobot);
-        int i = it - robotNames.begin();
+    if (robotNames.empty()) {
+        return;
+    }
+    int size = int(robotNames.size());
+    auto it = std::find(robotNames.begin(), robotNames.end(), selectedRobot);
+    int iStart = (int(it - robotNames.begin())) % size;
 
-        setupRobotName(robotNames[++i % robotNames.size()]);
-        publishRobotName();
+    // check other robots and connect to the first robot that accept the connection
+    for (int i = (iStart + 1) % size; i != iStart; i = (i + 1) % size) {
+        if (connectRobot(robotNames[i])) {
+            setupRobotName(robotNames[i]);
+            return;
+        }
     }
 }
 
 void Rc110JoyTeleop::setupRobotName(const std::string& name)
 {
+    ROS_INFO_STREAM(selectedRobot << " -> " << name);
     if (selectedRobot != name) {
         selectedRobot = name;
 
@@ -292,11 +298,25 @@ void Rc110JoyTeleop::setupRobotName(const std::string& name)
     }
 }
 
-void Rc110JoyTeleop::publishRobotName()
+bool Rc110JoyTeleop::connectRobot(const std::string& name)
 {
-    std_msgs::String message;
-    message.data = selectedRobot;
-    publishers["teleop_rc"].publish(message);
+    std_srvs::SetBool service;
+    service.request.data = true;
+    if (ros::service::call("/" + name + "/teleop_ping", service)) {
+        if (service.response.success) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Rc110JoyTeleop::pingRobot()
+{
+    if (!selectedRobot.empty()) {
+        std_srvs::SetBool service;
+        service.request.data = false;  // already connected
+        ros::service::call("/" + selectedRobot + "/teleop_ping", service);
+    }
 }
 
 bool Rc110JoyTeleop::checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button)
@@ -366,6 +386,8 @@ void Rc110JoyTeleop::onJoy(const sensor_msgs::Joy::ConstPtr& message)
     updateToggles(message);
     joyMessage = message;
     lastTime = ros::Time::now();
+
+    pingRobot();
 }
 
 void Rc110JoyTeleop::onRobotStatus(const rc110_msgs::Status& message)

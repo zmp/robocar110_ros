@@ -9,6 +9,7 @@
 
 #include <rc110_msgs/SetInteger.h>
 #include <std_srvs/SetBool.h>
+#include <std_srvs/Trigger.h>
 #include <topic_tools/MuxSelect.h>
 
 #include <QStatusBar>
@@ -27,6 +28,7 @@ constexpr float DEG_TO_RAD = boost::math::float_constants::degree;
 constexpr float G_TO_MS2 = 9.8f;  // G to m/s2 conversion factor (Tokyo)
 
 constexpr int STATUS_MESSAGE_TIME = 5000;  // ms
+constexpr int TIMER_PERIOD = 100;          // ms
 
 bool globalRobotSelected = false;
 
@@ -41,7 +43,7 @@ QStringList getRobotNames()
     ros::V_string nodeNames;
     ros::master::getNodes(nodeNames);
 
-    static const std::regex expression("/(.*)/tf_publisher$");
+    static const std::regex expression("/(.*)/drive_control$");
 
     QStringList robotNames;
     for (const auto& nodeName : nodeNames) {
@@ -113,20 +115,13 @@ void Rc110Panel::onInitialize()
 {
     rc = QString::fromStdString(ros::param::param("~rc", std::string()));
 
-    // Subscribe to robot name selected in teleop.
-    teleopRcSubscriber =
-            handle.subscribe<std_msgs::String>("teleop_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
-                this->teleopRobot = QString::fromStdString(name->data);
-                updateJoystickIcon();
-            });
-
     // Receive and pass current RoboCar selected in RViz.
     rcSubscriber = handle.subscribe<std_msgs::String>("rviz_rc", 1, [this](const std_msgs::String::ConstPtr& name) {
         setupRobotName(name->data);
     });
     publishers["rviz_rc"] = handle.advertise<std_msgs::String>("rviz_rc", 1, bool("latch"));
 
-    startTimer(100);  // ms
+    startTimer(TIMER_PERIOD);
 }
 
 void Rc110Panel::timerEvent(QTimerEvent* event)
@@ -134,8 +129,9 @@ void Rc110Panel::timerEvent(QTimerEvent* event)
     if (driveSpeed != 0) {
         publishDrive();  // prevent motor from stopping by timeout
     }
+    updateJoystickIcon();
 
-    if (++timerCounter % 10 == 0) {
+    if (++timerCounter % (1000 / TIMER_PERIOD) == 0) {  // 1000 ms period
         updateRobotNames();
     }
 }
@@ -196,7 +192,15 @@ void Rc110Panel::setupRobotName(const std::string& name)
 
 void Rc110Panel::updateJoystickIcon()
 {
-    ui->joyLabel->setVisible(teleopRobot == ui->robotNameCombo->currentText());
+    auto name = ui->robotNameCombo->currentText().toStdString();
+    std_srvs::Trigger service;
+    bool result = false;
+    if (ros::service::call("/" + name + "/teleop_status", service)) {
+        if (service.response.success) {
+            result = true;
+        }
+    }
+    ui->joyLabel->setVisible(result);
 }
 
 void Rc110Panel::setupRosConnections()

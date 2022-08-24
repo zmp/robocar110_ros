@@ -65,7 +65,8 @@ private:
     void onRobotNameTimer();
     void incrementRobotName();
     void setupRobotName(const std::string& name);
-    void publishRobotName();
+    bool connectRobot(const std::string& name);
+    void pingRobot();
     bool checkButtonClicked(const sensor_msgs::Joy::ConstPtr& message, int button);
     bool checkAxisChanged(const sensor_msgs::Joy::ConstPtr& message, int axis);
     float getAxisValue(const sensor_msgs::Joy::ConstPtr& message, int axis);

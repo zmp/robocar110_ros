@@ -35,6 +35,8 @@ constexpr float ACC_NONLINEARITY = 0.003f;  // 0.3%
 constexpr float ACC_SIGMA = ACC_RANGE * ACC_NONLINEARITY * G_TO_MS2;
 constexpr float ACC_VARIANCE = ACC_SIGMA * ACC_SIGMA;
 constexpr float ACC_CROSS_AXIS = 0.01;  // 1%
+
+constexpr double TELEOP_PING_TIMEOUT = 0.4;  // sec
 }  // namespace
 
 Rc110DriveControl::Rc110DriveControl() :
@@ -53,6 +55,8 @@ Rc110DriveControl::Rc110DriveControl() :
     control.SetSteeringVelocity(float(parameters.steeringVelocity));
 
     services.push_back(handle.advertiseService("enable_board", &Rc110DriveControl::onEnableBoard, this));
+    services.push_back(handle.advertiseService("teleop_ping", &Rc110DriveControl::onTeleopPing, this));
+    services.push_back(handle.advertiseService("teleop_status", &Rc110DriveControl::onTeleopStatus, this));
     services.push_back(handle.advertiseService("motor_state", &Rc110DriveControl::onMotorState, this));
     services.push_back(handle.advertiseService("servo_state", &Rc110DriveControl::onServoState, this));
 
@@ -104,6 +108,25 @@ Rc110DriveControl::~Rc110DriveControl()
 bool Rc110DriveControl::onEnableBoard(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
 {
     response.success = control.EnableBaseboard(request.data);
+    return true;
+}
+
+bool Rc110DriveControl::onTeleopPing(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+{
+    if (request.data) {
+        // allow new connection, if time from the last ping is long enough
+        response.success = ros::Time::now() - lastTeleopPing > ros::Duration(TELEOP_PING_TIMEOUT);
+        if (!response.success) {
+            return false;
+        }
+    }
+    lastTeleopPing = ros::Time::now();
+    return true;
+}
+
+bool Rc110DriveControl::onTeleopStatus(std_srvs::Trigger::Request& request, std_srvs::Trigger::Response& response)
+{
+    response.success = ros::Time::now() - lastTeleopPing <= ros::Duration(TELEOP_PING_TIMEOUT);
     return true;
 }
 

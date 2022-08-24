@@ -4,14 +4,14 @@
     <arg name="device" default="0"/>
     <arg name="joy_path" default="/dev/input/js$(arg device)"/>
     <arg name="joy_type" default=""/>
-    <arg name="name" default="joy"/>
+    <arg name="name" default="joy$(arg device)"/>
     <arg name="drive_topic" default="drive_manual"/>
 
     <node pkg="joy" type="joy_node" name="$(arg name)" respawn="true">
         <remap from="joy" to="$(arg name)"/>
         <param name="dev" value="$(arg joy_path)"/>
         <param name="deadzone" value="0.02"/>
-        <param name="autorepeat_rate" value="5"/>
+        <param name="autorepeat_rate" value="10"/>
     </node>
 
     <node pkg="rc110_teleop" type="rc110_joy_teleop" name="$(arg name)_teleop" respawn="true" output="screen">

@@ -73,7 +73,8 @@ Buttons mapping is set in `rc110_core/rc110_teleop/config/joy_<type>.yaml`.
     * if `min` is greater than `max`, axis is inverted
 * For lever type of joystick, `steering_aux` parameter is used which allows more precise control.
 
-## Joy Teleop Subscribed Topics
+## Joy Teleop Node Description
+### Subscribed Topics
 ```
 joy [sensor_msgs::Joy]
     topic from joy node
@@ -85,13 +86,7 @@ mux_drive/selected [std_msgs::String]
     selected drive topic (AD / Manual)
 ```
 
-## Joy Teleop Published Topic
-```
-teleop_rc [std_msgs::String]
-    current robot operated by the joystick
-```
-
-## Joy Teleop Parameters
+### Parameters
 ```
 ~/rc (string, default: zmp)
     fixed robot name (if any)
