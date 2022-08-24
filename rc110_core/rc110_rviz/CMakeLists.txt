@@ -16,17 +16,13 @@ find_package(catkin REQUIRED
 
 catkin_package()
 
-if(NOT DEFINED ENV{ROS_DISTRO})
-    message(FATAL_ERROR "ROS_DISTRO is not defined. Please, source ros.")
-endif()
-set(ROS_DISTRO $ENV{ROS_DISTRO})
-
 # marker
 add_executable(rc110_marker src/rc110_marker.cpp)
 target_compile_features(rc110_marker PUBLIC cxx_std_17)
 target_include_directories(rc110_marker SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
 target_link_libraries(rc110_marker ${catkin_LIBRARIES})
 
+# panel
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
@@ -43,8 +39,9 @@ target_link_libraries(${PROJECT_NAME}
         Qt5::Widgets
 )
 
+# install
 install(DIRECTORY images launch rviz DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME} rc110_marker
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -57,10 +54,6 @@ if (CATKIN_BUILD_BINARY_PACKAGE)
     install(FILES ${PROJECT_BINARY_DIR}/rc110_rviz.desktop DESTINATION /usr/share/applications/)
     install(FILES install/rc110_ros.png DESTINATION /usr/share/pixmaps/)
 endif()
-
-
-add_executable(${PROJECT_NAME}_app app/main.cpp)
-target_link_libraries(${PROJECT_NAME}_app ${PROJECT_NAME})
 
 # package
 set(RC110_DEP.rviz_video_panel ros-$ENV{ROS_DISTRO}-rviz-video-panel)
