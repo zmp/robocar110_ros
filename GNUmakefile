@@ -4,7 +4,6 @@
 #
 include mk/common.mk
 
-cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 deps_paths  := rc110_core rc110_robot   # dependencies for robot nodes
 build_nodes := rc110_rviz rc110_system  # robot nodes
 
@@ -148,7 +147,7 @@ build: init
 remote: build_nodes := rc110_rviz rc110_teleop
 remote: build
 
-# Package core nodes in build directory.
+# Package robot nodes in build directory.
 package: init
 	@source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${build_nodes},${cmake_flags} -DCATKIN_BUILD_BINARY_PACKAGE=ON)

@@ -12,12 +12,11 @@
   <exec_depend>camera_calibration</exec_depend>
   <exec_depend>image_proc</exec_depend>
   <exec_depend>imu_tools</exec_depend>
-  <exec_depend>topic_tools</exec_depend>
-  <exec_depend>urg_node</exec_depend>
-  <exec_depend>video_stream_opencv</exec_depend>
-
   <exec_depend>rc110</exec_depend>
   <exec_depend>rc110_drive_control</exec_depend>
   <exec_depend>rc110_teleop</exec_depend>
   <exec_depend>rc110_video_server</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+  <exec_depend>urg_node</exec_depend>
+  <exec_depend>video_stream_opencv</exec_depend>
 </package>

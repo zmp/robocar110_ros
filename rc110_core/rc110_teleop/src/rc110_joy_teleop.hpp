@@ -94,6 +94,6 @@ private:
     bool boardEnabled = false;
     bool adEnabled = false;
     std::string selectedRobot;
-    ros::V_string robotNames;
+    std::vector<std::string> robotNames;
 };
 }  // namespace zmp

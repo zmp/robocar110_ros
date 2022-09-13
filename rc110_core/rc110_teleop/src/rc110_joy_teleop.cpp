@@ -46,14 +46,14 @@ void updateParam(T& param, const YAML::Node& node)
     param = node ? node.as<T>() : param;
 }
 
-ros::V_string getRobotNames()
+std::vector<std::string> getRobotNames()
 {
-    ros::V_string nodeNames;
+    std::vector<std::string> nodeNames;
     ros::master::getNodes(nodeNames);
 
     static const std::regex expression("/(.*)/drive_control$");
 
-    ros::V_string robotNames;
+    std::vector<std::string> robotNames;
     for (const auto& nodeName : nodeNames) {
         std::smatch match;
         if (std::regex_match(nodeName, match, expression); match.size()) {

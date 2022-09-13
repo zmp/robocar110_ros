@@ -46,9 +46,9 @@ private:
     tf2_ros::TransformListener tfListener;
     geometry_msgs::TransformStamped baseTransform;
 
-    std::vector<float> stopCommand = {0, 0};
-    std::vector<float> forwardCommand = {0.4f, 0};
-    std::vector<float> leftCommand = {0.25f, 28};
-    std::vector<float> rightCommand = {0.25f, -28};
+    std::vector<double> stopCommand = {0, 0};
+    std::vector<double> forwardCommand = {0.4, 0};
+    std::vector<double> leftCommand = {0.25, 28};
+    std::vector<double> rightCommand = {0.25, -28};
 };
 }  // namespace zmp

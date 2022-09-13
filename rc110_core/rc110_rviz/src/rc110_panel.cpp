@@ -40,7 +40,7 @@ QString printSensor(float value, const QString& suffix, int precision = 2)
 
 QStringList getRobotNames()
 {
-    ros::V_string nodeNames;
+    std::vector<std::string> nodeNames;
     ros::master::getNodes(nodeNames);
 
     static const std::regex expression("/(.*)/drive_control$");
@@ -131,7 +131,7 @@ void Rc110Panel::timerEvent(QTimerEvent* event)
     }
     updateJoystickIcon();
 
-    if (++timerCounter % (1000 / TIMER_PERIOD) == 0) {  // 1000 ms period
+    if (++timerCounter % (1000 / TIMER_PERIOD) == 0) {  // 100 ms period
         updateRobotNames();
     }
 }

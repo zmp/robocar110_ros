@@ -7,7 +7,7 @@ find_package(catkin REQUIRED rviz)
 catkin_package()
 
 file(GLOB_RECURSE SRC src/*.cpp)
-add_library(${PROJECT_NAME} ${SRC})
+add_library(${PROJECT_NAME} SHARED ${SRC})
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)

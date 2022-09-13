@@ -21,15 +21,15 @@
 
 QStringList getRobotNames()
 {
-    ros::V_string nodeNames;
+    std::vector<std::string> nodeNames;
     ros::master::getNodes(nodeNames);
 
-    static const std::regex expression("/(.*)/tf_publisher$");
+    static const std::regex expression("/(.*)/drive_control$");
 
     QStringList robotNames;
     for (const auto& nodeName : nodeNames) {
         std::smatch match;
-        if (std::regex_match(nodeName, match, expression); match.size()) {
+        if (std::regex_match(nodeName, match, expression); !match.empty()) {
             robotNames << match[1].str().c_str();
         }
     }

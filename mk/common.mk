@@ -3,8 +3,9 @@
 .SHELLFLAGS := -ec
 SHELL := /bin/bash
 
+cmake_flags := -DCATKIN_ENABLE_TESTING=OFF
 mk_path := $(dir $(lastword $(MAKEFILE_LIST)))
-ROS_DISTRO ?= $(shell ${mk_path}/../scripts/get_ros_distro)
+ROS_DISTRO ?= $(shell ${mk_path}../scripts/get_ros_distro)
 pythonN := $(if $(filter melodic,${ROS_DISTRO}),python,python3)
 
 # Returns whether roscore is stopped.
@@ -25,24 +26,16 @@ ros_args = $(shell \
 # ros_args = $(and $(findstring $() -- $(),$(MAKEFLAGS)),$(subst =,:=,$(subst ?, ,$(lastword $(subst ?--?, ,$(subst $() $(),?,$(MAKEFLAGS)))))))
 #
 
-# Faster build using all cores on tegra.
+# Faster build using all cores on tegra, by default with colcon --symlink-install.
+# Usage
+# 	$(call build,node1 node2,colcon1 colcon2,cmake1 cmake2)
+ifeq (,$(shell command -v nvpmodel))
+build = catkin build ${1} --cmake-args ${2}  # build on non-tegra machine
+else
 define build
 (
-	if [ -x "$$(command -v nvpmodel)" ]  # if there's nvpmodel command,
-	then
-		eval $$(cat /var/lib/nvpmodel/status | tr : =)  # get last mode as "pmode"
-
-		if [ 0000 -ne $${pmode} ]           # if it's not MaxN,
-		then
-			echo -e "\033[1;31m\n Using all CPU cores during build. Requires entering sudo!\n\033[0m"
-
-			sudo nvpmodel -m 0              # set MaxN
-			function cleanup {
-				sudo nvpmodel -m $${pmode}  # on exit from build, revert to the last mode
-			}
-			trap cleanup EXIT
-		fi
-	fi
+	source ${mk_path}../scripts/tegra_maxn.sh
 	catkin build ${1} --cmake-args ${2}
 )
 endef
+endif

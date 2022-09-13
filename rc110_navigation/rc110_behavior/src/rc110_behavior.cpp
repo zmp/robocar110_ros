@@ -78,7 +78,7 @@ void Rc110Behavior::onCloud(const sensor_msgs::PointCloud2& cloud)
     if (result.size() != 2) {
         ROS_ERROR_STREAM("Command should have 2 values: speed and steering! Current number of values: " << result.size());
     }
-    publishCommand(result[0], result[1]);
+    publishCommand(float(result[0]), float(result[1]));
 }
 
 void Rc110Behavior::publishCommand(float speed, float steering)
