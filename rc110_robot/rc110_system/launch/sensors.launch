@@ -19,6 +19,11 @@
         <node pkg="image_proc" type="image_proc" ns="rear_camera" name="image_proc"/>
     </group>
 
+    <include file="$(find rc110_video_server)/launch/main.launch">
+        <arg name="r" value="fhd"/>
+        <arg name="device" value="/dev/video_front"/>
+    </include>
+
     <node pkg="urg_node" type="urg_node" name="front_lidar">
         <rosparam file="$(arg config_dir)/sensors/front_lidar.yaml" subst_value="true"/>
         <remap from="scan" to="~scan"/>

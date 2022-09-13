@@ -4,8 +4,6 @@ After=rc110-roscore.service network-online.target
 BindsTo=rc110-roscore.service
 Wants=network-online.target
 
-# network-online.target does not affect anything. Probably some bug in Debian. Loop sleep is used instead.
-
 [Service]
 Type=simple
 ExecStart=/usr/lib/systemd/user/rc110.sh
