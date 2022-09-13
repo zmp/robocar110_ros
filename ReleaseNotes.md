@@ -1,3 +1,9 @@
+## v1.12.0
+* Switch selected robot with topics instead of parameter.
+* Fix ros installation script.
+* RViz video panel for playing streams (only remote).
+* Multiple joysticks support.
+
 ## v1.11.0
 * Goal queue allows setting consequent goals in [navigation](rc110_navigation/rc110_navigation/README.md).
 * Switched to `urg_node` for smoother update in the future.
