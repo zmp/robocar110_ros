@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_video_server VERSION 1.11.0)
+project(rc110_video_server VERSION 1.12.0)
 
 find_package(PkgConfig REQUIRED)
 foreach(dependency gstreamer-1.0 gstreamer-rtsp-1.0 gstreamer-rtsp-server-1.0)
