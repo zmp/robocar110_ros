@@ -12,7 +12,7 @@ build:
 
 run:
 	source ${ws_path}/install/setup.bash
-	ros2 launch rc110_behavior main.launch
+	ros2 launch rc110_behavior main.launch $(ros_args)
 
 show:
 	$(MAKE) -C ../.. show
