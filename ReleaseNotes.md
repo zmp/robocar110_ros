@@ -1,8 +1,9 @@
-## v1.12.0
+## v1.12.0 ~ .1
 * Switch selected robot with topics instead of parameter.
 * Fix ros installation script.
 * RViz video panel for playing streams (only remote).
 * Multiple joysticks support.
+* Fix ROS source bug which arises from emtpy ROS_DISTRO variable
 
 ## v1.11.0
 * Goal queue allows setting consequent goals in [navigation](rc110_navigation/rc110_navigation/README.md).
