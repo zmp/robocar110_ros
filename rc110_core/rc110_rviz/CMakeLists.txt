@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_rviz VERSION 1.12.0)
+project(rc110_rviz VERSION 1.12.1)
 
 find_package(Qt5 5.9 REQUIRED Core Widgets)
 
@@ -15,6 +15,11 @@ find_package(catkin REQUIRED
 )
 
 catkin_package()
+
+if(NOT DEFINED ENV{ROS_DISTRO})
+    message(FATAL_ERROR "ROS_DISTRO is not defined. Please, source ros.")
+endif()
+set(ROS_DISTRO $ENV{ROS_DISTRO})
 
 # marker
 add_executable(rc110_marker src/rc110_marker.cpp)

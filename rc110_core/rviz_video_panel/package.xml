@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rviz_video_panel</name>
-  <version>1.12.0</version>
+  <version>1.12.1</version>
   <description>RViz panel to play video streams</description>
   <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
   <license>MIT</license>
