@@ -7,9 +7,8 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 file(GLOB msg_files RELATIVE ${PROJECT_SOURCE_DIR} msg/*.msg srv/*.srv)
-rosidl_generate_interfaces(${PROJECT_NAME} ${msg_files} DEPENDENCIES std_msgs)
-
-ament_export_dependencies(std_msgs)
+rosidl_generate_interfaces(${PROJECT_NAME} ${msg_files} DEPENDENCIES std_msgs rclcpp)
+ament_export_dependencies(std_msgs rclcpp)
 ament_package()
 
 # package

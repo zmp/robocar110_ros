@@ -1,0 +1,20 @@
+<launch>
+    <arg name="rc_prefix" default="grc_"/>
+    <arg name="id" default=""/>
+    <arg name="rc" default="$(var rc_prefix)$(var id)"/>
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="a" default="0.0"/>
+    <arg name="root" default="$(find-pkg-share rc110_gazebo)"/>
+
+    <set_env name="ROS_NAMESPACE" value="/$(var rc)"/>
+
+    <!-- ROS_NAMESPACE can be applied only before calling roslaunch, so we need roslaunch in roslaunch. -->
+     <include file="$(find-pkg-share rc110_gazebo)/launch/model_impl.launch">
+        <arg name="gns" value="$(env ROS_NAMESPACE)"/>
+        <arg name="rc" value="$(var rc)"/>
+        <arg name="x" value="$(var x)"/>
+        <arg name="y" value="$(var y)"/>
+        <arg name="a" value="$(var a)"/>
+    </include>
+</launch>

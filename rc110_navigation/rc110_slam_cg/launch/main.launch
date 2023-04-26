@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="cartographer_ros" exec="cartographer_node" name="cartographer"
+          args="
+                -configuration_directory $(find-pkg-share rc110_slam_cg)/config
+                -configuration_basename main.lua map_builder.lua
+                "
+            output="screen">
+
+        <remap from="imu" to="imu/data"/>
+        <remap from="odom" to="odometry"/>
+    </node>
+</launch>

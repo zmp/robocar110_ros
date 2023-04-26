@@ -1,0 +1,2 @@
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control
+Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control' returned '1': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control

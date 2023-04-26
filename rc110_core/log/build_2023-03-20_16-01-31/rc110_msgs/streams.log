@@ -1,0 +1,418 @@
+[0.072s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_msgs -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs
+[0.503s] -- The C compiler identification is GNU 9.4.0
+[0.795s] -- The CXX compiler identification is GNU 9.4.0
+[0.826s] -- Check for working C compiler: /usr/bin/cc
+[1.205s] -- Check for working C compiler: /usr/bin/cc -- works
+[1.209s] -- Detecting C compiler ABI info
+[1.549s] -- Detecting C compiler ABI info - done
+[1.588s] -- Detecting C compile features
+[1.589s] -- Detecting C compile features - done
+[1.599s] -- Check for working CXX compiler: /usr/bin/c++
+[2.070s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[2.081s] -- Detecting CXX compiler ABI info
+[2.527s] -- Detecting CXX compiler ABI info - done
+[2.568s] -- Detecting CXX compile features
+[2.569s] -- Detecting CXX compile features - done
+[2.578s] -- Found ament_cmake: 0.9.11 (/opt/ros/foxy/share/ament_cmake/cmake)
+[2.672s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[2.673s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[3.408s] -- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)
+[3.417s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.437s] -- Found rosidl_adapter: 1.3.0 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[3.911s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[4.013s] -- Found FastRTPS: /opt/ros/foxy/include  
+[4.273s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.362s] -- Found rclcpp: 2.4.2 (/opt/ros/foxy/share/rclcpp/cmake)
+[4.549s] -- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[4.554s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[4.557s] -- Looking for pthread.h
+[4.906s] -- Looking for pthread.h - found
+[4.908s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[5.285s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[5.287s] -- Looking for pthread_create in pthreads
+[5.589s] -- Looking for pthread_create in pthreads - not found
+[5.590s] -- Looking for pthread_create in pthread
+[5.944s] -- Looking for pthread_create in pthread - found
+[5.953s] -- Found Threads: TRUE  
+[6.534s] -- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+[7.251s] -- Found ament_cmake_ros: 0.9.2 (/opt/ros/foxy/share/ament_cmake_ros/cmake)
+[7.909s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[8.145s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[8.239s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3.5") 
+[8.243s] -- Found python_cmake_module: 0.8.1 (/opt/ros/foxy/share/python_cmake_module/cmake)
+[8.344s] -- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.8.so (found suitable version "3.8.10", minimum required is "3.5") 
+[8.344s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[8.345s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8
+[8.345s] -- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.8.so
+[8.426s] -- Found PythonExtra: .so  
+[10.187s] CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):
+[10.188s]   Couldn't convert dependency to deb name: rosidl_default_runtime
+[10.188s] Call Stack (most recent call first):
+[10.188s]   CMakeLists.txt:16 (include)
+[10.188s] 
+[10.189s] 
+[11.581s] CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):
+[11.582s]   Couldn't convert dependency to deb name: rclcpp
+[11.582s] Call Stack (most recent call first):
+[11.583s]   CMakeLists.txt:16 (include)
+[11.583s] 
+[11.584s] 
+[13.142s] CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):
+[13.143s]   Couldn't convert dependency to deb name: std_msgs
+[13.143s] Call Stack (most recent call first):
+[13.144s]   CMakeLists.txt:16 (include)
+[13.144s] 
+[13.145s] 
+[13.231s] -- Configuring done
+[13.541s] -- Generating done
+[13.554s] -- Build files have been written to: /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs
+[13.599s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_msgs -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs
+[13.617s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs -- -j4 -l4
+[13.827s] [  1%] [34m[1mGenerating C code for ROS interfaces[0m
+[13.839s] [35m[1mScanning dependencies of target rc110_msgs__cpp[0m
+[13.926s] [  2%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[16.489s] [  2%] Built target rc110_msgs__cpp
+[16.617s] [  3%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[16.646s] [  5%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[16.675s] [  6%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[16.704s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_generator_c[0m
+[16.833s] [  7%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/baseboard_error__functions.c.o[0m
+[17.173s] [  8%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/motor_rate__functions.c.o[0m
+[17.606s] [ 10%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/offsets__functions.c.o[0m
+[18.119s] [ 11%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/status__functions.c.o[0m
+[18.562s] [ 12%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/string_array__functions.c.o[0m
+[18.934s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_cpp[0m
+[18.997s] [ 13%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/msg/detail/wheel_speeds__functions.c.o[0m
+[19.096s] [ 15%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/baseboard_error__type_support.cpp.o[0m
+[19.250s] [ 16%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_generator_c.dir/rosidl_generator_c/rc110_msgs/srv/detail/set_integer__functions.c.o[0m
+[19.331s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_fastrtps_cpp[0m
+[19.547s] [ 17%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/baseboard_error__type_support.cpp.o[0m
+[19.630s] [ 18%] [32m[1mLinking C shared library librc110_msgs__rosidl_generator_c.so[0m
+[19.706s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_introspection_cpp[0m
+[19.844s] [ 18%] Built target rc110_msgs__rosidl_generator_c
+[19.863s] [ 20%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/baseboard_error__type_support.cpp.o[0m
+[19.893s] [ 21%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/motor_rate__type_support.cpp.o[0m
+[20.955s] [ 22%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/motor_rate__type_support.cpp.o[0m
+[21.241s] [ 24%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/motor_rate__type_support.cpp.o[0m
+[21.616s] [ 25%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/offsets__type_support.cpp.o[0m
+[21.924s] [ 26%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/status__type_support.cpp.o[0m
+[22.471s] [ 27%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/offsets__type_support.cpp.o[0m
+[22.896s] [ 29%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/offsets__type_support.cpp.o[0m
+[23.657s] [ 30%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/string_array__type_support.cpp.o[0m
+[24.162s] [ 31%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/status__type_support.cpp.o[0m
+[24.388s] [ 32%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/string_array__type_support.cpp.o[0m
+[24.454s] [ 34%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/status__type_support.cpp.o[0m
+[26.117s] [ 35%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/string_array__type_support.cpp.o[0m
+[26.137s] [ 36%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/msg/wheel_speeds__type_support.cpp.o[0m
+[26.290s] [ 37%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rc110_msgs/srv/set_integer__type_support.cpp.o[0m
+[26.375s] [ 39%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/msg/detail/dds_fastrtps/wheel_speeds__type_support.cpp.o[0m
+[27.685s] [ 40%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/msg/detail/wheel_speeds__type_support.cpp.o[0m
+[27.934s] [ 41%] [32m[1mLinking CXX shared library librc110_msgs__rosidl_typesupport_cpp.so[0m
+[28.196s] [ 41%] Built target rc110_msgs__rosidl_typesupport_cpp
+[28.256s] [ 43%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[28.340s] [ 44%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rc110_msgs/srv/detail/set_integer__type_support.cpp.o[0m
+[28.700s] [ 45%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rc110_msgs/srv/detail/dds_fastrtps/set_integer__type_support.cpp.o[0m
+[29.242s] [ 46%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[30.184s] [ 48%] [32m[1mLinking CXX shared library librc110_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[30.399s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_c[0m
+[30.503s] [ 49%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/baseboard_error__type_support.cpp.o[0m
+[30.610s] [ 49%] Built target rc110_msgs__rosidl_typesupport_introspection_cpp
+[30.662s] [ 50%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/motor_rate__type_support.cpp.o[0m
+[30.706s] [ 51%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/offsets__type_support.cpp.o[0m
+[30.916s] [ 53%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/status__type_support.cpp.o[0m
+[30.947s] [ 54%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/string_array__type_support.cpp.o[0m
+[31.002s] [ 55%] [32m[1mLinking CXX shared library librc110_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[31.147s] [ 56%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/msg/wheel_speeds__type_support.cpp.o[0m
+[31.170s] [ 58%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/rc110_msgs/srv/set_integer__type_support.cpp.o[0m
+[31.420s] [ 59%] [32m[1mLinking CXX shared library librc110_msgs__rosidl_typesupport_c.so[0m
+[31.484s] [ 59%] Built target rc110_msgs__rosidl_typesupport_fastrtps_cpp
+[31.665s] [ 59%] Built target rc110_msgs__rosidl_typesupport_c
+[31.672s] [ 60%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[31.676s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_introspection_c[0m
+[31.762s] [ 62%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/motor_rate__type_support.c.o[0m
+[31.769s] [ 63%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/baseboard_error__type_support.c.o[0m
+[31.794s] [ 64%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/offsets__type_support.c.o[0m
+[31.995s] [ 65%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/status__type_support.c.o[0m
+[32.023s] [ 67%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/string_array__type_support.c.o[0m
+[32.031s] [ 68%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/msg/detail/wheel_speeds__type_support.c.o[0m
+[32.207s] [ 69%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rc110_msgs/srv/detail/set_integer__type_support.c.o[0m
+[32.390s] [ 70%] [32m[1mLinking C shared library librc110_msgs__rosidl_typesupport_introspection_c.so[0m
+[32.546s] [ 70%] Built target rc110_msgs__rosidl_typesupport_introspection_c
+[33.474s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_fastrtps_c[0m
+[33.602s] [ 72%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/baseboard_error__type_support_c.cpp.o[0m
+[33.611s] [ 74%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/status__type_support_c.cpp.o[0m
+[33.612s] [ 74%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/motor_rate__type_support_c.cpp.o[0m
+[33.627s] [ 75%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/offsets__type_support_c.cpp.o[0m
+[35.294s] [ 77%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/string_array__type_support_c.cpp.o[0m
+[35.320s] [ 78%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/msg/detail/wheel_speeds__type_support_c.cpp.o[0m
+[35.489s] [ 79%] [32mBuilding CXX object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rc110_msgs/srv/detail/set_integer__type_support_c.cpp.o[0m
+[37.302s] [ 81%] [32m[1mLinking CXX shared library librc110_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[37.644s] [ 81%] Built target rc110_msgs__rosidl_typesupport_fastrtps_c
+[37.693s] [35m[1mScanning dependencies of target rc110_msgs[0m
+[37.745s] [ 81%] Built target rc110_msgs
+[37.798s] [35m[1mScanning dependencies of target rc110_msgs__py[0m
+[37.852s] [ 82%] [34m[1mGenerating Python code for ROS interfaces[0m
+[41.064s] [ 82%] Built target rc110_msgs__py
+[41.109s] [35m[1mScanning dependencies of target rc110_msgs__python[0m
+[41.282s] [ 84%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_baseboard_error_s.c.o[0m
+[41.283s] [ 84%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_motor_rate_s.c.o[0m
+[41.291s] [ 86%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_offsets_s.c.o[0m
+[41.307s] [ 87%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_status_s.c.o[0m
+[41.753s] [ 88%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_string_array_s.c.o[0m
+[41.785s] [ 89%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/msg/_wheel_speeds_s.c.o[0m
+[41.863s] [ 91%] [32mBuilding C object CMakeFiles/rc110_msgs__python.dir/rosidl_generator_py/rc110_msgs/srv/_set_integer_s.c.o[0m
+[42.346s] [ 92%] [32m[1mLinking C shared library rosidl_generator_py/rc110_msgs/librc110_msgs__python.so[0m
+[42.547s] [ 92%] Built target rc110_msgs__python
+[42.600s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_c__pyext[0m
+[42.601s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_fastrtps_c__pyext[0m
+[42.601s] [35m[1mScanning dependencies of target rc110_msgs__rosidl_typesupport_introspection_c__pyext[0m
+[42.723s] [ 93%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/rc110_msgs/_rc110_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[42.736s] [ 96%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/rc110_msgs/_rc110_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[42.737s] [ 96%] [32mBuilding C object CMakeFiles/rc110_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/rc110_msgs/_rc110_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[43.269s] [ 97%] [32m[1mLinking CXX shared library rosidl_generator_py/rc110_msgs/rc110_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so[0m
+[43.276s] [ 98%] [32m[1mLinking C shared library rosidl_generator_py/rc110_msgs/rc110_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so[0m
+[43.287s] [100%] [32m[1mLinking C shared library rosidl_generator_py/rc110_msgs/rc110_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so[0m
+[43.494s] [100%] Built target rc110_msgs__rosidl_typesupport_introspection_c__pyext
+[43.538s] [100%] Built target rc110_msgs__rosidl_typesupport_c__pyext
+[43.623s] [100%] Built target rc110_msgs__rosidl_typesupport_fastrtps_c__pyext
+[43.681s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs -- -j4 -l4
+[44.481s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs
+[44.529s] -- Install configuration: ""
+[44.530s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/ament_index/resource_index/rosidl_interfaces/rc110_msgs
+[44.531s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.531s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.531s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/offsets.h
+[44.532s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/rosidl_generator_c__visibility_control.h
+[44.533s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/motor_rate.h
+[44.534s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/string_array.h
+[44.534s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/baseboard_error.h
+[44.535s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.536s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__struct.h
+[44.536s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__functions.h
+[44.537s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__functions.h
+[44.538s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__struct.h
+[44.538s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__type_support.h
+[44.539s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__functions.c
+[44.539s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__functions.h
+[44.540s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__type_support.h
+[44.540s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__struct.h
+[44.541s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__functions.c
+[44.543s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__functions.h
+[44.543s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__type_support.h
+[44.544s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__functions.c
+[44.544s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__struct.h
+[44.545s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__functions.h
+[44.545s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__functions.c
+[44.546s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__struct.h
+[44.546s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__functions.h
+[44.547s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__type_support.h
+[44.548s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__functions.c
+[44.548s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__type_support.h
+[44.549s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__functions.c
+[44.549s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__struct.h
+[44.550s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__type_support.h
+[44.550s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/status.h
+[44.551s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/wheel_speeds.h
+[44.552s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.552s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/set_integer.h
+[44.553s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.553s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__functions.h
+[44.554s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__functions.c
+[44.554s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__struct.h
+[44.555s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__type_support.h
+[44.556s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/library_path.sh
+[44.557s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/library_path.dsv
+[44.560s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_generator_c.so
+[44.562s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_generator_c.so" to ""
+[44.563s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.563s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.564s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.564s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__rosidl_typesupport_fastrtps_c.h
+[44.564s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__rosidl_typesupport_fastrtps_c.h
+[44.565s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__rosidl_typesupport_fastrtps_c.h
+[44.565s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__rosidl_typesupport_fastrtps_c.h
+[44.565s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__rosidl_typesupport_fastrtps_c.h
+[44.566s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__rosidl_typesupport_fastrtps_c.h
+[44.566s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[44.567s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.567s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.568s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__rosidl_typesupport_fastrtps_c.h
+[44.569s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_fastrtps_c.so
+[44.571s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[44.572s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.572s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.572s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[44.573s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.573s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__rosidl_typesupport_fastrtps_cpp.hpp
+[44.573s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__rosidl_typesupport_fastrtps_cpp.hpp
+[44.574s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__rosidl_typesupport_fastrtps_cpp.hpp
+[44.574s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__rosidl_typesupport_fastrtps_cpp.hpp
+[44.574s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/dds_fastrtps
+[44.575s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__rosidl_typesupport_fastrtps_cpp.hpp
+[44.575s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__rosidl_typesupport_fastrtps_cpp.hpp
+[44.576s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.576s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.577s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/dds_fastrtps
+[44.577s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__rosidl_typesupport_fastrtps_cpp.hpp
+[44.577s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_fastrtps_cpp.so
+[44.580s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[44.581s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.581s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.582s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[44.582s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.582s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__rosidl_typesupport_introspection_c.h
+[44.583s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__rosidl_typesupport_introspection_c.h
+[44.583s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__rosidl_typesupport_introspection_c.h
+[44.584s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__type_support.c
+[44.584s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__type_support.c
+[44.585s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__rosidl_typesupport_introspection_c.h
+[44.586s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__type_support.c
+[44.586s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__rosidl_typesupport_introspection_c.h
+[44.587s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__rosidl_typesupport_introspection_c.h
+[44.587s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__type_support.c
+[44.588s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__type_support.c
+[44.589s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__type_support.c
+[44.589s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.589s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.590s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__rosidl_typesupport_introspection_c.h
+[44.590s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__type_support.c
+[44.591s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_introspection_c.so
+[44.594s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_introspection_c.so" to ""
+[44.594s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_c.so
+[44.596s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_c.so" to ""
+[44.597s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.598s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.598s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/motor_rate.hpp
+[44.599s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/status.hpp
+[44.599s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/offsets.hpp
+[44.599s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.600s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__struct.hpp
+[44.600s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__traits.hpp
+[44.601s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__traits.hpp
+[44.601s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__traits.hpp
+[44.601s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__builder.hpp
+[44.602s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__builder.hpp
+[44.602s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__traits.hpp
+[44.603s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__traits.hpp
+[44.603s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__struct.hpp
+[44.604s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__builder.hpp
+[44.605s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__struct.hpp
+[44.606s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__struct.hpp
+[44.606s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__builder.hpp
+[44.608s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__struct.hpp
+[44.609s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__builder.hpp
+[44.610s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__builder.hpp
+[44.611s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__traits.hpp
+[44.612s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__struct.hpp
+[44.613s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/baseboard_error.hpp
+[44.613s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/string_array.hpp
+[44.613s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/wheel_speeds.hpp
+[44.614s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.614s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.614s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__traits.hpp
+[44.615s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__struct.hpp
+[44.616s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__builder.hpp
+[44.616s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/set_integer.hpp
+[44.617s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs
+[44.617s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg
+[44.618s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail
+[44.618s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__type_support.cpp
+[44.619s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__rosidl_typesupport_introspection_cpp.hpp
+[44.620s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__rosidl_typesupport_introspection_cpp.hpp
+[44.620s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__type_support.cpp
+[44.621s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__type_support.cpp
+[44.622s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/baseboard_error__rosidl_typesupport_introspection_cpp.hpp
+[44.623s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__type_support.cpp
+[44.623s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/string_array__rosidl_typesupport_introspection_cpp.hpp
+[44.624s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/offsets__type_support.cpp
+[44.624s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/wheel_speeds__rosidl_typesupport_introspection_cpp.hpp
+[44.625s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/status__rosidl_typesupport_introspection_cpp.hpp
+[44.625s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/msg/detail/motor_rate__type_support.cpp
+[44.626s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv
+[44.627s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail
+[44.627s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__type_support.cpp
+[44.627s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/include/rc110_msgs/srv/detail/set_integer__rosidl_typesupport_introspection_cpp.hpp
+[44.629s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_introspection_cpp.so
+[44.632s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[44.633s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_cpp.so
+[44.636s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__rosidl_typesupport_cpp.so" to ""
+[44.636s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/pythonpath.sh
+[44.637s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/pythonpath.dsv
+[44.639s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/__init__.py
+[44.755s] Compiling '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/__init__.py'...
+[44.769s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg
+[44.771s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_baseboard_error.py
+[44.772s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_string_array.py
+[44.773s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_offsets.py
+[44.775s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_wheel_speeds_s.c
+[44.776s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_offsets_s.c
+[44.778s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_baseboard_error_s.c
+[44.778s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_wheel_speeds.py
+[44.781s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_status.py
+[44.782s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_motor_rate.py
+[44.784s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_status_s.c
+[44.787s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_string_array_s.c
+[44.789s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/_motor_rate_s.c
+[44.790s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/msg/__init__.py
+[44.791s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/srv
+[44.792s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/srv/_set_integer_s.c
+[44.793s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/srv/_set_integer.py
+[44.794s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/srv/__init__.py
+[44.796s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so
+[44.800s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so" to ""
+[44.804s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so
+[44.806s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so" to ""
+[44.807s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so
+[44.810s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/python3.8/site-packages/rc110_msgs/rc110_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so" to ""
+[44.811s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__python.so
+[44.818s] -- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/lib/librc110_msgs__python.so" to ""
+[44.820s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/BaseboardError.idl
+[44.820s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/MotorRate.idl
+[44.821s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/Offsets.idl
+[44.822s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/Status.idl
+[44.823s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/StringArray.idl
+[44.824s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/WheelSpeeds.idl
+[44.824s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/srv/SetInteger.idl
+[44.825s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/BaseboardError.msg
+[44.826s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/MotorRate.msg
+[44.827s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/Offsets.msg
+[44.828s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/Status.msg
+[44.828s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/StringArray.msg
+[44.829s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/msg/WheelSpeeds.msg
+[44.830s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/srv/SetInteger.srv
+[44.831s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/srv/SetInteger_Request.msg
+[44.831s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/srv/SetInteger_Response.msg
+[44.832s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/ament_index/resource_index/package_run_dependencies/rc110_msgs
+[44.833s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/ament_index/resource_index/parent_prefix_path/rc110_msgs
+[44.834s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/ament_prefix_path.sh
+[44.835s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/ament_prefix_path.dsv
+[44.836s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/path.sh
+[44.837s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/environment/path.dsv
+[44.838s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/local_setup.bash
+[44.839s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/local_setup.sh
+[44.839s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/local_setup.zsh
+[44.840s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/local_setup.dsv
+[44.841s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/package.dsv
+[44.842s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/ament_index/resource_index/packages/rc110_msgs
+[44.843s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_generator_cExport.cmake
+[44.843s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_generator_cExport-noconfig.cmake
+[44.844s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_introspection_cExport.cmake
+[44.845s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[44.846s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_cExport.cmake
+[44.847s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[44.848s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_generator_cppExport.cmake
+[44.849s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[44.849s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[44.850s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_cppExport.cmake
+[44.852s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[44.853s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rosidl_cmake-extras.cmake
+[44.853s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[44.854s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[44.855s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[44.856s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[44.856s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[44.857s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[44.858s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgsConfig.cmake
+[44.859s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/cmake/rc110_msgsConfig-version.cmake
+[44.859s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs/share/rc110_msgs/package.xml
+[44.872s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs

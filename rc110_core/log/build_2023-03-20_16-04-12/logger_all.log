@@ -1,0 +1,219 @@
+[1.120s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'rc110_laserscans_to_pointcloud']
+[1.121s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffa26db7c0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=['rc110_laserscans_to_pointcloud'], packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffa26db7c0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffa26dbd30>)
+[1.222s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.222s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.223s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.223s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.223s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.223s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.224s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/zmp/ros/src/robocar110_ros/rc110_core'
+[1.224s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.225s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.225s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.225s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.225s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.226s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.226s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.226s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.226s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.303s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.307s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.307s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.307s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.308s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) by extensions ['ignore', 'ignore_ament_install']
+[1.308s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) by extension 'ignore'
+[1.308s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) ignored
+[1.308s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['ignore', 'ignore_ament_install']
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ignore'
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ignore_ament_install'
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['colcon_pkg']
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'colcon_pkg'
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['colcon_meta']
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'colcon_meta'
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['ros']
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ros'
+[1.318s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110' with type 'ros.ament_cmake' and name 'rc110'
+[1.318s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['ignore', 'ignore_ament_install']
+[1.319s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ignore'
+[1.319s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ignore_ament_install'
+[1.319s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['colcon_pkg']
+[1.319s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'colcon_pkg'
+[1.319s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['colcon_meta']
+[1.320s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'colcon_meta'
+[1.320s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['ros']
+[1.320s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ros'
+[1.322s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_laserscans_to_pointcloud' with type 'ros.ament_cmake' and name 'rc110_laserscans_to_pointcloud'
+[1.323s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['ignore', 'ignore_ament_install']
+[1.323s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ignore'
+[1.323s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ignore_ament_install'
+[1.324s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['colcon_pkg']
+[1.324s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'colcon_pkg'
+[1.324s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['colcon_meta']
+[1.324s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'colcon_meta'
+[1.324s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['ros']
+[1.325s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ros'
+[1.326s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_msgs' with type 'ros.ament_cmake' and name 'rc110_msgs'
+[1.327s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['ignore', 'ignore_ament_install']
+[1.327s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ignore'
+[1.328s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ignore_ament_install'
+[1.328s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['colcon_pkg']
+[1.328s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'colcon_pkg'
+[1.328s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['colcon_meta']
+[1.328s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'colcon_meta'
+[1.329s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['ros']
+[1.329s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ros'
+[1.333s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_rviz' with type 'ros.ament_cmake' and name 'rc110_rviz'
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['ignore', 'ignore_ament_install']
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ignore'
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ignore_ament_install'
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['colcon_pkg']
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'colcon_pkg'
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['colcon_meta']
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'colcon_meta'
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['ros']
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ros'
+[1.336s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_selector' with type 'ros.ament_cmake' and name 'rc110_selector'
+[1.336s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['ignore', 'ignore_ament_install']
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ignore'
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ignore_ament_install'
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['colcon_pkg']
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'colcon_pkg'
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['colcon_meta']
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'colcon_meta'
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['ros']
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ros'
+[1.341s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_teleop' with type 'ros.ament_cmake' and name 'rc110_teleop'
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['ignore', 'ignore_ament_install']
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ignore'
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ignore_ament_install'
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['colcon_pkg']
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'colcon_pkg'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['colcon_meta']
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'colcon_meta'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['ros']
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ros'
+[1.345s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_topic_tools' with type 'ros.ament_cmake' and name 'rc110_topic_tools'
+[1.345s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['ignore', 'ignore_ament_install']
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ignore'
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ignore_ament_install'
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['colcon_pkg']
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'colcon_pkg'
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['colcon_meta']
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'colcon_meta'
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['ros']
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ros'
+[1.349s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_twist_to_ackermann' with type 'ros.ament_cmake' and name 'rc110_twist_to_ackermann'
+[1.349s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['ignore', 'ignore_ament_install']
+[1.349s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ignore'
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ignore_ament_install'
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['colcon_pkg']
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'colcon_pkg'
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['colcon_meta']
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'colcon_meta'
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['ros']
+[1.350s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ros'
+[1.352s] DEBUG:colcon.colcon_core.package_identification:Package 'rviz_video_panel' with type 'ros.ament_cmake' and name 'rviz_video_panel'
+[1.352s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.353s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.353s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.353s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.353s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.418s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_msgs' in 'rc110_msgs'
+[1.418s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_selector' in 'rc110_selector'
+[1.418s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_topic_tools' in 'rc110_topic_tools'
+[1.419s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_twist_to_ackermann' in 'rc110_twist_to_ackermann'
+[1.419s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rviz_video_panel' in 'rviz_video_panel'
+[1.419s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110' in 'rc110'
+[1.419s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_rviz' in 'rc110_rviz'
+[1.419s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_teleop' in 'rc110_teleop'
+[1.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.434s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 257 installed packages in /opt/ros/foxy
+[1.440s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.685s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_args' from command line to 'None'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_target' from command line to 'None'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_clean_cache' from command line to 'False'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_clean_first' from command line to 'False'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'cmake_force_configure' from command line to 'False'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'ament_cmake_args' from command line to 'None'
+[1.686s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'catkin_cmake_args' from command line to 'None'
+[1.687s] Level 5:colcon.colcon_core.verb:set package 'rc110_laserscans_to_pointcloud' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.687s] DEBUG:colcon.colcon_core.verb:Building package 'rc110_laserscans_to_pointcloud' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud', 'merge_install': False, 'path': '/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud', 'symlink_install': False, 'test_result_base': None}
+[1.690s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.724s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.725s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud' with build type 'ament_cmake'
+[1.727s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud'
+[1.752s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.753s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.754s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.837s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud
+[16.199s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud' returned '0': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud
+[16.223s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud -- -j4 -l4
+[48.248s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud' returned '0': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud -- -j4 -l4
+[48.435s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud
+[48.515s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rc110_laserscans_to_pointcloud)
+[48.530s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud' returned '0': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud
+[48.550s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud' for CMake module files
+[48.552s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud' for CMake config files
+[48.554s] Level 1:colcon.colcon_core.shell:create_environment_hook('rc110_laserscans_to_pointcloud', 'cmake_prefix_path')
+[48.559s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.ps1'
+[48.562s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.dsv'
+[48.564s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.sh'
+[48.567s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib'
+[48.568s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/bin'
+[48.568s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/pkgconfig/rc110_laserscans_to_pointcloud.pc'
+[48.569s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/python3.8/site-packages'
+[48.570s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/bin'
+[48.577s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.ps1'
+[48.579s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.dsv'
+[48.583s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.sh'
+[48.585s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.bash'
+[48.587s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.zsh'
+[48.589s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/colcon-core/packages/rc110_laserscans_to_pointcloud)
+[48.736s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rc110_laserscans_to_pointcloud)
+[48.749s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud' for CMake module files
+[48.752s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud' for CMake config files
+[48.754s] Level 1:colcon.colcon_core.shell:create_environment_hook('rc110_laserscans_to_pointcloud', 'cmake_prefix_path')
+[48.759s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.ps1'
+[48.763s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.dsv'
+[48.764s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.sh'
+[48.767s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib'
+[48.767s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/bin'
+[48.767s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/pkgconfig/rc110_laserscans_to_pointcloud.pc'
+[48.769s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/python3.8/site-packages'
+[48.769s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/bin'
+[48.774s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.ps1'
+[48.777s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.dsv'
+[48.779s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.sh'
+[48.780s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.bash'
+[48.782s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.zsh'
+[48.783s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/colcon-core/packages/rc110_laserscans_to_pointcloud)
+[48.785s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[48.787s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[48.787s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[48.788s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[48.819s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[48.820s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[48.820s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[48.898s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[48.906s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.ps1'
+[48.912s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_core/install/_local_setup_util_ps1.py'
+[48.921s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.ps1'
+[48.930s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.sh'
+[48.933s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_core/install/_local_setup_util_sh.py'
+[48.936s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.sh'
+[48.943s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.bash'
+[48.946s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.bash'
+[48.954s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.zsh'
+[48.957s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.zsh'

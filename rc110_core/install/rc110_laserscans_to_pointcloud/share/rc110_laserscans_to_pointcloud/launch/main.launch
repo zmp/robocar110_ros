@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="rc110_laserscans_to_pointcloud" exec="rc110_laserscans_to_pointcloud" name="laserscans_to_pointcloud">
+        <remap from="front_scan" to="front_lidar/scan"/>
+        <remap from="rear_scan" to="rear_lidar/scan"/>
+        <param name="output_frame_id" value="$(var rc)/rear_lidar"/>
+        <param name="front_lidar_frame_id" value="$(var rc)/front_lidar"/>
+        <param name="rear_lidar_frame_id" value="$(var rc)/rear_lidar"/>
+    </node>
+</launch>

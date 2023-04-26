@@ -1,0 +1,30 @@
+[0.102s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg
+[0.204s] -- Found ament_cmake: 1.2.1 (/opt/ros/rolling/share/ament_cmake/cmake)
+[4.546s] -- Configuring done
+[4.559s] -- Generating done
+[4.564s] -- Build files have been written to: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg
+[4.583s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg' returned '0': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg
+[4.597s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg -- -j4 -l4
+[4.770s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg' returned '0': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg -- -j4 -l4
+[4.944s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg
+[4.977s] -- Install configuration: "Release"
+[4.980s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/ament_index/resource_index/package_run_dependencies/rc110_slam_cg
+[4.983s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/ament_index/resource_index/parent_prefix_path/rc110_slam_cg
+[4.984s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/environment/ament_prefix_path.sh
+[4.985s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/environment/ament_prefix_path.dsv
+[4.986s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/environment/path.sh
+[4.987s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/environment/path.dsv
+[4.987s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/local_setup.bash
+[4.987s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/local_setup.sh
+[4.988s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/local_setup.zsh
+[4.989s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/local_setup.dsv
+[4.991s] -- Installing: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/package.dsv
+[4.997s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/ament_index/resource_index/packages/rc110_slam_cg
+[5.007s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/cmake/rc110_slam_cgConfig.cmake
+[5.009s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/cmake/rc110_slam_cgConfig-version.cmake
+[5.010s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/package.xml
+[5.010s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/config
+[5.011s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/config/main.lua
+[5.012s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/launch
+[5.013s] -- Up-to-date: /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/install/rc110_slam_cg/share/rc110_slam_cg/launch/main.launch
+[5.014s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg' returned '0': CMAKE_PREFIX_PATH=/opt/ros/rolling /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_navigation/rc110_slam_cg/build/rc110_slam_cg

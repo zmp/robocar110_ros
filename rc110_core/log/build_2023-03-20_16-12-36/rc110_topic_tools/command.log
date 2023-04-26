@@ -1,0 +1,2 @@
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_topic_tools -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_topic_tools
+Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools' returned '1': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_topic_tools -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_topic_tools

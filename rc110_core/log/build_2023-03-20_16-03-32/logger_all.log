@@ -1,0 +1,165 @@
+[1.120s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'rc110_core']
+[1.120s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffb8cf7640>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=['rc110_core'], packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffb8cf7640>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffb8cf7b80>)
+[1.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.218s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.218s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.218s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.218s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.219s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/zmp/ros/src/robocar110_ros/rc110_core'
+[1.220s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.220s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.220s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.221s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.221s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.221s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.221s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.221s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.222s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.300s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.300s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.300s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.300s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.301s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.301s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.301s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.302s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.302s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.302s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.303s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.303s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.303s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) by extensions ['ignore', 'ignore_ament_install']
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) by extension 'ignore'
+[1.304s] Level 1:colcon.colcon_core.package_identification:_identify(matlab_msg_gen_ros1) ignored
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['ignore', 'ignore_ament_install']
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ignore'
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ignore_ament_install'
+[1.305s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['colcon_pkg']
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'colcon_pkg'
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['colcon_meta']
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'colcon_meta'
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extensions ['ros']
+[1.306s] Level 1:colcon.colcon_core.package_identification:_identify(rc110) by extension 'ros'
+[1.315s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110' with type 'ros.ament_cmake' and name 'rc110'
+[1.315s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['ignore', 'ignore_ament_install']
+[1.316s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ignore'
+[1.316s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ignore_ament_install'
+[1.316s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['colcon_pkg']
+[1.316s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'colcon_pkg'
+[1.317s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['colcon_meta']
+[1.317s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'colcon_meta'
+[1.317s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extensions ['ros']
+[1.317s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_laserscans_to_pointcloud) by extension 'ros'
+[1.320s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_laserscans_to_pointcloud' with type 'ros.ament_cmake' and name 'rc110_laserscans_to_pointcloud'
+[1.321s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['ignore', 'ignore_ament_install']
+[1.321s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ignore'
+[1.321s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ignore_ament_install'
+[1.321s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['colcon_pkg']
+[1.322s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'colcon_pkg'
+[1.322s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['colcon_meta']
+[1.322s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'colcon_meta'
+[1.322s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extensions ['ros']
+[1.322s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_msgs) by extension 'ros'
+[1.324s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_msgs' with type 'ros.ament_cmake' and name 'rc110_msgs'
+[1.325s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['ignore', 'ignore_ament_install']
+[1.325s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ignore'
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ignore_ament_install'
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['colcon_pkg']
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'colcon_pkg'
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['colcon_meta']
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'colcon_meta'
+[1.326s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extensions ['ros']
+[1.327s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_rviz) by extension 'ros'
+[1.332s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_rviz' with type 'ros.ament_cmake' and name 'rc110_rviz'
+[1.332s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['ignore', 'ignore_ament_install']
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ignore'
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ignore_ament_install'
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['colcon_pkg']
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'colcon_pkg'
+[1.333s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['colcon_meta']
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'colcon_meta'
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extensions ['ros']
+[1.334s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_selector) by extension 'ros'
+[1.336s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_selector' with type 'ros.ament_cmake' and name 'rc110_selector'
+[1.336s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['ignore', 'ignore_ament_install']
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ignore'
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ignore_ament_install'
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['colcon_pkg']
+[1.337s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'colcon_pkg'
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['colcon_meta']
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'colcon_meta'
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extensions ['ros']
+[1.338s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_teleop) by extension 'ros'
+[1.342s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_teleop' with type 'ros.ament_cmake' and name 'rc110_teleop'
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['ignore', 'ignore_ament_install']
+[1.342s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ignore'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ignore_ament_install'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['colcon_pkg']
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'colcon_pkg'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['colcon_meta']
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'colcon_meta'
+[1.343s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extensions ['ros']
+[1.344s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_topic_tools) by extension 'ros'
+[1.346s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_topic_tools' with type 'ros.ament_cmake' and name 'rc110_topic_tools'
+[1.346s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['ignore', 'ignore_ament_install']
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ignore'
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ignore_ament_install'
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['colcon_pkg']
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'colcon_pkg'
+[1.347s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['colcon_meta']
+[1.348s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'colcon_meta'
+[1.349s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extensions ['ros']
+[1.349s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_twist_to_ackermann) by extension 'ros'
+[1.351s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_twist_to_ackermann' with type 'ros.ament_cmake' and name 'rc110_twist_to_ackermann'
+[1.352s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['ignore', 'ignore_ament_install']
+[1.352s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ignore'
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ignore_ament_install'
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['colcon_pkg']
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'colcon_pkg'
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['colcon_meta']
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'colcon_meta'
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extensions ['ros']
+[1.354s] Level 1:colcon.colcon_core.package_identification:_identify(rviz_video_panel) by extension 'ros'
+[1.356s] DEBUG:colcon.colcon_core.package_identification:Package 'rviz_video_panel' with type 'ros.ament_cmake' and name 'rviz_video_panel'
+[1.356s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.356s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.356s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.356s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.357s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.361s] WARNING:colcon.colcon_core.package_selection:ignoring unknown package 'rc110_core' in --packages-select
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_laserscans_to_pointcloud' in 'rc110_laserscans_to_pointcloud'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_msgs' in 'rc110_msgs'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_selector' in 'rc110_selector'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_topic_tools' in 'rc110_topic_tools'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_twist_to_ackermann' in 'rc110_twist_to_ackermann'
+[1.427s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rviz_video_panel' in 'rviz_video_panel'
+[1.427s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110' in 'rc110'
+[1.427s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_rviz' in 'rc110_rviz'
+[1.427s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'rc110_teleop' in 'rc110_teleop'
+[1.429s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.429s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.447s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 257 installed packages in /opt/ros/foxy
+[1.454s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.692s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.708s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.709s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[1.710s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[1.710s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[1.711s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[1.737s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[1.738s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[1.738s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[1.831s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[1.852s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.853s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.ps1'
+[1.856s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_core/install/_local_setup_util_ps1.py'
+[1.862s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.ps1'
+[1.870s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.sh'
+[1.872s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_core/install/_local_setup_util_sh.py'
+[1.874s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.sh'
+[1.880s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.bash'
+[1.882s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.bash'
+[1.888s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/local_setup.zsh'
+[1.893s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_core/install/setup.zsh'

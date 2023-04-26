@@ -1,0 +1,4 @@
+source;share/rc110_video_server/local_setup.bash
+source;share/rc110_video_server/local_setup.dsv
+source;share/rc110_video_server/local_setup.sh
+source;share/rc110_video_server/local_setup.zsh

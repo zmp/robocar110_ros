@@ -1,0 +1,8 @@
+source;share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.ps1
+source;share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.dsv
+source;share/rc110_laserscans_to_pointcloud/hook/cmake_prefix_path.sh
+source;share/rc110_laserscans_to_pointcloud/local_setup.bash
+source;share/rc110_laserscans_to_pointcloud/local_setup.dsv
+source;share/rc110_laserscans_to_pointcloud/local_setup.ps1
+source;share/rc110_laserscans_to_pointcloud/local_setup.sh
+source;share/rc110_laserscans_to_pointcloud/local_setup.zsh

@@ -26,21 +26,28 @@ target_compile_features(rc110_object_detection_node
     cxx_std_17
 )
 target_include_directories(rc110_object_detection_node
-  SYSTEM PUBLIC
+    SYSTEM PUBLIC
+    ${rc110_msgs_INCLUDE_DIRS}
+    ${sensor_msgs_INCLUDE_DIRS}
+    ${vision_msgs_INCLUDE_DIRS}
     ${CUDA_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )
 target_link_libraries(rc110_object_detection_node
     jetson-inference
     jetson-utils
+    rclcpp::rclcpp
+    ${rc110_msgs_LIBRARIES}
+    ${sensor_msgs_LIBRARIES}
+    ${vision_msgs_LIBRARIES}
     ${CUDA_LIBRARIES}
     ${OpenCV_LIBRARIES}
 )
 ament_target_dependencies(rc110_object_detection_node
-    rclcpp
-    rc110_msgs
-    sensor_msgs
-    vision_msgs
+rc110_msgs
+rclcpp
+sensor_msgs
+vision_msgs
 )
 ament_package()
 

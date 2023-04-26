@@ -1,0 +1,1 @@
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_video_server': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_video_server -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_video_server

@@ -1,0 +1,56 @@
+[0.135s] Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control
+[0.499s] -- The C compiler identification is GNU 9.4.0
+[0.779s] -- The CXX compiler identification is GNU 9.4.0
+[0.808s] -- Check for working C compiler: /usr/bin/cc
+[1.189s] -- Check for working C compiler: /usr/bin/cc -- works
+[1.196s] -- Detecting C compiler ABI info
+[1.557s] -- Detecting C compiler ABI info - done
+[1.608s] -- Detecting C compile features
+[1.609s] -- Detecting C compile features - done
+[1.621s] -- Check for working CXX compiler: /usr/bin/c++
+[2.075s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[2.082s] -- Detecting CXX compiler ABI info
+[2.511s] -- Detecting CXX compiler ABI info - done
+[2.556s] -- Detecting CXX compile features
+[2.558s] -- Detecting CXX compile features - done
+[4.149s] -- Found Boost: /usr/lib/aarch64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake (found version "1.71.0") found components: system filesystem thread 
+[4.232s] -- Found Boost: /usr/lib/aarch64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake (found version "1.71.0") found components: system 
+[4.237s] -- Check if compiler accepts -pthread
+[4.654s] -- Check if compiler accepts -pthread - yes
+[4.660s] -- Found Threads: TRUE  
+[4.683s] -- Found ament_cmake: 0.9.11 (/opt/ros/foxy/share/ament_cmake/cmake)
+[4.776s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[4.778s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[5.800s] -- Found rclcpp: 2.4.2 (/opt/ros/foxy/share/rclcpp/cmake)
+[5.960s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[5.980s] -- Found rosidl_adapter: 1.3.0 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[6.466s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[6.578s] -- Found FastRTPS: /opt/ros/foxy/include  
+[6.923s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[7.157s] -- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[7.162s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[7.727s] -- Found std_srvs: 2.0.5 (/opt/ros/foxy/share/std_srvs/cmake)
+[7.762s] -- Found ackermann_msgs: 2.0.2 (/opt/ros/foxy/share/ackermann_msgs/cmake)
+[7.876s] -- Found nav_msgs: 2.0.5 (/opt/ros/foxy/share/nav_msgs/cmake)
+[8.258s] -- Found sensor_msgs: 2.0.5 (/opt/ros/foxy/share/sensor_msgs/cmake)
+[8.535s] CMake Error at CMakeLists.txt:16 (find_package):
+[8.535s]   By not providing "Findrc110_msgs.cmake" in CMAKE_MODULE_PATH this project
+[8.536s]   has asked CMake to find a package configuration file provided by
+[8.536s]   "rc110_msgs", but CMake did not find one.
+[8.536s] 
+[8.536s]   Could not find a package configuration file provided by "rc110_msgs" with
+[8.536s]   any of the following names:
+[8.537s] 
+[8.537s]     rc110_msgsConfig.cmake
+[8.537s]     rc110_msgs-config.cmake
+[8.537s] 
+[8.538s]   Add the installation prefix of "rc110_msgs" to CMAKE_PREFIX_PATH or set
+[8.538s]   "rc110_msgs_DIR" to a directory containing one of the above files.  If
+[8.538s]   "rc110_msgs" provides a separate development package or SDK, be sure it has
+[8.538s]   been installed.
+[8.539s] 
+[8.539s] 
+[8.547s] -- Configuring incomplete, errors occurred!
+[8.547s] See also "/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control/CMakeFiles/CMakeOutput.log".
+[8.548s] See also "/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control/CMakeFiles/CMakeError.log".
+[8.578s] Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control' returned '1': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control

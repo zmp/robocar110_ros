@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <rclcpp/rclcpp.hpp>
 
 namespace
 {
@@ -29,8 +30,7 @@ Rc110CustomDetectNet::Rc110CustomDetectNet(const float meanPixel, const float st
         detectNet(meanPixel),
         m_stdPixel(stdPixel),
         m_useDarknetYolo(useDarknetYolo)
-{
-}
+{ }
 
 Rc110CustomDetectNet::Ptr Rc110CustomDetectNet::Create(const char* modelPath,
                                                        const char* classLabels,
@@ -61,68 +61,66 @@ Rc110CustomDetectNet::Ptr Rc110CustomDetectNet::Create(const char* modelPath,
 
     std::vector<std::string> outputBlobs;
 
-    if (output) {
+    if (output)
+    {
         outputBlobs.emplace_back(output);
     }
 
-    if (numDetections) {
+    if (numDetections)
+    {
         outputBlobs.emplace_back(numDetections);
     }
 
-    if (!net->LoadNetwork(
-                nullptr, modelPath, nullptr, input, inputDims, outputBlobs, maxBatchSize, precision, device, allowGPUFallback)) {
+    if (!net->LoadNetwork(nullptr, modelPath, nullptr, input, inputDims, outputBlobs, maxBatchSize, precision, device, allowGPUFallback))
+    {
         LogError(LOG_TRT "detectNet -- failed to initialize.\n");
         return nullptr;
     }
 
-    if (!net->allocDetections() || !net->loadClassInfo(classLabels) || !net->defaultColors()) {
+    if (!net->allocDetections() || !net->loadClassInfo(classLabels))
+    {
         return nullptr;
     }
 
     net->SetThreshold(threshold);
-
     return net;
+    
 }
 
-int Rc110CustomDetectNet::CustomDetect(void* input,
-                                       const std::uint32_t width,
-                                       const std::uint32_t height,
-                                       const imageFormat format,
-                                       Detection* detections,
-                                       const std::uint32_t overlay)
+int Rc110CustomDetectNet::CustomDetect(void* input, const std::uint32_t width, const std::uint32_t height,
+                                       const imageFormat format, Detection* detections, const std::uint32_t overlay)
 {
-    if (!m_useDarknetYolo) {
+    if (!m_useDarknetYolo)
+    {
         return detectNet::Detect(input, width, height, format, detections, overlay);
     }
 
-    if (!IsModelType(MODEL_ONNX)) {
+    if (!IsModelType(MODEL_ONNX))
+    {
         LogError(LOG_TRT "Rc110CustomDetectNet::CustomDetect() only support onnx format for darknet yolo model\n");
         return -1;
     }
 
-    if (!input || width == 0 || height == 0 || !detections) {
+    if (!input || width == 0 || height == 0 || !detections)
+    {
         LogError(LOG_TRT "Rc110CustomDetectNet::CustomDetect( 0x%p, %u, %u ) -> invalid parameters\n", input, width, height);
         return -1;
     }
 
-    if (!imageFormatIsRGB(format)) {
+    if (!imageFormatIsRGB(format))
+    {
         LogError(LOG_TRT "Rc110DetectNet::CustomDetect() -- unsupported image format (%s)\n", imageFormatToStr(format));
         LogError(LOG_TRT "supported formats are: rgb8, rgba8, rgba32f, rgba32f\n");
         return -1;
     }
 
     PROFILER_BEGIN(PROFILER_PREPROCESS);
-    if (CUDA_FAILED(cudaTensorNormMeanRGB(input,
-                                          format,
-                                          width,
-                                          height,
-                                          mInputs[0].CUDA,
-                                          GetInputWidth(),
-                                          GetInputHeight(),
-                                          make_float2(0.0f, 1.0f),
+    if (CUDA_FAILED(cudaTensorNormMeanRGB(input, format, width, height, mInputs[0].CUDA,
+                                          GetInputWidth(), GetInputHeight(), make_float2(0.0f, 1.0f),
                                           make_float3(mMeanPixel, mMeanPixel, mMeanPixel),
                                           make_float3(m_stdPixel, m_stdPixel, m_stdPixel),
-                                          GetStream()))) {
+                                          GetStream())))
+    {
         LogError(LOG_TRT "Rc110CustomDetectNet::CustomDetect() -- cudaTensorNormMeanRGB() failed\n");
         PROFILER_END(PROFILER_PREPROCESS);
         return -1;
@@ -130,7 +128,8 @@ int Rc110CustomDetectNet::CustomDetect(void* input,
     PROFILER_END(PROFILER_PREPROCESS);
 
     PROFILER_BEGIN(PROFILER_NETWORK);
-    if (!this->ProcessNetwork()) {
+    if (!this->ProcessNetwork())
+    {
         PROFILER_END(PROFILER_NETWORK);
         return -1;
     }
@@ -155,23 +154,28 @@ int Rc110CustomDetectNet::PostProcess(const std::uint32_t width, const std::uint
     const std::uint32_t numBoxes = DIMS_C(mOutputs[OUTPUT_BBOX_DARKNET_YOLO].dims);
     const std::uint32_t numCoord = DIMS_W(mOutputs[OUTPUT_BBOX_DARKNET_YOLO].dims);
 
-    for (std::uint32_t n = 0; n < numBoxes; n++) {
+    for (std::uint32_t n = 0; n < numBoxes; n++)
+    {
         std::uint32_t maxClass = 0;
         float maxScore = std::numeric_limits<float>::lowest();
 
-        for (std::uint32_t m = 0; m < mNumClasses; ++m) {
+        for (std::uint32_t m = 0; m < mNumClasses; m++)
+        {
             const float score = conf[n * mNumClasses + m];
 
-            if (score < mCoverageThreshold) {
+            if (score < mConfidenceThreshold)
+            {
                 continue;
             }
-            if (score > maxScore) {
+            if (score > maxScore)
+            {
                 maxScore = score;
                 maxClass = m;
             }
         }
 
-        if (maxScore < mCoverageThreshold) {
+        if (maxScore < mConfidenceThreshold)
+        {
             continue;
         }
 
@@ -189,7 +193,8 @@ int Rc110CustomDetectNet::PostProcess(const std::uint32_t width, const std::uint
     }
     this->sortDetections(detections, numDetections);
 
-    for (int n = 0; n < numDetections; n++) {
+    for (int n = 0; n < numDetections; n++)
+    {
         detections[n].Left = std::clamp<float>(detections[n].Left, 0, width - 1);
         detections[n].Right = std::clamp<float>(detections[n].Right, 0, width - 1);
         detections[n].Top = std::clamp<float>(detections[n].Top, 0, height - 1);
@@ -206,16 +211,17 @@ int Rc110CustomDetectNet::CustomDetect(void* input,
                                        Detection** detections,
                                        const std::uint32_t overlay)
 {
-    if (!detections) {
+    if (!detections)
+    {
         return -1;
     }
 
-    *detections = mDetectionSets[0] + mDetectionSet * GetMaxDetections();
+    *detections = &(mDetectionSets[0]);
 
-    if (++mDetectionSet >= mNumDetectionSets) {
+    if (++mDetectionSet >= mNumDetectionSets)
+    {
         mDetectionSet = 0;
     }
-
     return this->CustomDetect(input, width, height, format, *detections, overlay);
 }
 }  // namespace zmp

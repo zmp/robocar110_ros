@@ -18,10 +18,8 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
         m_overlayFlags(detectNet::OVERLAY_NONE),
         m_inferenceNet(nullptr),
         m_inputConverter(*this),
-        m_inputImageSub(create_subscription<sensor_msgs::msg::Image>(
-                "~/input_image",
-                1,
-                std::bind(&Rc110ObjectDetection::onImage, this, std::placeholders::_1))),
+        m_inputImageSub(create_subscription<sensor_msgs::msg::Image>("~/input_image", 1,
+                                                                     std::bind(&Rc110ObjectDetection::onImage, this, std::placeholders::_1))),
         m_detectionPub(create_publisher<vision_msgs::msg::Detection2DArray>("detections", 25)),
         m_overlayPub(create_publisher<sensor_msgs::msg::Image>("overlay", 2)),
         m_classesInfoPub(create_publisher<rc110_msgs::msg::StringArray>("classes_info", 1))
@@ -57,21 +55,25 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
                                                    m_param.stdPixel,
                                                    m_param.useDarknetYolo));
 
-    if (!m_inferenceNet) {
+    if (!m_inferenceNet)
+    {
         RCLCPP_ERROR(get_logger(), "failed to load detectNet model");
         rclcpp::shutdown();
     }
 
     m_classesMsg.data.reserve(m_inferenceNet->GetNumClasses());
-    for (std::uint32_t i = 0; i < m_inferenceNet->GetNumClasses(); ++i) {
+    for (std::uint32_t i = 0; i < m_inferenceNet->GetNumClasses(); i++)
+    {
         m_classesMsg.data.emplace_back(m_inferenceNet->GetClassDesc(i));
     }
 
     m_classColors.reserve(m_inferenceNet->GetNumClasses());
-    for (std::uint32_t i = 0; i < m_inferenceNet->GetNumClasses(); ++i) {
-        m_classColors.emplace_back(cv::Scalar(m_inferenceNet->GetClassColor(i)[0],
-                                              m_inferenceNet->GetClassColor(i)[1],
-                                              m_inferenceNet->GetClassColor(i)[2]));
+    for (std::uint32_t i = 0; i < m_inferenceNet->GetNumClasses(); i++)
+    {
+        m_classColors.emplace_back(cv::Scalar((m_inferenceNet->GenerateColor(i).x,
+                                               m_inferenceNet->GenerateColor(i).y,
+                                               m_inferenceNet->GenerateColor(i).z,
+                                               m_inferenceNet->GenerateColor(i).w)));
     }
     publishClassesInfo();
 }
@@ -93,7 +95,8 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
                                                            m_inputConverter.imageHeight(),
                                                            &detections,
                                                            detectNet::OVERLAY_NONE);
-    if (numDetections < 0) {
+    if (numDetections < 0)
+    {
         RCLCPP_ERROR(get_logger(), "failed to run object detection");
         return;
     }
@@ -101,7 +104,8 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
     vision_msgs::msg::Detection2DArray detectionsMsg;
     detectionsMsg.detections.reserve(numDetections);
 
-    for (int i = 0; i < numDetections; ++i) {
+    for (int i = 0; i < numDetections; ++i)
+    {
         detectNet::Detection* curDet = detections + i;
         vision_msgs::msg::Detection2D curDetectionMsg;
         curDetectionMsg.bbox.size_x = curDet->Width();
@@ -121,7 +125,8 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
     detectionsMsg.header.stamp = message.header.stamp;
     m_detectionPub->publish(detectionsMsg);
 
-    if (m_overlayPub->get_subscription_count() > 0) {
+    if (m_overlayPub->get_subscription_count() > 0)
+    {
         this->publishOverlay(detectionsMsg, m_classesMsg, m_classColors, message.header.stamp);
     }
 }
@@ -168,7 +173,8 @@ cv::Mat Rc110ObjectDetection::drawBoundingBox(const cv::Mat& image,
 
     cv::Mat result = image.clone();
 
-    for (const auto& curDetection : detectionsMsg.detections) {
+    for (const auto& curDetection : detectionsMsg.detections)
+    {
         const std::int64_t classIdx = std::atoll(curDetection.results[0].hypothesis.class_id.c_str());
         const float confidenceScore = curDetection.results[0].hypothesis.score;
         const std::string& curClass = classesMsg.data[classIdx];

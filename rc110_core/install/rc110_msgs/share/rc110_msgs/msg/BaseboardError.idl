@@ -1,0 +1,23 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rc110_msgs/msg/BaseboardError.msg
+// generated code does not contain a copyright notice
+
+
+module rc110_msgs {
+  module msg {
+    module BaseboardError_Constants {
+      const uint8 NONE = 0;
+      const uint8 BOARD_HEAT = 1;
+      const uint8 MOTOR_HEAT = 2;
+      const uint8 MOTOR_FAILURE = 3;
+      const uint8 LOW_VOLTAGE = 4;
+    };
+    @verbatim (language="comment", text=
+      " All errors that can be emitted from baseboard:")
+    struct BaseboardError {
+      @verbatim (language="comment", text=
+        " Error")
+      uint8 data;
+    };
+  };
+};

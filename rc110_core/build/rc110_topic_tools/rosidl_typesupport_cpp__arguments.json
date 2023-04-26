@@ -1,0 +1,23 @@
+{
+  "package_name": "rc110_topic_tools",
+  "output_dir": "/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools/rosidl_typesupport_cpp/rc110_topic_tools",
+  "template_dir": "/opt/ros/foxy/share/rosidl_typesupport_cpp/resource",
+  "idl_tuples": [
+    "/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools/rosidl_adapter/rc110_topic_tools:srv/MuxSelect.idl"
+  ],
+  "ros_interface_dependencies": [
+    "builtin_interfaces:/opt/ros/foxy/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/opt/ros/foxy/share/builtin_interfaces/msg/Time.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/foxy/lib/rosidl_typesupport_cpp/rosidl_typesupport_cpp",
+    "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_typesupport_cpp/__init__.py",
+    "/opt/ros/foxy/share/rosidl_typesupport_cpp/resource/action__type_support.cpp.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_cpp/resource/idl__type_support.cpp.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_cpp/resource/msg__type_support.cpp.em",
+    "/opt/ros/foxy/share/rosidl_typesupport_cpp/resource/srv__type_support.cpp.em",
+    "/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools/rosidl_adapter/rc110_topic_tools/srv/MuxSelect.idl",
+    "/opt/ros/foxy/share/builtin_interfaces/msg/Duration.idl",
+    "/opt/ros/foxy/share/builtin_interfaces/msg/Time.idl"
+  ]
+}

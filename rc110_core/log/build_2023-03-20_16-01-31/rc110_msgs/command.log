@@ -1,0 +1,6 @@
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_msgs -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs
+Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_core/rc110_msgs -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_msgs
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs -- -j4 -l4
+Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake --build /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs -- -j4 -l4
+Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs
+Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs' returned '0': /usr/bin/cmake --install /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs

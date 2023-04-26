@@ -1,0 +1,576 @@
+[0.000000] (-) TimerEvent: {}
+[0.008722] (-) JobUnselected: {'identifier': 'rc110'}
+[0.008975] (-) JobUnselected: {'identifier': 'rc110_msgs'}
+[0.009076] (-) JobUnselected: {'identifier': 'rc110_rviz'}
+[0.009163] (-) JobUnselected: {'identifier': 'rc110_selector'}
+[0.009237] (-) JobUnselected: {'identifier': 'rc110_teleop'}
+[0.009346] (-) JobUnselected: {'identifier': 'rc110_topic_tools'}
+[0.009419] (-) JobUnselected: {'identifier': 'rc110_twist_to_ackermann'}
+[0.009492] (-) JobUnselected: {'identifier': 'rviz_video_panel'}
+[0.009590] (rc110_laserscans_to_pointcloud) JobQueued: {'identifier': 'rc110_laserscans_to_pointcloud', 'dependencies': OrderedDict()}
+[0.009682] (rc110_laserscans_to_pointcloud) JobStarted: {'identifier': 'rc110_laserscans_to_pointcloud'}
+[0.101204] (-) TimerEvent: {}
+[0.104793] (rc110_laserscans_to_pointcloud) JobProgress: {'identifier': 'rc110_laserscans_to_pointcloud', 'progress': 'cmake'}
+[0.111622] (rc110_laserscans_to_pointcloud) Command: {'cmd': ['/usr/bin/cmake', '/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_laserscans_to_pointcloud', '-DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud'], 'cwd': '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zmp'), ('LC_TIME', 'ja_JP.UTF-8'), ('SSH_AGENT_PID', '4186'), ('ROS_PACKAGE_PATH', '/opt/ros/noetic/share'), ('XDG_SESSION_TYPE', 'x11'), ('ROS_ETC_DIR', '/opt/ros/noetic/etc/ros'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/opt/ros/noetic/lib:/usr/local/cuda-11.4/lib64:'), ('QT4_IM_MODULE', 'fcitx'), ('HOME', '/home/zmp'), ('OLDPWD', '/home/zmp/ros/src/robocar110_ros'), ('RC110_MAP_NAME', 'map'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('MANAGERPID', '2268'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5435'), ('RC110_ARGS', 'joy_type:=elecom'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'foxy'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zmp'), ('JOURNAL_STREAM', '7:72336'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/opt/ros/noetic/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zmp'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/foxy/bin:/opt/ros/noetic/bin:/usr/local/cuda-11.4/bin:/home/zmp/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('SESSION_MANAGER', 'local/rc-19217:@/tmp/.ICE-unix/4215,unix/rc-19217:/tmp/.ICE-unix/4215'), ('INVOCATION_ID', '278339b7c7fc443cb442d09c31481838'), ('RC110_LAUNCH_COMMAND', 'roslaunch --wait --skip-log-check rc110_system robot.launch joy_type:=elecom'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('ROSLISP_PACKAGE_DIRECTORIES', ''), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/noetic/share/ros'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:3b2070ad-f2ab-4377-a9b7-e25c03142e1e'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://localhost:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/foxy/lib/python3.8/site-packages:/opt/ros/noetic/lib/python3/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6003'), ('CMAKE_PREFIX_PATH', '/opt/ros/foxy')]), 'shell': False}
+[0.201198] (-) TimerEvent: {}
+[0.303743] (-) TimerEvent: {}
+[0.404703] (-) TimerEvent: {}
+[0.505717] (-) TimerEvent: {}
+[0.548703] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- The C compiler identification is GNU 9.4.0\n'}
+[0.606012] (-) TimerEvent: {}
+[0.707755] (-) TimerEvent: {}
+[0.808903] (-) TimerEvent: {}
+[0.817100] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 9.4.0\n'}
+[0.840085] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc\n'}
+[0.909158] (-) TimerEvent: {}
+[1.010615] (-) TimerEvent: {}
+[1.111982] (-) TimerEvent: {}
+[1.214065] (-) TimerEvent: {}
+[1.215387] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc -- works\n'}
+[1.219375] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.314279] (-) TimerEvent: {}
+[1.416035] (-) TimerEvent: {}
+[1.517818] (-) TimerEvent: {}
+[1.565744] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.604946] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.606343] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.616449] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++\n'}
+[1.617926] (-) TimerEvent: {}
+[1.718821] (-) TimerEvent: {}
+[1.819919] (-) TimerEvent: {}
+[1.922141] (-) TimerEvent: {}
+[1.981920] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ -- works\n'}
+[1.985934] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[2.022439] (-) TimerEvent: {}
+[2.123673] (-) TimerEvent: {}
+[2.224858] (-) TimerEvent: {}
+[2.325848] (-) TimerEvent: {}
+[2.392059] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[2.426100] (-) TimerEvent: {}
+[2.437887] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[2.441089] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[2.453380] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found ament_cmake: 0.9.11 (/opt/ros/foxy/share/ament_cmake/cmake)\n'}
+[2.526251] (-) TimerEvent: {}
+[2.537158] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") \n'}
+[2.538608] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[2.626692] (-) TimerEvent: {}
+[2.728012] (-) TimerEvent: {}
+[2.829003] (-) TimerEvent: {}
+[2.930035] (-) TimerEvent: {}
+[3.030934] (-) TimerEvent: {}
+[3.131763] (-) TimerEvent: {}
+[3.232693] (-) TimerEvent: {}
+[3.297404] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found sensor_msgs: 2.0.5 (/opt/ros/foxy/share/sensor_msgs/cmake)\n'}
+[3.332893] (-) TimerEvent: {}
+[3.389469] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[3.410040] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found rosidl_adapter: 1.3.0 (/opt/ros/foxy/share/rosidl_adapter/cmake)\n'}
+[3.433105] (-) TimerEvent: {}
+[3.534206] (-) TimerEvent: {}
+[3.635523] (-) TimerEvent: {}
+[3.736739] (-) TimerEvent: {}
+[3.837899] (-) TimerEvent: {}
+[3.849393] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  \n'}
+[3.938066] (-) TimerEvent: {}
+[3.944296] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/foxy/include  \n'}
+[4.038374] (-) TimerEvent: {}
+[4.140094] (-) TimerEvent: {}
+[4.215809] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[4.240287] (-) TimerEvent: {}
+[4.341208] (-) TimerEvent: {}
+[4.442154] (-) TimerEvent: {}
+[4.543136] (-) TimerEvent: {}
+[4.644093] (-) TimerEvent: {}
+[4.728824] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found laser_geometry: 2.2.0 (/opt/ros/foxy/share/laser_geometry/cmake)\n'}
+[4.744259] (-) TimerEvent: {}
+[4.752790] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found rclcpp: 2.4.2 (/opt/ros/foxy/share/rclcpp/cmake)\n'}
+[4.844450] (-) TimerEvent: {}
+[4.889823] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)\n'}
+[4.895159] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[4.898643] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[4.944664] (-) TimerEvent: {}
+[5.045679] (-) TimerEvent: {}
+[5.146805] (-) TimerEvent: {}
+[5.248012] (-) TimerEvent: {}
+[5.291064] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[5.294237] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[5.348220] (-) TimerEvent: {}
+[5.450064] (-) TimerEvent: {}
+[5.551469] (-) TimerEvent: {}
+[5.653311] (-) TimerEvent: {}
+[5.680257] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed\n'}
+[5.682009] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread_create in pthreads\n'}
+[5.753611] (-) TimerEvent: {}
+[5.854685] (-) TimerEvent: {}
+[5.956522] (-) TimerEvent: {}
+[5.991683] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread_create in pthreads - not found\n'}
+[5.992812] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread_create in pthread\n'}
+[6.056737] (-) TimerEvent: {}
+[6.157869] (-) TimerEvent: {}
+[6.259522] (-) TimerEvent: {}
+[6.341251] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Looking for pthread_create in pthread - found\n'}
+[6.349416] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[6.359738] (-) TimerEvent: {}
+[6.460653] (-) TimerEvent: {}
+[6.561522] (-) TimerEvent: {}
+[6.662436] (-) TimerEvent: {}
+[6.763446] (-) TimerEvent: {}
+[6.824488] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Found tf2_ros: 0.13.13 (/opt/ros/foxy/share/tf2_ros/cmake)\n'}
+[6.863624] (-) TimerEvent: {}
+[6.964562] (-) TimerEvent: {}
+[7.065613] (-) TimerEvent: {}
+[7.166657] (-) TimerEvent: {}
+[7.267629] (-) TimerEvent: {}
+[7.368631] (-) TimerEvent: {}
+[7.469530] (-) TimerEvent: {}
+[7.570626] (-) TimerEvent: {}
+[7.671921] (-) TimerEvent: {}
+[7.773065] (-) TimerEvent: {}
+[7.873902] (-) TimerEvent: {}
+[7.974995] (-) TimerEvent: {}
+[8.076738] (-) TimerEvent: {}
+[8.177773] (-) TimerEvent: {}
+[8.278959] (-) TimerEvent: {}
+[8.379975] (-) TimerEvent: {}
+[8.481272] (-) TimerEvent: {}
+[8.582112] (-) TimerEvent: {}
+[8.683502] (-) TimerEvent: {}
+[8.784344] (-) TimerEvent: {}
+[8.885121] (-) TimerEvent: {}
+[8.985905] (-) TimerEvent: {}
+[9.086796] (-) TimerEvent: {}
+[9.187637] (-) TimerEvent: {}
+[9.288623] (-) TimerEvent: {}
+[9.389499] (-) TimerEvent: {}
+[9.490533] (-) TimerEvent: {}
+[9.558782] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):\n'}
+[9.559912] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b"  Couldn't convert dependency to deb name: rclcpp\n"}
+[9.560328] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[9.560711] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'  CMakeLists.txt:32 (include)\n'}
+[9.561099] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[9.561477] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[9.591142] (-) TimerEvent: {}
+[9.693244] (-) TimerEvent: {}
+[9.794222] (-) TimerEvent: {}
+[9.895939] (-) TimerEvent: {}
+[9.997332] (-) TimerEvent: {}
+[10.098316] (-) TimerEvent: {}
+[10.199259] (-) TimerEvent: {}
+[10.300636] (-) TimerEvent: {}
+[10.402121] (-) TimerEvent: {}
+[10.503045] (-) TimerEvent: {}
+[10.603969] (-) TimerEvent: {}
+[10.705174] (-) TimerEvent: {}
+[10.806214] (-) TimerEvent: {}
+[10.907326] (-) TimerEvent: {}
+[11.008368] (-) TimerEvent: {}
+[11.037999] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):\n'}
+[11.040381] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b"  Couldn't convert dependency to deb name: sensor_msgs\n"}
+[11.041069] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[11.041676] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'  CMakeLists.txt:32 (include)\n'}
+[11.042296] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[11.042974] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[11.108545] (-) TimerEvent: {}
+[11.209392] (-) TimerEvent: {}
+[11.310364] (-) TimerEvent: {}
+[11.411599] (-) TimerEvent: {}
+[11.512660] (-) TimerEvent: {}
+[11.613553] (-) TimerEvent: {}
+[11.714533] (-) TimerEvent: {}
+[11.815563] (-) TimerEvent: {}
+[11.916535] (-) TimerEvent: {}
+[12.017800] (-) TimerEvent: {}
+[12.119652] (-) TimerEvent: {}
+[12.220654] (-) TimerEvent: {}
+[12.321664] (-) TimerEvent: {}
+[12.423058] (-) TimerEvent: {}
+[12.524335] (-) TimerEvent: {}
+[12.625856] (-) TimerEvent: {}
+[12.703988] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):\n'}
+[12.704777] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b"  Couldn't convert dependency to deb name: laser_geometry\n"}
+[12.706524] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[12.707050] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'  CMakeLists.txt:32 (include)\n'}
+[12.707435] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[12.707782] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[12.726123] (-) TimerEvent: {}
+[12.827712] (-) TimerEvent: {}
+[12.928581] (-) TimerEvent: {}
+[13.029446] (-) TimerEvent: {}
+[13.130796] (-) TimerEvent: {}
+[13.231690] (-) TimerEvent: {}
+[13.332591] (-) TimerEvent: {}
+[13.433458] (-) TimerEvent: {}
+[13.534312] (-) TimerEvent: {}
+[13.635303] (-) TimerEvent: {}
+[13.736280] (-) TimerEvent: {}
+[13.837398] (-) TimerEvent: {}
+[13.938313] (-) TimerEvent: {}
+[14.040220] (-) TimerEvent: {}
+[14.141435] (-) TimerEvent: {}
+[14.243072] (-) TimerEvent: {}
+[14.290215] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'CMake Warning at /home/zmp/ros/src/robocar110_ros/cmake/rc110_cpack.cmake:72 (message):\n'}
+[14.291098] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b"  Couldn't convert dependency to deb name: tf2_ros\n"}
+[14.291564] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[14.291915] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'  CMakeLists.txt:32 (include)\n'}
+[14.292284] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[14.292588] (rc110_laserscans_to_pointcloud) StderrLine: {'line': b'\n'}
+[14.343291] (-) TimerEvent: {}
+[14.370828] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Configuring done\n'}
+[14.432652] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Generating done\n'}
+[14.439960] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Build files have been written to: /home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud\n'}
+[14.443548] (-) TimerEvent: {}
+[14.475780] (rc110_laserscans_to_pointcloud) CommandEnded: {'returncode': 0}
+[14.479991] (rc110_laserscans_to_pointcloud) JobProgress: {'identifier': 'rc110_laserscans_to_pointcloud', 'progress': 'build'}
+[14.485967] (rc110_laserscans_to_pointcloud) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud', '--', '-j4', '-l4'], 'cwd': '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zmp'), ('LC_TIME', 'ja_JP.UTF-8'), ('SSH_AGENT_PID', '4186'), ('ROS_PACKAGE_PATH', '/opt/ros/noetic/share'), ('XDG_SESSION_TYPE', 'x11'), ('ROS_ETC_DIR', '/opt/ros/noetic/etc/ros'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/opt/ros/noetic/lib:/usr/local/cuda-11.4/lib64:'), ('QT4_IM_MODULE', 'fcitx'), ('HOME', '/home/zmp'), ('OLDPWD', '/home/zmp/ros/src/robocar110_ros'), ('RC110_MAP_NAME', 'map'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('MANAGERPID', '2268'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5435'), ('RC110_ARGS', 'joy_type:=elecom'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'foxy'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zmp'), ('JOURNAL_STREAM', '7:72336'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/opt/ros/noetic/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zmp'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/foxy/bin:/opt/ros/noetic/bin:/usr/local/cuda-11.4/bin:/home/zmp/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('SESSION_MANAGER', 'local/rc-19217:@/tmp/.ICE-unix/4215,unix/rc-19217:/tmp/.ICE-unix/4215'), ('INVOCATION_ID', '278339b7c7fc443cb442d09c31481838'), ('RC110_LAUNCH_COMMAND', 'roslaunch --wait --skip-log-check rc110_system robot.launch joy_type:=elecom'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('ROSLISP_PACKAGE_DIRECTORIES', ''), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/noetic/share/ros'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:3b2070ad-f2ab-4377-a9b7-e25c03142e1e'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://localhost:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/foxy/lib/python3.8/site-packages:/opt/ros/noetic/lib/python3/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6003'), ('CMAKE_PREFIX_PATH', '/opt/ros/foxy')]), 'shell': False}
+[14.543969] (-) TimerEvent: {}
+[14.645719] (-) TimerEvent: {}
+[14.679836] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target rc110_laserscans_to_pointcloud\x1b[0m\n'}
+[14.745933] (-) TimerEvent: {}
+[14.846983] (-) TimerEvent: {}
+[14.948658] (-) TimerEvent: {}
+[15.002294] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/rc110_laserscans_to_pointcloud.dir/src/rc110_laserscans_to_pointcloud_node.cpp.o\x1b[0m\n'}
+[15.005636] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding CXX object CMakeFiles/rc110_laserscans_to_pointcloud.dir/src/rc110_laserscans_to_pointcloud.cpp.o\x1b[0m\n'}
+[15.048972] (-) TimerEvent: {}
+[15.151095] (-) TimerEvent: {}
+[15.252160] (-) TimerEvent: {}
+[15.353190] (-) TimerEvent: {}
+[15.454919] (-) TimerEvent: {}
+[15.556704] (-) TimerEvent: {}
+[15.657766] (-) TimerEvent: {}
+[15.759535] (-) TimerEvent: {}
+[15.860653] (-) TimerEvent: {}
+[15.961996] (-) TimerEvent: {}
+[16.063160] (-) TimerEvent: {}
+[16.164264] (-) TimerEvent: {}
+[16.265298] (-) TimerEvent: {}
+[16.366993] (-) TimerEvent: {}
+[16.468172] (-) TimerEvent: {}
+[16.569257] (-) TimerEvent: {}
+[16.670588] (-) TimerEvent: {}
+[16.771885] (-) TimerEvent: {}
+[16.873843] (-) TimerEvent: {}
+[16.975031] (-) TimerEvent: {}
+[17.077058] (-) TimerEvent: {}
+[17.178131] (-) TimerEvent: {}
+[17.279573] (-) TimerEvent: {}
+[17.381600] (-) TimerEvent: {}
+[17.482738] (-) TimerEvent: {}
+[17.584099] (-) TimerEvent: {}
+[17.685141] (-) TimerEvent: {}
+[17.786253] (-) TimerEvent: {}
+[17.887524] (-) TimerEvent: {}
+[17.988692] (-) TimerEvent: {}
+[18.089836] (-) TimerEvent: {}
+[18.191110] (-) TimerEvent: {}
+[18.292220] (-) TimerEvent: {}
+[18.393436] (-) TimerEvent: {}
+[18.494529] (-) TimerEvent: {}
+[18.595815] (-) TimerEvent: {}
+[18.697003] (-) TimerEvent: {}
+[18.798280] (-) TimerEvent: {}
+[18.899444] (-) TimerEvent: {}
+[19.000648] (-) TimerEvent: {}
+[19.101854] (-) TimerEvent: {}
+[19.202953] (-) TimerEvent: {}
+[19.304424] (-) TimerEvent: {}
+[19.407647] (-) TimerEvent: {}
+[19.508658] (-) TimerEvent: {}
+[19.610334] (-) TimerEvent: {}
+[19.712223] (-) TimerEvent: {}
+[19.814095] (-) TimerEvent: {}
+[19.915927] (-) TimerEvent: {}
+[20.017684] (-) TimerEvent: {}
+[20.118840] (-) TimerEvent: {}
+[20.220006] (-) TimerEvent: {}
+[20.321196] (-) TimerEvent: {}
+[20.422913] (-) TimerEvent: {}
+[20.529431] (-) TimerEvent: {}
+[20.630618] (-) TimerEvent: {}
+[20.731747] (-) TimerEvent: {}
+[20.832829] (-) TimerEvent: {}
+[20.934875] (-) TimerEvent: {}
+[21.036123] (-) TimerEvent: {}
+[21.137785] (-) TimerEvent: {}
+[21.239904] (-) TimerEvent: {}
+[21.341904] (-) TimerEvent: {}
+[21.443722] (-) TimerEvent: {}
+[21.544838] (-) TimerEvent: {}
+[21.645947] (-) TimerEvent: {}
+[21.747064] (-) TimerEvent: {}
+[21.848227] (-) TimerEvent: {}
+[21.950897] (-) TimerEvent: {}
+[22.052469] (-) TimerEvent: {}
+[22.153496] (-) TimerEvent: {}
+[22.254960] (-) TimerEvent: {}
+[22.355971] (-) TimerEvent: {}
+[22.457458] (-) TimerEvent: {}
+[22.558617] (-) TimerEvent: {}
+[22.660272] (-) TimerEvent: {}
+[22.761448] (-) TimerEvent: {}
+[22.863105] (-) TimerEvent: {}
+[22.964585] (-) TimerEvent: {}
+[23.065890] (-) TimerEvent: {}
+[23.167080] (-) TimerEvent: {}
+[23.268384] (-) TimerEvent: {}
+[23.370046] (-) TimerEvent: {}
+[23.471805] (-) TimerEvent: {}
+[23.573456] (-) TimerEvent: {}
+[23.674704] (-) TimerEvent: {}
+[23.775947] (-) TimerEvent: {}
+[23.877103] (-) TimerEvent: {}
+[23.978193] (-) TimerEvent: {}
+[24.079817] (-) TimerEvent: {}
+[24.181305] (-) TimerEvent: {}
+[24.282736] (-) TimerEvent: {}
+[24.383979] (-) TimerEvent: {}
+[24.485258] (-) TimerEvent: {}
+[24.586584] (-) TimerEvent: {}
+[24.687829] (-) TimerEvent: {}
+[24.789210] (-) TimerEvent: {}
+[24.890379] (-) TimerEvent: {}
+[24.992302] (-) TimerEvent: {}
+[25.095130] (-) TimerEvent: {}
+[25.196281] (-) TimerEvent: {}
+[25.298638] (-) TimerEvent: {}
+[25.400155] (-) TimerEvent: {}
+[25.501325] (-) TimerEvent: {}
+[25.603373] (-) TimerEvent: {}
+[25.705819] (-) TimerEvent: {}
+[25.806983] (-) TimerEvent: {}
+[25.908096] (-) TimerEvent: {}
+[26.009735] (-) TimerEvent: {}
+[26.110775] (-) TimerEvent: {}
+[26.215063] (-) TimerEvent: {}
+[26.316303] (-) TimerEvent: {}
+[26.417885] (-) TimerEvent: {}
+[26.519548] (-) TimerEvent: {}
+[26.620654] (-) TimerEvent: {}
+[26.721854] (-) TimerEvent: {}
+[26.823036] (-) TimerEvent: {}
+[26.925080] (-) TimerEvent: {}
+[27.026124] (-) TimerEvent: {}
+[27.127257] (-) TimerEvent: {}
+[27.228571] (-) TimerEvent: {}
+[27.330035] (-) TimerEvent: {}
+[27.431396] (-) TimerEvent: {}
+[27.532683] (-) TimerEvent: {}
+[27.634073] (-) TimerEvent: {}
+[27.735237] (-) TimerEvent: {}
+[27.836256] (-) TimerEvent: {}
+[27.937462] (-) TimerEvent: {}
+[28.038896] (-) TimerEvent: {}
+[28.140447] (-) TimerEvent: {}
+[28.241536] (-) TimerEvent: {}
+[28.343242] (-) TimerEvent: {}
+[28.444756] (-) TimerEvent: {}
+[28.545877] (-) TimerEvent: {}
+[28.647319] (-) TimerEvent: {}
+[28.748408] (-) TimerEvent: {}
+[28.849732] (-) TimerEvent: {}
+[28.950932] (-) TimerEvent: {}
+[29.052129] (-) TimerEvent: {}
+[29.153483] (-) TimerEvent: {}
+[29.254611] (-) TimerEvent: {}
+[29.355649] (-) TimerEvent: {}
+[29.456540] (-) TimerEvent: {}
+[29.557393] (-) TimerEvent: {}
+[29.658284] (-) TimerEvent: {}
+[29.759255] (-) TimerEvent: {}
+[29.860248] (-) TimerEvent: {}
+[29.961190] (-) TimerEvent: {}
+[30.062145] (-) TimerEvent: {}
+[30.163184] (-) TimerEvent: {}
+[30.264179] (-) TimerEvent: {}
+[30.365243] (-) TimerEvent: {}
+[30.466207] (-) TimerEvent: {}
+[30.567229] (-) TimerEvent: {}
+[30.668181] (-) TimerEvent: {}
+[30.769194] (-) TimerEvent: {}
+[30.870611] (-) TimerEvent: {}
+[30.971689] (-) TimerEvent: {}
+[31.072853] (-) TimerEvent: {}
+[31.173829] (-) TimerEvent: {}
+[31.274876] (-) TimerEvent: {}
+[31.375868] (-) TimerEvent: {}
+[31.476824] (-) TimerEvent: {}
+[31.577753] (-) TimerEvent: {}
+[31.678764] (-) TimerEvent: {}
+[31.779755] (-) TimerEvent: {}
+[31.880796] (-) TimerEvent: {}
+[31.981788] (-) TimerEvent: {}
+[32.082912] (-) TimerEvent: {}
+[32.183841] (-) TimerEvent: {}
+[32.284810] (-) TimerEvent: {}
+[32.385795] (-) TimerEvent: {}
+[32.486907] (-) TimerEvent: {}
+[32.588118] (-) TimerEvent: {}
+[32.689032] (-) TimerEvent: {}
+[32.790639] (-) TimerEvent: {}
+[32.895509] (-) TimerEvent: {}
+[32.997499] (-) TimerEvent: {}
+[33.099304] (-) TimerEvent: {}
+[33.200886] (-) TimerEvent: {}
+[33.302185] (-) TimerEvent: {}
+[33.405143] (-) TimerEvent: {}
+[33.507017] (-) TimerEvent: {}
+[33.608974] (-) TimerEvent: {}
+[33.710314] (-) TimerEvent: {}
+[33.811489] (-) TimerEvent: {}
+[33.912608] (-) TimerEvent: {}
+[34.014444] (-) TimerEvent: {}
+[34.118303] (-) TimerEvent: {}
+[34.219485] (-) TimerEvent: {}
+[34.320459] (-) TimerEvent: {}
+[34.421455] (-) TimerEvent: {}
+[34.522527] (-) TimerEvent: {}
+[34.623492] (-) TimerEvent: {}
+[34.724465] (-) TimerEvent: {}
+[34.825776] (-) TimerEvent: {}
+[34.926841] (-) TimerEvent: {}
+[35.027773] (-) TimerEvent: {}
+[35.128688] (-) TimerEvent: {}
+[35.229726] (-) TimerEvent: {}
+[35.330816] (-) TimerEvent: {}
+[35.431922] (-) TimerEvent: {}
+[35.533264] (-) TimerEvent: {}
+[35.635031] (-) TimerEvent: {}
+[35.736118] (-) TimerEvent: {}
+[35.837095] (-) TimerEvent: {}
+[35.938844] (-) TimerEvent: {}
+[36.040005] (-) TimerEvent: {}
+[36.141025] (-) TimerEvent: {}
+[36.242006] (-) TimerEvent: {}
+[36.342984] (-) TimerEvent: {}
+[36.444006] (-) TimerEvent: {}
+[36.544926] (-) TimerEvent: {}
+[36.645949] (-) TimerEvent: {}
+[36.747063] (-) TimerEvent: {}
+[36.848015] (-) TimerEvent: {}
+[36.948963] (-) TimerEvent: {}
+[37.049999] (-) TimerEvent: {}
+[37.150968] (-) TimerEvent: {}
+[37.252158] (-) TimerEvent: {}
+[37.353738] (-) TimerEvent: {}
+[37.454649] (-) TimerEvent: {}
+[37.555540] (-) TimerEvent: {}
+[37.656486] (-) TimerEvent: {}
+[37.757468] (-) TimerEvent: {}
+[37.858314] (-) TimerEvent: {}
+[37.959353] (-) TimerEvent: {}
+[38.060272] (-) TimerEvent: {}
+[38.161222] (-) TimerEvent: {}
+[38.262082] (-) TimerEvent: {}
+[38.363048] (-) TimerEvent: {}
+[38.463935] (-) TimerEvent: {}
+[38.564807] (-) TimerEvent: {}
+[38.665768] (-) TimerEvent: {}
+[38.766759] (-) TimerEvent: {}
+[38.867803] (-) TimerEvent: {}
+[38.968731] (-) TimerEvent: {}
+[39.069770] (-) TimerEvent: {}
+[39.170882] (-) TimerEvent: {}
+[39.272493] (-) TimerEvent: {}
+[39.373768] (-) TimerEvent: {}
+[39.475052] (-) TimerEvent: {}
+[39.576237] (-) TimerEvent: {}
+[39.677540] (-) TimerEvent: {}
+[39.778725] (-) TimerEvent: {}
+[39.879974] (-) TimerEvent: {}
+[39.981185] (-) TimerEvent: {}
+[40.082917] (-) TimerEvent: {}
+[40.183952] (-) TimerEvent: {}
+[40.285264] (-) TimerEvent: {}
+[40.387089] (-) TimerEvent: {}
+[40.488180] (-) TimerEvent: {}
+[40.589180] (-) TimerEvent: {}
+[40.690142] (-) TimerEvent: {}
+[40.791150] (-) TimerEvent: {}
+[40.892191] (-) TimerEvent: {}
+[40.993227] (-) TimerEvent: {}
+[41.094224] (-) TimerEvent: {}
+[41.195415] (-) TimerEvent: {}
+[41.296591] (-) TimerEvent: {}
+[41.397611] (-) TimerEvent: {}
+[41.498679] (-) TimerEvent: {}
+[41.599701] (-) TimerEvent: {}
+[41.700792] (-) TimerEvent: {}
+[41.801786] (-) TimerEvent: {}
+[41.902882] (-) TimerEvent: {}
+[42.003865] (-) TimerEvent: {}
+[42.104815] (-) TimerEvent: {}
+[42.206235] (-) TimerEvent: {}
+[42.307257] (-) TimerEvent: {}
+[42.408343] (-) TimerEvent: {}
+[42.509389] (-) TimerEvent: {}
+[42.610358] (-) TimerEvent: {}
+[42.711419] (-) TimerEvent: {}
+[42.812384] (-) TimerEvent: {}
+[42.913494] (-) TimerEvent: {}
+[43.015176] (-) TimerEvent: {}
+[43.116678] (-) TimerEvent: {}
+[43.217712] (-) TimerEvent: {}
+[43.319385] (-) TimerEvent: {}
+[43.421561] (-) TimerEvent: {}
+[43.523265] (-) TimerEvent: {}
+[43.625078] (-) TimerEvent: {}
+[43.726285] (-) TimerEvent: {}
+[43.827344] (-) TimerEvent: {}
+[43.928398] (-) TimerEvent: {}
+[44.029379] (-) TimerEvent: {}
+[44.130376] (-) TimerEvent: {}
+[44.231439] (-) TimerEvent: {}
+[44.332398] (-) TimerEvent: {}
+[44.433399] (-) TimerEvent: {}
+[44.534400] (-) TimerEvent: {}
+[44.635381] (-) TimerEvent: {}
+[44.736389] (-) TimerEvent: {}
+[44.837408] (-) TimerEvent: {}
+[44.938927] (-) TimerEvent: {}
+[45.041099] (-) TimerEvent: {}
+[45.116396] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable rc110_laserscans_to_pointcloud\x1b[0m\n'}
+[45.141337] (-) TimerEvent: {}
+[45.242416] (-) TimerEvent: {}
+[45.343373] (-) TimerEvent: {}
+[45.444378] (-) TimerEvent: {}
+[45.545459] (-) TimerEvent: {}
+[45.646834] (-) TimerEvent: {}
+[45.748797] (-) TimerEvent: {}
+[45.849907] (-) TimerEvent: {}
+[45.951434] (-) TimerEvent: {}
+[46.052415] (-) TimerEvent: {}
+[46.153411] (-) TimerEvent: {}
+[46.254384] (-) TimerEvent: {}
+[46.355808] (-) TimerEvent: {}
+[46.457118] (-) TimerEvent: {}
+[46.472828] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'[100%] Built target rc110_laserscans_to_pointcloud\n'}
+[46.523359] (rc110_laserscans_to_pointcloud) CommandEnded: {'returncode': 0}
+[46.557839] (-) TimerEvent: {}
+[46.648176] (rc110_laserscans_to_pointcloud) JobProgress: {'identifier': 'rc110_laserscans_to_pointcloud', 'progress': 'install'}
+[46.658343] (-) TimerEvent: {}
+[46.701983] (rc110_laserscans_to_pointcloud) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud'], 'cwd': '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zmp'), ('LC_TIME', 'ja_JP.UTF-8'), ('SSH_AGENT_PID', '4186'), ('ROS_PACKAGE_PATH', '/opt/ros/noetic/share'), ('XDG_SESSION_TYPE', 'x11'), ('ROS_ETC_DIR', '/opt/ros/noetic/etc/ros'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/opt/ros/noetic/lib:/usr/local/cuda-11.4/lib64:'), ('QT4_IM_MODULE', 'fcitx'), ('HOME', '/home/zmp'), ('OLDPWD', '/home/zmp/ros/src/robocar110_ros'), ('RC110_MAP_NAME', 'map'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('MANAGERPID', '2268'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5435'), ('RC110_ARGS', 'joy_type:=elecom'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'foxy'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zmp'), ('JOURNAL_STREAM', '7:72336'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/opt/ros/noetic/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zmp'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/foxy/bin:/opt/ros/noetic/bin:/usr/local/cuda-11.4/bin:/home/zmp/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('SESSION_MANAGER', 'local/rc-19217:@/tmp/.ICE-unix/4215,unix/rc-19217:/tmp/.ICE-unix/4215'), ('INVOCATION_ID', '278339b7c7fc443cb442d09c31481838'), ('RC110_LAUNCH_COMMAND', 'roslaunch --wait --skip-log-check rc110_system robot.launch joy_type:=elecom'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('ROSLISP_PACKAGE_DIRECTORIES', ''), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/noetic/share/ros'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:3b2070ad-f2ab-4377-a9b7-e25c03142e1e'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://localhost:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_laserscans_to_pointcloud'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/foxy/lib/python3.8/site-packages:/opt/ros/noetic/lib/python3/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6003'), ('CMAKE_PREFIX_PATH', '/opt/ros/foxy')]), 'shell': False}
+[46.747342] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[46.748503] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/rc110_laserscans_to_pointcloud/rc110_laserscans_to_pointcloud\n'}
+[46.758261] (-) TimerEvent: {}
+[46.768619] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Set runtime path of "/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/lib/rc110_laserscans_to_pointcloud/rc110_laserscans_to_pointcloud" to ""\n'}
+[46.769443] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/launch\n'}
+[46.770732] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/launch/main.launch\n'}
+[46.772189] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/ament_index/resource_index/package_run_dependencies/rc110_laserscans_to_pointcloud\n'}
+[46.774156] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/ament_index/resource_index/parent_prefix_path/rc110_laserscans_to_pointcloud\n'}
+[46.775349] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/environment/ament_prefix_path.sh\n'}
+[46.776258] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/environment/ament_prefix_path.dsv\n'}
+[46.776901] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/environment/path.sh\n'}
+[46.777637] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/environment/path.dsv\n'}
+[46.778600] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/local_setup.bash\n'}
+[46.779224] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/local_setup.sh\n'}
+[46.780100] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/local_setup.zsh\n'}
+[46.780939] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/local_setup.dsv\n'}
+[46.781669] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.dsv\n'}
+[46.782766] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/ament_index/resource_index/packages/rc110_laserscans_to_pointcloud\n'}
+[46.784384] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/cmake/rc110_laserscans_to_pointcloudConfig.cmake\n'}
+[46.785222] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/cmake/rc110_laserscans_to_pointcloudConfig-version.cmake\n'}
+[46.785887] (rc110_laserscans_to_pointcloud) StdoutLine: {'line': b'-- Installing: /home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud/share/rc110_laserscans_to_pointcloud/package.xml\n'}
+[46.797439] (rc110_laserscans_to_pointcloud) CommandEnded: {'returncode': 0}
+[46.858663] (-) TimerEvent: {}
+[46.961228] (-) TimerEvent: {}
+[47.063969] (rc110_laserscans_to_pointcloud) JobEnded: {'identifier': 'rc110_laserscans_to_pointcloud', 'rc': 0}
+[47.072460] (-) TimerEvent: {}
+[47.073009] (-) EventReactorShutdown: {}

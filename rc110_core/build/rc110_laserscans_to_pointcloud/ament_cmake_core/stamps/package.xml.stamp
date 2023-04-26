@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rc110_laserscans_to_pointcloud</name>
+  <version>1.12.0</version>
+  <description>RoboCar 1/10 Conversion from LaserScan to PointCloud2</description>
+  <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>laser_geometry</depend>
+  <depend>tf2_ros</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

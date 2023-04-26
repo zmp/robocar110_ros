@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rc110_msgs/msg/Status.msg
+// generated code does not contain a copyright notice
+
+
+module rc110_msgs {
+  module msg {
+    module Status_Constants {
+      const uint8 MOTOR_OFF = 0;
+      const uint8 MOTOR_ON = 1;
+      const uint8 MOTOR_NEUTRAL = 2;
+    };
+    @verbatim (language="comment", text=
+      " Drive or servo motor states:")
+    struct Status {
+      @verbatim (language="comment", text=
+        " Status Message")
+      boolean board_enabled;
+
+      uint8 motor_state;
+
+      uint8 servo_state;
+    };
+  };
+};

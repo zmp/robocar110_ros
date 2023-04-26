@@ -1,0 +1,7 @@
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/BaseboardError.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/MotorRate.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/Offsets.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/Status.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/StringArray.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:msg/WheelSpeeds.idl
+/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_msgs/rosidl_adapter/rc110_msgs:srv/SetInteger.idl

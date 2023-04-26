@@ -1,0 +1,149 @@
+[0.000000] (-) TimerEvent: {}
+[0.001061] (-) JobUnselected: {'identifier': 'rc110'}
+[0.001888] (-) JobUnselected: {'identifier': 'rc110_laserscans_to_pointcloud'}
+[0.002444] (-) JobUnselected: {'identifier': 'rc110_msgs'}
+[0.004527] (-) JobUnselected: {'identifier': 'rc110_rviz'}
+[0.004699] (-) JobUnselected: {'identifier': 'rc110_selector'}
+[0.004807] (-) JobUnselected: {'identifier': 'rc110_teleop'}
+[0.004910] (-) JobUnselected: {'identifier': 'rc110_twist_to_ackermann'}
+[0.008264] (-) JobUnselected: {'identifier': 'rviz_video_panel'}
+[0.008832] (rc110_topic_tools) JobQueued: {'identifier': 'rc110_topic_tools', 'dependencies': OrderedDict()}
+[0.009253] (rc110_topic_tools) JobStarted: {'identifier': 'rc110_topic_tools'}
+[0.064476] (rc110_topic_tools) JobProgress: {'identifier': 'rc110_topic_tools', 'progress': 'cmake'}
+[0.068302] (rc110_topic_tools) Command: {'cmd': ['/usr/bin/cmake', '/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_topic_tools', '-DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_topic_tools'], 'cwd': '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zmp'), ('LC_TIME', 'ja_JP.UTF-8'), ('SSH_AGENT_PID', '4186'), ('ROS_PACKAGE_PATH', '/opt/ros/noetic/share'), ('XDG_SESSION_TYPE', 'x11'), ('ROS_ETC_DIR', '/opt/ros/noetic/etc/ros'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/opt/ros/noetic/lib:/usr/local/cuda-11.4/lib64:'), ('QT4_IM_MODULE', 'fcitx'), ('HOME', '/home/zmp'), ('OLDPWD', '/home/zmp/ros/src/robocar110_ros'), ('RC110_MAP_NAME', 'map'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('MANAGERPID', '2268'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5435'), ('RC110_ARGS', 'joy_type:=elecom'), ('IM_CONFIG_PHASE', '1'), ('ROS_DISTRO', 'foxy'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zmp'), ('JOURNAL_STREAM', '7:72336'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/opt/ros/noetic/lib/pkgconfig'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zmp'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/foxy/bin:/opt/ros/noetic/bin:/usr/local/cuda-11.4/bin:/home/zmp/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('SESSION_MANAGER', 'local/rc-19217:@/tmp/.ICE-unix/4215,unix/rc-19217:/tmp/.ICE-unix/4215'), ('INVOCATION_ID', '278339b7c7fc443cb442d09c31481838'), ('RC110_LAUNCH_COMMAND', 'roslaunch --wait --skip-log-check rc110_system robot.launch joy_type:=elecom'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('ROSLISP_PACKAGE_DIRECTORIES', ''), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('ROS_ROOT', '/opt/ros/noetic/share/ros'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('TERMINATOR_UUID', 'urn:uuid:3b2070ad-f2ab-4377-a9b7-e25c03142e1e'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://localhost:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/foxy/lib/python3.8/site-packages:/opt/ros/noetic/lib/python3/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6003'), ('CMAKE_PREFIX_PATH', '/opt/ros/foxy')]), 'shell': False}
+[0.099314] (-) TimerEvent: {}
+[0.201959] (-) TimerEvent: {}
+[0.303591] (-) TimerEvent: {}
+[0.399645] (rc110_topic_tools) StdoutLine: {'line': b'-- The C compiler identification is GNU 9.4.0\n'}
+[0.403827] (-) TimerEvent: {}
+[0.504705] (-) TimerEvent: {}
+[0.605704] (-) TimerEvent: {}
+[0.679488] (rc110_topic_tools) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 9.4.0\n'}
+[0.699409] (rc110_topic_tools) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc\n'}
+[0.705870] (-) TimerEvent: {}
+[0.806849] (-) TimerEvent: {}
+[0.911707] (-) TimerEvent: {}
+[1.013163] (-) TimerEvent: {}
+[1.071410] (rc110_topic_tools) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc -- works\n'}
+[1.076515] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.113425] (-) TimerEvent: {}
+[1.214513] (-) TimerEvent: {}
+[1.315984] (-) TimerEvent: {}
+[1.406937] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.416209] (-) TimerEvent: {}
+[1.443516] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.445014] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.455044] (rc110_topic_tools) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++\n'}
+[1.516421] (-) TimerEvent: {}
+[1.617828] (-) TimerEvent: {}
+[1.719098] (-) TimerEvent: {}
+[1.821297] (-) TimerEvent: {}
+[1.854649] (rc110_topic_tools) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ -- works\n'}
+[1.861217] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.921535] (-) TimerEvent: {}
+[2.022838] (-) TimerEvent: {}
+[2.124033] (-) TimerEvent: {}
+[2.225074] (-) TimerEvent: {}
+[2.235724] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[2.280177] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[2.281729] (rc110_topic_tools) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[2.292108] (rc110_topic_tools) StdoutLine: {'line': b'-- Found ament_cmake: 0.9.11 (/opt/ros/foxy/share/ament_cmake/cmake)\n'}
+[2.325269] (-) TimerEvent: {}
+[2.391156] (rc110_topic_tools) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") \n'}
+[2.392524] (rc110_topic_tools) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[2.425471] (-) TimerEvent: {}
+[2.526510] (-) TimerEvent: {}
+[2.628172] (-) TimerEvent: {}
+[2.729428] (-) TimerEvent: {}
+[2.830361] (-) TimerEvent: {}
+[2.931180] (-) TimerEvent: {}
+[3.032086] (-) TimerEvent: {}
+[3.133082] (-) TimerEvent: {}
+[3.188113] (rc110_topic_tools) StdoutLine: {'line': b'-- Found rclcpp: 2.4.2 (/opt/ros/foxy/share/rclcpp/cmake)\n'}
+[3.233274] (-) TimerEvent: {}
+[3.327023] (rc110_topic_tools) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[3.333439] (-) TimerEvent: {}
+[3.346726] (rc110_topic_tools) StdoutLine: {'line': b'-- Found rosidl_adapter: 1.3.0 (/opt/ros/foxy/share/rosidl_adapter/cmake)\n'}
+[3.433751] (-) TimerEvent: {}
+[3.534832] (-) TimerEvent: {}
+[3.635803] (-) TimerEvent: {}
+[3.737511] (-) TimerEvent: {}
+[3.790377] (rc110_topic_tools) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  \n'}
+[3.837674] (-) TimerEvent: {}
+[3.908824] (rc110_topic_tools) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/foxy/include  \n'}
+[3.937920] (-) TimerEvent: {}
+[4.038904] (-) TimerEvent: {}
+[4.140764] (-) TimerEvent: {}
+[4.187833] (rc110_topic_tools) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[4.240966] (-) TimerEvent: {}
+[4.341881] (-) TimerEvent: {}
+[4.381933] (rc110_topic_tools) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)\n'}
+[4.387206] (rc110_topic_tools) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[4.391316] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[4.442198] (-) TimerEvent: {}
+[4.543246] (-) TimerEvent: {}
+[4.645481] (-) TimerEvent: {}
+[4.747855] (-) TimerEvent: {}
+[4.763076] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[4.764630] (rc110_topic_tools) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[4.848087] (-) TimerEvent: {}
+[4.949217] (-) TimerEvent: {}
+[5.052529] (-) TimerEvent: {}
+[5.153652] (-) TimerEvent: {}
+[5.231108] (rc110_topic_tools) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed\n'}
+[5.233683] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread_create in pthreads\n'}
+[5.253872] (-) TimerEvent: {}
+[5.355169] (-) TimerEvent: {}
+[5.457091] (-) TimerEvent: {}
+[5.539106] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread_create in pthreads - not found\n'}
+[5.540573] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread_create in pthread\n'}
+[5.557392] (-) TimerEvent: {}
+[5.658581] (-) TimerEvent: {}
+[5.759629] (-) TimerEvent: {}
+[5.860636] (-) TimerEvent: {}
+[5.867648] (rc110_topic_tools) StdoutLine: {'line': b'-- Looking for pthread_create in pthread - found\n'}
+[5.873334] (rc110_topic_tools) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[5.960833] (-) TimerEvent: {}
+[6.061834] (-) TimerEvent: {}
+[6.162934] (-) TimerEvent: {}
+[6.264004] (-) TimerEvent: {}
+[6.355306] (rc110_topic_tools) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)\n'}
+[6.364251] (-) TimerEvent: {}
+[6.465228] (-) TimerEvent: {}
+[6.475386] (rc110_topic_tools) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") \n'}
+[6.565481] (-) TimerEvent: {}
+[6.666427] (-) TimerEvent: {}
+[6.767281] (-) TimerEvent: {}
+[6.868130] (-) TimerEvent: {}
+[6.969108] (-) TimerEvent: {}
+[6.976767] (rc110_topic_tools) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.9.2 (/opt/ros/foxy/share/ament_cmake_ros/cmake)\n'}
+[7.069279] (-) TimerEvent: {}
+[7.170258] (-) TimerEvent: {}
+[7.271118] (-) TimerEvent: {}
+[7.372600] (-) TimerEvent: {}
+[7.398299] (rc110_topic_tools) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[7.450926] (rc110_topic_tools) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[7.472819] (-) TimerEvent: {}
+[7.547805] (rc110_topic_tools) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3.5") \n'}
+[7.554832] (rc110_topic_tools) StdoutLine: {'line': b'-- Found python_cmake_module: 0.8.1 (/opt/ros/foxy/share/python_cmake_module/cmake)\n'}
+[7.573020] (-) TimerEvent: {}
+[7.660779] (rc110_topic_tools) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.8.so (found suitable version "3.8.10", minimum required is "3.5") \n'}
+[7.662111] (rc110_topic_tools) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[7.662511] (rc110_topic_tools) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8\n'}
+[7.662798] (rc110_topic_tools) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.8.so\n'}
+[7.673189] (-) TimerEvent: {}
+[7.741130] (rc110_topic_tools) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[7.773427] (-) TimerEvent: {}
+[7.875283] (-) TimerEvent: {}
+[7.920871] (rc110_topic_tools) StderrLine: {'line': b'CMake Error at CMakeLists.txt:15 (rosidl_get_typesupport_target):\n'}
+[7.921750] (rc110_topic_tools) StderrLine: {'line': b'  Unknown CMake command "rosidl_get_typesupport_target".\n'}
+[7.922287] (rc110_topic_tools) StderrLine: {'line': b'\n'}
+[7.922646] (rc110_topic_tools) StderrLine: {'line': b'\n'}
+[7.937540] (rc110_topic_tools) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[7.938398] (rc110_topic_tools) StdoutLine: {'line': b'See also "/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools/CMakeFiles/CMakeOutput.log".\n'}
+[7.938743] (rc110_topic_tools) StdoutLine: {'line': b'See also "/home/zmp/ros/src/robocar110_ros/rc110_core/build/rc110_topic_tools/CMakeFiles/CMakeError.log".\n'}
+[7.971634] (rc110_topic_tools) CommandEnded: {'returncode': 1}
+[7.975776] (-) TimerEvent: {}
+[8.081730] (-) TimerEvent: {}
+[8.119621] (rc110_topic_tools) JobEnded: {'identifier': 'rc110_topic_tools', 'rc': 1}
+[8.132082] (-) EventReactorShutdown: {}

@@ -1,0 +1,146 @@
+[1.110s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[1.111s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffa9cb6910>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffa9cb6910>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffa9cb6e80>)
+[1.212s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.212s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.212s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.213s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.213s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.213s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.213s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/zmp/ros/src/robocar110_ros/rc110_robot'
+[1.214s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.291s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.292s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.292s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.292s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.292s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.293s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.293s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.293s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.294s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.294s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.294s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.295s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.295s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.295s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.295s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extensions ['ignore', 'ignore_ament_install']
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extension 'ignore'
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extension 'ignore_ament_install'
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extensions ['colcon_pkg']
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extension 'colcon_pkg'
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extensions ['colcon_meta']
+[1.296s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extension 'colcon_meta'
+[1.297s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extensions ['ros']
+[1.297s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_drive_control) by extension 'ros'
+[1.308s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_drive_control' with type 'ros.ament_cmake' and name 'rc110_drive_control'
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extensions ['ignore', 'ignore_ament_install']
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extension 'ignore'
+[1.309s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extension 'ignore_ament_install'
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extensions ['colcon_pkg']
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extension 'colcon_pkg'
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extensions ['colcon_meta']
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extension 'colcon_meta'
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extensions ['ros']
+[1.310s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_system) by extension 'ros'
+[1.312s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_system' with type 'ros.ament_cmake' and name 'rc110_system'
+[1.313s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extensions ['ignore', 'ignore_ament_install']
+[1.313s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extension 'ignore'
+[1.313s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extension 'ignore_ament_install'
+[1.313s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extensions ['colcon_pkg']
+[1.313s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extension 'colcon_pkg'
+[1.314s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extensions ['colcon_meta']
+[1.314s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extension 'colcon_meta'
+[1.314s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extensions ['ros']
+[1.314s] Level 1:colcon.colcon_core.package_identification:_identify(rc110_video_server) by extension 'ros'
+[1.316s] DEBUG:colcon.colcon_core.package_identification:Package 'rc110_video_server' with type 'ros.ament_cmake' and name 'rc110_video_server'
+[1.317s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.317s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.317s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.317s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.317s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.389s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.404s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 257 installed packages in /opt/ros/foxy
+[1.410s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_args' from command line to 'None'
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_target' from command line to 'None'
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_clean_cache' from command line to 'False'
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_clean_first' from command line to 'False'
+[1.641s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'cmake_force_configure' from command line to 'False'
+[1.642s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'ament_cmake_args' from command line to 'None'
+[1.642s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'catkin_cmake_args' from command line to 'None'
+[1.642s] Level 5:colcon.colcon_core.verb:set package 'rc110_drive_control' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.642s] DEBUG:colcon.colcon_core.verb:Building package 'rc110_drive_control' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control', 'merge_install': False, 'path': '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control', 'symlink_install': False, 'test_result_base': None}
+[1.645s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_args' from command line to 'None'
+[1.645s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_target' from command line to 'None'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_clean_cache' from command line to 'False'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_clean_first' from command line to 'False'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'cmake_force_configure' from command line to 'False'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'ament_cmake_args' from command line to 'None'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'catkin_cmake_args' from command line to 'None'
+[1.646s] Level 5:colcon.colcon_core.verb:set package 'rc110_video_server' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.646s] DEBUG:colcon.colcon_core.verb:Building package 'rc110_video_server' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_video_server', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_video_server', 'merge_install': False, 'path': '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_video_server', 'symlink_install': False, 'test_result_base': None}
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_args' from command line to 'None'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_target' from command line to 'None'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_clean_cache' from command line to 'False'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_clean_first' from command line to 'False'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'cmake_force_configure' from command line to 'False'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'ament_cmake_args' from command line to 'None'
+[1.650s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'catkin_cmake_args' from command line to 'None'
+[1.651s] Level 5:colcon.colcon_core.verb:set package 'rc110_system' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.651s] DEBUG:colcon.colcon_core.verb:Building package 'rc110_system' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_system', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_system', 'merge_install': False, 'path': '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_system', 'symlink_install': False, 'test_result_base': None}
+[1.653s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.668s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.669s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control' with build type 'ament_cmake'
+[1.670s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control'
+[1.685s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.686s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.686s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.713s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_video_server' with build type 'ament_cmake'
+[1.716s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_video_server'
+[1.729s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.729s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.808s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control
+[1.822s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_video_server': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_video_server -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_video_server
+[10.249s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zmp/ros/src/robocar110_ros/rc110_robot/build/rc110_drive_control' returned '1': /usr/bin/cmake /home/zmp/ros/src/robocar110_ros/rc110_robot/rc110_drive_control -DCMAKE_INSTALL_PREFIX=/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control
+[10.314s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rc110_drive_control)
+[10.343s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control' for CMake module files
+[10.345s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control' for CMake config files
+[10.347s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/bin'
+[10.349s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/lib/pkgconfig/rc110_drive_control.pc'
+[10.350s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/lib/python3.8/site-packages'
+[10.350s] Level 1:colcon.colcon_core.environment:checking '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/bin'
+[10.357s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/rc110_drive_control/package.ps1'
+[10.365s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/rc110_drive_control/package.dsv'
+[10.367s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/rc110_drive_control/package.sh'
+[10.373s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/rc110_drive_control/package.bash'
+[10.376s] INFO:colcon.colcon_core.shell:Creating package script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/rc110_drive_control/package.zsh'
+[10.378s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zmp/ros/src/robocar110_ros/rc110_robot/install/rc110_drive_control/share/colcon-core/packages/rc110_drive_control)
+[14.688s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[14.689s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[14.690s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '1'
+[14.691s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[14.718s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[14.718s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[14.719s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[14.795s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[14.801s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/local_setup.ps1'
+[14.806s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/_local_setup_util_ps1.py'
+[14.815s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/setup.ps1'
+[14.824s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/local_setup.sh'
+[14.827s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/_local_setup_util_sh.py'
+[14.830s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/setup.sh'
+[14.836s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/local_setup.bash'
+[14.841s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/setup.bash'
+[14.849s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/local_setup.zsh'
+[14.853s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zmp/ros/src/robocar110_ros/rc110_robot/install/setup.zsh'

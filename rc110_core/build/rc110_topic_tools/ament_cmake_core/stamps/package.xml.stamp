@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>rc110_topic_tools</name>
+  <version>1.12.0</version>
+  <description>RoboCar 1/10 topic tools</description>
+  <maintainer email="izac@zmp.co.jp">IZAC</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <build_depend>builtin_interfaces</build_depend>
+
+  <depend>rclcpp</depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

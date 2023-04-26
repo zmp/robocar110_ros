@@ -1,7 +1,7 @@
 <launch>
+    <arg name="rc" default="$(command rc110_selector)"/>
     <arg name="camera_param_path" default="$(find-pkg-share rc110_object_detection)/config/front_camera.yaml"/>
     <arg name="object_detection_node_param_path" default="$(find-pkg-share rc110_object_detection)/config/rc110_object_detection_node.yaml"/>
-
     <node pkg="usb_cam" exec="usb_cam_node_exe" name="front_camera">
         <remap from="image_raw" to="~/image_raw"/>
         <param from="$(var camera_param_path)" allow_substs="true"/>

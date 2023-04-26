@@ -5,19 +5,19 @@ default_target: rviz
 rviz:
 	cd ..\..
 	c:\opt\ros\melodic\x64\setup.bat & \
-	catkin_make --only-pkg-with-deps rc110_rviz -DCMAKE_BUILD_TYPE=Release
+	colcon build --only-pkg-with-deps rc110_rviz -DCMAKE_BUILD_TYPE=Release
 
 show:
 	..\..\devel\setup.bat & \
-	roslaunch rc110_rviz uni.launch
+	ros2 launch rc110_rviz uni.launch
 
-show-slam-he:
+show-slam-cg:
 	..\..\devel\setup.bat & \
-	rosrun rviz rviz -d rc110_navigation/rc110_slam_he/rviz/rc110_slam_he.rviz
+	ros2 run rviz rviz -d rc110_navigation/rc110_slam_he/rviz/rc110_slam_cg.rviz
 
 show-navigation:
 	..\..\devel\setup.bat & \
-	rosrun rviz rviz -d rc110_navigation/rc110_navigation/rviz/rc110_navigation.rviz
+	ros2 launch rviz rviz -d rc110_navigation/rc110_navigation/rviz/rc110_navigation.rviz
 
 clean:
 	cd ..\..

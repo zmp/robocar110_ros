@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rc110_msgs/msg/Offsets.msg
+// generated code does not contain a copyright notice
+
+
+module rc110_msgs {
+  module msg {
+    struct Offsets {
+      float gyro;
+
+      float accel_x;
+
+      float accel_y;
+
+      float accel_z;
+
+      float motor_current;
+
+      float steering;
+    };
+  };
+};

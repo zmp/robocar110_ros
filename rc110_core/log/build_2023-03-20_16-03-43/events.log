@@ -1,0 +1,13 @@
+[0.000000] (-) TimerEvent: {}
+[0.002001] (-) JobUnselected: {'identifier': 'rc110_laserscans_to_pointcloud'}
+[0.002616] (-) JobUnselected: {'identifier': 'rc110_msgs'}
+[0.003733] (-) JobUnselected: {'identifier': 'rc110_rviz'}
+[0.003942] (-) JobUnselected: {'identifier': 'rc110_selector'}
+[0.004161] (-) JobUnselected: {'identifier': 'rc110_teleop'}
+[0.004251] (-) JobUnselected: {'identifier': 'rc110_topic_tools'}
+[0.004366] (-) JobUnselected: {'identifier': 'rc110_twist_to_ackermann'}
+[0.004439] (-) JobUnselected: {'identifier': 'rviz_video_panel'}
+[0.004551] (rc110) JobQueued: {'identifier': 'rc110', 'dependencies': OrderedDict([('rc110_laserscans_to_pointcloud', '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_laserscans_to_pointcloud'), ('rc110_selector', '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_selector'), ('rc110_topic_tools', '/home/zmp/ros/src/robocar110_ros/rc110_core/install/rc110_topic_tools')])}
+[0.004869] (rc110) JobStarted: {'identifier': 'rc110'}
+[0.084468] (rc110) JobEnded: {'identifier': 'rc110', 'rc': 1}
+[0.098695] (-) EventReactorShutdown: {}

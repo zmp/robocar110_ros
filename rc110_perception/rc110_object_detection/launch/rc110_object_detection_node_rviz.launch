@@ -1,4 +1,5 @@
 <launch>
+    <arg name="rc" default="$(command rc110_selector)"/>
     <include file="$(find-pkg-share rc110_object_detection)/launch/rc110_object_detection_node.launch" />
     <node pkg="rviz2" exec="rviz2" name="rviz" args="-d $(find-pkg-share rc110_object_detection)/rviz/rc110_object_detection_node.rviz"/>
 </launch>

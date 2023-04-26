@@ -40,7 +40,6 @@ build = $(call plain_build,${1},${2},${3})  # build on non-tegra machine
 else
 define build
 (
-	source ${mk_path}../scripts/tegra_maxn.sh
 	$(call plain_build,${1},${2},${3})
 )
 endef
