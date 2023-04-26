@@ -1,4 +1,0 @@
-source;share/rc110_laserscans_to_pointcloud/local_setup.bash
-source;share/rc110_laserscans_to_pointcloud/local_setup.dsv
-source;share/rc110_laserscans_to_pointcloud/local_setup.sh
-source;share/rc110_laserscans_to_pointcloud/local_setup.zsh

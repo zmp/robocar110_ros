@@ -1,6 +1,0 @@
-{
-  "package_name": "rc110_topic_tools",
-  "non_idl_tuples": [
-    "/home/zmp/ros/src/robocar110_ros/rc110_core/rc110_topic_tools:srv/MuxSelect.srv"
-  ]
-}
