@@ -1,8 +1,18 @@
-## v1.12.0
+## v2.0.0
+* RoboCar 1/10 software has been retrofitted to run on ROS 2 (Rolling)
+
+### Actions
+* Install `ROS 2` with distribution `Rolling`.
+### Notes
+* Simulation and large parts of navigation (rc110_slam_he, rc110_slam_cg) do not exist due to incompatibility with ROS 2.
+* rc110_gazebo and rc110_navigation nodes will be added at a later date due to need for futher development to be compatible with ROS 2.
+
+## v1.12.0 ~ .1
 * Switch selected robot with topics instead of parameter.
 * Fix ros installation script.
 * RViz video panel for playing streams (only remote).
 * Multiple joysticks support.
+* Fix ROS source bug which arises from emtpy ROS_DISTRO variable
 
 ## v1.11.0
 * Goal queue allows setting consequent goals in [navigation](rc110_navigation/rc110_navigation/README.md).

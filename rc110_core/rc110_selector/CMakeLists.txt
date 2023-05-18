@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_selector VERSION 1.12.0)
+project(rc110_selector VERSION 2.0.0)
 
 find_package(Qt5 5.9 REQUIRED Core Widgets Network)
 find_package(ament_cmake REQUIRED)
