@@ -1,8 +1,0 @@
-source;share/rc110_slam_cg/hook/cmake_prefix_path.ps1
-source;share/rc110_slam_cg/hook/cmake_prefix_path.dsv
-source;share/rc110_slam_cg/hook/cmake_prefix_path.sh
-source;share/rc110_slam_cg/local_setup.bash
-source;share/rc110_slam_cg/local_setup.dsv
-source;share/rc110_slam_cg/local_setup.ps1
-source;share/rc110_slam_cg/local_setup.sh
-source;share/rc110_slam_cg/local_setup.zsh
