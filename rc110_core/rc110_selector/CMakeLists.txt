@@ -4,6 +4,9 @@ project(rc110_selector VERSION 2.0.0)
 find_package(Qt5 5.9 REQUIRED Core Widgets Network)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(Qt5 5.9 REQUIRED Core Widgets Network)
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
 set(CMAKE_AUTORCC ON)
 
@@ -13,8 +16,15 @@ target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Network)
 ament_target_dependencies(${PROJECT_NAME} rclcpp)
 
 ament_package()
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Network)
+ament_target_dependencies(${PROJECT_NAME} rclcpp)
+
+ament_package()
 
 install(TARGETS ${PROJECT_NAME}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin

@@ -8,6 +8,8 @@ endforeach()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
 file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC})
@@ -20,12 +22,19 @@ target_link_libraries(${PROJECT_NAME}
 ament_target_dependencies(${PROJECT_NAME} rclcpp)
 
 ament_package()
+ament_target_dependencies(${PROJECT_NAME} rclcpp)
+
+ament_package()
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION lib/${PROJECT_NAME}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
 
 # package

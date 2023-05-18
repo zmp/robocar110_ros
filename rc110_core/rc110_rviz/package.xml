@@ -7,6 +7,7 @@
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>qtbase5-dev</build_depend>
 
   <depend>ackermann_msgs</depend>
@@ -14,7 +15,10 @@
   <depend>rc110_msgs</depend>
   <depend>rc110_topic_tools</depend>
   <depend>rviz2</depend>
+  <depend>rc110_topic_tools</depend>
+  <depend>rviz2</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_srvs</depend>
   <depend>std_srvs</depend>
   <depend>visualization_msgs</depend>
 
@@ -24,10 +28,12 @@
   <exec_depend>libqt5-widgets</exec_depend>
   <exec_depend>rc110</exec_depend>
 <!--  <exec_depend>rviz_imu_plugin</exec_depend> Not yet ported.-->
+<!--  <exec_depend>rviz_imu_plugin</exec_depend> Not yet ported.-->
   <exec_depend>rviz_video_panel</exec_depend>
 
   <export>
     <rviz plugin="${prefix}/plugin_description.xml"/>
+    <build_type>ament_cmake</build_type>
     <build_type>ament_cmake</build_type>
   </export>
 </package>

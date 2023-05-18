@@ -8,7 +8,14 @@
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>ackermann_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
   <depend>geometry_msgs</depend>
   <depend>rclcpp</depend>
 

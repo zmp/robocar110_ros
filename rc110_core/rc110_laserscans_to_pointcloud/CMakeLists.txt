@@ -10,7 +10,15 @@ find_package(tf2_ros REQUIRED)
 file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC})
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC include ${Boost_INCLUDE_DIRS})
+
+ament_target_dependencies(${PROJECT_NAME}
+  rclcpp
+  sensor_msgs
+  laser_geometry
+  tf2_ros)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC include ${Boost_INCLUDE_DIRS})
 
 ament_target_dependencies(${PROJECT_NAME}
@@ -23,7 +31,13 @@ install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION lib/${PROJECT_NAME}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+
+ament_package()
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 ament_package()

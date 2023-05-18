@@ -11,4 +11,8 @@
         <remap from="~/input_image" to="front_camera/image_raw"/>
         <param from="$(var object_detection_node_param_path)" allow_substs="true"/>
     </node>
+    <node pkg="rc110_object_detection" exec="rc110_object_detection_node" name="object_detection" output="screen">
+        <remap from="~/input_image" to="front_camera/image_raw"/>
+        <param from="$(var object_detection_node_param_path)" allow_substs="true"/>
+    </node>
 </launch>

@@ -10,9 +10,12 @@
 
 #include <sstream>
 #include <vision_msgs/msg/detection2_d_array.hpp>
+#include <vision_msgs/msg/detection2_d_array.hpp>
 
 namespace zmp
 {
+Rc110ObjectDetection::Rc110ObjectDetection() :
+        Node("rc110_object_detection"),
 Rc110ObjectDetection::Rc110ObjectDetection() :
         Node("rc110_object_detection"),
         m_overlayFlags(detectNet::OVERLAY_NONE),
@@ -28,7 +31,14 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
     m_param.modelPath = declare_parameter("model_path", m_param.modelPath);
     m_param.classLabelsPath = declare_parameter("class_labels_path", m_param.classLabelsPath);
     m_param.overlayStr = declare_parameter("overlay_str", m_param.overlayStr);
+    m_param.confidenceThresh = declare_parameter("confidence_thresh", m_param.confidenceThresh);
+    m_param.modelPath = declare_parameter("model_path", m_param.modelPath);
+    m_param.classLabelsPath = declare_parameter("class_labels_path", m_param.classLabelsPath);
+    m_param.overlayStr = declare_parameter("overlay_str", m_param.overlayStr);
 
+    m_param.inputBlob = declare_parameter("input_blob", m_param.inputBlob);
+    m_param.outputBlob = declare_parameter("output_blob", m_param.outputBlob);
+    m_param.outputCount = declare_parameter("output_count", m_param.outputCount);
     m_param.inputBlob = declare_parameter("input_blob", m_param.inputBlob);
     m_param.outputBlob = declare_parameter("output_blob", m_param.outputBlob);
     m_param.outputCount = declare_parameter("output_count", m_param.outputCount);
@@ -36,7 +46,13 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
     m_param.meanPixel = declare_parameter("mean_pixel", m_param.meanPixel);
     m_param.stdPixel = declare_parameter("std_pixel", m_param.stdPixel);
     m_param.useDarknetYolo = declare_parameter("use_darknet_yolo", m_param.useDarknetYolo);
+    m_param.meanPixel = declare_parameter("mean_pixel", m_param.meanPixel);
+    m_param.stdPixel = declare_parameter("std_pixel", m_param.stdPixel);
+    m_param.useDarknetYolo = declare_parameter("use_darknet_yolo", m_param.useDarknetYolo);
 
+    m_param.numChannels = declare_parameter("num_channels", m_param.numChannels);
+    m_param.inputHeight = declare_parameter("input_height", m_param.inputHeight);
+    m_param.inputWidth = declare_parameter("input_width", m_param.inputWidth);
     m_param.numChannels = declare_parameter("num_channels", m_param.numChannels);
     m_param.inputHeight = declare_parameter("input_height", m_param.inputHeight);
     m_param.inputWidth = declare_parameter("input_width", m_param.inputWidth);
@@ -76,11 +92,18 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
                                                m_inferenceNet->GenerateColor(i).w)));
     }
     publishClassesInfo();
+    publishClassesInfo();
 }
 
 void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
+void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
 {
     if (!m_inputConverter.toDevice(message)) {
+        RCLCPP_INFO(get_logger(),
+                    "failed to convert %ux%u %s image",
+                    message.width,
+                    message.height,
+                    message.encoding.c_str());
         RCLCPP_INFO(get_logger(),
                     "failed to convert %ux%u %s image",
                     message.width,
@@ -102,11 +125,13 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
     }
 
     vision_msgs::msg::Detection2DArray detectionsMsg;
+    vision_msgs::msg::Detection2DArray detectionsMsg;
     detectionsMsg.detections.reserve(numDetections);
 
     for (int i = 0; i < numDetections; ++i)
     {
         detectNet::Detection* curDet = detections + i;
+        vision_msgs::msg::Detection2D curDetectionMsg;
         vision_msgs::msg::Detection2D curDetectionMsg;
         curDetectionMsg.bbox.size_x = curDet->Width();
         curDetectionMsg.bbox.size_y = curDet->Height();
@@ -118,10 +143,15 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
         vision_msgs::msg::ObjectHypothesisWithPose hyp;
         hyp.hypothesis.class_id = std::to_string(curDet->ClassID);
         hyp.hypothesis.score = curDet->Confidence;
+        vision_msgs::msg::ObjectHypothesisWithPose hyp;
+        hyp.hypothesis.class_id = std::to_string(curDet->ClassID);
+        hyp.hypothesis.score = curDet->Confidence;
         curDetectionMsg.results.emplace_back(hyp);
         detectionsMsg.detections.emplace_back(curDetectionMsg);
     }
 
+    detectionsMsg.header.stamp = message.header.stamp;
+    m_detectionPub->publish(detectionsMsg);
     detectionsMsg.header.stamp = message.header.stamp;
     m_detectionPub->publish(detectionsMsg);
 
@@ -133,7 +163,10 @@ void Rc110ObjectDetection::onImage(const sensor_msgs::msg::Image& message)
 
 void Rc110ObjectDetection::publishOverlay(const vision_msgs::msg::Detection2DArray& detectionsMsg,
                                           const rc110_msgs::msg::StringArray& classesMsg,
+void Rc110ObjectDetection::publishOverlay(const vision_msgs::msg::Detection2DArray& detectionsMsg,
+                                          const rc110_msgs::msg::StringArray& classesMsg,
                                           const std::vector<cv::Scalar>& colors,
+                                          const rclcpp::Time& timeStamp)
                                           const rclcpp::Time& timeStamp)
 {
     cv::Mat inputImage(m_inputConverter.imageHeight(),
@@ -146,8 +179,18 @@ void Rc110ObjectDetection::publishOverlay(const vision_msgs::msg::Detection2DArr
     cv::Mat overlayImage = this->drawBoundingBox(processedImage, detectionsMsg, classesMsg, colors);
 
     const std::size_t msgSize = imageFormatSize(Rc110ImageConverter::RCLCPP_OUTPUT_IMAGE_FORMAT,
+    const std::size_t msgSize = imageFormatSize(Rc110ImageConverter::RCLCPP_OUTPUT_IMAGE_FORMAT,
                                                 m_inputConverter.imageWidth(),
                                                 m_inputConverter.imageHeight());
+    sensor_msgs::msg::Image overlayMsg;
+    overlayMsg.data.resize(msgSize);
+    memcpy(overlayMsg.data.data(), overlayImage.data, msgSize);
+    overlayMsg.width = m_inputConverter.imageWidth();
+    overlayMsg.height = m_inputConverter.imageHeight();
+    overlayMsg.step =
+            (m_inputConverter.imageWidth() * imageFormatDepth(Rc110ImageConverter::RCLCPP_OUTPUT_IMAGE_FORMAT)) / 8;
+    overlayMsg.encoding = Rc110ImageConverter::toImageEncoding(Rc110ImageConverter::RCLCPP_OUTPUT_IMAGE_FORMAT);
+    overlayMsg.is_bigendian = false;
     sensor_msgs::msg::Image overlayMsg;
     overlayMsg.data.resize(msgSize);
     memcpy(overlayMsg.data.data(), overlayImage.data, msgSize);
@@ -160,9 +203,13 @@ void Rc110ObjectDetection::publishOverlay(const vision_msgs::msg::Detection2DArr
 
     overlayMsg.header.stamp = timeStamp;
     m_overlayPub->publish(overlayMsg);
+    overlayMsg.header.stamp = timeStamp;
+    m_overlayPub->publish(overlayMsg);
 }
 
 cv::Mat Rc110ObjectDetection::drawBoundingBox(const cv::Mat& image,
+                                              const vision_msgs::msg::Detection2DArray& detectionsMsg,
+                                              const rc110_msgs::msg::StringArray& classesMsg,
                                               const vision_msgs::msg::Detection2DArray& detectionsMsg,
                                               const rc110_msgs::msg::StringArray& classesMsg,
                                               const std::vector<cv::Scalar>& colors) const
@@ -212,6 +259,7 @@ cv::Mat Rc110ObjectDetection::drawBoundingBox(const cv::Mat& image,
 
 void Rc110ObjectDetection::publishClassesInfo()
 {
+    m_classesInfoPub->publish(m_classesMsg);
     m_classesInfoPub->publish(m_classesMsg);
 }
 }  // namespace zmp

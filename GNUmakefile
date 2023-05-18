@@ -170,6 +170,7 @@ endif
 	rm -rf stage; mkdir stage
 	mv *.deb stage/
 	cp $${root_dir}/scripts/install* stage/
+	cp $${root_dir}/scripts/get_ros_distro stage/
 
 	makeself stage rc110_robot_$${version}_$${arch}~$${codename}.run "package" ./install
 

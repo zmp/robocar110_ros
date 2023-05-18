@@ -7,13 +7,20 @@
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>angles</build_depend>
 
   <depend>ackermann_msgs</depend>
   <depend>rc110_msgs</depend>
   <depend>rc110_topic_tools</depend>
   <depend>rclcpp</depend>
+  <depend>rc110_msgs</depend>
+  <depend>rc110_topic_tools</depend>
+  <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>yaml-cpp</depend>
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>yaml-cpp</depend>
@@ -22,6 +29,10 @@
   <exec_depend>mouse_teleop</exec_depend>
   <exec_depend>rc110</exec_depend>
   <exec_depend>rc110_twist_to_ackermann</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 
   <export>
     <build_type>ament_cmake</build_type>

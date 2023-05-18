@@ -19,4 +19,9 @@
 <export>
   <build_type>ament_cmake</build_type>
 </export>
+  <exec_depend>usb_cam</exec_depend>
+
+<export>
+  <build_type>ament_cmake</build_type>
+</export>
 </package>

@@ -11,6 +11,11 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(rc110_msgs REQUIRED)
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(vision_msgs REQUIRED)
+find_package(rc110_msgs REQUIRED)
 
 link_directories(/usr/lib/aarch64-linux-gnu/tegra/)  # https://forums.developer.nvidia.com/t/cannot-link-usr-bin-ld-cannot-find-lnvbuf-utils/190973/13
 
@@ -20,6 +25,7 @@ add_executable(rc110_object_detection_node
   src/rc110_image_converter.cpp
   src/rc110_custom_detect_net.cpp
 )
+
 
 target_compile_features(rc110_object_detection_node
   PUBLIC
@@ -55,7 +61,11 @@ install(TARGETS rc110_object_detection_node
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION lib/${PROJECT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+install(DIRECTORY config launch rviz DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY config launch rviz DESTINATION share/${PROJECT_NAME})
 
 # package
