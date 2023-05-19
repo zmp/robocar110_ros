@@ -18,7 +18,7 @@ Rc110ObjectDetection::Rc110ObjectDetection() :
         m_overlayFlags(detectNet::OVERLAY_NONE),
         m_inferenceNet(nullptr),
         m_inputConverter(*this),
-        m_inputImageSub(create_subscription<sensor_msgs::msg::Image>("~/input_image", 1,
+        m_inputImageSub(create_subscription<sensor_msgs::msg::Image>("/front_camera/image_raw", 1,
                                                                      std::bind(&Rc110ObjectDetection::onImage, this, std::placeholders::_1))),
         m_detectionPub(create_publisher<vision_msgs::msg::Detection2DArray>("detections", 25)),
         m_overlayPub(create_publisher<sensor_msgs::msg::Image>("overlay", 2)),
