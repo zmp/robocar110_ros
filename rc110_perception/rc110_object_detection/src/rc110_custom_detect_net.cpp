@@ -75,7 +75,7 @@ Rc110CustomDetectNet::Ptr Rc110CustomDetectNet::Create(const char* modelPath,
         return nullptr;
     }
 
-    if (!net->allocDetections() || !net->loadClassInfo(classLabels) || !net->defaultColors()) {
+    if (!net->allocDetections() || !net->loadClassInfo(classLabels)) {
         return nullptr;
     }
 
@@ -162,7 +162,7 @@ int Rc110CustomDetectNet::PostProcess(const std::uint32_t width, const std::uint
         for (std::uint32_t m = 0; m < mNumClasses; ++m) {
             const float score = conf[n * mNumClasses + m];
 
-            if (score < mCoverageThreshold) {
+            if (score < mConfidenceThreshold) {
                 continue;
             }
             if (score > maxScore) {
@@ -171,13 +171,12 @@ int Rc110CustomDetectNet::PostProcess(const std::uint32_t width, const std::uint
             }
         }
 
-        if (maxScore < mCoverageThreshold) {
+        if (maxScore < mConfidenceThreshold) {
             continue;
         }
 
         const float* coord = bbox + n * numCoord;
 
-        detections[numDetections].Instance = numDetections;
         detections[numDetections].ClassID = maxClass;
         detections[numDetections].Confidence = maxScore;
         detections[numDetections].Left = coord[0] * width;
@@ -210,7 +209,7 @@ int Rc110CustomDetectNet::CustomDetect(void* input,
         return -1;
     }
 
-    *detections = mDetectionSets[0] + mDetectionSet * GetMaxDetections();
+    *detections = &(mDetectionSets[0]);
 
     if (++mDetectionSet >= mNumDetectionSets) {
         mDetectionSet = 0;

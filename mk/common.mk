@@ -34,7 +34,6 @@ build = catkin build ${1} --cmake-args ${2}  # build on non-tegra machine
 else
 define build
 (
-	source ${mk_path}../scripts/tegra_maxn.sh
 	catkin build ${1} --cmake-args ${2}
 )
 endef

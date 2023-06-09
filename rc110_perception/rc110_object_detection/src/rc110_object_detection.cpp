@@ -69,9 +69,10 @@ Rc110ObjectDetection::Rc110ObjectDetection(ros::NodeHandle& nh, ros::NodeHandle&
 
     m_classColors.reserve(m_inferenceNet->GetNumClasses());
     for (std::uint32_t i = 0; i < m_inferenceNet->GetNumClasses(); ++i) {
-        m_classColors.emplace_back(cv::Scalar(m_inferenceNet->GetClassColor(i)[0],
-                                              m_inferenceNet->GetClassColor(i)[1],
-                                              m_inferenceNet->GetClassColor(i)[2]));
+        m_classColors.emplace_back(cv::Scalar((m_inferenceNet->GenerateColor(i).x,
+                                               m_inferenceNet->GenerateColor(i).y,
+                                               m_inferenceNet->GenerateColor(i).z,
+                                               m_inferenceNet->GenerateColor(i).w)));
     }
 }
 
