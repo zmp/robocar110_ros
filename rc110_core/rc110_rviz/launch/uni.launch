@@ -10,7 +10,7 @@
         <node pkg="usb_cam" exec="usb_cam_node_exe" name="front_camera">
             <remap from="image_raw" to="~/image_raw"/>
             <param from="$(var camera_param_path)" allow_substs="true"/>
-            <param name="pixel_format" value="uyvy">
+            <param name="pixel_format" value="uyvy"/>
         </node>
 
         <node pkg="rviz2" exec="rviz2" name="rviz" args="-s $(var splash_image) -d $(var config)">

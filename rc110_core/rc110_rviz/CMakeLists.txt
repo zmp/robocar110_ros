@@ -77,6 +77,6 @@ set(CPACK_DEB_COMPONENT_INSTALL ON)  # a way to add system files to package inst
 set(CPACK_DEBIAN_RVIZ_MAIN_PACKAGE_NAME ros-$ENV{ROS_DISTRO}-rc110-rviz)
 set(CPACK_DEBIAN_RVIZ_MAIN_PACKAGE_DEPENDS ros-$ENV{ROS_DISTRO}-rc110-rviz-ros)
 set(CPACK_DEBIAN_RVIZ_MAIN_DESCRIPTION "Desktop files for robot which depend on package with ros stuff")
-
+install(DIRECTORY config launch rviz DESTINATION share/${PROJECT_NAME})
 set(RC110_DEP.rviz_video_panel ros-$ENV{ROS_DISTRO}-rviz-video-panel)
 include(../../cmake/rc110_cpack.cmake)

@@ -3,7 +3,7 @@ project(rc110_drive_control VERSION 2.0.0)
 
 set(RC110_COMPONENTS control CACHE STRING "")
 
-find_package(Boost REQUIRED COMPONENTS system filesystem thread)
+find_package(Boost COMPONENTS system filesystem thread REQUIRED)
 find_package(robocar110 REQUIRED ${RC110_COMPONENTS})
 find_package(ament_cmake REQUIRED)
 
@@ -22,9 +22,7 @@ ament_package()
 
 file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC})
-
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
-target_link_libraries(${PROJECT_NAME} rc-control)
 ament_target_dependencies(${PROJECT_NAME}
         rclcpp
         std_srvs
