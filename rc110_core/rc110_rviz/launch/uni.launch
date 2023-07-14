@@ -4,13 +4,17 @@
         <arg name="config" default="$(find-pkg-share rc110_rviz)/rviz/main.rviz"/>
         <arg name="rc" default="$(command rc110_selector)"/>
         <arg name="rc_host" default="$(eval '\'$(var rc)\'.replace(\'_\', \'-\')')"/>
-
+        <arg name="camera_param_path" default="$(find-pkg-share rc110_rviz)/config/front_camera.yaml"/>
         <push_ros_namespace namespace="/$(var rc)"/>
+
+        <node pkg="usb_cam" exec="usb_cam_node_exe" name="front_camera">
+            <remap from="image_raw" to="~/image_raw"/>
+            <param from="$(var camera_param_path)" allow_substs="true"/>
+            <param name="pixel_format" value="uyvy">
+        </node>
 
         <node pkg="rviz2" exec="rviz2" name="rviz" args="-s $(var splash_image) -d $(var config)">
             <param name="rc" value="$(var rc)"/>
-            <param name="video_url" value="rtsp://$(var rc_host).local:8554/front"/>
-            <param name="pipeline" value="rtspsrc latency=0 location=%1 ! rtph265depay ! h265parse ! queue ! nvv4l2decoder ! nvvidconv ! video/x-raw,format=YUY2 ! xvimagesink name=qtvideosink sync=false"/>
         </node>
     </group>
 </launch>

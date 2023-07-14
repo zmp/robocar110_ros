@@ -5,7 +5,7 @@
 include mk/common.mk
 
 deps_paths  := rc110_core rc110_robot
-build_nodes := rc110_rviz rc110_system
+build_nodes := rc110_rviz 
 
 define help_text
 
