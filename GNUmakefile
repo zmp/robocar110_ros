@@ -119,6 +119,7 @@ endif
 build: init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
 	$(call build,${build_nodes},,${cmake_flags})
+	python3 ${yaml_parser} -f ${rviz_file} -r ${USER}
 
 # Build remote nodes
 remote: build_nodes := rc110_rviz rc110_teleop
@@ -181,6 +182,7 @@ clean:
 # Run nodes built from source.
 run:
 	source ${ws_path}/install/setup.bash
+	python3 ${yaml_parser} -f ${rviz_file} -r ${USER}
 	ros2 launch rc110_system robot.launch $(ros_args)
 
 # == additional targets ==
