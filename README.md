@@ -12,7 +12,7 @@ The information about version changes can be found in [**ReleaseNotes**](Release
 ## Binary Packages [Robot Only]
 Connect peripherals to the robot according to the User Manual. Boot, login, open browser, go to [**Releases**](https://github.com/zmp/robocar110_ros/releases) and download the latest `*.run` files.
 
-Please, note that robot code works only on Nvidia AGX Xavier (arm64), Ubuntu 18.
+Please, note that robot code works only on NVIDIA AGX Xavier or AGX Orin (arm64), Ubuntu 20.
 
 ### Base Drivers Installation
 ```
