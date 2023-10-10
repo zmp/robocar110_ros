@@ -31,9 +31,13 @@ def main() -> None:
     old_id = change_dict_key_name(data, robot_id)
     if old_id is None:
         print("Unable to find robot id")
-    display_camera_string = file_data["Visualization Manager"]["Displays"][4]["Topic"]["Value"]
-    new_string = display_camera_string.replace(old_id, robot_id)
-    file_data["Visualization Manager"]["Displays"][4]["Topic"]["Value"] = new_string
+    try:
+        display_camera_string = file_data["Visualization Manager"]["Displays"][4]["Topic"]["Value"]
+        new_string = display_camera_string.replace(old_id, robot_id)
+        file_data["Visualization Manager"]["Displays"][4]["Topic"]["Value"] = new_string
+    except (IndexError, KeyError) as e:
+        print(f"Error: {args.file_path} does not have keys - {e}")
+        return None
 
     with open(args.file_path, 'w') as out_file:
         yaml.dump(file_data, out_file, default_flow_style=False)

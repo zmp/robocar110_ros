@@ -193,6 +193,6 @@ include mk/subdirs.mk
 
 show:
 	python3 ${yaml_parser} -f ${rviz_file} & \
-	..\..\devel\setup.bat & \
+	source /opt/ros/${ROS_DISTRO}/setup.bash & \
 	ros2 launch rc110_rviz uni.launch
 
