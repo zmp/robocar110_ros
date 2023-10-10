@@ -24,11 +24,11 @@ ament_package()
 file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_link_libraries(${PROJECT_NAME} rc-control)
 ament_target_dependencies(${PROJECT_NAME}
         rclcpp
         std_srvs
         rc-control
-        robocar110
         ackermann_msgs
         nav_msgs
         rc110_msgs

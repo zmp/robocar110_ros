@@ -3,7 +3,7 @@
 # distro
 script_path=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 export UBUNTU_CODENAME=$(. /etc/os-release; echo ${UBUNTU_CODENAME})
-export ROS_DISTRO=${ROS_DISTRO:-$(${script_path}/get_ros_distro)}
+export ROS_DISTRO=rolling
 
 # add apt list
 if [ ! -f /etc/apt/sources.list.d/ros2.list ]
