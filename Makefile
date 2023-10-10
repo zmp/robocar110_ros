@@ -5,9 +5,11 @@ default_target: rviz
 rviz:
 	cd ..\..
 	c:\opt\ros\melodic\x64\setup.bat & \
+	python3 ${yaml_parser} -f ${rviz_file} & \
 	colcon build --only-pkg-with-deps rc110_rviz -DCMAKE_BUILD_TYPE=Release
 
 show:
+	python3 ${yaml_parser} -f ${rviz_file} & \
 	..\..\devel\setup.bat & \
 	ros2 launch rc110_rviz uni.launch
 

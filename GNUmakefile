@@ -118,8 +118,8 @@ endif
 # Build robot nodes.
 build: init
 	source /opt/ros/${ROS_DISTRO}/setup.bash
+	python3 ${yaml_parser} -f ${rviz_file}
 	$(call build,${build_nodes},,${cmake_flags})
-	python3 ${yaml_parser} -f ${rviz_file} -r ${USER}
 
 # Build remote nodes
 remote: build_nodes := rc110_rviz rc110_teleop
@@ -182,7 +182,7 @@ clean:
 # Run nodes built from source.
 run:
 	source ${ws_path}/install/setup.bash
-	python3 ${yaml_parser} -f ${rviz_file} -r ${USER}
+	python3 ${yaml_parser} -f ${rviz_file}
 	ros2 launch rc110_system robot.launch $(ros_args)
 
 # == additional targets ==
@@ -191,4 +191,8 @@ include mk/subdirs.mk
 
 # == shortcuts ==
 
-show: show-rviz
+show:
+	python3 ${yaml_parser} -f ${rviz_file} & \
+	..\..\devel\setup.bat & \
+	ros2 launch rc110_rviz uni.launch
+

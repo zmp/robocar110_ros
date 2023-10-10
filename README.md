@@ -71,11 +71,6 @@ Automatic remote connection to the robot is possible. The ROS version should be 
 * [**ROS Installation**](docs/RosInstallation.md)
 * [**Remote Connection**](docs/RemoteConnection.md)
 
-### Gazebo Simulation
-**Not yet ported.**
-
-![](docs/images/gazebo2.gif)
-
 ### Other Samples
 When the driver is up and running, it's possible to start other ROS nodes that communicate with it.
 
