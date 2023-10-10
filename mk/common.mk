@@ -9,7 +9,7 @@ rviz_path := ${ws_path}/src/robocar110_ros/rc110_core/rc110_rviz
 yaml_parser := ${rviz_path}/src/yaml_parser.py 
 rviz_file := ${rviz_path}/rviz/main.rviz
 mk_path := $(dir $(lastword $(MAKEFILE_LIST)))
-ROS_DISTRO ?= $(shell ${mk_path}../scripts/get_ros_distro)
+ROS_DISTRO ?= rolling
 ROS_OS ?= ubuntu:jammy
 
 # Convert makefile variables to roslaunch arguments.
