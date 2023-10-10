@@ -54,7 +54,7 @@ pluginlib_export_plugin_description_file(rviz_common plugin_description.xml)
 
 ament_package()
 
-install(DIRECTORY images launch rviz DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY config images launch rviz DESTINATION share/${PROJECT_NAME})
 install(TARGETS ${PROJECT_NAME} rc110_marker
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
