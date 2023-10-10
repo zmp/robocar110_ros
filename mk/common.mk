@@ -5,8 +5,9 @@ SHELL := /bin/bash
 
 cmake_flags := -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_BUILD_TYPE=Release
 ws_path := $(shell echo $${PWD/\/src\/*/})
-yaml_parser := ${ws_path}/rc110_rviz/src/yaml_parser.py 
-rviz_file := ${ws_path}/rc110_rviz/rviz/main.rviz
+rviz_path := ${ws_path}/src/robocar110_ros/rc110_core/rc110_rviz
+yaml_parser := ${rviz_path}/src/yaml_parser.py 
+rviz_file := ${rviz_path}/rviz/main.rviz
 mk_path := $(dir $(lastword $(MAKEFILE_LIST)))
 ROS_DISTRO ?= $(shell ${mk_path}../scripts/get_ros_distro)
 ROS_OS ?= ubuntu:jammy
