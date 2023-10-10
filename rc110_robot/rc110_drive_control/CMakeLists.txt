@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_drive_control VERSION 2.0.0)
+project(rc110_drive_control VERSION 2.1.0)
 
 set(RC110_COMPONENTS control CACHE STRING "")
 
@@ -17,6 +17,7 @@ find_package(rc110_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(rc-control REQUIRED)
 
 ament_package()
 
@@ -26,6 +27,8 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 ament_target_dependencies(${PROJECT_NAME}
         rclcpp
         std_srvs
+        rc-control
+        robocar110
         ackermann_msgs
         nav_msgs
         rc110_msgs

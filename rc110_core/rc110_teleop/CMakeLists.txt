@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_teleop VERSION 2.0.0)
+project(rc110_teleop VERSION 2.1.0)
 
 find_package(Boost REQUIRED filesystem)
 find_package(yaml-cpp REQUIRED)

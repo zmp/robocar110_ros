@@ -1,5 +1,5 @@
 set(_AMENT_PACKAGE_NAME "rc110_video_server")
-set(rc110_video_server_VERSION "2.0.0")
+set(rc110_video_server_VERSION "2.1.0")
 set(rc110_video_server_MAINTAINER "IZAC <izac@zmp.co.jp>")
 set(rc110_video_server_BUILD_DEPENDS "libgstreamer1.0-dev" "libgstrtspserver-1.0-dev" "rclcpp")
 set(rc110_video_server_BUILDTOOL_DEPENDS "ament_cmake")

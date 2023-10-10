@@ -1,3 +1,6 @@
+## v2.1.0
+* NVIDIA video streamer has been replaced with usb_node for visualization in RVIZ to avoid issue where stream doesn't appear.
+
 ## v2.0.0
 * RoboCar 1/10 software has been retrofitted to run on ROS 2 (Rolling)
 
