@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+if [ $# == 0 ]; then
+    echo "ERROR: Input a serial number to the argument"
+    echo "usage: set-rc-serial 12345"
+    exit
+fi
+echo Setting serial no to $1
+sudo sed -i "s/rc_[[:digit:]]\+/rc_$1/g" /opt/ros/rolling/share/rc110_rviz/rviz/main.rviz
