@@ -6,4 +6,4 @@ if [ $# == 0 ]; then
     exit
 fi
 echo Setting serial no to $1
-sudo sed -i "s/rc_[[:digit:]]\+/rc_$1/g" /opt/ros/rolling/share/rc110_rviz/rviz/main.rviz
+sudo sed -i "s/rc_[[:digit:]]\+/rc_$1/g" /opt/ros/${ROS_DISTRO}/share/rc110_rviz/rviz/main.rviz
