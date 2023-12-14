@@ -22,6 +22,6 @@ First, if you haven't already, source the setup.bash
 
 Second, run the script. It will ask for the number
 
-    $ set-rc-serial xxxxx
+    $ rc110-set-ros-serial xxxxx
 
 where _xxxxx_ is the serial number.
