@@ -32,4 +32,4 @@ then
 fi
 
 sudo apt-get update
-sudo apt-get install -yq ros-${ROS_DISTRO}-desktop
+sudo apt-get install -yq ros-${ROS_DISTRO}-desktop ros-${ROS_DISTRO}-usb-cam ros-${ROS_DISTRO}-vision-msgs python3-colcon-common-extensions pkg-config
