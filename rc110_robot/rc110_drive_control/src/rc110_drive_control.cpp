@@ -84,6 +84,7 @@ Rc110DriveControl::Rc110DriveControl() :
     subscribers.push_back(create_subscription<ackermann_msgs::msg::AckermannDriveStamped>("drive", 10,[this](const ackermann_msgs::msg::AckermannDriveStamped::ConstSharedPtr& message){
                                         onDrive(message);
                                     }));
+    subscribers.push_back(create_subscription<std_msgs::msg::Float32>("set_servo_torque", 10,[this](const std_msgs::msg::Float32::ConstSharedPtr& message){onServoTorque(message);}));
     subscribers.push_back(create_subscription<rc110_msgs::msg::Offsets>("offsets", 10,  [this](const rc110_msgs::msg::Offsets::ConstSharedPtr& message) {
                                         onOffsets(message);
                                     }));
@@ -104,6 +105,7 @@ Rc110DriveControl::Rc110DriveControl() :
     publishers["servo_temperature"] = create_publisher<sensor_msgs::msg::Temperature>("servo_temperature", 10);
     publishers["baseboard_temperature"] = create_publisher<sensor_msgs::msg::Temperature>("baseboard_temperature", 10);
     publishers["servo_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("servo_battery", 10);
+    publishers["servo_torque"] = create_publisher<std_msgs::msg::Float32>("servo_torque", 10);
     publishers["motor_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("motor_battery", 10);
     publishers["odometry"] = create_publisher<nav_msgs::msg::Odometry>("odometry", 10);
     publishers["motor_rate"] = create_publisher<rc110_msgs::msg::MotorRate>("motor_rate", 10);
@@ -190,6 +192,14 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::msg::AckermannDriveStamped
     }
 }
 
+void Rc110DriveControl::onServoTorque(const std_msgs::msg::Float32::ConstSharedPtr& message)
+{
+    float torque = message->data;
+    if (control.ChangeSteeringTorque(torque)) {
+        std::cout << "ChangeSteeringTorque(" << torque << ")\n";
+    }
+}
+
 void Rc110DriveControl::onOffsets(const rc110_msgs::msg::Offsets::ConstSharedPtr& message)
 {
     control.SetOffsets({
@@ -250,6 +260,7 @@ void Rc110DriveControl::getAndPublishServoInfo()
     auto servoInfo = control.GetServoInfo();
     publishTemperature("servo_temperature", servoInfo.temperature);
     publishBattery("servo_battery", servoInfo.voltage, servoInfo.current);
+    publishFloat32("servo_torque", servoInfo.maxTorque);
 }
 
 void Rc110DriveControl::getAndPublishImu()
@@ -406,6 +417,15 @@ void Rc110DriveControl::publishBattery(const std::string& topic, float voltage, 
     message.voltage = voltage;
     message.current = current;
     message.present = true;
+
+    publish(topic, message);
+}
+
+void Rc110DriveControl::publishFloat32(const std::string& topic, float value)
+{
+    std_msgs::msg::Float32 message;
+
+    message.data = value;
 
     publish(topic, message);
 }

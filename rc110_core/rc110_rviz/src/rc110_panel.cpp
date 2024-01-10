@@ -93,6 +93,7 @@ Rc110Panel::Rc110Panel(QWidget* parent) : Panel(parent), ui(new Ui::PanelWidget)
             &Rc110Panel::onSetServoState);
     connect(ui->driveSpeedEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
+    connect(ui->steeringTorqueEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->steeringOffsetEdit, &QLineEdit::editingFinished, this, &Rc110Panel::onEditingFinished);
     connect(ui->calibrateButton, &QPushButton::clicked, this, &Rc110Panel::onCalibrate);
     connect(calibrationTimer, &QTimer::timeout, this, &Rc110Panel::onFinishCalibration);
@@ -260,6 +261,8 @@ void Rc110Panel::setupRosConnections()
             ns + "/odometry", 1, std::bind(&Rc110Panel::onOdometry, this, _1)));
     subscribers.push_back(node->create_subscription<sensor_msgs::msg::BatteryState>(
             ns + "/servo_battery", 1, std::bind(&Rc110Panel::onServoBattery, this, _1)));
+    subscribers.push_back(node->create_subscription<std_msgs::msg::Float32>(
+            ns + "/servo_torque", 1, std::bind(&Rc110Panel::onServoTorque, this, _1)));
     subscribers.push_back(node->create_subscription<sensor_msgs::msg::BatteryState>(
             ns + "/motor_battery", 1, std::bind(&Rc110Panel::onMotorBattery, this, _1)));
     subscribers.push_back(node->create_subscription<sensor_msgs::msg::Temperature>(
@@ -276,6 +279,8 @@ void Rc110Panel::setupRosConnections()
 
     publishers["drive_manual"] = node->create_publisher<ackermann_msgs::msg::AckermannDriveStamped>(
             ns + "/drive_manual", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
+    publishers["set_servo_torque"] = node->create_publisher<std_msgs::msg::Float32>(
+            ns + "/set_servo_torque", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
     publishers["offsets"] = node->create_publisher<rc110_msgs::msg::Offsets>(
             ns + "/offsets", rclcpp::QoS(10).durability(rclcpp::DurabilityPolicy::TransientLocal));
 
@@ -426,6 +431,9 @@ void Rc110Panel::onEditingFinished()
         } else if (name == "steeringEdit") {
             steeringAngle = edit->text().toFloat();
             publishDrive();
+        } else if (name == "steeringTorqueEdit") {
+            steeringTorque = edit->text().toFloat();
+            publishSteeringTorque();
         } else if (name == "steeringOffsetEdit") {
             offsets.steering = ui->steeringOffsetEdit->text().toFloat();
             publishOffsets();
@@ -484,6 +492,13 @@ void Rc110Panel::publishDrive()
     message.drive.speed = driveSpeed;
     message.drive.steering_angle = steeringAngle * DEG_TO_RAD;
     publish("drive_manual", message);
+}
+
+void Rc110Panel::publishSteeringTorque()
+{
+    std_msgs::msg::Float32 message;
+    message.data = steeringTorque;
+    publish("set_servo_torque", message);
 }
 
 void Rc110Panel::publishOffsets()
@@ -601,6 +616,11 @@ void Rc110Panel::onServoBattery(const sensor_msgs::msg::BatteryState& batterySta
 {
     getTreeItem(BATTERY, "servo voltage")->setText(1, printSensor(batteryState.voltage, "V"));
     getTreeItem(BATTERY, "servo current")->setText(1, printSensor(batteryState.current * 1000, "mA", 0));
+}
+
+void Rc110Panel::onServoTorque(const std_msgs::msg::Float32& torque)
+{
+    getTreeItem(BATTERY, "servo torque")->setText(1, printSensor(torque.data, "%"));
 }
 
 void Rc110Panel::onMotorBattery(const sensor_msgs::msg::BatteryState& batteryState)

@@ -49,6 +49,7 @@ private:
     bool onMotorState(rc110_msgs::srv::SetInteger::Request& request, rc110_msgs::srv::SetInteger::Response& response);
     bool onServoState(rc110_msgs::srv::SetInteger::Request& request, rc110_msgs::srv::SetInteger::Response& response);
     void onDrive(const ackermann_msgs::msg::AckermannDriveStamped::ConstSharedPtr& message);
+    void onServoTorque(const std_msgs::msg::Float32::ConstSharedPtr& message);
     void onOffsets(const rc110_msgs::msg::Offsets::ConstSharedPtr& message);
     void onStatusUpdateTimer();
 
@@ -65,6 +66,7 @@ private:
     void publishOdometry(const DriveInfo& drive);
     void publishTemperature(const std::string& topic, float temperature);
     void publishBattery(const std::string& topic, float voltage, float current);
+    void publishFloat32(const std::string& topic, float value);
 
     template <typename T>
     void publish(const std::string& topic, const T& value)

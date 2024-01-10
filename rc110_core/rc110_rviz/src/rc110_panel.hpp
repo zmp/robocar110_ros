@@ -79,6 +79,7 @@ private:
     void onFinishCalibration();
     void publishRobotName(const std::string& name);
     void publishDrive();
+    void publishSteeringTorque();
     void publishOffsets();
 
     void onAdModeChanged(const std_msgs::msg::String& message);
@@ -92,6 +93,7 @@ private:
     void onDriveStatus(const ackermann_msgs::msg::AckermannDriveStamped& driveStatus);
     void onOdometry(const nav_msgs::msg::Odometry& odometry);
     void onServoBattery(const sensor_msgs::msg::BatteryState& batteryState);
+    void onServoTorque(const std_msgs::msg::Float32& torque);
     void onMotorBattery(const sensor_msgs::msg::BatteryState& batteryState);
     void onBaseboardTemperature(const sensor_msgs::msg::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::msg::Temperature& temperature);
@@ -128,6 +130,7 @@ private:
     std::string ns;  // slashed ROS namespace
     float driveSpeed = 0;
     float steeringAngle = 0;
+    float steeringTorque = 0.;
     rc110_msgs::msg::Offsets offsets;
     int timerCounter = 0;
 };
