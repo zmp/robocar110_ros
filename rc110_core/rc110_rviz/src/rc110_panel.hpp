@@ -15,6 +15,7 @@
 #include <rc110_msgs/msg/offsets.hpp>
 #include <rc110_msgs/msg/status.hpp>
 #include <rc110_msgs/msg/wheel_speeds.hpp>
+#include <rc110_msgs/msg/steering_motor_info.hpp>
 #include <rc110_msgs/srv/set_integer.hpp>
 #include <rc110_topic_tools/srv/mux_select.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -94,6 +95,7 @@ private:
     void onOdometry(const nav_msgs::msg::Odometry& odometry);
     void onServoBattery(const sensor_msgs::msg::BatteryState& batteryState);
     void onServoTorque(const std_msgs::msg::Float32& torque);
+    void onSteeringMotorInfo(const rc110_msgs::msg::SteeringMotorInfo& motorInfo);
     void onMotorBattery(const sensor_msgs::msg::BatteryState& batteryState);
     void onBaseboardTemperature(const sensor_msgs::msg::Temperature& temperature);
     void onServoTemperature(const sensor_msgs::msg::Temperature& temperature);

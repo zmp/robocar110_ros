@@ -12,6 +12,7 @@
 #include <rc110_msgs/msg/motor_rate.hpp>
 #include <rc110_msgs/msg/status.hpp>
 #include <rc110_msgs/msg/wheel_speeds.hpp>
+#include <rc110_msgs/msg/steering_motor_info.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
@@ -106,6 +107,7 @@ Rc110DriveControl::Rc110DriveControl() :
     publishers["baseboard_temperature"] = create_publisher<sensor_msgs::msg::Temperature>("baseboard_temperature", 10);
     publishers["servo_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("servo_battery", 10);
     publishers["servo_torque"] = create_publisher<std_msgs::msg::Float32>("servo_torque", 10);
+    publishers["steering_motor_info"] = create_publisher<rc110_msgs::msg::SteeringMotorInfo>("steering_motor_info", 10);
     publishers["motor_battery"] = create_publisher<sensor_msgs::msg::BatteryState>("motor_battery", 10);
     publishers["odometry"] = create_publisher<nav_msgs::msg::Odometry>("odometry", 10);
     publishers["motor_rate"] = create_publisher<rc110_msgs::msg::MotorRate>("motor_rate", 10);
@@ -261,6 +263,7 @@ void Rc110DriveControl::getAndPublishServoInfo()
     publishTemperature("servo_temperature", servoInfo.temperature);
     publishBattery("servo_battery", servoInfo.voltage, servoInfo.current);
     publishFloat32("servo_torque", servoInfo.maxTorque);
+    publishSteeringMotorInfo("steering_motor_info", (uint16_t)servoInfo.modelNumberL | ((uint16_t)servoInfo.modelNumberH << 8), servoInfo.firmwareVersion);
 }
 
 void Rc110DriveControl::getAndPublishImu()
@@ -426,6 +429,16 @@ void Rc110DriveControl::publishFloat32(const std::string& topic, float value)
     std_msgs::msg::Float32 message;
 
     message.data = value;
+
+    publish(topic, message);
+}
+
+void Rc110DriveControl::publishSteeringMotorInfo(const std::string& topic, uint16_t modelNumber, uint8_t firmwareVersion)
+{
+    rc110_msgs::msg::SteeringMotorInfo message;
+
+    message.model_number = modelNumber;
+    message.firmware_version = firmwareVersion;
 
     publish(topic, message);
 }

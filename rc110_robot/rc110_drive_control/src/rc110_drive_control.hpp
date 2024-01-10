@@ -67,6 +67,7 @@ private:
     void publishTemperature(const std::string& topic, float temperature);
     void publishBattery(const std::string& topic, float voltage, float current);
     void publishFloat32(const std::string& topic, float value);
+    void publishSteeringMotorInfo(const std::string& topic, uint16_t modelNumber, uint8_t firmwareVersion);
 
     template <typename T>
     void publish(const std::string& topic, const T& value)

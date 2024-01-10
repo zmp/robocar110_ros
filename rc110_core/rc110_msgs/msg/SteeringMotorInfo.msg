@@ -1,0 +1,2 @@
+uint16 model_number
+uint8 firmware_version

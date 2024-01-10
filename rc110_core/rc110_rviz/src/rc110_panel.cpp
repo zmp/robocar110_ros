@@ -263,6 +263,8 @@ void Rc110Panel::setupRosConnections()
             ns + "/servo_battery", 1, std::bind(&Rc110Panel::onServoBattery, this, _1)));
     subscribers.push_back(node->create_subscription<std_msgs::msg::Float32>(
             ns + "/servo_torque", 1, std::bind(&Rc110Panel::onServoTorque, this, _1)));
+    subscribers.push_back(node->create_subscription<rc110_msgs::msg::SteeringMotorInfo>(
+            ns + "/steering_motor_info", 1, std::bind(&Rc110Panel::onSteeringMotorInfo, this, _1)));
     subscribers.push_back(node->create_subscription<sensor_msgs::msg::BatteryState>(
             ns + "/motor_battery", 1, std::bind(&Rc110Panel::onMotorBattery, this, _1)));
     subscribers.push_back(node->create_subscription<sensor_msgs::msg::Temperature>(
@@ -621,6 +623,20 @@ void Rc110Panel::onServoBattery(const sensor_msgs::msg::BatteryState& batterySta
 void Rc110Panel::onServoTorque(const std_msgs::msg::Float32& torque)
 {
     getTreeItem(BATTERY, "servo torque")->setText(1, printSensor(torque.data, "%"));
+}
+
+void Rc110Panel::onSteeringMotorInfo(const rc110_msgs::msg::SteeringMotorInfo& motor)
+{
+    {
+        std::stringstream ss;
+        ss << std::hex << std::setw(4) << std::setfill('0') << (int)motor.model_number;
+        getTreeItem(OTHER, "steering motor model")->setText(1, ss.str().c_str());
+    }
+    {
+        std::stringstream ss;
+        ss << std::hex << std::setw(2) << std::setfill('0') << (int)motor.firmware_version;
+        getTreeItem(OTHER, "steering motor firmware version")->setText(1, ss.str().c_str());
+    }
 }
 
 void Rc110Panel::onMotorBattery(const sensor_msgs::msg::BatteryState& batteryState)
