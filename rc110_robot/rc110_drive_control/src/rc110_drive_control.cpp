@@ -197,9 +197,7 @@ void Rc110DriveControl::onDrive(const ackermann_msgs::msg::AckermannDriveStamped
 void Rc110DriveControl::onServoTorque(const std_msgs::msg::Float32::ConstSharedPtr& message)
 {
     float torque = message->data;
-    if (control.ChangeSteeringTorque(torque)) {
-        std::cout << "ChangeSteeringTorque(" << torque << ")\n";
-    }
+    control.ChangeSteeringTorque(torque);
 }
 
 void Rc110DriveControl::onOffsets(const rc110_msgs::msg::Offsets::ConstSharedPtr& message)
