@@ -622,7 +622,7 @@ void Rc110Panel::onServoBattery(const sensor_msgs::msg::BatteryState& batterySta
 
 void Rc110Panel::onServoTorque(const std_msgs::msg::Float32& torque)
 {
-    getTreeItem(BATTERY, "servo torque")->setText(1, printSensor(torque.data, "%"));
+    getTreeItem(OTHER, "servo torque")->setText(1, printSensor(torque.data, "%"));
 }
 
 void Rc110Panel::onSteeringMotorInfo(const rc110_msgs::msg::SteeringMotorInfo& motor)
