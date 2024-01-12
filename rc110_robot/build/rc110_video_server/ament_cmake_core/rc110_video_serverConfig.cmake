@@ -16,7 +16,7 @@ set(_rc110_video_server_CONFIG_INCLUDED TRUE)
 
 # output package information
 if(NOT rc110_video_server_FIND_QUIETLY)
-  message(STATUS "Found rc110_video_server: 2.1.0 (${rc110_video_server_DIR})")
+  message(STATUS "Found rc110_video_server: 2.2.0 (${rc110_video_server_DIR})")
 endif()
 
 # warn when using a deprecated package

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rc110_drive_control VERSION 2.1.0)
+project(rc110_drive_control VERSION 2.2.0)
 
 set(RC110_COMPONENTS control CACHE STRING "")
 

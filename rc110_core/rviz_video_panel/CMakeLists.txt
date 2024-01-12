@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(rviz_video_panel VERSION 2.1.0)
+project(rviz_video_panel VERSION 2.2.0)
 
 find_package(Qt5 5.9 REQUIRED Core Widgets Multimedia MultimediaWidgets)
 find_package(ament_cmake REQUIRED)

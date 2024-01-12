@@ -1,3 +1,9 @@
+## v2.2.0
+* Add a script to replace serial numbers in RViz configuration file in setup process
+* Add missing dependencies to build ROS2 packages into installer script (rc110_robot_*.run)
+* Add steering servo motor torque value and setting field to RViz
+* Update the default torque value to 80% (previously 3%)
+
 ## v2.1.0
 * NVIDIA video streamer has been replaced with usb_node for visualization in RVIZ to avoid issue where stream doesn't appear.
 
