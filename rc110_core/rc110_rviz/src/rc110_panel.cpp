@@ -629,12 +629,12 @@ void Rc110Panel::onSteeringMotorInfo(const rc110_msgs::msg::SteeringMotorInfo& m
 {
     {
         std::stringstream ss;
-        ss << std::hex << std::setw(4) << std::setfill('0') << (int)motor.model_number;
+        ss << std::hex << std::setw(4) << std::setfill('0') << int{motor.model_number};
         getTreeItem(OTHER, "steering motor model")->setText(1, ss.str().c_str());
     }
     {
         std::stringstream ss;
-        ss << std::hex << std::setw(2) << std::setfill('0') << (int)motor.firmware_version;
+        ss << std::hex << std::setw(2) << std::setfill('0') << int{motor.firmware_version};
         getTreeItem(OTHER, "steering motor firmware version")->setText(1, ss.str().c_str());
     }
 }
